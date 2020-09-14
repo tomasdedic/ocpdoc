@@ -36,3 +36,5 @@ jobs:
           context: .
           file: ./Dockerfile
           tags: docker.pkg.github.com/tomasdedic/ocpdoc/srugo:latest
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.PERSONAL_TOKEN }}
