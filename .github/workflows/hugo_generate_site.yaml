@@ -31,7 +31,7 @@ jobs:
 
       - id: get-id
         run: |
-          id=$(echo ${{ GITHUB_SHA }} | cut -c 1-4)
+          id=$(echo ${GITHUB_SHA} | cut -c 1-4)
           echo "::set-output name=sha::$id"
 
       - name: Build and publish image to Github
