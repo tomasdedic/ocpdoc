@@ -51,4 +51,4 @@ jobs:
         if: ${{ steps.build_and_publish.conclusion == 'success'}}
         uses: actions/delete-package-versions@v1
         with:
-          package-name: 'hugogen'
+          package-name: hugogen
