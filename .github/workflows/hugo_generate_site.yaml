@@ -32,6 +32,8 @@ jobs:
       - id: get-id
         run: |
           id=$(echo ${GITHUB_SHA} | cut -c 1-4)
+          echo ${GITHUB_SHA}
+          echo $id
           echo "::set-output name=sha::$id"
 
       - name: Build and publish image to Github
@@ -46,7 +48,7 @@ jobs:
             GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete oldest package
-        if: ${{ steps.build_and_publish.sucess == 'success'}}
+        if: ${{ steps.build_and_publish.conclusion == 'success'}}
         uses: actions/delete-package-versions@v1
         with:
           package-name: 'hugogen'
