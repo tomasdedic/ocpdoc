@@ -1,0 +1,232 @@
+---
+title: OPENID AAD
+date: 2020-06-26
+author: Tomas Dedic
+description: "OPENID AAD OPENSHIFT"
+lead: "non function custom claims"
+disable_comments: true # Optional, disable Disqus comments if true
+authorbox: false # Optional, enable authorbox for specific post
+toc: false # Optional, enable Table of Contents for specific post
+mathjax: false # Optional, enable MathJax for specific post
+categories:
+  - "OpenShift"
+tags:
+  - "OCP"
+  - "AAD"
+  - "Azure"
+
+---
+
+# OPENID AAD
+**OpenID Connect authorize proti AAD. Uživatel se autorizuje a je následně vytvořen v OCP.**  
+Jakým způsobem je možné provést párování mezi unikáním identifikátorem pro AAD a OCP.  
+Je možno v rámcí provisioningu dotáhnout "groupMembershipClaims" se seznamem skupin z AAD a jakým způsobem provést provisioning těchto skupin v rámci OCP.  
+
+[jwt token inspekce](https://www.tomaskubica.cz/post/2019/moderni-autentizace-overovani-interniho-uzivatele-s-openid-connect-a-aad/)
+
+## DEFINICE MS openid 
+[openid spec](https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/v2.0/.well-known/openid-configuration)
+```yaml
+ # shortened 
+{
+  "token_endpoint": "https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/oauth2/v2.0/token",
+  "token_endpoint_auth_methods_supported": [
+    "client_secret_post",
+    "private_key_jwt",
+    "client_secret_basic"
+  ],
+  "jwks_uri": "https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/discovery/v2.0/keys",
+  "response_modes_supported": [
+    "query",
+    "fragment",
+    "form_post"
+  ],
+  "subject_types_supported": [
+    "pairwise"
+  ],
+  "id_token_signing_alg_values_supported": [
+    "RS256"
+  ],
+  "response_types_supported": [
+    "code",
+    "id_token",
+    "code id_token",
+    "id_token token"
+  ],
+  "scopes_supported": [
+    "openid",
+    "profile",
+    "email",
+    "offline_access"
+  ],
+  "claims_supported": [
+    "sub",
+    "iss",
+    "cloud_instance_name",
+    "cloud_instance_host_name",
+    "cloud_graph_host_name",
+    "msgraph_host",
+    "aud",
+    "exp",
+    "iat",
+    "auth_time",
+    "acr",
+    "nonce",
+    "preferred_username",
+    "name",
+    "tid",
+    "ver",
+    "at_hash",
+    "c_hash",
+    "email"
+  ],
+}
+```
+
+### Openshift provider definition
+```yaml
+---
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - name: AzureAD
+    mappingMethod: claim
+    type: OpenID
+    openID:
+      claims:
+      # base mapping
+        preferredUsername:
+        - upn
+        - preferred_username
+        email:
+        - email
+        name:
+        - name
+      clientID: c2d29042-792d-4b23-9bdf-9e341e465083
+      clientSecret:
+        name: aadidp-secret
+      extraAuthorizeParameters:
+        include_granted_scopes: "true"
+      extraScopes:
+      - email
+      - profile
+      - groups
+      - name
+      - upn
+      issuer: https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d
+```
+### OC USERS
+login over openshift console, login sucess, user provisioned 
+```sh
+oc get identities
+oc get user user-12@mspassporttrask.onmicrosoft.com -o json
+```
+```yaml
+{
+    "apiVersion": "user.openshift.io/v1",
+    "fullName": "user-12",
+    "groups": null,
+    "identities": [
+        "AzureAD:zyBX-mCiVnA05CSohv2W2ZIPbmA7N8sKojx6IQlkP2g"
+    ],
+    "kind": "User",
+    "metadata": {
+        "creationTimestamp": "2019-12-06T10:08:38Z",
+        "name": "user-12@mspassporttrask.onmicrosoft.com",
+        "resourceVersion": "14731567",
+        "selfLink": "/apis/user.openshift.io/v1/users/user-12%40mspassporttrask.onmicrosoft.com",
+        "uid": "e1011ef5-cac1-4b0b-8c18-b5a6da366d5f"
+    }
+}
+```
+### AAD user
+
+```sh
+az ad user list |jq -r '.[]|select(.userPrincipalName =="user-12@mspassporttrask.onmicrosoft.com")'
+```
+
+### JWT token
+obtain JWT token:
+**Azure console --> app registration --->redirect uri --> http://localhost**
++ client_id
+identifikátor naší aplikace, který vznikl při její registraci v AAD (označuje se tam jako Application ID)
++ response_type
+jakou odpověď očekáváme, pro začátek s implicitním flow (doručení rovnou tokenu) tady dáme id_token
++ redirect_url
+to bude kopírovat nastavení při registraci, tedy v našem případě http://localhost (v URL encode, protože znaky :// by prohlížeč zmátly)
++ response_mode
+říkáme, jakým způsobem chceme token v redirectu doručit. Genericky vzato jsou tu varianty from_post (výsledek vypadá jako při odeslání HTML formuláře, tedy je to POST na nějaký endpoint), query (odpověď přijde jako běžné parametry GETu za otazníkem) nebo fragment (informace přijdou za symbolem #, což se dostane do browseru, ale ne dál - typické pro single-page aplikace). Ne všechny možnosti jsou z různých (primárně bezpečnostních) důvodů k dispozici u všech typů přihlášení/autorizace. U implicitního flow v dnešním článku použijeme fragment.
++ scope
+tady říkáme u OAuth2 k čemu chceme získat práva, v našem případě jde o právo na přihlášení a dává se sem openid
++ state
+nějaké náhodné číslo, které se nám vrátí i v odpovědi a my zkontrolujeme, že je stejné (brání před některými útoky)
++ nonce
+opět nějaké náhodné číslo, které AAD vloží přímo do id_tokenu (a podepíše) a my si zkontrlujeme, že je stejné (bráníme se před replay útoky)
+
+takže:
+
+[localhost-token](https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/oauth2/v2.0/authorize?client_id=5ecafeb2-5759-405b-9d73-2b28879e17a0&response_type=id_token&redirect_url=http%3A%2F%2Flocalhost&response_mode=fragment&scope=openid+profile+email+offline_access&state=12345&nonce=54321)
+
+vrátí se nám 403 a zkopírujeme string za http://localhost/#id_token=\
+do [jwt.ms](https://jwt.ms)
+
+token:
+```yaml
+{
+  "typ": "JWT",
+  "alg": "RS256",
+  "kid": "BB8CeFVqyaGrGNuehJIiL4dfjzw"
+}.{
+  "aud": "c2d29042-792d-4b23-9bdf-9e341e465083",
+  "iss": "https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/v2.0",
+  "iat": 1575980563,
+  "nbf": 1575980563,
+  "exp": 1575984463,
+  "aio": "ATQAy/8NAAAAICL+OHHE/lPlSFx6/OS2mtEemb0yt0fjJ7dZzSL65XqhnKVgwZDTMCiI8oTXt16P",
+  "groups": [
+    "111980ba-31f2-499d-b021-6d90b684ba54"
+  ],
+  "name": "user-15",
+  "nonce": "54321",
+  "oid": "ac21b13a-84a3-4123-9ebf-70ef264c85d8",
+  "preferred_username": "user-15@mspassporttrask.onmicrosoft.com",
+  "sub": "CBrSMAstqP5tAWMIL6KcD0LzDKpdnMiJ5ws18sAkfeg",
+  "tid": "b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d",
+  "uti": "i6PrMfxar0S6Tqre21L8AA",
+  "ver": "2.0"
+}
+```
+
+### Role a ClusterRole
+```yaml
+ # pridam prava pro skupinu v tokenu
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: clusteradmin
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: "111980ba-31f2-499d-b021-6d90b684ba54"
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+```
+
+V JWT tokenu sice group mame ale v provisioningu do OCP se neprojeví a uživatel nemá práva přijatá z tokenu.\
+Práva získá až po manuálním přiřazení do skupiny.
+```yaml
+apiVersion: user.openshift.io/v1
+kind: Group
+metadata:
+  name: 111980ba-31f2-499d-b021-6d90b684ba54
+users:
+  - tdedic@mspassporttrask.onmicrosoft.com
+```
+

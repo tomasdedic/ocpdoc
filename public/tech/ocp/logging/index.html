@@ -1,0 +1,361 @@
+<!doctype html><html class=no-js lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><title>Agreggated loging - MADDIV</title><script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script><meta name=description content="LOGGING: ElasticSearch, FluentD, Kibana, Eventhub(Kafka)"><meta name=generator content="Hugo 0.75.0-DEV"><meta property="og:title" content="Agreggated loging"><meta property="og:description" content="LOGGING: ElasticSearch, FluentD, Kibana, Eventhub(Kafka)"><meta property="og:type" content="article"><meta property="og:url" content="/ocpdoc/tech/ocp/logging/"><meta property="article:published_time" content="2020-06-08T00:00:00+00:00"><meta property="article:modified_time" content="2020-09-12T23:28:48+02:00"><link rel=dns-prefetch href=//fonts.googleapis.com><link rel=dns-prefetch href=//fonts.gstatic.com><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700"><link rel=stylesheet href=/ocpdoc/css/style.css><link rel=stylesheet href=/ocpdoc/css/custom.css><link rel="shortcut icon" href=/ocpdoc/favicon.ico></head><body class=body><div class="container container--outer"><header class=header><div class=container><div class=logo><a class=logo__link href=/ocpdoc title=MADDIV rel=home><div class=logo__title>MADDIV</div><div class=logo__tagline>Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div></a></div><nav class=menu><button class=menu__btn aria-haspopup=true aria-expanded=false tabindex=0>
+<span class=menu__btn-title tabindex=-1>Menu</span></button><ul class=menu__list><li class=menu__item><a class=menu__link href=/ocpdoc/categories/azure title=Azure>Azure</a><li class=menu__item><a class=menu__link href=/ocpdoc/categories/containers title=Containers>Containers</a><li class=menu__item><a class=menu__link href=/ocpdoc/categories/git title=Git>Git</a><li class=menu__item><a class=menu__link href=/ocpdoc/categories/openshift title=Openshift>Openshift</a></li></ul></nav></div></header><div class="wrapper flex"><div class=primary><main class=main role=main><article class=post><header class=post__header><h1 class=post__title>Agreggated loging</h1><p class=post__lead>building logging stack</p><div class="post__meta meta"><div class="meta__item-datetime meta__item"><svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class=meta__text datetime=2020-06-08T00:00:00>June 08, 2020</time>
+<time class=meta__text datetime=2020-09-12T23:28:48>(Last Modified: September 12, 2020)</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class=meta__text><a class=meta__link href=/ocpdoc/categories/openshift rel=category>OpenShift</a></span></div></div></header><div class="content post__content clearfix"><div class=post__item>*file: 01-intro-loggingArch *</div><h1 id=ocp-logging-in-general>OCP Logging in general</h1><p><strong>The cluster logging components are based upon Elasticsearch, Fluentd and Kibana.</strong></p><ul><li><strong>logStore</strong>: This is where the logs will be stored. The current implementation is <strong>Elasticsearch</strong>.</li><li><strong>collection</strong>: This is the component that collects logs from the node, formats them, and stores them in the logStore. The current implementation is <strong>Fluentd</strong>.</li><li><strong>visualization</strong>: This is the UI component used to view logs, graphs, charts, and so forth. The current implementation is <strong>Kibana</strong>.</li><li><strong>curation</strong>: This is the component that trims logs by age. The current implementation is <strong>Curator</strong>.</li><li><strong>event routing</strong>: This is the component forwards events to cluster logging. The current implementation is Event Router. The Event Router communicates with the OpenShift Container Platform and prints OpenShift Container Platform events to log of the pod where the event occurs.</li></ul><p>The collector, Fluentd, is deployed to each node in the OpenShift Container Platform cluster. It collects all node and container logs and writes them to Elasticsearch (ES), Kibana to visualize.</p><div class=post__item>*file: 01-provision-resources *</div><h1 id=provision-resources-for-logging-stack-on-ocp>Provision resources for logging stack on OCP</h1><p>Logging stack will be installed as an operator, for elasticsearch we will use dedicated node with propriate <strong>taint</strong> to allow only schedule pods with defined <strong>toleration</strong> (part of logging stack).</p><h2 id=create-custom-node-for-logging-purposes>Create custom node for logging purposes</h2><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb>    </span><span style=color:green;font-weight:700>taints</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span>NoSchedule<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>node-role<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span>logging<span style=color:#bbb>
+</span></code></pre></div><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb>    </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>node.purpose</span>:<span style=color:#bbb> </span>logging<span style=color:#bbb>
+</span></code></pre></div><p>In OCP 4.4.6 seems to be a problem to create only Machine resource, failing on <strong>Error Message: Can&rsquo;t find created instance</strong>.
+I dediced to create(not to look for base problem) MachineSet with replica 1 instead. I choose size <strong>Standard_D4S_v3 4vcpu 16GB memory</strong> for logging dedicated node<br><br><em>[ yaml/MachineSet-logging.yaml ]</em><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>machine.openshift.io/v1beta1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>MachineSet<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>machine.openshift.io/cluster-api-cluster</span>:<span style=color:#bbb> </span>toshi44-l9tcd<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>machine.openshift.io/cluster-api-machine-role</span>:<span style=color:#bbb> </span>infra<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>machine.openshift.io/cluster-api-machine-type</span>:<span style=color:#bbb> </span>infra<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>toshi44-l9tcd-logging-westeurope3<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>namespace</span>:<span style=color:#bbb> </span>openshift-machine-api<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>matchLabels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>machine.openshift.io/cluster-api-cluster</span>:<span style=color:#bbb> </span>toshi44-l9tcd<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>machine.openshift.io/cluster-api-machineset</span>:<span style=color:#bbb> </span>toshi44-l9tcd-logging-westeurope3<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>taints</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span>NoSchedule<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>node-role<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span>logging<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>creationTimestamp</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>null</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>machine.openshift.io/cluster-api-cluster</span>:<span style=color:#bbb> </span>toshi44-l9tcd<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>machine.openshift.io/cluster-api-machine-role</span>:<span style=color:#bbb> </span>infra<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>machine.openshift.io/cluster-api-machine-type</span>:<span style=color:#bbb> </span>infra<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>machine.openshift.io/cluster-api-machineset</span>:<span style=color:#bbb> </span>toshi44-l9tcd-logging-westeurope3<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>node.purpose</span>:<span style=color:#bbb> </span>logging<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>creationTimestamp</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>null</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>providerSpec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>azureproviderconfig.openshift.io/v1beta1<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>credentialsSecret</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>azure-cloud-credentials<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>namespace</span>:<span style=color:#bbb> </span>openshift-machine-api<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>offer</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>publisher</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>resourceID</span>:<span style=color:#bbb> </span>/resourceGroups/toshi44-l9tcd-rg/providers/Microsoft.Compute/images/toshi44-l9tcd<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>sku</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>version</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>internalLoadBalancer</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>AzureMachineProviderSpec<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>location</span>:<span style=color:#bbb> </span>westeurope<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>managedIdentity</span>:<span style=color:#bbb> </span>toshi44-l9tcd-identity<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>creationTimestamp</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>null</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>natRule</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>null</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>networkResourceGroup</span>:<span style=color:#bbb> </span>toshi_vnet_rg<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>osDisk</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>diskSizeGB</span>:<span style=color:#bbb> </span><span style=color:#666>128</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>managedDisk</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>storageAccountType</span>:<span style=color:#bbb> </span>Premium_LRS<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>osType</span>:<span style=color:#bbb> </span>Linux<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>publicIP</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>false</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>publicLoadBalancer</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>resourceGroup</span>:<span style=color:#bbb> </span>toshi44-l9tcd-rg<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>sshPrivateKey</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>sshPublicKey</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>subnet</span>:<span style=color:#bbb> </span>toshi-worker-subnet<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>userDataSecret</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>worker-user-data<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>vmSize</span>:<span style=color:#bbb> </span>Standard_D4S_v3<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>vnet</span>:<span style=color:#bbb> </span>toshi_vnet<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>zone</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;3&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>
+</span></code></pre></div></p><p>Taints and Labels can be created later on</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh> <span style=color:#080;font-style:italic># taint</span>
+kubectl taint nodes toshi44-l9tcd-logging-westeurope3-nb8lf node-role<span style=color:#666>=</span>logging:NoSchedule
+ <span style=color:#080;font-style:italic># label</span>
+oc label nodes toshi44-l9tcd-logging-westeurope3-nb8lf node.purpose<span style=color:#666>=</span>logging
+</code></pre></div><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh> <span style=color:#080;font-style:italic># get all nodes taints</span>
+oc get nodes -o json|jq -r <span style=color:#b44>&#39;.items[].spec.taints&#39;</span>
+</code></pre></div><p>In case we need to remove taint &ldquo;use minus convention&rdquo;</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>kubectl taint nodes toshi44-l9tcd-logging-westeurope3-nb8lf node-role<span style=color:#666>=</span>logging:NoSchedule-
+</code></pre></div><h2 id=install-clusterlogging-operator-and-elasticsearch-operator>Install ClusterLogging Operator and Elasticsearch Operator</h2><p><a href=https://docs.openshift.com/container-platform/4.4/logging/cluster-logging-deploying.html>Quite a long task described on RedHat</a> with more informations.</p><p>Create a Namespace for the Elasticsearch Operator<br><em>[ yaml/eo-namespace.yaml ]</em><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Namespace<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>openshift-operators-redhat <span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>annotations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>openshift.io/node-selector</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>openshift.io/cluster-logging</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;true&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>openshift.io/cluster-monitoring</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;true&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>
+</span></code></pre></div></p><p>Create a Namespace for the Cluster Logging Operator<br><em>[ yaml/clo-namespace.yaml ]</em><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Namespace<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>openshift-logging<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>annotations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>openshift.io/node-selector</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>openshift.io/cluster-logging</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;true&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>openshift.io/cluster-monitoring</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;true&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>
+</span></code></pre></div></p><p>Create an Operator Group for Elasticsearch operator<br><em>[ yaml/eo-operatorgroup.yaml ]</em><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>operators.coreos.com/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>OperatorGroup<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>openshift-operators-redhat<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>namespace</span>:<span style=color:#bbb> </span>openshift-operators-redhat <span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb> </span>{}<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span></code></pre></div></p><p>Create a Subscription for Elasticsearch operator<br><em>[ yaml/eo-subscription.yaml ]</em><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#080;font-style:italic>#oc get packagemanifest cluster-logging -n openshift-marketplace -o jsonpath=&#39;{.status.defaultChannel}&#39;</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>---</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>operators.coreos.com/v1alpha1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Subscription<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;elasticsearch-operator&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>namespace</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;openshift-operators-redhat&#34;</span><span style=color:#bbb> 
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># channel je vystup .status.channels[].name</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>channel</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;4.4&#34;</span><span style=color:#bbb> 
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>installPlanApproval</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Automatic&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>source</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;redhat-operators&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>sourceNamespace</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;openshift-marketplace&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;elasticsearch-operator&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>
+</span></code></pre></div></p><p>Verify Operator installation, there should be an Elasticsearch Operator in each Namespace</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc get csv --all-namespaces
+</code></pre></div><p>Create an Operator Group for ClusterLogging operator<br><em>[ yaml/clo-operatorgroup.yaml ]</em><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>operators.coreos.com/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>OperatorGroup<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>cluster-logging<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>namespace</span>:<span style=color:#bbb> </span>openshift-logging <span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>targetNamespaces</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- openshift-logging <span style=color:#bbb>
+</span><span style=color:#bbb>
+</span></code></pre></div></p><p>Create a Subscription for ClusterLogging operator<br><em>[ yaml/clo-subscription.yaml ]</em><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#080;font-style:italic># channel=oc get packagemanifest cluster-logging -n openshift-marketplace -o jsonpath=&#39;{.status.defaultChannel}&#39;</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>---</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>operators.coreos.com/v1alpha1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Subscription<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>cluster-logging<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>namespace</span>:<span style=color:#bbb> </span>openshift-logging<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>channel</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;4.4&#34;</span><span style=color:#bbb> 
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>cluster-logging<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>source</span>:<span style=color:#bbb> </span>redhat-operators<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>sourceNamespace</span>:<span style=color:#bbb> </span>openshift-marketplace<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span></code></pre></div></p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc get csv -n openshift-logging
+ <span style=color:#080;font-style:italic># v namespace openshift-logging by se take mel objevit operator pod</span>
+oc get deploy -n openshift-logging
+ <span style=color:#080;font-style:italic># do definice container v deploy pridame toleranci uvedenou vyse</span>
+</code></pre></div><h2 id=create-clusterlogging-instance-crd>Create CLusterLogging Instance CRD</h2><p>The Cluster Logging Operator Custom Resource Definition (CRD) defines a complete cluster logging deployment that includes all the components of the logging stack to collect, store and visualize logs.<br>For deployment we must use correct tolerations to tolerate our node taint and allow to Schedule (can be defined in CRD). Elasticsearch will run with 1 Node and ZeroRedundancy configuration.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb>      </span><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;node-role&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Equal&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;logging&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoSchedule&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:#080;font-style:italic>#nebo</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;node-role&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Exists&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoSchedule&#34;</span><span style=color:#bbb>
+</span></code></pre></div><p>For storage we will use default storageClass managed-premium class, but later I would like to migrate to azureFile SC.
+Name of the instance must be &ldquo;instance&rdquo; otherwise cluster-logging-operator bude failovat( OCP 4.4.6).</p><br><em>[ yaml/ClusterLogging-CRD.yaml ]</em><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>logging.openshift.io/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>ClusterLogging<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>instance<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>namespace</span>:<span style=color:#bbb> </span>openshift-logging<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>managementState</span>:<span style=color:#bbb> </span>Managed<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>logStore</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>elasticsearch<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>elasticsearch</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>nodeSelector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>node.purpose</span>:<span style=color:#bbb> </span>logging<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;node-role&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Equal&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;logging&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoSchedule&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>nodeCount</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>redundancyPolicy</span>:<span style=color:#bbb> </span>ZeroRedundancy<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>storage</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>storageClassName</span>:<span style=color:#bbb> </span>managed-premium<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>size</span>:<span style=color:#bbb> </span>200G<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;800m&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;8Gi&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;100m&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;8Gi&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>visualization</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>kibana<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>kibana</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>nodeSelector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>node.purpose</span>:<span style=color:#bbb> </span>logging<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;node-role&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Equal&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;logging&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoSchedule&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>2Gi<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>100m<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>1Gi<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>curation</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>curator<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>curator</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb> 
+</span><span style=color:#bbb>       </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;node-role&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>         </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Equal&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>         </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;logging&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>         </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoSchedule&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>200Mi<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>100m<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>100Mi<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>schedule</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;*/5 * * * *&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>collection</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>logs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>fluentd<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>fluentd</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb> 
+</span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;node-role&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Equal&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;logging&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoSchedule&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>2Gi<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>100m<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>1Gi<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span></code></pre></div><h3 id=check-status-of-logging-stack>Check status of logging stack</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc get pods -n openshift-logging
+oc get clusterlogging instance -n openshift-logging -o yaml
+oc get Elasticsearch elasticsearch -n openshift-logging -o yaml
+oc get pods --selector <span style=color:#b8860b>component</span><span style=color:#666>=</span>elasticsearch -n openshift-logging -o name
+<span style=color:#080;font-style:italic>#health status for indexes</span>
+<span style=color:#080;font-style:italic>#indices je shell script na podu</span>
+oc <span style=color:#a2f>exec</span> -n openshift-logging pod/elasticsearch-cdm-1godmszn-1-6f8495-vp4lw -- indices
+oc get replicaSet --selector <span style=color:#b8860b>component</span><span style=color:#666>=</span>elasticsearch -o name -n openshift-logging
+</code></pre></div><div class=post__item>*file: 02-fluendD-eventRouter *</div><h1 id=eventrouter>EventRouter</h1><p>Deployment which will periodically query <strong>events</strong> and store and process them over FluentD and store to ElasticSearch</p><h2 id=events>Events</h2><p>By kubernetes events we understand log messages internal to kubernetes, accessible through the kubernetes API <em>/api/v1/events?watch=true</em>, originally stored in etcd. The <strong>etcd storage has time and performance constraints</strong>, therefore, we would like to collect and store them permanently in EFK.</p><ul><li><strong>eventrouter</strong> is deployed to logging project, has a service account and its own role to read events</li><li><strong>eventrouter</strong> watches kubernetes events, marshalls them to JSON and outputs to its STDOUT</li><li><strong>fluentd</strong> picks them up and inserts to elastic search logging project index</li></ul><h3 id=eventrouter-depoloyment>EventRouter Depoloyment</h3><p>use template from RHEL<br><a href=yaml/eventrouter/eventRouter-template.yaml>event_router_template</a></p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc process -f eventRouter-template.yaml  | oc apply -f -
+</code></pre></div><h3 id=configuring-the-event-router>Configuring the Event Router</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc project openshift-logging
+oc get ds
+Set <span style=color:#b8860b>TRANSFORM_EVENTS</span><span style=color:#666>=</span><span style=color:#a2f>true</span> in order to process and store event router events in Elasticsearch.
+Set cluster logging to the unmanaged state in web console
+oc <span style=color:#a2f>set</span> env ds/fluentd <span style=color:#b8860b>TRANSFORM_EVENTS</span><span style=color:#666>=</span><span style=color:#a2f>true</span>
+</code></pre></div><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc get clusterlogging instance -o yaml
+oc edit ClusterLogging instance
+</code></pre></div><p>get logs:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc <span style=color:#a2f>exec</span> fluentd-ht42r -n openshift-logging -- logs
+ <span style=color:#080;font-style:italic># logs is a binary to display logs </span>
+</code></pre></div><p>You can send Elasticsearch logs to external devices, such as an externally-hosted Elasticsearch instance or an external syslog server. You can also configure Fluentd to send logs to an external log aggregator.</p><p>Configuring Fluentd to send logs to an external log aggregator
+You can configure Fluentd to send a copy of its logs to an external log aggregator, and not the default Elasticsearch, using the secure-forward plug-in. From there, you can further process log records after the locally hosted Fluentd has processed them.</p><p>&ndash;>to v podstate znamena pouzitu secure-forward &mdash;> jina instance fluentD s Kafka pluginem a dal do Kafky</p><blockquote><p>fluentd nema forward plugin pro Kafku a Redhat ani neplanuje</p></blockquote><blockquote><p>[object Object]: [security_exception] no permissions for [indices:data/read/field_caps] and User [name=CN=system.logging.kibana,OU=OpenShift,O=Logging, roles=[]]</p></blockquote><div class=post__item>*file: 02-fluentD-OpenshiftScope *</div><h1 id=fluentd>FluentD</h1><p>Everything that a containerized application writes to stdout or stderr is streamed somewhere by the container engine – in Docker’s case,
+for example, to a logging driver. These logs are usually located in the /var/log/containers directory on your host.</p><p>The fluentd component runs as a <strong>daemonset</strong> it means one pod runs on each node in cluster. As nodes are added/removed, kubernetes orchestration ensures that there is one fluentd pod running on each node. Fluentd is configured to run as a privileged container. <strong>It is able to collect logs from all pods on the node, convert them to a structured format and pass them to log aggregator.</strong></p><h2 id=architecture>Architecture</h2><p>Kubernetes, containerized applications that log to stdout and stderr have their log streams captured and redirected to JSON files on the nodes. The Fluentd Pod will tail these log files, filter log events, transform the log data, and ship it off to the Elasticsearch logging backend<figure><img src=img/fluentd-architecture.jpg><figcaption><h4>fluentD architecture</h4></figcaption></figure></p><h2 id=fluentd-base-configuration-and-customization>FLUENTD BASE CONFIGURATION and CUSTOMIZATION</h2><p>Base configuration is stored in ConfigMap</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc get cm fluentd -o json|jq -r <span style=color:#b44>&#39;.data[&#34;fluent.conf&#34;]&#39;</span>|vim -
+oc get cm fluentd -o json|jq -r <span style=color:#b44>&#39;.data[&#34;run.sh&#34;]&#39;</span>|vim -
+</code></pre></div><p>Version of fluentD from logging-operator csv 4.4 is without fluentd-kafka-plugin</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb> </span><span style=color:#080;font-style:italic># list ruby gems on container</span><span style=color:#bbb>
+</span><span style=color:#bbb></span>scl enable rh-ruby25 -- gem list<span style=color:#bbb>
+</span></code></pre></div><p>I made a version of fluentd with kafka and other plugins compiled into gems. So let&rsquo;s try as kafka we will use Azure EventHub
+dasdas</p><h3 id=test-fluentd-locally-with-podman>TEST FLUENTD locally with podman</h3><p>plugin used for fluentD build:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gem install fluent-config-regexp-type 
+gem install fluent-mixin-config-placeholders 
+gem install fluent-plugin-concat 
+gem install fluent-plugin-elasticsearch 
+gem install fluent-plugin-kafka 
+gem install fluent-plugin-kubernetes_metadata_filter 
+gem install fluent-plugin-multi-format-parser 
+gem install fluent-plugin-prometheus 
+gem install fluent-plugin-record-modifier 
+gem install fluent-plugin-remote-syslog 
+gem install fluent-plugin-remote_syslog 
+gem install fluent-plugin-rewrite-tag-filter 
+gem install fluent-plugin-splunk-hec 
+gem install fluent-plugin-systemd 
+gem install fluent-plugin-viaq_data_model
+</code></pre></div><p>podman pull fluent/fluentd:v1.11-debian-1
+#with conffile mount
+podman run -p 8888:8888 -ti &ndash;rm -v /home/ts/git_repositories/work/openshift/oshi/logging:/fluentd/etc docker.io/fluent/fluentd:v1.11-debian-1 fluentd -c /fluentd/etc/fluent.conf</p><pre><code>### USE Azure EventHub instead of Kafka
+Azure EventHub is able to consume kafka_output, for testing purposes we will use one.  
+
+```sh
+Kafka Concept vs Event Hubs Concept
+Cluster        &lt;----&gt;     Namespace
+Topic          &lt;----&gt;     Event Hub
+Partition      &lt;----&gt;     Partition
+Consumer Group &lt;----&gt;     Consumer Group
+Offset         &lt;----&gt;     Offset
+</code></pre><p>fluentD kafka output sample configuration:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>  &lt;store&gt;
+  @type kafka2
+  brokers fluentd-eventhub-oshi.servicebus.windows.net:9093
+  flush_interval 3s
+  &lt;buffer topic&gt;
+    @type file
+    path <span style=color:#b44>&#39;/var/lib/fluentd/retry_clo_default_kafka_out&#39;</span>
+		flush_interval <span style=color:#b44>&#34;#{ENV[&#39;ES_FLUSH_INTERVAL&#39;] || &#39;1s&#39;}&#34;</span>
+		flush_thread_count <span style=color:#b44>&#34;#{ENV[&#39;ES_FLUSH_THREAD_COUNT&#39;] || 2}&#34;</span>
+		flush_at_shutdown <span style=color:#b44>&#34;#{ENV[&#39;FLUSH_AT_SHUTDOWN&#39;] || &#39;false&#39;}&#34;</span>
+		retry_max_interval <span style=color:#b44>&#34;#{ENV[&#39;ES_RETRY_WAIT&#39;] || &#39;300&#39;}&#34;</span>
+		retry_forever <span style=color:#a2f>true</span>
+		queue_limit_length <span style=color:#b44>&#34;#{ENV[&#39;BUFFER_QUEUE_LIMIT&#39;] || &#39;32&#39; }&#34;</span>
+		chunk_limit_size <span style=color:#b44>&#34;#{ENV[&#39;BUFFER_SIZE_LIMIT&#39;] || &#39;8m&#39; }&#34;</span>
+		overflow_action <span style=color:#b44>&#34;#{ENV[&#39;BUFFER_QUEUE_FULL_ACTION&#39;] || &#39;block&#39;}&#34;</span>
+    flush_interval 3s
+  &lt;/buffer&gt;
+
+  <span style=color:#080;font-style:italic># topic settings</span>
+  default_topic kafka_output 
+
+  <span style=color:#080;font-style:italic># producer settings</span>
+  max_send_retries <span style=color:#666>1</span>
+  required_acks <span style=color:#666>1</span>
+  &lt;format&gt;
+    @type json
+  &lt;/format&gt;
+  ssl_ca_certs_from_system <span style=color:#a2f>true</span>
+
+  username <span style=color:#b8860b>$ConnectionString</span>
+  password <span style=color:#b44>&#34;Endpoint=sb://fluentd-eventhub-oshi.servicebus.windows.net/;SharedAccessKeyName=ss;SharedAccessKey=zeWz+9rSS/yWGanjcKrXMA2mAVCO0hL+MULhNWXHfkk=;EntityPath=kafka_output&#34;</span>
+  &lt;/store&gt;
+</code></pre></div><h3 id=patch-original-cm-with-custom-map>PATCH original CM with custom map</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc get cm fluentd -n openshift-logging &gt;fluentd-cm.yaml
+ <span style=color:#080;font-style:italic># bass is fish specific in bash you can ommit, right way to do it in fish shell</span>
+ <span style=color:#080;font-style:italic># is to use process substitution</span>
+ <span style=color:#080;font-style:italic># yq w  -i test.yaml &#39;data.[fluent.conf]&#39; -- (cat fluent.conf|psub) </span>
+ <span style=color:#080;font-style:italic># but not working becouse I get FIFO not a stream</span>
+bass <span style=color:#b44>&#39;yq w -i fluentd-cm.yaml &#39;</span>data.<span style=color:#666>[</span>fluent.conf<span style=color:#666>]</span><span style=color:#b44>&#39;  -- &#34;$(&lt; fluent.conf)&#34;&#39;</span>
+oc apply -f fluentd-cm.yaml
+</code></pre></div><p>Custom map is mounted to pod in location</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>/etc/fluentd/config.d/
+</code></pre></div><p>so restart of fluentD is neccesary</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#a2f;font-weight:700>for</span> i in <span style=color:#666>(</span>oc get pods -o name --selector <span style=color:#b8860b>component</span><span style=color:#666>=</span>fluentd<span style=color:#666>)</span>; oc delete <span style=color:#b8860b>$i</span>; end
+</code></pre></div><div class=post__item>*file: 03-elasticSearch *</div><h2 id=elasticsearch>Elasticsearch</h2><h3 id=elasticsearch-architecture>Elasticsearch architecture</h3><p><strong>Cluster</strong>: Any non-trivial Elasticsearch deployment consists of multiple instances forming a cluster. Distributed consensus is used to keep track of master/replica relationships.<br><strong>Node</strong>: A single Elasticsearch instance.<br><strong>Index</strong>: A collection of documents. This is similar to a database in the traditional terminology.
+Each data provider (like fluentd logs from a single Kubernetes cluster) should use a separate index to store and search logs.
+An index is stored across multiple nodes to make data highly available.<br><strong>Shard</strong>: Because Elasticsearch is a distributed search engine, an index is usually split into elements known as shards that are distributed across multiple nodes.(Elasticsearch automatically manages the arrangement of these shards. It also re-balances the shards as necessary, so users need not worry about these.)<br><strong>Replica</strong>: By default, Elasticsearch creates five primary shards and one replica for each index. This means that each index will consist of five primary shards, and each shard will have one copy.</p><p>Deploy
+<strong>Client</strong>: These nodes provide the API endpoint and can be used for queries. In a Kubernetes-based deployment these are deployed a service so that a logical dns endpoint can be used for queries regardless of number of client nodes.
+<strong>Master</strong>: These nodes provide coordination. A single master is elected at a time by using distributed consensus. That node is responsible for deciding shard placement, reindexing and rebalancing operations.
+<strong>Data</strong>: These nodes store the data and inverted index. Clients query Data nodes directly. The data is sharded and replicated so that a given number of data nodes can fail, without impacting availability.</p><h4 id=exposing-elasticsearch-as-a-route>Exposing Elasticsearch as a route</h4><p>For testing purposes and API queries</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb> </span><span style=color:#080;font-style:italic># elasticsearch-route.yaml</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>route.openshift.io/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Route<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>elasticsearch<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>namespace</span>:<span style=color:#bbb> </span>openshift-logging<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>host</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>to</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>elasticsearch<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>tls</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>termination</span>:<span style=color:#bbb> </span>reencrypt<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>destinationCACertificate</span>:<span style=color:#bbb> </span><span style=color:#b44;font-style:italic>| </span><span style=color:#bbb>
+</span></code></pre></div><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc extract secret/elasticsearch --to<span style=color:#666>=</span>. --keys<span style=color:#666>=</span>admin-ca
+cat ./admin-ca | sed -e <span style=color:#b44>&#34;s/^/      /&#34;</span> &gt;&gt; elasticsearch-route.yaml
+<span style=color:#a2f>set</span> token <span style=color:#666>(</span>oc whoami -t<span style=color:#666>)</span> <span style=color:#080;font-style:italic>#get Bearer token</span>
+<span style=color:#a2f>set</span> routeES <span style=color:#666>(</span>oc get route -n openshift-logging elasticsearch -o json|jq -Mr <span style=color:#b44>&#39;.spec.host&#39;</span><span style=color:#666>)</span>
+ <span style=color:#080;font-style:italic># operations index</span>
+curl -s -tlsv1.2 --insecure -H <span style=color:#b44>&#34;Authorization: Bearer </span><span style=color:#b8860b>$token</span><span style=color:#b44>&#34;</span> <span style=color:#b44>&#34;https://</span><span style=color:#b8860b>$routeES</span><span style=color:#b44>/.operations.*/_search?size=1&#34;</span> | jq
+ <span style=color:#080;font-style:italic># all indexes</span>
+curl -s -tlsv1.2 --insecure -H <span style=color:#b44>&#34;Authorization: Bearer </span><span style=color:#b8860b>$token</span><span style=color:#b44>&#34;</span> <span style=color:#b44>&#34;https://</span><span style=color:#b8860b>$routeES</span><span style=color:#b44>/_aliases&#34;</span> | jq
+</code></pre></div></div><div class="post__tags tags clearfix"><svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5.0 11V3C0 1.5.8.8.8.8S1.5.0 3 0h8c1.5.0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 100-6 3 3 0 000 6z"/></svg><ul class=tags__list><li class=tags__item><a class="tags__link btn" href=/ocpdoc/tags/ocp/ rel=tag>OCP</a></li><li class=tags__item><a class="tags__link btn" href=/ocpdoc/tags/logging/ rel=tag>Logging</a></li></ul></div></article>[fluent.conf yaml/admin-ca img/fluentd-architecture.jpg yaml/configmap.sh yaml/ClusterLogging-CRD.yaml yaml/MachineSet-logging.yaml yaml/flunentd-configmap.sh yaml/admin-ca.yaml yaml/clo-namespace.yaml yaml/clo-operatorgroup.yaml yaml/clo-subscription.yaml yaml/elasticsearch-route.yaml yaml/eo-namespace.yaml yaml/eo-operatorgroup.yaml yaml/eo-rbac.yaml yaml/eo-subscription.yaml yaml/eventrouter/eventRouter-template.yaml Page(/tech/ocp/logging/01-intro-loggingArch.md) Page(/tech/ocp/logging/01-provision-resources.md) Page(/tech/ocp/logging/02-fluendD-eventRouter.md) Page(/tech/ocp/logging/02-fluentD-OpenshiftScope.md) Page(/tech/ocp/logging/03-elasticSearch.md)]</main><nav class="post-nav flex"><div class="post-nav__item post-nav__item--prev"><a class=post-nav__link href=/ocpdoc/tech/ocp/github-actions/ rel=prev><span class=post-nav__caption>«&#8201;Previous</span><p class=post-nav__post-title>GitHub actions review</p></a></div><div class="post-nav__item post-nav__item--next"><a class=post-nav__link href=/ocpdoc/tech/ocp/azurefile-persistencefilestorage/ rel=next><span class=post-nav__caption>Next&#8201;»</span><p class=post-nav__post-title>OCP v4 AzureFile persistence file storage</p></a></div></nav></div></div><footer class=footer><div class="container footer__container flex"><div class=footer__copyright>&copy; 2020 MADDIV.</div></div></footer></div><script async defer src=/ocpdoc/js/menu.js></script></body></html>

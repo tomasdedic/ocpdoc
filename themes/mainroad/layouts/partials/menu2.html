@@ -1,0 +1,17 @@
+{{- if isset .Site.Taxonomies "categories" }}
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">{{ T "menu_label" }}</span>
+	</button>
+  <ul class="menu__list">
+{{- if not (eq (len .Site.Taxonomies.categories) 0) }}
+		{{- range $name,$items := .Site.Taxonomies.categories }}
+    <li class="menu__item">
+		<a class="menu__link" href="{{ "categories/" | relLangURL }}{{ $name | urlize | lower }}" title="{{ $name | humanize }}">{{ $name | humanize }}</a>
+    {{- end }}
+    </li>
+{{- end }}
+  </ul>
+</nav>
+
+{{- end }}

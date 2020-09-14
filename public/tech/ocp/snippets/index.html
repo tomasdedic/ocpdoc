@@ -1,0 +1,130 @@
+<!doctype html><html class=no-js lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><title>Openshift Snippets - MADDIV</title><script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script><meta name=description content="Short OCP snippets, all in one"><meta name=generator content="Hugo 0.75.0-DEV"><meta property="og:title" content="Openshift Snippets"><meta property="og:description" content="Short OCP snippets, all in one"><meta property="og:type" content="article"><meta property="og:url" content="/ocpdoc/tech/ocp/snippets/"><meta property="article:published_time" content="2020-07-23T00:00:00+00:00"><meta property="article:modified_time" content="2020-09-12T23:28:48+02:00"><link rel=dns-prefetch href=//fonts.googleapis.com><link rel=dns-prefetch href=//fonts.gstatic.com><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700"><link rel=stylesheet href=/ocpdoc/css/style.css><link rel=stylesheet href=/ocpdoc/css/custom.css><link rel="shortcut icon" href=/ocpdoc/favicon.ico></head><body class=body><div class="container container--outer"><header class=header><div class=container><div class=logo><a class=logo__link href=/ocpdoc title=MADDIV rel=home><div class=logo__title>MADDIV</div><div class=logo__tagline>Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div></a></div><nav class=menu><button class=menu__btn aria-haspopup=true aria-expanded=false tabindex=0>
+<span class=menu__btn-title tabindex=-1>Menu</span></button><ul class=menu__list><li class=menu__item><a class=menu__link href=/ocpdoc/categories/azure title=Azure>Azure</a><li class=menu__item><a class=menu__link href=/ocpdoc/categories/containers title=Containers>Containers</a><li class=menu__item><a class=menu__link href=/ocpdoc/categories/git title=Git>Git</a><li class=menu__item><a class=menu__link href=/ocpdoc/categories/openshift title=Openshift>Openshift</a></li></ul></nav></div></header><div class="wrapper flex"><div class=primary><main class=main role=main><article class=post><header class=post__header><h1 class=post__title>Openshift Snippets</h1><p class=post__lead>ukazu ti cestu rajem</p><div class="post__meta meta"><div class="meta__item-datetime meta__item"><svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class=meta__text datetime=2020-07-23T00:00:00>July 23, 2020</time>
+<time class=meta__text datetime=2020-09-12T23:28:48>(Last Modified: September 12, 2020)</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class=meta__text><a class=meta__link href=/ocpdoc/categories/openshift rel=category>Openshift</a></span></div></div></header><div class="content post__content clearfix"><div class=post__item>*file: automaticImagePrunning *</div><p>Prune images that are no longer required by the system due to age, status, or exceed limits as a <strong>cronjob</strong>.</p><h3 id=enable-imagepruner-controller>Enable ImagePruner controller</h3><p>Cron job to delete unused images</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>apiVersion: imageregistry.operator.openshift.io/v1
+kind: ImagePruner
+metadata:
+  name: cluster
+spec:
+  failedJobsHistoryLimit: <span style=color:#666>3</span>
+  keepTagRevisions: <span style=color:#666>3</span>
+  schedule: <span style=color:#b44>&#34;&#34;</span>
+  successfulJobsHistoryLimit: <span style=color:#666>3</span>
+  suspend: <span style=color:#a2f>false</span>
+</code></pre></div><div class=post__item>*file: globalPullSecret *</div><h3 id=global-pull-secret>Global pull secret</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc get secret/pull-secret -n openshift-config -o json|jq -r <span style=color:#b44>&#39;.data[&#34;.dockerconfigjson&#34;]&#39;</span>|base64 -d
+ <span style=color:#080;font-style:italic># change global pull secret</span>
+oc <span style=color:#a2f>set</span> data secret/pull-secret -n openshift-config --from-file<span style=color:#666>=</span>.dockerconfigjson<span style=color:#666>=</span>&lt;pull-secret-location&gt; 
+ <span style=color:#080;font-style:italic># add new pull secret to secrets</span>
+ oc get secret -n openshift-config pull-secret -o json |jq -r <span style=color:#b44>&#39;.data[]&#39;</span>|base64 -d|jq <span style=color:#b44>&#39;.auths += {&#34;artifactory.csas.elostech.cz&#34;:{&#34;auth&#34;:&#34;b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==&#34;,&#34;email&#34;:&#34;dedtom@gmail.com&#34;}}&#39;</span> &gt;
+</code></pre></div><div class=post__item>*file: handyCLI *</div><h3 id=list-machineconfig-version>list machineconfig version</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc get nodes -o json|jq -r <span style=color:#b44>&#39;.items[].metadata.annotations|{name:.[&#34;machine.openshift.io/machine&#34;],current:.[&#34;machineconfiguration.openshift.io/currentConfig&#34;],desired:.[&#34;machineconfiguration.openshift.io/desiredConfig&#34;],state:.[&#34;machineconfiguration.openshift.io/state&#34;]}&#39;</span>
+<span style=color:#080;font-style:italic># s custom-columns</span>
+oc get nodes -o custom-columns<span style=color:#666>=</span><span style=color:#b44>&#39;NAME:metadata.name,CURRENT:metadata.annotations.machineconfiguration\.openshift\.io/currentConfig,DESIRED:metadata.annotations.machineconfiguration\.openshift\.io/desiredConfig,STATE:metadata.annotations.machineconfiguration\.openshift\.io/state&#39;</span>
+</code></pre></div><h3 id=oc-get-logs-for-etcd>oc get logs for ETCD</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#080;font-style:italic># zsh specific, nepouziva \n na worldsplit takze bud setopt setopt SH_WORD_SPLIT</span>
+<span style=color:#080;font-style:italic># nebo {=pods} jinak ta se ta loopa vykona jen jednou</span>
+<span style=color:#b8860b>pods</span><span style=color:#666>=</span><span style=color:#a2f;font-weight:700>$(</span>oc get pods -n openshift-etcd -l etcd -o name<span style=color:#a2f;font-weight:700>)</span>
+<span style=color:#a2f;font-weight:700>for</span> i in <span style=color:#b68;font-weight:700>${</span>=pods<span style=color:#b68;font-weight:700>}</span>;<span style=color:#a2f;font-weight:700>do</span> oc logs -n openshift-etcd <span style=color:#b8860b>$i</span> -c etcd |grep <span style=color:#b44>&#39;embed: rejected connection&#39;</span>;<span style=color:#a2f;font-weight:700>done</span>
+</code></pre></div><h3 id=grep-and-keep-first-line-header>grep and keep first line (header)</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc get co| sed -n <span style=color:#b44>&#39;1p;/openshift-apiserver/p&#39;</span>
+</code></pre></div><h3 id=fast-cluster-operator-grep>fast cluster operator grep</h3><p>oc get co | grep -v &ldquo;True.*False.*False&rdquo;</p><h3 id=use-ss-to-list-all-tcp4-connections>use SS to list all tcp4 connections</h3><p>while true;do sleep 2;ss -nt4pe -o state established >sslog;done
+The ss program is using a sock_diag(7) netlink socket to retrieve information about sockets. But the sock_diag interface doesn&rsquo;t support a &ldquo;monitor&rdquo;/watching/listening mode, as rtnetlink(7) does. You can only do queries via a sock_diag socket.</p><h3 id=use-tcpdump-on-a-node>use tcpdump on a NODE</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>oc debug node/&lt;nodename&gt;
+ <span style=color:#080;font-style:italic># get container pid</span>
+chroot /host crictl ps |grep openshift-apiserver
+chroot /host crictl inspect 5c831210d2594 |grep <span style=color:#b44>&#39;&#34;pid&#34;:&#39;</span>
+ <span style=color:#080;font-style:italic># nsenter run program in different namespaces</span>
+nsenter -n -t <span style=color:#b8860b>$pid</span> -- ip a
+ <span style=color:#080;font-style:italic>#pouziva se pri debugu, jde pustit rucne pokud pouzijeme SSH</span>
+/usr/bin/toolbox
+nsenter -n -t <span style=color:#b8860b>$pid</span> -- tcpdump -D
+nsenter -n -t <span style=color:#b8860b>$pid</span> -- tcpdump -nn -i <span style=color:#b68;font-weight:700>${</span><span style=color:#b8860b>INTERFACE</span><span style=color:#b68;font-weight:700>}</span> -w /host/tmp/<span style=color:#b68;font-weight:700>${</span><span style=color:#b8860b>HOSTNAME</span><span style=color:#b68;font-weight:700>}</span>_<span style=color:#a2f;font-weight:700>$(</span>date +<span style=color:#b62;font-weight:700>\%</span>d_%m_%Y-%H_%M_%S-%Z<span style=color:#a2f;font-weight:700>)</span>.pcap <span style=color:#b68;font-weight:700>${</span><span style=color:#b8860b>TCPDUMP_EXTRA_PARAMS</span><span style=color:#b68;font-weight:700>}</span>
+nsenter -n -t <span style=color:#666>2205119</span> -- tcpdump -nn -i eth0 <span style=color:#b44>&#34;tcp port 8443&#34;</span> -w /host/tmp/tcpdump.pcap
+<span style=color:#080;font-style:italic>#copy output to localhost</span>
+oc get pods  <span style=color:#080;font-style:italic>#oaz-dev-tnhr6-master-2-debug</span>
+oc cp oaz-dev-tnhr6-master-2-debug:/host/tmp/tcpdump.pcap tcpdump.pcap
+</code></pre></div><h3 id=list-all-certs-in-cert-bundle>list all certs in cert bundle</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>openssl crl2pkcs7 -nocrl -certfile ca.crt | openssl pkcs7 -print_certs -noout
+openssl crl2pkcs7 -nocrl -certfile ca.crt | openssl pkcs7 -print_certs -text -noout
+</code></pre></div><h3 id=get-all-secret-decoded-cloud-credentials-scope>get all secret decoded cloud-credentials scope</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#080;font-style:italic># get all secret decoded cloud-credentials scope</span>
+<span style=color:#080;font-style:italic># FISH SHELL</span>
+<span style=color:#080;font-style:italic># oc get secret -n openshift-machine-api azure-cloud-credentials</span>
+ <span style=color:#a2f;font-weight:700>for</span> i in <span style=color:#666>(</span>oc get secret -n openshift-machine-api azure-cloud-credentials -o json|jq -r <span style=color:#b44>&#39;.data |keys []&#39;</span><span style=color:#666>)</span>
+      <span style=color:#a2f>printf</span> <span style=color:#b44>&#39;%s\t&#39;</span> <span style=color:#b8860b>$i</span>:;oc get secret -n openshift-machine-api azure-cloud-credentials -o json|jq -r <span style=color:#b44>&#34;.data.</span><span style=color:#b8860b>$i</span><span style=color:#b44>&#34;</span>|base64 -d;<span style=color:#a2f>printf</span> <span style=color:#b44>&#39;\n&#39;</span>
+  end
+
+<span style=color:#080;font-style:italic># BASH </span>
+<span style=color:#080;font-style:italic># oc get secret -n openshift-machine-api azure-cloud-credentials</span>
+ <span style=color:#a2f;font-weight:700>for</span> i in <span style=color:#a2f;font-weight:700>$(</span>oc get secret -n openshift-machine-api azure-cloud-credentials -o json|jq -r <span style=color:#b44>&#39;.data |keys []&#39;</span><span style=color:#a2f;font-weight:700>)</span>
+ <span style=color:#a2f;font-weight:700>do</span>
+      <span style=color:#a2f>printf</span> <span style=color:#b44>&#39;%s\t&#39;</span> <span style=color:#b8860b>$i</span>:;oc get secret -n openshift-machine-api azure-cloud-credentials -o json|jq -r <span style=color:#b44>&#34;.data.</span><span style=color:#b8860b>$i</span><span style=color:#b44>&#34;</span>|base64 -d;<span style=color:#a2f>printf</span> <span style=color:#b44>&#39;\n&#39;</span>
+ <span style=color:#a2f;font-weight:700>done</span> 
+<span style=color:#080;font-style:italic># oc get secret -n kube-system azure-credentials</span>
+ <span style=color:#a2f;font-weight:700>for</span> i in <span style=color:#a2f;font-weight:700>$(</span>oc get secret -n kube-system azure-credentials -o json|jq -r <span style=color:#b44>&#39;.data |keys []&#39;</span><span style=color:#a2f;font-weight:700>)</span>
+ <span style=color:#a2f;font-weight:700>do</span>
+      <span style=color:#a2f>printf</span> <span style=color:#b44>&#39;%s\t&#39;</span> <span style=color:#b8860b>$i</span>:;oc get secret -n kube-system azure-credentials -o json|jq -r <span style=color:#b44>&#34;.data.</span><span style=color:#b8860b>$i</span><span style=color:#b44>&#34;</span>|base64 -d;<span style=color:#a2f>printf</span> <span style=color:#b44>&#39;\n&#39;</span>
+ <span style=color:#a2f;font-weight:700>done</span> 
+
+ <span style=color:#080;font-style:italic># tyhle dva credentials by se meli rovnat</span>
+ <span style=color:#080;font-style:italic># a meli by se rovnat s </span>
+  ~/.azure/osServicePrincipal.json
+
+oc logs -n openshift-cloud-credential-operator deploy/cloud-credential-operator
+</code></pre></div><h3 id=delete-all-pods-in-namespace-by-selector>delete all pods in namespace by selector</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#080;font-style:italic># delete all pods in namespace by selector</span>
+<span style=color:#a2f>set</span> ns openshift-dns; <span style=color:#a2f;font-weight:700>for</span> i in <span style=color:#666>(</span>oc get pods -n <span style=color:#b44>&#34;</span><span style=color:#b8860b>$ns</span><span style=color:#b44>&#34;</span> -o name <span style=color:#666>)</span>; oc delete -n <span style=color:#b44>&#34;</span><span style=color:#b8860b>$ns</span><span style=color:#b44>&#34;</span> <span style=color:#b8860b>$i</span>; end
+
+<span style=color:#080;font-style:italic># events filtering</span>
+oc get events --all-namespaces -o json|jq -r <span style=color:#b44>&#39;.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}&#39;</span>
+ <span style=color:#080;font-style:italic># with not contain csas string</span>
+oc get events --all-namespaces -o json|jq -r <span style=color:#b44>&#39;.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}&#39;</span>|jq -r <span style=color:#b44>&#39;select (.namespace |contains(&#34;csas&#34;)|not)&#39;</span>
+</code></pre></div><h3 id=etcd-related>ETCD related</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#080;font-style:italic># etcd status</span>
+oc get etcd -o<span style=color:#666>=</span>json|jq <span style=color:#b44>&#39;.items[].status.conditions[]|select(.type==&#34;EtcdMembersAvailable&#34;).message&#39;</span>
+oc get etcd -o<span style=color:#666>=</span>json|jq <span style=color:#b44>&#39;.items[].status.conditions[]|select(.type==&#34;NodeInstallerProgressing&#34;)|.reason,.message&#39;</span>
+<span style=color:#080;font-style:italic># Force a new revision on etcd:</span>
+oc patch etcd cluster -p<span style=color:#666>=</span><span style=color:#b44>&#39;{&#34;spec&#34;: {&#34;forceRedeploymentReason&#34;: &#34;recovery-&#39;</span><span style=color:#b44>&#34;</span><span style=color:#a2f;font-weight:700>$(</span> date --rfc-3339<span style=color:#666>=</span>ns <span style=color:#a2f;font-weight:700>)</span><span style=color:#b44>&#34;</span><span style=color:#b44>&#39;&#34;}}&#39;</span> --type<span style=color:#666>=</span>merge
+Verify the nodes are at the latest revision:
+oc get etcd <span style=color:#b44>&#39;-o=jsonpath={range .items[0].status.conditions[?(@.type==&#34;NodeInstallerProgressing&#34;)]}{.reason}{&#34;\n&#34;}{.message}{&#34;\n&#34;}&#39;</span>
+</code></pre></div><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>etcd-operator-598fdf5b6-mzljn operator W0716 14:03:52.271545 <span style=color:#666>1</span> clientconn.go:1208<span style=color:#666>]</span> grpc: addrConn.createTransport failed to connect to <span style=color:#666>{</span>https://10.3.0.8:2379 &lt;nil&gt; <span style=color:#666>0</span> &lt;nil&gt;<span style=color:#666>}</span>. Err :connection error: <span style=color:#b8860b>desc</span> <span style=color:#666>=</span> <span style=color:#b44>&#34;transport: Error while dialing dial tcp 10.3.0.8:2379: operation was canceled&#34;</span>. Reconnecting...
+
+This IP <span style=color:#666>(</span>10.3.0.8<span style=color:#666>)</span> is an IP address of bootstrap node, which has been removed during installation, but some OCP configuration keeps this setting.
+We have solved this issue by removing annotaion <span style=color:#b44>&#34;alpha.installer.openshift.io/etcd-bootstrap&#34;</span> from <span style=color:#b44>&#34;openshift-etcd:endpoints/host-etcd-X&#34;</span> endpoint. After this change no more error about bootstrap etcd member.
+</code></pre></div><h3 id=nodes>nodes</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#080;font-style:italic># nodes</span>
+kubectl get nodes -o json|jq -r <span style=color:#b44>&#39;.items[].status.addresses[]|select(.type==&#34;InternalIP&#34;).address&#39;</span>
+kubectl patch svc loadbalancer -p <span style=color:#b44>&#39;{&#34;spec&#34;:{&#34;externalTrafficPolicy&#34;:&#34;Local&#34;}}&#39;</span>
+</code></pre></div><h3 id=oc-explain>oc explain</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#080;font-style:italic># explain with API</span>
+oc get crd
+oc get api-version
+oc explain networks --api-version<span style=color:#666>=</span><span style=color:#b44>&#39;operator.openshift.io/v1&#39;</span> --recursive<span style=color:#666>=</span><span style=color:#a2f>true</span>
+</code></pre></div><h3 id=install-debug-tools-on-a-node>install debug tools on a node</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh> <span style=color:#080;font-style:italic># debug deploy by creating debug pod with rhel-tools</span>
+oc debug -t deployment/foobar-dev-bar-helm-guestbook --image registry.access.redhat.com/rhel7/rhel-tools
+ <span style=color:#080;font-style:italic># debug inside coreOS node</span>
+/usr/bin/toolbox
+install new:
+dnf install package
+</code></pre></div><h3 id=security-context-constraints>security context constraints</h3><p>pokud ma NS label openshift.io/run-level: &ldquo;1&rdquo;, tak se SCC vubec neuplatni a pod se klidne spusti pod rootem</p><h3 id=oc-env>oc env</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#080;font-style:italic># env variables for object</span>
+oc <span style=color:#a2f>set</span> env ds/fluentd --list
+<span style=color:#080;font-style:italic># resource volumes</span>
+oc <span style=color:#a2f>set</span> volumes ds/fluentd
+</code></pre></div><h3 id=get-token-from-serviceaccount>get token from serviceaccount</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#080;font-style:italic># get token from serviceaccount</span>
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sadmin
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+ name: sadmin-admin-bind
+roleRef:
+ kind: ClusterRole
+ name: cluster-admin
+ apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: sadmin
+    namespace: default
+
+oc get secret <span style=color:#666>(</span>oc get serviceaccount sadmin -o json|jq -r <span style=color:#b44>&#39;.secrets[0][&#34;name&#34;]&#39;</span><span style=color:#666>)</span> -o json|jq -r <span style=color:#b44>&#39;.data.token&#39;</span> &gt;token
+oc login --token<span style=color:#666>=(</span>cat token|base64 -d<span style=color:#666>)</span>
+</code></pre></div><p>On a pod service account is stored in:<br><strong>/run/secrets/kubernetes.io/serviceaccount/token</strong></p><h3 id=yq-related>yq related</h3><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh> <span style=color:#080;font-style:italic>#master yq</span>
+	@yq w -i cluster-config.yaml cloud_config <span style=color:#b62;font-weight:700>\
+</span><span style=color:#b62;font-weight:700></span>  	<span style=color:#b44>&#34;&#39;</span><span style=color:#a2f;font-weight:700>$(</span>yq merge <span style=color:#b62;font-weight:700>\
+</span><span style=color:#b62;font-weight:700></span>  	&lt;<span style=color:#666>(</span>yq <span style=color:#a2f>read</span> cluster-config.yaml cloud_config |sed <span style=color:#b44>&#34;s/&#39;{/{/; s/}&#39;/}/&#34;</span> | jq <span style=color:#b44>&#34;. | del(.[] | nulls)&#34;</span><span style=color:#a2f;font-weight:700>)</span><span style=color:#b44> \
+</span><span style=color:#b44>  	&lt;(oc get cm cloud-provider-config -n openshift-config -o jsonpath=&#34;</span><span style=color:#666>{</span>.data.config<span style=color:#666>}</span><span style=color:#b44>&#34;)\
+</span><span style=color:#b44>  	-j| jq .)&#39;&#34;</span>
+</code></pre></div></div><div class="post__tags tags clearfix"><svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5.0 11V3C0 1.5.8.8.8.8S1.5.0 3 0h8c1.5.0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 100-6 3 3 0 000 6z"/></svg><ul class=tags__list><li class=tags__item><a class="tags__link btn" href=/ocpdoc/tags/ocp/ rel=tag>OCP</a></li><li class=tags__item><a class="tags__link btn" href=/ocpdoc/tags/snippets/ rel=tag>Snippets</a></li></ul></div></article>[Page(/tech/ocp/SNIPPETS/automaticImagePrunning.md) Page(/tech/ocp/SNIPPETS/globalPullSecret.md) Page(/tech/ocp/SNIPPETS/handyCLI.md)]</main><nav class="post-nav flex"><div class="post-nav__item post-nav__item--prev"><a class=post-nav__link href=/ocpdoc/tech/ocp/operatorlifecyclemanager/ rel=prev><span class=post-nav__caption>«&#8201;Previous</span><p class=post-nav__post-title>Operator Life Cycle Manager</p></a></div><div class="post-nav__item post-nav__item--next"><a class=post-nav__link href=/ocpdoc/tech/ocp/debug/install-do-ext/ rel=next><span class=post-nav__caption>Next&#8201;»</span><p class=post-nav__post-title>Debug private install with UDR</p></a></div></nav></div></div><footer class=footer><div class="container footer__container flex"><div class=footer__copyright>&copy; 2020 MADDIV.</div></div></footer></div><script async defer src=/ocpdoc/js/menu.js></script></body></html>

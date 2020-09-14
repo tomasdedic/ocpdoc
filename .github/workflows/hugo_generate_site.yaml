@@ -1,0 +1,47 @@
+name: generate_hugo_site
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    # steps:
+    #   - uses: actions/checkout@v2
+    #     with:
+    #       ssh-key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+    #       submodules: true
+
+    #   - name: Setup Hugo
+    #     uses: peaceiris/actions-hugo@v2
+    #     with:
+    #       hugo-version: 'latest'
+
+    #   - name: Build
+    #     run: hugo --minify
+
+    #   - name: Deploy
+    #     uses: peaceiris/actions-gh-pages@v3
+    #     with:
+    #       deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+    #       publish_dir: ./public
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          submodules: true
+
+      - name: Build and publish image to Quay
+        uses: docker/build-push-action@v1
+        with:
+          context: .
+          file: ./Dockerfile
+          path: ${{ env.context }}
+          registry: ${{ secrets.REGISTRY_URI }}
+          repository: ${{ secrets.REGISTRY_REPOSITORY }}/${{ env.image_name }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          tags: "${{ steps.image_tags.outputs.IMAGE_TAGS }}"

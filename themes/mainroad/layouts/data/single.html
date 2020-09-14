@@ -1,0 +1,42 @@
+{{ define "main" }}
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">{{ .Title }}</h1>
+			{{- with .Params.lead }}
+			<p class="post__lead">{{ . }}</p>
+			{{- end }}
+			{{ with partial "post_meta.html" . -}}
+			<div class="post__meta meta">{{ . }}</div>
+			{{- end }}
+		</header>
+		{{- if .Params.thumbnail }}
+		<figure class="post__thumbnail">
+			<img src="{{ .Params.thumbnail | relURL }}" alt="{{ .Title }}">
+		</figure>
+		{{- end }}
+		{{- partial "post_toc.html" . -}}
+		<div class="content post__content clearfix">
+     {{- $md := .Resources.Match "*.md" -}}
+     {{- if  $md -}}
+      {{- range $md_part := $md }}
+        {{- $md_part -}}
+	      {{- $md_part.Content -}}
+      {{- end -}}
+     {{- else -}}
+      no *md resources to load
+     {{- end -}}
+		</div>
+		{{ partial "post_tags.html" . }}
+	</article>
+  {{ .Resources.ByType "image" }}
+  {{ .Resources }}
+</main>
+
+<!-- {{ $recent := .Site.RegularPages }} -->
+<!-- 			{{- range  $recent }} -->
+<!--       {{ .File }} <br> -->
+<!-- 			{{- end }} -->
+<!-- {{ .Site.Params.postSections }} -->
+{{ partial "post_nav.html" . }}
+{{ end }}

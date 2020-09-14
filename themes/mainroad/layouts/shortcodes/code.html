@@ -1,0 +1,17 @@
+<!-- Read a file with code and highlight content with <code> -->
+<!-- readFile bere project_root coz je adresar content/ pokud chceme pouzit soubor definovany relevantne k $Page tak je potreba trochu upravit -->
+
+{{ $sourcefile := .Get "file" }}
+{{ $serviceFile := printf "%s%s" .Page.Dir $sourcefile -}}
+{{ if (fileExists $serviceFile) }}
+  <br>
+  {{ (print "*[ " $sourcefile " ]*")| markdownify }}
+  {{ $file := readFile $serviceFile }}
+  {{ $lang := .Get "lang" }}
+  {{ (print "```" $lang "\n" $file "\n```") | markdownify }}
+{{ else }}
+  {{ (print "*Err: File [ " $sourcefile " ] not found*")| markdownify }}
+{{ end }}
+<!-- {{ print (.Page.File.Path) }} -->
+{{- print "" -}}
+<!-- {{ print (.Page.Dir) }} -->
