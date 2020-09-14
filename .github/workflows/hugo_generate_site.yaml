@@ -43,7 +43,7 @@ jobs:
           push: true
           context: .
           file: ./Dockerfile
-          tags: ghcr.io/tomasdedic/ocpdoc/hugogen:sha-${{steps.get-id.sha}}
+          tags: ghcr.io/tomasdedic/ocpdoc/hugogen:sha-${{steps.get-id.outputs.sha}}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
@@ -52,4 +52,3 @@ jobs:
         uses: actions/delete-package-versions@v1
         with:
           package-name: 'hugogen'
-
