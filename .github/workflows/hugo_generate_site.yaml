@@ -26,7 +26,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: docker.pkg.github.com
-          username: didie
+          username: dedtom@gmail.com
           password: ${{ secrets.PERSONAL_TOKEN }}
 
       - name: Build and publish image to Github
@@ -37,4 +37,4 @@ jobs:
           file: ./Dockerfile
           tags: docker.pkg.github.com/tomasdedic/ocpdoc/buruba:latest
           secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.PERSONAL_TOKEN }}
+            GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
