@@ -22,7 +22,7 @@ jobs:
       - name: commit new sha 
         run: |
           cd test
-          date > test/generated.txt
+          date > generated.txt
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
