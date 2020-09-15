@@ -101,11 +101,12 @@ jobs:
           echo "image: ${{steps.prep.outputs.tags}}" >image_tags.yaml
 
       - name: Generate Deployment file
-            uses: awesome-global-contributions/action-yq@v0.1.2
-            with:
-              file: argo_repo/deploy/yq_inline.sh
+        uses: awesome-global-contributions/action-yq@v0.1.2
+          with:
+            file: argo_repo/deploy/yq_inline.sh
 
       - name: git commit to outer repo
+        run: |
           cd argo_repo
           git config user.name github-actions
           git config user.email github-actions@github.com
