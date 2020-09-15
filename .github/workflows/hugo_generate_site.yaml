@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Inform other repo that build is success
-        if: ${{ steps.build_and_publish.conclusion == 'success' }}
         uses: actions/checkout@v2
         with:
           repository: tomasdedic/ocpdocCD.git
