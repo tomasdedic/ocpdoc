@@ -48,6 +48,7 @@ jobs:
           # tags: docker.pkg.github.com/tomasdedic/ocpdoc/hugogen:${{steps.get-id.outputs.sha}}
           # secrets: |
             # GIT_AUTH_TOKEN=${{ secrets.PERSONAL_TOKEN }}
+
       - name: Inform other repo that build is success
         if: ${{ steps.build_and_publish.conclusion == 'success' }}
         uses: actions/checkout@v2
