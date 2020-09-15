@@ -72,7 +72,7 @@ jobs:
           push: true
           context: .
           file: ./Dockerfile
-          tags: ${{steps.Prepare.outputs.tags}}
+          tags: ${{steps.prep.outputs.tags}}
           # tags: docker.pkg.github.com/tomasdedic/ocpdoc/hugogen:${{steps.get-id.outputs.sha}}
           # secrets: |
             # GIT_AUTH_TOKEN=${{ secrets.PERSONAL_TOKEN }}
@@ -99,7 +99,7 @@ jobs:
       - name: commit new sha 
         run: |
           cd test
-          echo "${{steps.Prepare.outputs.tags}}" >image_tags
+          echo "${{steps.prep.outputs.tags}}" >image_tags
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
