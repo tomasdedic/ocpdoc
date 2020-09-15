@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: Inform other repo that build is success
         uses: actions/checkout@v2
+        #checkout
         with:
           repository: tomasdedic/ocpdocCD.git
           token: ${{ secrets.PERSONAL_TOKEN }} # `GitHub_PAT` is a secret that contains your PAT
