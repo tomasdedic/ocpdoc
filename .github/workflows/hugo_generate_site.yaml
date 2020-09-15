@@ -49,6 +49,7 @@ jobs:
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.PERSONAL_TOKEN }}
 
+
       # - name: Delete oldest package
       #   if: ${{ steps.build_and_publish.conclusion == 'success'}}
       #   uses: actions/delete-package-versions@v1
