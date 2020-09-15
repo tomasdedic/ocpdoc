@@ -45,7 +45,7 @@ jobs:
           context: .
           file: ./Dockerfile
           # tags: ghcr.io/tomasdedic/ocpdoc/hugogen:${{steps.get-id.outputs.sha}}
-          tags: docker.pkg.github.io/tomasdedic/ocpdoc/hugogen:${{steps.get-id.outputs.sha}}
+          tags: docker.pkg.github.com/tomasdedic/ocpdoc/hugogen:${{steps.get-id.outputs.sha}}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
 

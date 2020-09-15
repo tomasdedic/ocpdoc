@@ -32,3 +32,5 @@ jobs:
       - name: Show Release
         id: release
         run: printf "::set-output name=id::%s" $(cat /tmp/release.json)
+      - name: echo_id
+        run: echo ${{ steps.release.outputs.id }}
