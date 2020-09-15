@@ -101,7 +101,7 @@ jobs:
           echo "image: ${{steps.prep.outputs.tags}}" >image_tags.yaml
 
       - name: Generate Deployment file
-        uses: awesome-global-contributions/action-yq@v0.1.2
+        uses: tomasdedic/action-yq@1.1
         with:
           file: argo_repo/deploy/yq_inline.sh
 
