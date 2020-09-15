@@ -113,9 +113,4 @@ jobs:
           git add .
           git commit -m "generated"
           git push
-      # - name: Delete oldest package
-      #   if: ${{ steps.build_and_publish.conclusion == 'success'}}
-      #   uses: actions/delete-package-versions@v1
-      #   with:
-      #     package-name: hugogen
 
