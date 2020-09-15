@@ -30,14 +30,14 @@ jobs:
             MAJOR=${MINOR%.*}
             TAGS="$TAGS,${DOCKER_IMAGE}:${MINOR},${DOCKER_IMAGE}:${MAJOR},${DOCKER_IMAGE}:latest"
           elif [ "${{ github.event_name }}" = "push" ]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
+            # TAGS="$TAGS,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
+            TAGS="${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
           fi
           echo ::set-output name=version::${VERSION}
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
           echo $VERSION
           echo $TAGS
-          echo $CREATED
 
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -72,7 +72,7 @@ jobs:
           push: true
           context: .
           file: ./Dockerfile
-          tags: ghcr.io/tomasdedic/ocpdoc/hugogen:${{steps.get-id.outputs.sha}}
+          tags: ${{steps.Prepare.outputs.tags}}
           # tags: docker.pkg.github.com/tomasdedic/ocpdoc/hugogen:${{steps.get-id.outputs.sha}}
           # secrets: |
             # GIT_AUTH_TOKEN=${{ secrets.PERSONAL_TOKEN }}
@@ -87,36 +87,19 @@ jobs:
         if: ${{ steps.build_and_publish.conclusion == 'success' }}
         uses: actions/checkout@v2
         with:
-          repository: tomasdedic/ocpdocCD.git
+          repository: tomasdedic/ocpdocCD
           token: ${{ secrets.PERSONAL_TOKEN }} # `GitHub_PAT` is a secret that contains your PAT
           path: test
 
-      - uses: actions/checkout@v2
-      - run: |
-          cd test
-          date > test/generated.txt
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "generated"
-          git push
       # - name: Delete oldest package
       #   if: ${{ steps.build_and_publish.conclusion == 'success'}}
       #   uses: actions/delete-package-versions@v1
       #   with:
       #     package-name: hugogen
-      - name: Inform other repo that build is success
-        uses: actions/checkout@v2
-        #checkout
-        with:
-          repository: tomasdedic/ocpdocCD
-          token: ${{ secrets.PERSONAL_TOKEN }} # `GitHub_PAT` is a secret that contains your PAT
-          path: test
-
       - name: commit new sha 
         run: |
           cd test
-          date > generated.txt
+          echo "${{steps.Prepare.outputs.tags}}" >image_tags
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
