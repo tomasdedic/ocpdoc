@@ -18,9 +18,7 @@ jobs:
           repository: tomasdedic/ocpdocCD
           token: ${{ secrets.PERSONAL_TOKEN }} # `GitHub_PAT` is a secret that contains your PAT
           path: test
-
-      - uses: actions/checkout@v2
-      - run: |
+        run: |
           cd test
           date > test/generated.txt
           git config user.name github-actions
