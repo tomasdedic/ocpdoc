@@ -102,8 +102,8 @@ jobs:
 
       - name: Generate Deployment file
         uses: awesome-global-contributions/action-yq@v0.1.2
-          with:
-            file: argo_repo/deploy/yq_inline.sh
+        with:
+          file: argo_repo/deploy/yq_inline.sh
 
       - name: git commit to outer repo
         run: |
