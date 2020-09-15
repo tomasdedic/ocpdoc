@@ -18,6 +18,8 @@ jobs:
           repository: tomasdedic/ocpdocCD
           token: ${{ secrets.PERSONAL_TOKEN }} # `GitHub_PAT` is a secret that contains your PAT
           path: test
+
+      - name: commit new sha 
         run: |
           cd test
           date > test/generated.txt
