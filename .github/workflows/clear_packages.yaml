@@ -1,5 +1,3 @@
-GITHUB_REPOSITORY	
-
 name: clear_packages
 on:
   push:
