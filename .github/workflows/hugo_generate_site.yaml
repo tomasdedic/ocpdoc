@@ -48,8 +48,23 @@ jobs:
           # tags: docker.pkg.github.com/tomasdedic/ocpdoc/hugogen:${{steps.get-id.outputs.sha}}
           # secrets: |
             # GIT_AUTH_TOKEN=${{ secrets.PERSONAL_TOKEN }}
+      - name: Inform other repo that build is success
+        if: ${{ steps.build_and_publish.conclusion == 'success' }}
+        uses: actions/checkout@v2
+        with:
+          repository: tomasdedic/ocpdocCD
+          token: ${{ secrets.PERSONAL_TOKEN }} # `GitHub_PAT` is a secret that contains your PAT
+          path: test
 
-
+      - uses: actions/checkout@v2
+      - run: |
+          cd test
+          date > test/generated.txt
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "generated"
+          git push
       # - name: Delete oldest package
       #   if: ${{ steps.build_and_publish.conclusion == 'success'}}
       #   uses: actions/delete-package-versions@v1
