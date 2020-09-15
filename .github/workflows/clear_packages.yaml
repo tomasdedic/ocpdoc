@@ -15,7 +15,7 @@ jobs:
           echo $user
           echo $repository
           echo "::set-output name=user::$user"
-          echo "::set-output name=pass::$repository"
+          echo "::set-output name=repository::$repository"
       - name: Fetch releases
         run: |
           curl -X POST \
