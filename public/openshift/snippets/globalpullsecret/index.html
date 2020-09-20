@@ -5,12 +5,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title> - MADDIV</title>
+	<title> - DIVIDED DOCUMENTATION</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.75.0-DEV" />
 	<meta property="og:title" content="" />
-<meta property="og:description" content="Global pull secret oc get secret/pull-secret -n openshift-config -o json|jq -r &#39;.data[&#34;.dockerconfigjson&#34;]&#39;|base64 -d # change global pull secret oc set data secret/pull-secret -n openshift-config --from-file=." />
+<meta property="og:description" content="Global pull secret Jak nadefinovat global pull secret
+oc get secret/pull-secret -n openshift-config -o json|jq -r &#39;.data[&#34;.dockerconfigjson&#34;]&#39;|base64 -d # change global pull secret oc set data secret/pull-secret -n openshift-config --from-file=." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="//localhost:1112/openshift/snippets/globalpullsecret/" />
 
@@ -28,9 +29,9 @@
 		<header class="header">
 	<div class="container">
 		<div class="logo">
-			<a class="logo__link" href="/" title="MADDIV" rel="home">
-				<div class="logo__title">MADDIV</div>
-				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
 			</a>
 		</div>
 		
@@ -65,6 +66,7 @@
 		
 		<div class="content post__content clearfix">
 <h3 id="global-pull-secret">Global pull secret</h3>
+<p>Jak nadefinovat global pull secret</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get secret/pull-secret -n openshift-config -o json|jq -r <span style="color:#b44">&#39;.data[&#34;.dockerconfigjson&#34;]&#39;</span>|base64 -d
  <span style="color:#080;font-style:italic"># change global pull secret</span>
 oc <span style="color:#a2f">set</span> data secret/pull-secret -n openshift-config --from-file<span style="color:#666">=</span>.dockerconfigjson<span style="color:#666">=</span>&lt;pull-secret-location&gt; 
@@ -76,18 +78,6 @@ oc <span style="color:#a2f">set</span> data secret/pull-secret -n openshift-conf
   
   
 </main>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -176,7 +166,7 @@ oc <span style="color:#a2f">set</span> data secret/pull-secret -n openshift-conf
 		<a class="post-nav__link" href="/openshift/snippets/handycli/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title"></p></a>
 	</div>
 	<div class="post-nav__item post-nav__item--next">
-		<a class="post-nav__link" href="/openshift/snippets/automaticimageprunning/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title"></p></a>
+		<a class="post-nav__link" href="/openshift/project_status/project_status/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title"></p></a>
 	</div>
 </nav>
 
@@ -188,7 +178,7 @@ oc <span style="color:#a2f">set</span> data secret/pull-secret -n openshift-conf
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2020 MADDIV.
+			&copy; 2020 DIVIDED DOCUMENTATION.
 			
 		</div>
 	</div>

@@ -5,12 +5,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title> - MADDIV</title>
+	<title> - DIVIDED DOCUMENTATION</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.75.0-DEV" />
 	<meta property="og:title" content="" />
-<meta property="og:description" content="list machineconfig version oc get nodes -o json|jq -r &#39;.items[].metadata.annotations|{name:.[&#34;machine.openshift.io/machine&#34;],current:.[&#34;machineconfiguration.openshift.io/currentConfig&#34;],desired:.[&#34;machineconfiguration.openshift.io/desiredConfig&#34;],state:.[&#34;machineconfiguration.openshift.io/state&#34;]}&#39; # s custom-columns oc get nodes -o custom-columns=&#39;NAME:metadata.name,CURRENT:metadata.annotations.machineconfiguration\.openshift\.io/currentConfig,DESIRED:metadata.annotations.machineconfiguration\.openshift\.io/desiredConfig,STATE:metadata.annotations.machineconfiguration\.openshift\.io/state&#39; oc get logs for ETCD # zsh specific, nepouziva \n na worldsplit takze bud setopt setopt SH_WORD_SPLIT # nebo {=pods} jinak ta se ta loopa vykona jen jednou pods=$(oc get pods -n openshift-etcd -l etcd -o name) for i in ${=pods};do oc logs -n openshift-etcd $i -c etcd |grep &#39;embed: rejected connection&#39;;done grep and keep first line (header) oc get co| sed -n &#39;1p;/openshift-apiserver/p&#39; fast cluster operator grep oc get co | grep -v &ldquo;True." />
+<meta property="og:description" content="list machineconfig version oc get nodes -o json|jq -r &#39;.items[].metadata.annotations|{name:.[&#34;machine.openshift.io/machine&#34;],current:.[&#34;machineconfiguration.openshift.io/currentConfig&#34;],desired:.[&#34;machineconfiguration.openshift.io/desiredConfig&#34;],state:.[&#34;machineconfiguration.openshift.io/state&#34;]}&#39; # s custom-columns oc get nodes -o custom-columns=&#39;NAME:metadata.name,CURRENT:metadata.annotations.machineconfiguration\.openshift\.io/currentConfig,DESIRED:metadata.annotations.machineconfiguration\.openshift\.io/desiredConfig,STATE:metadata.annotations.machineconfiguration\.openshift\.io/state&#39; grep and keep first line (header) oc get co| sed -n &#39;1p;/openshift-apiserver/p&#39; fast cluster operator grep oc get co | grep -v &ldquo;True." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="//localhost:1112/openshift/snippets/handycli/" />
 
@@ -28,9 +28,9 @@
 		<header class="header">
 	<div class="container">
 		<div class="logo">
-			<a class="logo__link" href="/" title="MADDIV" rel="home">
-				<div class="logo__title">MADDIV</div>
-				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
 			</a>
 		</div>
 		
@@ -68,11 +68,6 @@
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get nodes -o json|jq -r <span style="color:#b44">&#39;.items[].metadata.annotations|{name:.[&#34;machine.openshift.io/machine&#34;],current:.[&#34;machineconfiguration.openshift.io/currentConfig&#34;],desired:.[&#34;machineconfiguration.openshift.io/desiredConfig&#34;],state:.[&#34;machineconfiguration.openshift.io/state&#34;]}&#39;</span>
 <span style="color:#080;font-style:italic"># s custom-columns</span>
 oc get nodes -o custom-columns<span style="color:#666">=</span><span style="color:#b44">&#39;NAME:metadata.name,CURRENT:metadata.annotations.machineconfiguration\.openshift\.io/currentConfig,DESIRED:metadata.annotations.machineconfiguration\.openshift\.io/desiredConfig,STATE:metadata.annotations.machineconfiguration\.openshift\.io/state&#39;</span>
-</code></pre></div><h3 id="oc-get-logs-for-etcd">oc get logs for ETCD</h3>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># zsh specific, nepouziva \n na worldsplit takze bud setopt setopt SH_WORD_SPLIT</span>
-<span style="color:#080;font-style:italic"># nebo {=pods} jinak ta se ta loopa vykona jen jednou</span>
-<span style="color:#b8860b">pods</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>oc get pods -n openshift-etcd -l etcd -o name<span style="color:#a2f;font-weight:bold">)</span>
-<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#b68;font-weight:bold">${</span>=pods<span style="color:#b68;font-weight:bold">}</span>;<span style="color:#a2f;font-weight:bold">do</span> oc logs -n openshift-etcd <span style="color:#b8860b">$i</span> -c etcd |grep <span style="color:#b44">&#39;embed: rejected connection&#39;</span>;<span style="color:#a2f;font-weight:bold">done</span>
 </code></pre></div><h3 id="grep-and-keep-first-line-header">grep and keep first line (header)</h3>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get co| sed -n <span style="color:#b44">&#39;1p;/openshift-apiserver/p&#39;</span>
 </code></pre></div><h3 id="fast-cluster-operator-grep">fast cluster operator grep</h3>
@@ -100,13 +95,6 @@ oc cp oaz-dev-tnhr6-master-2-debug:/host/tmp/tcpdump.pcap tcpdump.pcap
 openssl crl2pkcs7 -nocrl -certfile ca.crt | openssl pkcs7 -print_certs -text -noout
 </code></pre></div><h3 id="get-all-secret-decoded-cloud-credentials-scope">get all secret decoded cloud-credentials scope</h3>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># get all secret decoded cloud-credentials scope</span>
-<span style="color:#080;font-style:italic"># FISH SHELL</span>
-<span style="color:#080;font-style:italic"># oc get secret -n openshift-machine-api azure-cloud-credentials</span>
- <span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get secret -n openshift-machine-api azure-cloud-credentials -o json|jq -r <span style="color:#b44">&#39;.data |keys []&#39;</span><span style="color:#666">)</span>
-      <span style="color:#a2f">printf</span> <span style="color:#b44">&#39;%s\t&#39;</span> <span style="color:#b8860b">$i</span>:;oc get secret -n openshift-machine-api azure-cloud-credentials -o json|jq -r <span style="color:#b44">&#34;.data.</span><span style="color:#b8860b">$i</span><span style="color:#b44">&#34;</span>|base64 -d;<span style="color:#a2f">printf</span> <span style="color:#b44">&#39;\n&#39;</span>
-  end
-
-<span style="color:#080;font-style:italic"># BASH </span>
 <span style="color:#080;font-style:italic"># oc get secret -n openshift-machine-api azure-cloud-credentials</span>
  <span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#a2f;font-weight:bold">$(</span>oc get secret -n openshift-machine-api azure-cloud-credentials -o json|jq -r <span style="color:#b44">&#39;.data |keys []&#39;</span><span style="color:#a2f;font-weight:bold">)</span>
  <span style="color:#a2f;font-weight:bold">do</span>
@@ -132,6 +120,12 @@ oc get events --all-namespaces -o json|jq -r <span style="color:#b44">&#39;.item
  <span style="color:#080;font-style:italic"># with not contain csas string</span>
 oc get events --all-namespaces -o json|jq -r <span style="color:#b44">&#39;.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}&#39;</span>|jq -r <span style="color:#b44">&#39;select (.namespace |contains(&#34;csas&#34;)|not)&#39;</span>
 </code></pre></div><h3 id="etcd-related">ETCD related</h3>
+<h4 id="oc-get-logs-for-etcd">oc get logs for ETCD</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># zsh specific, nepouziva \n na worldsplit takze bud setopt setopt SH_WORD_SPLIT</span>
+<span style="color:#080;font-style:italic"># nebo {=pods} jinak ta se ta loopa vykona jen jednou</span>
+<span style="color:#b8860b">pods</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>oc get pods -n openshift-etcd -l etcd -o name<span style="color:#a2f;font-weight:bold">)</span>
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#b68;font-weight:bold">${</span>=pods<span style="color:#b68;font-weight:bold">}</span>;<span style="color:#a2f;font-weight:bold">do</span> oc logs -n openshift-etcd <span style="color:#b8860b">$i</span> -c etcd |grep <span style="color:#b44">&#39;embed: rejected connection&#39;</span>;<span style="color:#a2f;font-weight:bold">done</span>
+</code></pre></div><h4 id="bootstrap-etcd-node-obcas-neni-vyřazen-po-installu">bootstrap ETCD node obcas neni vyřazen po installu</h4>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># etcd status</span>
 oc get etcd -o<span style="color:#666">=</span>json|jq <span style="color:#b44">&#39;.items[].status.conditions[]|select(.type==&#34;EtcdMembersAvailable&#34;).message&#39;</span>
 oc get etcd -o<span style="color:#666">=</span>json|jq <span style="color:#b44">&#39;.items[].status.conditions[]|select(.type==&#34;NodeInstallerProgressing&#34;)|.reason,.message&#39;</span>
@@ -143,7 +137,7 @@ oc get etcd <span style="color:#b44">&#39;-o=jsonpath={range .items[0].status.co
 
 This IP <span style="color:#666">(</span>10.3.0.8<span style="color:#666">)</span> is an IP address of bootstrap node, which has been removed during installation, but some OCP configuration keeps this setting.
 We have solved this issue by removing annotaion <span style="color:#b44">&#34;alpha.installer.openshift.io/etcd-bootstrap&#34;</span> from <span style="color:#b44">&#34;openshift-etcd:endpoints/host-etcd-X&#34;</span> endpoint. After this change no more error about bootstrap etcd member.
-</code></pre></div><h3 id="nodes">nodes</h3>
+</code></pre></div><h3 id="nodes-related">NODES related</h3>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># nodes</span>
 kubectl get nodes -o json|jq -r <span style="color:#b44">&#39;.items[].status.addresses[]|select(.type==&#34;InternalIP&#34;).address&#39;</span>
 kubectl patch svc loadbalancer -p <span style="color:#b44">&#39;{&#34;spec&#34;:{&#34;externalTrafficPolicy&#34;:&#34;Local&#34;}}&#39;</span>
@@ -166,7 +160,7 @@ dnf install package
 oc <span style="color:#a2f">set</span> env ds/fluentd --list
 <span style="color:#080;font-style:italic"># resource volumes</span>
 oc <span style="color:#a2f">set</span> volumes ds/fluentd
-</code></pre></div><h3 id="get-token-from-serviceaccount">get token from serviceaccount</h3>
+</code></pre></div><h3 id="create-serviceaccount-get-token-and-login">create serviceaccount, get token and login</h3>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># get token from serviceaccount</span>
 ---
 apiVersion: v1
@@ -191,31 +185,12 @@ oc get secret <span style="color:#666">(</span>oc get serviceaccount sadmin -o j
 oc login --token<span style="color:#666">=(</span>cat token|base64 -d<span style="color:#666">)</span>
 </code></pre></div><p>On a pod service account is stored in:<br>
 <strong>/run/secrets/kubernetes.io/serviceaccount/token</strong></p>
-<h3 id="yq-related">yq related</h3>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic">#master yq</span>
-	@yq w -i cluster-config.yaml cloud_config <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>  	<span style="color:#b44">&#34;&#39;</span><span style="color:#a2f;font-weight:bold">$(</span>yq merge <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>  	&lt;<span style="color:#666">(</span>yq <span style="color:#a2f">read</span> cluster-config.yaml cloud_config |sed <span style="color:#b44">&#34;s/&#39;{/{/; s/}&#39;/}/&#34;</span> | jq <span style="color:#b44">&#34;. | del(.[] | nulls)&#34;</span><span style="color:#a2f;font-weight:bold">)</span><span style="color:#b44"> \
-</span><span style="color:#b44">  	&lt;(oc get cm cloud-provider-config -n openshift-config -o jsonpath=&#34;</span><span style="color:#666">{</span>.data.config<span style="color:#666">}</span><span style="color:#b44">&#34;)\
-</span><span style="color:#b44">  	-j| jq .)&#39;&#34;</span>
-</code></pre></div></div>
+</div>
 		
 	</article>
   
   
 </main>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -313,7 +288,7 @@ oc login --token<span style="color:#666">=(</span>cat token|base64 -d<span style
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2020 MADDIV.
+			&copy; 2020 DIVIDED DOCUMENTATION.
 			
 		</div>
 	</div>

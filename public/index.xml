@@ -201,6 +201,92 @@ openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.</description>
     
     <item>
       <title></title>
+      <link>//localhost:1112/openshift/debug/openshiftapiserver-tls/debug-routing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/debug/openshiftapiserver-tls/debug-routing/</guid>
+      <description>oc scale --replicas 1 -n openshift-kube-apiserver-operator deployments/kube-apiserver-operator oc scale --replicas 1 -n openshift-apiserver-operator deployments/openshift-apiserver-operator oc delete -n openshift-kube-apiserver podnetworkconnectivitycheck --all </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>//localhost:1112/openshift/install/instalaceazure/instalace_popis/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/install/instalaceazure/instalace_popis/</guid>
+      <description>POPIS INSTALACE OPENSHIFT 4.x stable build v prostředí Azure Popis instalace OpenShift ve verzi 4.x jako publish Internal tedy s definicí endpointů do private zóny.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>//localhost:1112/openshift/logging/01-provision-resources/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/logging/01-provision-resources/</guid>
+      <description>Provision resources for logging stack on OCP Logging stack will be installed as an operator, for elasticsearch we will use dedicated node with propriate taint to allow only schedule pods with defined toleration (part of logging stack).</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>//localhost:1112/openshift/logging/02-fluendd-eventrouter/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/logging/02-fluendd-eventrouter/</guid>
+      <description>EventRouter Deployment which will periodically query events and store and process them over FluentD and store to ElasticSearch
+Events By kubernetes events we understand log messages internal to kubernetes, accessible through the kubernetes API /api/v1/events?</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>//localhost:1112/openshift/logging/02-fluentd-openshiftscope/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/logging/02-fluentd-openshiftscope/</guid>
+      <description>FluentD Everything that a containerized application writes to stdout or stderr is streamed somewhere by the container engine – in Docker’s case, for example, to a logging driver.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>//localhost:1112/openshift/logging/03-elasticsearch/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/logging/03-elasticsearch/</guid>
+      <description>Elasticsearch Elasticsearch architecture Cluster: Any non-trivial Elasticsearch deployment consists of multiple instances forming a cluster. Distributed consensus is used to keep track of master/replica relationships.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>//localhost:1112/openshift/project_status/project_status/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/project_status/project_status/</guid>
+      <description>TO BE DONE LIST IPI instalace s UDR dokumenty:
+ /instalaceAzure/  řešené problémy:
+ Vyřešeno použitím instalace linux-4.6.0-0.nightly-2020-08-18-070534
+  Instalátor musí obsahovat  .</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>//localhost:1112/openshift/snippets/globalpullsecret/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/snippets/globalpullsecret/</guid>
+      <description>Global pull secret Jak nadefinovat global pull secret
+oc get secret/pull-secret -n openshift-config -o json|jq -r &amp;#39;.data[&amp;#34;.dockerconfigjson&amp;#34;]&amp;#39;|base64 -d # change global pull secret oc set data secret/pull-secret -n openshift-config --from-file=.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>//localhost:1112/openshift/snippets/handycli/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/snippets/handycli/</guid>
+      <description>list machineconfig version oc get nodes -o json|jq -r &amp;#39;.items[].metadata.annotations|{name:.[&amp;#34;machine.openshift.io/machine&amp;#34;],current:.[&amp;#34;machineconfiguration.openshift.io/currentConfig&amp;#34;],desired:.[&amp;#34;machineconfiguration.openshift.io/desiredConfig&amp;#34;],state:.[&amp;#34;machineconfiguration.openshift.io/state&amp;#34;]}&amp;#39; # s custom-columns oc get nodes -o custom-columns=&amp;#39;NAME:metadata.name,CURRENT:metadata.annotations.machineconfiguration\.openshift\.io/currentConfig,DESIRED:metadata.annotations.machineconfiguration\.openshift\.io/desiredConfig,STATE:metadata.annotations.machineconfiguration\.openshift\.io/state&amp;#39; grep and keep first line (header) oc get co| sed -n &amp;#39;1p;/openshift-apiserver/p&amp;#39; fast cluster operator grep oc get co | grep -v &amp;ldquo;True.</description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>//localhost:1112/search/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
