@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Debug private install with UDR  - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="Install OCP disconnected with UserDefinedRouting and Proxy settings">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="Debug private install with UDR " />
+<meta property="og:description" content="Install OCP disconnected with UserDefinedRouting and Proxy settings" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/openshift/debug/install-do-ext/" />
+<meta property="article:published_time" content="2020-07-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-07-24T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Debug private install with UDR </h1>
+			<p class="post__lead">DEBUG</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-07-24T00:00:00">July 24, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">Openshift</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+<h3 id="instalace-do-extenze-datacentra">Instalace do extenze datacentra</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># remote tunnel pro proxy z proxy serveru na bastion node určený k instalaci</span>
+<span style="color:#080;font-style:italic"># ssh spider@10.88.233.244 -R3128:127.0.0.1:3128 -f -C -N</span>
+ssh &lt;name&gt;@&lt;IP_bastion&gt; -R 3128:127.0.0.1:3128 -f -C -N
+<span style="color:#a2f">export</span> <span style="color:#b8860b">http_proxy</span><span style="color:#666">=</span><span style="color:#b44">&#34;http://127.0.0.1:3128&#34;</span>
+<span style="color:#a2f">export</span> <span style="color:#b8860b">https_proxy</span><span style="color:#666">=</span><span style="color:#b44">&#34;http://127.0.0.1:3128&#34;</span>
+<span style="color:#a2f">export</span> <span style="color:#b8860b">http_proxy</span><span style="color:#666">=</span><span style="color:#b44">&#34;http://10.88.233.244:3128&#34;</span>
+<span style="color:#a2f">export</span> <span style="color:#b8860b">https_proxy</span><span style="color:#666">=</span><span style="color:#b44">&#34;http://10.88.233.244:3128&#34;</span>
+<span style="color:#a2f">export</span> <span style="color:#b8860b">no_proxy</span><span style="color:#666">=</span><span style="color:#b44">&#34;`echo 10.88.233.{193..206},``echo 10.88.233.{33..62},`127.0.0.1,api-int.oaz-dev.azure.csint.cz,api.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost,.oaz-dev.azure.csint.cz&#34;</span>
+</code></pre></div><p>from outside scope</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">proxy:
+<span style="color:#080;font-style:italic"># testovaci &#34;unofficial&#34;proxy</span>
+  httpProxy: http://10.88.233.244:3128
+  httpsProxy: http://10.88.233.244:3128
+<span style="color:#080;font-style:italic"># official CSAS proxy</span>
+  httpProxy: http://ngproxy-test.csint.cz:8080
+  httpsProxy: http://ngproxy-test.csint.cz:8080
+<span style="color:#080;font-style:italic"># no proxy is the same</span>
+  noProxy: .cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.csint.cz,168.63.129.16
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc logs -n openshift-machine-api machine-api-controllers-796ccb744c-68qww machine-controller
+</code></pre></div><p>install install-config.yaml s instalaci typu Internal</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">baseDomain</span>:<span style="color:#bbb"> </span>azure.csint.cz<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">compute</span>:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">architecture</span>:<span style="color:#bbb"> </span>amd64<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">hyperthreading</span>:<span style="color:#bbb"> </span>Enabled<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>worker<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">platform</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">azure</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>Standard_D4s_v3<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">replicas</span>:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">controlPlane</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">architecture</span>:<span style="color:#bbb"> </span>amd64<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">hyperthreading</span>:<span style="color:#bbb"> </span>Enabled<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>master<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">platform</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">azure</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>Standard_D4s_v3<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">replicas</span>:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">creationTimestamp</span>:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>oaz-dev<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">proxy</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">httpProxy</span>:<span style="color:#bbb"> </span>http://10.88.233.244:3128<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">httpsProxy</span>:<span style="color:#bbb"> </span>http://10.88.233.244:3128<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">noProxy</span>:<span style="color:#bbb"> </span>.cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.csint.cz<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">networking</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">clusterNetwork</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- <span style="color:#008000;font-weight:bold">cidr</span>:<span style="color:#bbb"> </span><span style="color:#666">10.128.0.0</span>/14<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">hostPrefix</span>:<span style="color:#bbb"> </span><span style="color:#666">23</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">machineNetwork</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- <span style="color:#008000;font-weight:bold">cidr</span>:<span style="color:#bbb"> </span><span style="color:#666">10.88.232.0</span>/23<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">networkType</span>:<span style="color:#bbb"> </span>OpenShiftSDN<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">serviceNetwork</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- <span style="color:#666">172.30.0.0</span>/16<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">platform</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">azure</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">region</span>:<span style="color:#bbb"> </span>westeurope<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">networkResourceGroupName</span>:<span style="color:#bbb"> </span>oaz-test-net-rg<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">virtualNetwork</span>:<span style="color:#bbb"> </span>oaz-test-vnet<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">controlPlaneSubnet</span>:<span style="color:#bbb"> </span>Master2<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">computeSubnet</span>:<span style="color:#bbb"> </span>App2<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">outboundType</span>:<span style="color:#bbb"> </span>UserDefinedRouting<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">baseDomainResourceGroupName</span>:<span style="color:#bbb"> </span>openshift_az-dev-shared-rg<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">publish</span>:<span style="color:#bbb"> </span>Internal<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">imageContentSources</span>:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- artifactory.csin.cz/docker-quay/openshift-release-dev/ocp-release<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-release<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- artifactory.csin.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
+</span></code></pre></div><p>Nedaří se install, jelikož nevzniknou <em>worker nody</em>.<br>
+debug:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get co
+oc logs -n openshift-cloud-credential-operator deploy/cloud-credential-operator
+<span style="color:#080;font-style:italic"># porovnani azure-cloud-credentials pro SP</span>
+<span style="color:#080;font-style:italic"># BASH </span>
+<span style="color:#080;font-style:italic"># oc get secret -n openshift-machine-api azure-cloud-credentials</span>
+ <span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#a2f;font-weight:bold">$(</span>oc get secret -n openshift-machine-api azure-cloud-credentials -o json|jq -r <span style="color:#b44">&#39;.data |keys []&#39;</span><span style="color:#a2f;font-weight:bold">)</span>
+ <span style="color:#a2f;font-weight:bold">do</span>
+      <span style="color:#a2f">printf</span> <span style="color:#b44">&#39;%s\t&#39;</span> <span style="color:#b8860b">$i</span>:;oc get secret -n openshift-machine-api azure-cloud-credentials -o json|jq -r <span style="color:#b44">&#34;.data.</span><span style="color:#b8860b">$i</span><span style="color:#b44">&#34;</span>|base64 -d;<span style="color:#a2f">printf</span> <span style="color:#b44">&#39;\n&#39;</span>
+ <span style="color:#a2f;font-weight:bold">done</span> 
+<span style="color:#080;font-style:italic"># oc get secret -n kube-system azure-credentials</span>
+ <span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#a2f;font-weight:bold">$(</span>oc get secret -n kube-system azure-credentials -o json|jq -r <span style="color:#b44">&#39;.data |keys []&#39;</span><span style="color:#a2f;font-weight:bold">)</span>
+ <span style="color:#a2f;font-weight:bold">do</span>
+      <span style="color:#a2f">printf</span> <span style="color:#b44">&#39;%s\t&#39;</span> <span style="color:#b8860b">$i</span>:;oc get secret -n kube-system azure-credentials -o json|jq -r <span style="color:#b44">&#34;.data.</span><span style="color:#b8860b">$i</span><span style="color:#b44">&#34;</span>|base64 -d;<span style="color:#a2f">printf</span> <span style="color:#b44">&#39;\n&#39;</span>
+ <span style="color:#a2f;font-weight:bold">done</span> 
+
+ <span style="color:#080;font-style:italic"># tyhle dva credentials by se meli rovnat</span>
+ <span style="color:#080;font-style:italic"># a meli by se rovnat s </span>
+  ~/.azure/osServicePrincipal.json
+</code></pre></div><p>V logu se nedaří nic objevit, experimentálně ověřeno že chybí grant pro SP</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">az ad app permission add --id <span style="color:#b44">&#34;app id of service principal&#34;</span> <span style="color:#b62;font-weight:bold">\ </span>-- api 00000002-0000-0000-c000-000000000000 <span style="color:#b62;font-weight:bold">\ </span>-- api-permissions 824c81eb0e3f8-4ee6-8f6d-de7f50d565b7-Role
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># nefunguje machine-api takze worker nody nejsou vytvoreny</span>
+<span style="color:#080;font-style:italic"># cannot access login.msonline.com</span>
+ oc logs -f -n openshift-machine-api machine-api-controllers-68d788f55c-h4mjc machine-controller
+</code></pre></div><p>Problém byl způsoben nemožností dostat se na Azure API, proxy se nepropisuje do všech nódů přístup k azure API byl zaříznut na VSEC GW.</p>
+<p><strong>Globálni nastaveni proxy neni propagováno do podu v namespacech openshift-[*]</strong></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># list all proxy settings inside pods</span>
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#a2f;font-weight:bold">$(</span>crictl ps|awk <span style="color:#b44">&#39;{print $1}&#39;</span><span style="color:#a2f;font-weight:bold">)</span>;<span style="color:#a2f;font-weight:bold">do</span> crictl ps| grep <span style="color:#b8860b">$i</span>|awk <span style="color:#b44">&#39;{print $8}&#39;</span>; crictl <span style="color:#a2f">exec</span> -- <span style="color:#b8860b">$i</span> env|grep -i http_proxy; <span style="color:#a2f;font-weight:bold">done</span>
+</code></pre></div><ul>
+<li>bootstrap:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># env</span>
+<span style="color:#b8860b">HTTP_PROXY</span><span style="color:#666">=</span>http://10.88.233.244:3128
+<span style="color:#b8860b">NO_PROXY</span><span style="color:#666">=</span>.cluster.local,.oaz-dev.azure.csint.cz,.svc,10.128.0.0/14,10.88.232.0/23,10.88.233.192/28,10.88.233.32/27,127.0.0.1,168.63.129.16,169.254.169.254,172.30.0.0/16,api-int.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost
+<span style="color:#b8860b">HTTPS_PROXY</span><span style="color:#666">=</span>http://10.88.233.244:3128
+ <span style="color:#080;font-style:italic"># journal logs</span>
+journalctl -b  -u release-image.service -u bootkube.service|grep -E <span style="color:#b44">&#34;E[[:digit:]]{4}&#34;</span>
+journalctl -b -f -u release-image.service -u bootkube.service
+ <span style="color:#080;font-style:italic"># grep all https://</span>
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#a2f;font-weight:bold">$(</span>find . -name <span style="color:#b62;font-weight:bold">\*</span>.log<span style="color:#a2f;font-weight:bold">)</span>; <span style="color:#a2f;font-weight:bold">do</span> cat <span style="color:#b8860b">$i</span>|grep http; <span style="color:#a2f;font-weight:bold">done</span>|grep -Eo <span style="color:#b44">&#34;https:\/\/[[:graph:]]*&#34;</span>
+</code></pre></div></div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/install/" rel="tag">Install</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/openshift/snippets/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Openshift Snippets</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/openshift/debug/debug-monitoring-degraded/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Monitoring operator degraded </p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

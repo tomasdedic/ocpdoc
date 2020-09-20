@@ -1,0 +1,50 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: Machine
+metadata:
+  name: oshi4-elastic-worker-westeurope3
+  generation: 3
+  namespace: openshift-machine-api
+  labels:
+    machine.openshift.io/cluster-api-cluster: oshi4-ckvrl
+    machine.openshift.io/cluster-api-machine-role: worker
+    machine.openshift.io/cluster-api-machine-type: worker
+    machine.openshift.io/cluster-api-machineset: oshi4-elastic-worker-westeurope3
+    machine.openshift.io/instance-type: Standard_D2s_v3
+    machine.openshift.io/region: westeurope
+    machine.openshift.io/zone: '3'
+spec:
+  metadata:
+    creationTimestamp: null
+  providerID: >-
+    azure:///subscriptions/7504de90-f639-4328-a5b6-fde85e0a7fd9/resourceGroups/oshi4-ckvrl-rg/providers/Microsoft.Compute/virtualMachines/oshi4-elastic-worker-westeurope3
+  providerSpec:
+    value:
+      osDisk:
+        diskSizeGB: 128
+        managedDisk:
+          storageAccountType: Premium_LRS
+        osType: Linux
+      userDataSecret:
+        name: worker-user-data
+      vnet: oshi4-ckvrl-vnet
+      credentialsSecret:
+        name: azure-cloud-credentials
+        namespace: openshift-machine-api
+      zone: '3'
+      metadata:
+        creationTimestamp: null
+      publicIP: false
+      resourceGroup: oshi4-ckvrl-rg
+      kind: AzureMachineProviderSpec
+      location: westeurope
+      vmSize: Standard_D2s_v3
+      image:
+        offer: ''
+        publisher: ''
+        resourceID: >-
+          /resourceGroups/oshi4-ckvrl-rg/providers/Microsoft.Compute/images/oshi4-ckvrl
+        sku: ''
+        version: ''
+      managedIdentity: oshi4-ckvrl-identity
+      subnet: oshi4-ckvrl-worker-subnet
+      apiVersion: azureproviderconfig.openshift.io/v1beta1

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PRO on MADDIV</title>
+    <link>//localhost:1112/tags/pro/</link>
+    <description>Recent content in PRO on MADDIV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 26 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/pro/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker customize image</title>
+      <link>//localhost:1112/tech/dockerize/</link>
+      <pubDate>Thu, 26 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tech/dockerize/</guid>
+      <description>Docker custom image stahneme si image na kterem budeme stavet:
+docker pull bitnami/minideb:latest #v tompto pripade minidebian docker run --name cmindev -ti bitnami/minideb:latest customizujeme a commit:</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,1 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Artifactory on MADDIV</title><link>/ocpdoc/tags/artifactory/</link><description>Recent content in Artifactory on MADDIV</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 02 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="/ocpdoc/tags/artifactory/index.xml" rel="self" type="application/rss+xml"/><item><title>Case usage of Artifactory as container proxy for Quay and public images</title><link>/ocpdoc/tech/ocp/artifactory_as_quay_repository/</link><pubDate>Mon, 02 Mar 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tech/ocp/artifactory_as_quay_repository/</guid><description>Purpose DISCLAMER For purposes of installing and use OCP in private zone with limited internet access, there is a need to use Artifactory as a source for public container images (QUAI, public containers).</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Artifactory on DIVIDED DOCUMENTATION</title>
+    <link>//localhost:1112/tags/artifactory/</link>
+    <description>Recent content in Artifactory on DIVIDED DOCUMENTATION</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/artifactory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Case usage of Artifactory as container proxy for public images</title>
+      <link>//localhost:1112/openshift/artifactory_as_proxy_for_containerregistries/</link>
+      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/artifactory_as_proxy_for_containerregistries/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

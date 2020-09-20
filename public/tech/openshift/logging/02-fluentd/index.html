@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title> - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.69.0-DEV" />
+	<meta property="og:title" content="" />
+<meta property="og:description" content="FluentD Deployed as DaemonSet (one pod run on each node)
+Architecture Kubernetes, containerized applications that log to stdout and stderr have their log streams captured and redirected to JSON files on the nodes." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/logging/02-fluentd/" />
+
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title"></h1>
+			
+		</header>
+		
+<div class="content post__content clearfix">
+      <h2 id="fluentd">FluentD</h2>
+<p>Deployed as DaemonSet (one pod run on each node)</p>
+<h3 id="architecture">Architecture</h3>
+<p>Kubernetes, containerized applications that log to stdout and stderr have their log streams captured and redirected to JSON files on the nodes. The Fluentd Pod will tail these log files, filter log events, transform the log data, and ship it off to the Elasticsearch logging backend
+<img src="img/fluentd-architecture.jpg" alt="fluentd architecture"></p>
+<h3 id="events">Events</h3>
+<p>By kubernetes events we understand log messages internal to kubernetes, accessible through the kubernetes API <em>/api/v1/events?watch=true</em>, originally stored in etcd. The <strong>etcd storage has time and performance constraints</strong>, therefore, we would like to collect and store them permanently in EFK.</p>
+<ul>
+<li><strong>eventrouter</strong> is deployed to logging project, has a service account and its own role to read events</li>
+<li><strong>eventrouter</strong> watches kubernetes events, marshalls them to JSON and outputs to its STDOUT</li>
+<li><strong>fluentd</strong> picks them up and inserts to elastic search logging project index</li>
+</ul>
+<h4 id="configuring-the-event-router">Configuring the Event Router</h4>
+<p>Events in OpenShift Container Platform are modeled based on events that happen to API objects in an OpenShift Container Platform cluster.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc project openshift-logging
+oc get ds
+Set <span style="color:#b8860b">TRANSFORM_EVENTS</span><span style="color:#666">=</span><span style="color:#a2f">true</span> in order to process and store event router events in Elasticsearch.
+Set cluster logging to the unmanaged state in web console
+oc <span style="color:#a2f">set</span> env ds/fluentd <span style="color:#b8860b">TRANSFORM_EVENTS</span><span style="color:#666">=</span><span style="color:#a2f">true</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get clusterlogging instance -o yaml
+oc edit ClusterLogging instance
+</code></pre></div><p>get logs:
+The fluentd component runs as a daemonset on each node in Kubernetes cluster. As nodes are added/removed, kubernetes orchestration ensures that there is one fluentd pod running on each node. Fluentd is configured to run as a privileged container. It is able to collect logs from all pods on the node, convert them to a structured format and pass them to elasticsearch.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc <span style="color:#a2f">exec</span> fluentd-ht42r -n openshift-logging -- logs
+</code></pre></div><p>You can send Elasticsearch logs to external devices, such as an externally-hosted Elasticsearch instance or an external syslog server. You can also configure Fluentd to send logs to an external log aggregator.</p>
+<p>Configuring Fluentd to send logs to an external log aggregator
+You can configure Fluentd to send a copy of its logs to an external log aggregator, and not the default Elasticsearch, using the secure-forward plug-in. From there, you can further process log records after the locally hosted Fluentd has processed them.</p>
+<p>&ndash;&gt;to v podstate znamena pouzitu secure-forward &mdash;&gt; jina instance fluentD s Kafka pluginem a dal do Kafky</p>
+<blockquote>
+<p>fluentd nema forward plugin pro Kafku a Redhat ani neplanuje</p>
+</blockquote>
+<blockquote>
+<p>[object Object]: [security_exception] no permissions for [indices:data/read/field_caps] and User [name=CN=system.logging.kibana,OU=OpenShift,O=Logging, roles=[]]</p>
+</blockquote>
+<h3 id="buffer-chunk-limit">Buffer chunk limit</h3>
+<p>If the Fluentd logger is unable to keep up with a high number of logs, it will need to switch to file buffering to reduce memory usage and prevent data loss.</p>
+<p>Fluentd file buffering stores records in chunks. Chunks are stored in buffers.</p>
+<p>The Fluentd buffer_chunk_limit is determined by the environment variable BUFFER_SIZE_LIMIT, which has the default value 8m. The file buffer size per output is determined by the environment variable FILE_BUFFER_LIMIT, which has the default value 256Mi. The permanent volume size must be larger than FILE_BUFFER_LIMIT multiplied by the output.</p>
+<p>On the Fluentd pods, permanent volume /var/lib/fluentd should be prepared by the PVC or hostmount, for example. That area is then used for the file buffers.</p>
+<p>The buffer_type and buffer_path are configured in the Fluentd configuration files as follows:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ egrep <span style="color:#b44">&#34;buffer_type|buffer_path&#34;</span> *.conf
+output-es-config.conf:
+  buffer_type file
+  buffer_path <span style="color:#b44">`</span>/var/lib/fluentd/buffer-output-es-config<span style="color:#b44">`</span>
+output-es-ops-config.conf:
+  buffer_type file
+  buffer_path <span style="color:#b44">`</span>/var/lib/fluentd/buffer-output-es-ops-config<span style="color:#b44">`</span>
+</code></pre></div><p>The Fluentd buffer_queue_limit is the value of the variable BUFFER_QUEUE_LIMIT. This value is 32 by default.</p>
+<p>The environment variable BUFFER_QUEUE_LIMIT is calculated as (FILE_BUFFER_LIMIT / (number_of_outputs * BUFFER_SIZE_LIMIT)).</p>
+<p>If the BUFFER_QUEUE_LIMIT variable has the default set of values:</p>
+<p>FILE_BUFFER_LIMIT = 256Mi</p>
+<p>number_of_outputs = 1</p>
+<p>BUFFER_SIZE_LIMIT = 8Mi</p>
+<p>The value of buffer_queue_limit will be 32. To change the buffer_queue_limit, you must change the value of FILE_BUFFER_LIMIT.</p>
+<p>In this formula, number_of_outputs is 1 if all the logs are sent to a single resource, and it is incremented by 1 for each additional resource. For example, the value of number_of_outputs is:</p>
+<p>1 - if all logs are sent to a single Elasticsearch pod</p>
+<p>2 - if application logs are sent to an Elasticsearch pod and ops logs are sent to another Elasticsearch pod</p>
+<p>4 - if application logs are sent to an Elasticsearch pod, ops logs are sent to another Elasticsearch pod, and both of them are forwarded to other Fluentd instances</p>
+</div>
+		
+	</article>
+  
+  []
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/uploading_container_image_to_ocp_registry/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Uploading local container images to OCP registry</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

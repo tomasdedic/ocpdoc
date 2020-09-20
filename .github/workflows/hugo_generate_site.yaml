@@ -83,7 +83,7 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.licenses=${{ github.event.repository.license.name }}
 
-      - name: Inform other repo that build is success
+      - name: Inform ARGO repo that build is success
         if: ${{ steps.build_and_publish.conclusion == 'success' }}
         uses: actions/checkout@v2
         with:
@@ -96,16 +96,16 @@ jobs:
       #   uses: actions/delete-package-versions@v1
       #   with:
       #     package-name: hugogen
-      - name: save image tag
+      - name: save image tag to YAML
         run: |
           echo "image: ${{steps.prep.outputs.tags}}" >image_tags.yaml
 
-      - name: Generate Deployment file
+      - name: Merge Deployment file in ARGO repo with image_tags.yaml
         uses: tomasdedic/yq-action@1.2
         with:
           file: argo_repo/deploy/yq_inline.sh
 
-      - name: git commit to outer repo
+      - name: commit changes to ARGO repo
         run: |
           cd argo_repo
           git config user.name github-actions

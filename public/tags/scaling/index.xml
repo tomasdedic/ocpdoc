@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Scaling on MADDIV</title>
+    <link>/tags/scaling/</link>
+    <description>Recent content in Scaling on MADDIV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/scaling/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kubernetes LOAD service on Docker container</title>
+      <link>/post/kubernetes-scaling-create-load/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/kubernetes-scaling-create-load/</guid>
+      <description>Service to generate load on all selector pods in GKE. Main reason is to generate homogenous load for HPA (horizntal pod autoscaling) metrics with showcase as Prometheus/Grafana operator.</description>
+    </item>
+    
+  </channel>
+</rss>

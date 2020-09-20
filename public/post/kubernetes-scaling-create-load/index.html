@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Kubernetes LOAD service on Docker container - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="create LOAD service on docker image to serve on GET request">
+	<meta name="generator" content="Hugo 0.53-DEV" />
+	<meta property="og:title" content="Kubernetes LOAD service on Docker container" />
+<meta property="og:description" content="create LOAD service on docker image to serve on GET request" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/kubernetes-scaling-create-load/" /><meta property="article:published_time" content="2019-03-11T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-11T00:00:00&#43;00:00"/>
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and my progress</div>
+			</a>
+		</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/post/gke-customload-zacatky/">GKE custom load and scalling</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/biometry/">deploy BIOMETRY on GKE</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Kubernetes LOAD service on Docker container</h1>
+			<p class="post__lead">create LOAD service on docker image to serve on GET request</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2019-03-11T00:00:00">March 11, 2019</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/kubernetes" rel="category">Kubernetes</a>, <a class="meta__link" href="/categories/docker" rel="category">Docker</a>, <a class="meta__link" href="/categories/scaling" rel="category">Scaling</a></span>
+</div>
+</div>
+		</header>
+		<figure class="post__thumbnail">
+			<img src="/img/45bc0788acb68519f8647b61fb08f35fb297332e_m.jpg" alt="Kubernetes LOAD service on Docker container">
+		</figure><div class="content post__content clearfix">
+			
+
+<p>Service to generate load on all selector pods in GKE. Main reason is to generate homogenous load for HPA (horizntal pod autoscaling) metrics with showcase as Prometheus/Grafana operator.</p>
+<block>
+<h1 id="kubernetes-load-service-on-docker-container">Kubernetes LOAD service on Docker container</h1>
+</block>
+<p><a href="https://github.com/msoap/shell2http">https://github.com/msoap/shell2http</a></p>
+
+<p>na docker image tomcat běží 3 služby generující load</p>
+
+<pre><code class="language-bash">shell2http -port 18080 /load &quot;$TRASK_HOME/loadgenerator/runnc.sh&quot; \
+/ip &quot;$TRASK_HOME/loadgenerator/runinfo.sh&quot; \
+/load1 &quot;$TRASK_HOME/loadgenerator/runnc.sh 1&quot; \
+/load2 &quot;$TRASK_HOME/loadgenerator/runnc.sh 2&quot; &amp;
+</code></pre>
+
+<ul>
+<li>/load<br />
+pustí 10 instancí (yes &gt; /dev/null) s timeout 300-370 s</li>
+<li>/load1<br />
+pustí 1 instancí (yes &gt; /dev/null) s timeout 300-370 s</li>
+<li>/load2<br />
+pustí 2 instancí (yes &gt; /dev/null) s timeout 300-370 s</li>
+</ul>
+
+<p>deployment bude nascalován jako:</p>
+
+<pre><code class="language-bash">kubectl autoscale deployment tomcat-deployment --min=1 --max=4 --cpu-percent=20
+</code></pre>
+
+<p>pro vyvolání zátěže na jednotlivých kontejnerech provedeme něco takového:</p>
+
+<pre><code class="language-bash">for pod in $(kubectl get pod --selector=&quot;app=tomcat&quot; --output jsonpath=&quot;{range .items[*]}{.metadata.name}{'\n'}{end}&quot;) 
+do
+	printf &quot;%s\n&quot; &quot;POD: $pod&quot;
+	printf &quot;%s\n&quot; &quot;Forwarding from 127.0.0.1:18080 -&gt; 18080&quot;
+	kubectl port-forward $pod 18080 &gt;/dev/null &amp;
+	FORWARD_PID=$!
+	#echo $FORWARD_PID
+	sleep 7
+	echo &quot;======POD INFO======&quot;
+	curl http://127.0.0.1:18080/load
+	#curl http://127.0.0.1:18080/load1
+	echo &quot;====================&quot;
+	sleep 2
+	kill -INT $FORWARD_PID 
+  #kill -9 $FORWARD_PID 1&gt;&amp;2&gt;/dev/null
+done
+</code></pre>
+
+<p>pro smazání autoscalingu:</p>
+
+<pre><code class="language-bash">kubectl delete hpa tomcat-deployment
+horizontalpodautoscaler.autoscaling &quot;tomcat-deployment&quot; deleted
+</code></pre>
+
+<p>vizualizace:</p>
+
+<pre><code class="language-bash">kubectl port-forward service/prometheus-operator-grafana 4444:80 --namespace=monitoring
+kubectl port-forward service/prometheus-operator-prometheus 5555:9090 --namespace=monitoring
+</code></pre>
+
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/kubernetes/" rel="tag">Kubernetes</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/gke/" rel="tag">GKE</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/docker/" rel="tag">Docker</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/scaling/" rel="tag">Scaling</a></li>
+	</ul>
+</div>
+	</article>
+</main>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/post/kubernetes-api-curl/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Kubernetes API CURL</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			<aside class="sidebar">
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-scaling-create-load/">Kubernetes LOAD service on Docker container</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-api-curl/">Kubernetes API CURL</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/biometry/">deploy BIOMETRY on GKE</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/docker-custom/">Docker custom image</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/gke-customload-zacatky/">GKE custom load and scalling</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/docker">Docker</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/google-cloud-engine">Google cloud engine</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/kubernetes">Kubernetes</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/prometheus">Prometheus</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/scaling">Scaling</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/api" title="Api">Api</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/docker" title="Docker">Docker</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/gce" title="Gce">Gce</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/gke" title="Gke">Gke</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/kubernetes" title="Kubernetes">Kubernetes</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/scaling" title="Scaling">Scaling</a>
+	</div>
+</div>
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

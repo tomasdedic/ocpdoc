@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>DNS deepDive OPC/Azure/OnPremise - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="How can I use a custom DNS in our cluster without modify the actual cluster DNS on top of Azure? How can I forward custom DNS and use specific DNS in an On-Premise Datacenter?">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="DNS deepDive OPC/Azure/OnPremise" />
+<meta property="og:description" content="How can I use a custom DNS in our cluster without modify the actual cluster DNS on top of Azure? How can I forward custom DNS and use specific DNS in an On-Premise Datacenter?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/openshift/dns/" />
+<meta property="article:published_time" content="2020-05-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-14T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post" autonumbering>
+		<header class="post__header">
+			<h1 class="post__title">DNS deepDive OPC/Azure/OnPremise</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-05-14T00:00:00">May 14, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/azure" rel="category">Azure</a>, <a class="meta__link" href="/categories/openshift" rel="category">Openshift</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+        <div class="post__toc toc">
+	      <div class="toc__title">Content</div>
+	      <div class="toc__menu">
+          
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#dns-operator-in-openshift">DNS operator in Openshift</a></li>
+    <li><a href="#coredns-in-openshift">CoreDNS in OpenShift</a></li>
+    <li><a href="#resolving-from-pod">RESOLVING from POD</a></li>
+    <li><a href="#configure-dns-forwarding-in-dns-clusteroperator">Configure DNS forwarding in DNS clusterOperator</a>
+      <ul>
+        <li><a href="#configuration-for-apppods-using-coredns-service-dnspolicy-clusterfirst">Configuration for appPods using CoreDNS service (dnsPolicy: ClusterFirst)</a></li>
+        <li><a href="#change-default-resolver-for-nodes">Change default resolver for nodes</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+	      </div>
+        </div>
+      
+      <div class="post__item">
+        *file: DNS-deepDive *
+      </div><p><img src="img/dns-azure-OCP.png" alt="DNS in azure"></p>
+<h2 id="dns-operator-in-openshift">DNS operator in Openshift</h2>
+<p>In Openshift 4, the DNS Operator deploys and manages CoreDNS to provide a name resolution service to pods, enabling DNS-based Kubernetes Service discovery in OpenShift.
+The DNS Operator implements the dns API from the operator.openshift.io API group. The operator deploys CoreDNS using a DaemonSet, creates a Service for the DaemonSet, and configures the kubelet to instruct pods to use the CoreDNS Service IP for name resolution.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># get dns clusteroperator</span>
+oc describe clusteroperators/dns
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># get operator configuration</span>
+oc get dnses.operator.openshift.io/default -o yaml
+
+  apiVersion: operator.openshift.io/v1
+  kind: DNS
+  spec: <span style="color:#666">{}</span>
+  status:
+    clusterDomain: cluster.local
+    clusterIP: 172.30.0.10
+</code></pre></div><p>spec is empty here, we will put some records later</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># get dns configuration</span>
+ <span style="color:#080;font-style:italic"># keep in mind we are using public instalation(publicZone)</span>
+oc get dns.config.openshift.io/cluster -o yaml
+
+  apiVersion: config.openshift.io/v1
+  kind: DNS
+  spec:
+    baseDomain: toshi44.csas.elostech.cz
+    privateZone:
+      id: /subscriptions/7504de90-f639-4328-a5b6-fde85e0a7fd9/resourceGroups/toshi44-dkxzr-rg/providers/Microsoft.Network/privateDnsZones/toshi44.csas.elostech.cz
+    <span style="color:#080;font-style:italic"># for Internal installation this part is empty</span>
+    publicZone:
+      id: /subscriptions/7504de90-f639-4328-a5b6-fde85e0a7fd9/resourceGroups/ocp42-shared/providers/Microsoft.Network/dnszones/csas.elostech.cz
+  status: <span style="color:#666">{}</span>
+</code></pre></div><h2 id="coredns-in-openshift">CoreDNS in OpenShift</h2>
+<ul>
+<li>Every Pod is assigned a DNS name: pod-ip.namespace-name.pod.cluster.local (A/AAAA record)</li>
+<li>Every Service is assigned a DNS name: svc-name.namespace-name.svc.cluster.local (SRV record)</li>
+<li>CoreDNS as DaemonSet</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># rsh to one of CoreDNS pod</span>
+oc rsh -n openshift-dns dns-default-24fm8  bash
+
+cat /etc/coredns/Corefile 
+  .:5353 <span style="color:#666">{</span>
+      errors
+      health
+      kubernetes cluster.local in-addr.arpa ip6.arpa <span style="color:#666">{</span>
+          pods insecure
+          upstream
+          fallthrough in-addr.arpa ip6.arpa
+      <span style="color:#666">}</span>
+      prometheus :9153
+      forward . /etc/resolv.conf <span style="color:#666">{</span>
+          policy sequential
+      <span style="color:#666">}</span>
+      cache <span style="color:#666">30</span>
+      reload
+  <span style="color:#666">}</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">kubernetes cluster.local in-addr.arpa ip6.arpa <span style="color:#666">{</span>
+</code></pre></div><p>this enables a plugin that configure CoreDNS will reply to DNS queries based od IP of the services and pods of Kubernetes. (cluster.local handle all queries in this zone and also reverse dns lookups - in-addr.arpa)</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">forward . /etc/resolv.conf <span style="color:#666">{</span>
+          policy sequential
+      <span style="color:#666">}</span>
+
+cat /etc/resolv.conf 
+  <span style="color:#080;font-style:italic"># smh4lkfvymeuzcx1vpi1e15wih is generated for each installation</span>
+  search smh4lkfvymeuzcx1vpi1e15wih.ax.internal.cloudapp.net
+  nameserver 168.63.129.16
+</code></pre></div><p>this enables forwarding plugin for non cluster domain of Kubernetes. By default it use <strong>node&rsquo;s /etc/resolv.conf</strong>.</p>
+<p>or config map for configuration</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">oc get configmap/dns-default -n openshift-dns -o yaml<span style="color:#bbb">
+</span></code></pre></div><h2 id="resolving-from-pod">RESOLVING from POD</h2>
+<p>Related options are</p>
+<ul>
+<li>&ldquo;Default&rdquo;: The Pod inherits the name resolution configuration from the node that the pods run on.<br>
+Default case is</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  search smh4lkfvymeuzcx1vpi1e15wih.ax.internal.cloudapp.net
+  nameserver 168.63.129.16
+</code></pre></div><ul>
+<li>&ldquo;ClusterFirst&rdquo;: Any DNS query that does not match the configured cluster domain suffix, is forwarded to the upstream nameserver inherited from the node. Cluster administrators may have extra stub-domain and upstream DNS servers configured. See related discussion for details on how DNS queries are handled in those cases.<br>
+Default case is:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">search <span style="color:#666">{</span>namespace<span style="color:#666">}</span>.svc.cluster.local svc.cluster.local cluster.local smh4lkfvymeuzcx1vpi1e15wih.ax.internal.cloudapp.net
+nameserver 172.30.0.10
+options ndots:5
+</code></pre></div><p>If not specified <strong>ClusterFirst</strong> is used not <strong>Default</strong>.</p>
+<p><strong>Because A or AAAA records are not created for Pod names, hostname is required for the Pod’s A or AAAA record to be created.</strong> A Pod with no hostname but with subdomain will only create the A or AAAA record for the headless service (default-subdomain.my-namespace.svc.cluster-domain.example), pointing to the Pod’s IP address. Also, Pod needs to become ready in order to have a record unless publishNotReadyAddresses=True is set on the Service</p>
+<p>list dnsPolicy for pods in cluster:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get pods --all-namespaces -o json|jq -r <span style="color:#b44">&#39;.items[]|{name: .metadata.name,namespace: .metadata.namespace,dnsPolicy: .spec.dnsPolicy}&#39;</span>
+</code></pre></div><h2 id="configure-dns-forwarding-in-dns-clusteroperator">Configure DNS forwarding in DNS clusterOperator</h2>
+<p>In fact there are two separate options with almost same effect but different approach.</p>
+<h3 id="configuration-for-apppods-using-coredns-service-dnspolicy-clusterfirst">Configuration for appPods using CoreDNS service (dnsPolicy: ClusterFirst)</h3>
+<p>Operator can be modified to forward to specific DNS for defined &ldquo;zones&rdquo;.
+This modification will allow application pods running inside the cluster to resolve names hosted on a private DNS server outside the cluster.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get dnses.operator.openshift.io/default -o yaml
+
+  apiVersion: operator.openshift.io/v1
+  kind: DNS
+  spec: <span style="color:#666">{}</span>
+  status:
+    clusterDomain: cluster.local
+    clusterIP: 172.30.0.10
+
+ <span style="color:#080;font-style:italic">#can be modified to </span>
+  apiVersion: operator.openshift.io/v1
+  kind: DNS
+  spec:
+   servers:
+   - forwardPlugin:
+       upstreams:
+       - 10.1.1.12
+     name: zone-forward
+     zones:
+     - csas.cz
+  status:
+    clusterDomain: cluster.local
+    clusterIP: 172.30.0.10
+</code></pre></div><h3 id="change-default-resolver-for-nodes">Change default resolver for nodes</h3>
+<p>In Azure default resolver for nodes is Azure DNS (nameserver 168.63.129.16), all requests not hitting &ldquo;clusterDomain&rdquo; in our case &ldquo;cluster.local&rdquo; are forwarded to.<br>
+to modify this setting to use custom DNS server:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>machineconfiguration.openshift.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>MachineConfig<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">labels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">machineconfiguration.openshift.io/role</span>:<span style="color:#bbb"> </span>worker<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#666">56</span>-worker-resolver<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">config</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">ignition</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">version</span>:<span style="color:#bbb"> </span><span style="color:#666">2.2.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">storage</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">files</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- <span style="color:#008000;font-weight:bold">contents</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
+</span><span style="color:#b44;font-style:italic">            search smh4lkfvymeuzcx1vpi1e15wih.ax.internal.cloudapp.net
+</span><span style="color:#b44;font-style:italic">            nameserver 10.1.1.4
+</span><span style="color:#b44;font-style:italic">          verification: {}
+</span><span style="color:#b44;font-style:italic">        filesystem: root
+</span><span style="color:#b44;font-style:italic">        mode: 420
+</span><span style="color:#b44;font-style:italic">        path: /etc/resolv.conf
+</span></code></pre></div></div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/dns/" rel="tag">DNS</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/openshift/certbot-dns01-cert_add/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Certbot DNS 01 and apply certs to OCP</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/openshift/instalaceazure/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">OPENSHIFT AZURE INSTALL and CUSTOMIZE</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

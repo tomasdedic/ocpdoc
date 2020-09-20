@@ -1,22 +1,225 @@
-<!doctype html><html class=no-js lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><title>Azure - MADDIV</title><script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script><meta name=description content><meta name=generator content="Hugo 0.75.0-DEV"><meta property="og:title" content="Azure"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="/ocpdoc/tags/azure/"><meta property="og:updated_time" content="2020-09-12T23:28:48+02:00"><link rel=dns-prefetch href=//fonts.googleapis.com><link rel=dns-prefetch href=//fonts.gstatic.com><link rel=alternate type=application/rss+xml href=/ocpdoc/tags/azure/index.xml title=MADDIV><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700"><link rel=stylesheet href=/ocpdoc/css/style.css><link rel=stylesheet href=/ocpdoc/css/custom.css><link rel="shortcut icon" href=/ocpdoc/favicon.ico><script src=https://unpkg.com/axios/dist/axios.min.js></script><script src=https://unpkg.com/lunr/lunr.js></script></head><body class=body><div class="container container--outer"><header class=header><div class=container><div class=logo><a class=logo__link href=/ocpdoc title=MADDIV rel=home><div class=logo__title>MADDIV</div><div class=logo__tagline>Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div></a></div><nav class=menu><button class=menu__btn aria-haspopup=true aria-expanded=false tabindex=0>
-<span class=menu__btn-title tabindex=-1>Menu</span></button><ul class=menu__list><li class=menu__item><a class=menu__link href=/ocpdoc/categories/azure title=Azure>Azure</a><li class=menu__item><a class=menu__link href=/ocpdoc/categories/containers title=Containers>Containers</a><li class=menu__item><a class=menu__link href=/ocpdoc/categories/git title=Git>Git</a><li class=menu__item><a class=menu__link href=/ocpdoc/categories/openshift title=Openshift>Openshift</a></li></ul></nav></div></header><div class="wrapper flex"><div class=primary><div class=show-search><a class=toggle-search title="search in easee documentation"><svg xmlns="http://www.w3.org/2000/svg" width="612.056" height="612.057" viewbox="0 0 613 613"><path d="M595.2 513.908 493.775 412.482c26.707-41.727 42.685-91.041 42.685-144.263C536.459 120.085 416.375.0 268.24.0 120.106.0.021 120.085.021 268.219c0 148.134 120.085 268.22 268.219 268.22 53.222.0 102.537-15.979 144.225-42.686l101.426 101.463c22.454 22.453 58.854 22.453 81.271.0 22.492-22.491 22.492-58.855.038-81.308zm-326.96-54.103c-105.793.0-191.585-85.793-191.585-191.585.0-105.793 85.792-191.585 191.585-191.585s191.585 85.792 191.585 191.585c.001 105.792-85.791 191.585-191.585 191.585z"/></svg></a></div><aside role=search><div class="close toggle-search"><svg height="512" width="512" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M443.6 387.1 312.4 255.4l131.5-130c5.4-5.4 5.4-14.2.0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4s-7.2 1.5-9.8 4L256 197.8 124.9 68.3c-2.6-2.6-6.1-4-9.8-4s-7.2 1.5-9.8 4L68 105.9c-5.4 5.4-5.4 14.2.0 19.6l131.5 130L68.4 387.1c-2.6 2.6-4.1 6.1-4.1 9.8s1.4 7.2 4.1 9.8l37.4 37.6c2.7 2.7 6.2 4.1 9.8 4.1 3.5.0 7.1-1.3 9.8-4.1L256 313.1l130.7 131.1c2.7 2.7 6.2 4.1 9.8 4.1 3.5.0 7.1-1.3 9.8-4.1l37.4-37.6c2.6-2.6 4.1-6.1 4.1-9.8-.1-3.6-1.6-7.1-4.2-9.7z"/></svg></div><div class=search-wrapper><form class=search method=get><input type=search placeholder=search... disabled><div class=search-documentation style=display:flex;justify-content:space-between><span>ESC to dissmiss</span></div></form></div><ul class=search-results><li></li></ul></aside><script src=/ocpdoc/js/search.min.bf6d5b6275946f244567f9dcc0883dbfcf6ec934270709a2613f39cc0b615276.js></script><main class="main list" role=main><header class=main__header><h1 class=main__title>Azure</h1></header><article class="list__item post"><header class=list__header><h3 class="list__title post__title"><a href=/ocpdoc/tech/ocp/openid-provider/ rel=bookmark>OPENID AAD</a></h3><p class="list__lead post__lead">non function custom claims</p><div class="list__meta meta"><div class="meta__item-datetime meta__item"><svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class=meta__text datetime=2020-06-26T00:00:00>June 26, 2020</time>
-<time class=meta__text datetime=2020-09-12T23:28:48>(Last Modified: September 12, 2020)</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class=meta__text><a class=meta__link href=/ocpdoc/categories/openshift rel=category>OpenShift</a></span></div></div></header><div class="content list__excerpt post__content clearfix">OPENID AAD OPENSHIFT</div></article><article class="list__item post"><header class=list__header><h3 class="list__title post__title"><a href=/ocpdoc/tech/ocp/azurefile-persistencefilestorage/ rel=bookmark>OCP v4 AzureFile persistence file storage</a></h3><p class="list__lead post__lead">short howto about Azure FileStorage in Openshift scope</p><div class="list__meta meta"><div class="meta__item-datetime meta__item"><svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class=meta__text datetime=2020-06-10T00:00:00>June 10, 2020</time>
-<time class=meta__text datetime=2020-09-12T23:28:48>(Last Modified: September 12, 2020)</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class=meta__text><a class=meta__link href=/ocpdoc/categories/openshift rel=category>Openshift</a></span></div></div></header><div class="content list__excerpt post__content clearfix">AzureFile PERSISTENT FILE STORAGE</div></article><article class="list__item post"><header class=list__header><h3 class="list__title post__title"><a href=/ocpdoc/tech/ocp/arm-resourcesexp/ rel=bookmark>ARM resource limits for OCP</a></h3><p class="list__lead post__lead">OCP Config</p><div class="list__meta meta"><div class="meta__item-datetime meta__item"><svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class=meta__text datetime=2020-05-31T00:00:00>May 31, 2020</time>
-<time class=meta__text datetime=2020-09-12T23:28:48>(Last Modified: September 12, 2020)</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class=meta__text><a class=meta__link href=/ocpdoc/categories/openshift rel=category>Openshift</a></span></div></div></header><div class="content list__excerpt post__content clearfix">Azure Arm resource limits customization</div></article><article class="list__item post"><header class=list__header><h3 class="list__title post__title"><a href=/ocpdoc/tech/ocp/instalaceazure/ rel=bookmark>OPENSHIFT AZURE INSTALL and CUSTOMIZE</a></h3><div class="list__meta meta"><div class="meta__item-datetime meta__item"><svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class=meta__text datetime=2020-05-26T00:00:00>May 26, 2020</time>
-<time class=meta__text datetime=2020-09-12T23:28:48>(Last Modified: September 12, 2020)</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class=meta__text><a class=meta__link href=/ocpdoc/categories/openshift rel=category>OpenShift</a></span></div></div></header><div class="content list__excerpt post__content clearfix">IPI OPENSHIFT disconnected installation inside Azure datacentre extension</div></article><article class="list__item post"><header class=list__header><h3 class="list__title post__title"><a href=/ocpdoc/tech/ocp/dns/ rel=bookmark>DNS deepDive OPC/Azure/OnPremise</a></h3><p class="list__lead post__lead">Openshift</p><div class="list__meta meta"><div class="meta__item-datetime meta__item"><svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class=meta__text datetime=2020-05-14T00:00:00>May 14, 2020</time>
-<time class=meta__text datetime=2020-09-12T23:28:48>(Last Modified: September 12, 2020)</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class=meta__text><a class=meta__link href=/ocpdoc/categories/azure rel=category>Azure</a>, <a class=meta__link href=/ocpdoc/categories/openshift rel=category>Openshift</a></span></div></div></header><div class="content list__excerpt post__content clearfix">Desc</div></article><article class="list__item post"><header class=list__header><h3 class="list__title post__title"><a href=/ocpdoc/tech/ocp/certbot-dns01-cert_add/ rel=bookmark>Certbot DNS 01 and apply certs to OCP</a></h3><p class="list__lead post__lead">ACME cert bot</p><div class="list__meta meta"><div class="meta__item-datetime meta__item"><svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class=meta__text datetime=2020-03-19T00:00:00>March 19, 2020</time>
-<time class=meta__text datetime=2020-09-12T23:28:48>(Last Modified: September 12, 2020)</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2 1 2h8v11H0V2z"/></svg><span class=meta__text><a class=meta__link href=/ocpdoc/categories/openshift rel=category>Openshift</a></span></div></div></header><div class="content list__excerpt post__content clearfix">How to create wildchar letsencrypt cert for domain</div></article></main></div><aside class=sidebar><div class="widget-recent widget"><h4 class=widget__title>Recent Posts</h4><div class=widget__content><ul class=widget__list><li class=widget__item><a class=widget__link href=/ocpdoc/tech/ocp/todo/egress/>Egress question</a></li><li class=widget__item><a class=widget__link href=/ocpdoc/tech/ocp/todo/todo/>TODO LIST</a></li><li class=widget__item><a class=widget__link href=/ocpdoc/tech/ocp/debug/openshiftapiserver-tls/>OPENSHIFT API-SERVER TLS handshake error</a></li><li class=widget__item><a class=widget__link href=/ocpdoc/tech/ocp/debug/debug-monitoring-degraded/>Monitoring operator degraded</a></li><li class=widget__item><a class=widget__link href=/ocpdoc/tech/ocp/debug/install-do-ext/>Debug private install with UDR</a></li><li class=widget__item><a class=widget__link href=/ocpdoc/tech/ocp/snippets/>Openshift Snippets</a></li><li class=widget__item><a class=widget__link href=/ocpdoc/tech/ocp/operatorlifecyclemanager/>Operator Life Cycle Manager</a></li><li class=widget__item><a class=widget__link href=/ocpdoc/tech/ocp/debug/debug-oauth/>Authentication operator degraded</a></li><li class=widget__item><a class=widget__link href=/ocpdoc/tech/ocp/openid-provider/>OPENID AAD</a></li><li class=widget__item><a class=widget__link href=/ocpdoc/tech/ocp/fluentd/>FluentD</a></li></ul></div></div><div class="widget-taglist widget"><h4 class=widget__title>Tags</h4><div class=widget__content><a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/aad title=Aad>Aad (1)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/acr title=Acr>Acr (1)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/artifactory title=Artifactory>Artifactory (1)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/azure title=Azure>Azure (6)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/config title=Config>Config (2)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/containers title=Containers>Containers (1)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/debug title=Debug>Debug (4)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/git title=Git>Git (1)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/install title=Install>Install (2)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/logging title=Logging>Logging (2)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/ocp title=Ocp>Ocp (19)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/operator title=Operator>Operator (1)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/privatecluster title=Privatecluster>Privatecluster (1)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/snippets title=Snippets>Snippets (1)</a>
-<a class="widget-taglist__link widget__link btn" href=/ocpdoc/tags/storage title=Storage>Storage (1)</a></div></div></aside></div><footer class=footer><div class="container footer__container flex"><div class=footer__copyright>&copy; 2020 MADDIV.</div></div></footer></div><script async defer src=/ocpdoc/js/menu.js></script></body></html>
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Azure - DIVIDED DOCUMENTATION</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="Azure" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="//localhost:1112/tags/azure/" />
+<meta property="og:updated_time" content="2020-09-16T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="alternate" type="application/rss+xml" href="/tags/azure/index.xml" title="DIVIDED DOCUMENTATION">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+        
+			
+<main class="main list" role="main">
+	<header class="main__header">
+		<h1 class="main__title">Azure</h1>
+	</header>
+  <article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/openid-provider/" rel="bookmark">
+			OPENID AAD
+			</a>
+		</h3>
+		<p class="list__lead post__lead">non function custom claims</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-09-16T00:00:00">September 16, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OpenShift</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		OPENID AAD OPENSHIFT
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/azurefile-persistencefilestorage/" rel="bookmark">
+			OCP v4 AzureFile persistence file storage
+			</a>
+		</h3>
+		<p class="list__lead post__lead">short howto about Azure FileStorage in Openshift scope</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-06-10T00:00:00">June 10, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">Openshift</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		AzureFile PERSISTENT FILE STORAGE
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/install/instalaceazure/" rel="bookmark">
+			OPENSHIFT AZURE INSTALL and CUSTOMIZE
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-05-26T00:00:00">May 26, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OpenShift</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		IPI OPENSHIFT disconnected installation inside Azure datacentre extension 
+	</div>
+	
+</article>
+
+</main>
+
+
+			</div>
+			
+<aside class="sidebar sidebar--left">
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/artifactory_as_proxy_for_containerregistries/">Case usage of Artifactory as container proxy for public images</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/install/installaro/">ARO install</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/openid-provider/">OPENID AAD</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/project_status/">OPENSHIFT PROJECT STATUS a TODO LIST</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/debug/openshiftapiserver-tls/">OPENSHIFT API-SERVER TLS handshake error</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/debug/debug-monitoring-degraded/">Monitoring operator degraded </a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/install/install-do-ext/">Debug private install with UDR </a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/snippets/">Openshift Snippets</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/operatorlifecyclemanager/">Operator Life Cycle Manager</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/debug/debug-oauth/">Authentication operator degraded </a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/fluentd/">FluentD</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/azurefile-persistencefilestorage/">OCP v4 AzureFile persistence file storage</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/logging/">Agreggated loging</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/selfsignedcert_foringress/">Self signed cert for Ingress Nginx</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/openshift/arm-apiresources-deplated/">ARM resource limits for OCP</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/aad" title="Aad">Aad (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/acr" title="Acr">Acr (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/aro" title="Aro">Aro (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/artifactory" title="Artifactory">Artifactory (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/azure" title="Azure">Azure (3)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/config" title="Config">Config (2)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/containers" title="Containers">Containers (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/debug" title="Debug">Debug (4)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/dns" title="Dns">Dns (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/install" title="Install">Install (3)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/logging" title="Logging">Logging (2)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/ocp" title="Ocp">Ocp (14)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/operator" title="Operator">Operator (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/snippets" title="Snippets">Snippets (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/ssl/tls" title="Ssl/tls">Ssl/tls (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/storage" title="Storage">Storage (1)</a>
+	</div>
+</div>
+
+</aside>
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 DIVIDED DOCUMENTATION.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

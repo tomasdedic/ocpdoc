@@ -1,1 +1,29 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Categories on MADDIV</title><link>/ocpdoc/categories/</link><description>Recent content in Categories on MADDIV</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 19 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="/ocpdoc/categories/index.xml" rel="self" type="application/rss+xml"/><item><title>Openshift</title><link>/ocpdoc/categories/openshift/</link><pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/categories/openshift/</guid><description/></item><item><title>GIT</title><link>/ocpdoc/categories/git/</link><pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/categories/git/</guid><description/></item><item><title>Azure</title><link>/ocpdoc/categories/azure/</link><pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/categories/azure/</guid><description/></item><item><title>Containers</title><link>/ocpdoc/categories/containers/</link><pubDate>Fri, 21 Feb 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/categories/containers/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on DIVIDED DOCUMENTATION</title>
+    <link>//localhost:1112/categories/</link>
+    <description>Recent content in Categories on DIVIDED DOCUMENTATION</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Openshift</title>
+      <link>//localhost:1112/categories/openshift/</link>
+      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/categories/openshift/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Azure</title>
+      <link>//localhost:1112/categories/azure/</link>
+      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/categories/azure/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

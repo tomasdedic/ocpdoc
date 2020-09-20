@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>TODO LIST - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="Desc">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="TODO LIST" />
+<meta property="og:description" content="Desc" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/openshift/todo/todo/" />
+<meta property="article:published_time" content="2020-08-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-08-18T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">TODO LIST</h1>
+			<p class="post__lead">working</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-08-18T00:00:00">August 18, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">Openshift</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+<h3 id="1-ipi-instalace-s-udr">1. IPI instalace s UDR</h3>
+<p><strong>dokumenty:</strong></p>
+<ul>
+<li><a href="/tech/openshift/openshift/instalaceazure/">/instalaceAzure/</a></li>
+</ul>
+<p><strong>řešené problémy:</strong></p>
+<blockquote>
+<p>Vyřešeno použitím instalace linux-4.6.0-0.nightly-2020-08-18-070534</p>
+</blockquote>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> <strong>Instalátor musí obsahovat</strong></li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">	./openshift-install explain installconfig.platform.azure
+	    outboundType &lt;string&gt;
+	      Default: <span style="color:#b44">&#34;Loadbalancer&#34;</span>
+	      Valid Values: <span style="color:#b44">&#34;&#34;</span>,<span style="color:#b44">&#34;Loadbalancer&#34;</span>,<span style="color:#b44">&#34;UserDefinedRouting&#34;</span>
+	      OutboundType is a strategy <span style="color:#a2f;font-weight:bold">for</span> how egress from cluster is achieved. 
+        When not specified default is <span style="color:#b44">&#34;Loadbalancer&#34;</span>.
+</code></pre></div><p>Tato možnost je validní pouze pro instalátory řady 4.6.x</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> <strong>Stabilita Openshift-api serveru</strong><br>
+Po předem nedefinované době zdroje poskytované openshift-api serverem jsou částečně nedostupné, objevují se chyby <strong>HTTP 503</strong> . Openshift-api server operátor je nevalidní</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># example</span>
+oc get clusteroperator
+  NAME                    VERSION                             AVAILABLE   PROGRESSING   DEGRADED   SINCE
+  authentication          4.6.0-0.nightly-2020-07-24-111750   True        False         True       5d19h
+  image-registry          4.6.0-0.nightly-2020-07-24-111750   True        False         True       6d20h
+  monitoring              4.6.0-0.nightly-2020-07-24-111750   False       True          True       35h
+  openshift-apiserver     4.6.0-0.nightly-2020-07-24-111750   False       False         False      18h
+</code></pre></div><p>Problém se objevuje na instalacích řady 4.6.</p>
+<h3 id="2-integrace-aad--a-ldap-group-sync">2. Integrace AAD  a LDAP group sync</h3>
+<p>Test autentizace oproti AAD v testovacím prostředí, LDAP sync pro dotažení skupin z AD a definice rolí.</p>
+<ul>
+<li><input disabled="" type="checkbox"> přístup do Test AD</li>
+<li><input disabled="" type="checkbox"> testovací uživatelé v AAD</li>
+</ul>
+<h3 id="3-ingres-více-routerů-route-sharding">3. Ingres více routerů, route sharding</h3>
+<ul>
+<li><input disabled="" type="checkbox"> route sharding + logika přidělování ingres controlerů jednotlivým namespacům (řešené labelem a vytvoření resource přez ArgoCD)</li>
+<li><input disabled="" type="checkbox"> test zda lze použít stejnou adresu pro ingres i egres</li>
+</ul>
+<h3 id="4-egress">4. Egress</h3>
+<p>premisa: <strong>Není možné použít jednu egress IP pro více namespaců.</strong><br>
+Egress z pohledu Azure VM není vyřešen. Na jednotlivých nódech se interface s požadovanou IP adresou vytvoří ale na Azure VM se nevytvoří secondaryIP adresa nad NIC a požadavky nejsou tedy routovány ven.<br>
+Ideální řešení by bylo dynamické přidělování Egress adres na jednotlivé nódy, v případě nedostupnosti nódu automatický failover na jiný nód, vyžadovalo by to však operátor který by byl schopen sledovat stavy systému jak z pohledu Azure tak z pohledu OCP a na základě vyhodnocení provést požadovanou akci. Operátor by tak měl velké množství stupňů volnosti a nejsem si jist zda jsme schopni zajistit v rozumném vývojovém čase kvalitní chování.</p>
+<p><strong>When a namespace has multiple egress IP addresses, if the node hosting the first egress IP address is unreachable, OpenShift Container Platform will automatically switch to using the next available egress IP address until the first egress IP address is reachable again.</strong><br>
+obecný proces :</p>
+<ul>
+<li>rozdělit pool egress adres podle zón, tedy na 3 CIDR</li>
+<li>přidělit takto vydefinované CIDR (hostsubnet) rozsahy vybraným nódům (1 na každou zónu)</li>
+<li>pro každý CIDR, jedna IP adresa je vybrána a přiřazena &ldquo;namespacu&rdquo;</li>
+<li>nakonfiguruje se relevantní &ldquo;netnamespace&rdquo; vydefinovanými IP adresami (budou mu přiděleny 3 adresy)</li>
+<li>jeden nód pro každou zónu tak bude mít nadefinovanou EgressIP</li>
+<li>na Azure VM bude pro takový nód vydefinována secondaryIP s hodnotou EgressIP</li>
+</ul>
+<p>Možnosti jsou v podstatě následující:</p>
+<ul>
+<li>
+<p><a href="https://github.com/redhat-cop/egressip-ipam-operator">Egressip-ipam-operator</a>
+Upravit operátor pro Azure, v tento okamžik podporuje pouze AWS. Operátor zpravuje k Egress jako CRD přímo v Openshiftu.</p>
+</li>
+<li>
+<p>EgressGateway nody<br>
+<strong>When a namespace has multiple egress IP addresses, if the node hosting the first egress IP address is unreachable, OpenShift Container Platform will automatically switch to using the next available egress IP address until the first egress IP address is reachable again.</strong>
+Nadefinovat egress nody (minimálně dva) a přidělit jim egress adresy dle přidělených IP, každému namespacu pak přidělit dvě adresy.  Při této konfiguraci však přijdeme o půlku IP adres pro Egresy.</p>
+</li>
+</ul>
+<h3 id="5-network-policynetnamespace-isolation">5. Network policy/netnamespace isolation</h3>
+<p>Zatím není nadefinováno jakým způsobem se k tomuto problému postavíme. Jako logický krok se jeví <strong>multitenant isolation</strong> - tedy v základu žádný workload namespace nevidí síťově jiný.</p>
+<h3 id="6-monitoring-stack">6. Monitoring stack</h3>
+<p>via Elostech, dodávka by měla reflektovat nasazení pomocí ArgoCD.</p>
+<h3 id="7-logging-stack">7. Logging stack</h3>
+<p>Validace změn v openshift-aggregate logging. Chybí dodefinovat přesné požadavky na formát a směrování logů z Openshiftu ven.
+Základní POC je hotov, logy jsou transformováný a směrovány do lokální instance ElasticSearch, část je směrována do Azure EventHubu pomocí FluentD kafka plugin</p>
+</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/openshift/debug/openshiftapiserver-tls/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">OPENSHIFT API-SERVER TLS handshake error</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/openshift/todo/egress/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Egress question</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

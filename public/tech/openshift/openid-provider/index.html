@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>OPENID AAD - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="OPENID AAD OPENSHIFT">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="OPENID AAD" />
+<meta property="og:description" content="OPENID AAD OPENSHIFT" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/openid-provider/" />
+<meta property="article:published_time" content="2020-09-16T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-09-16T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">OPENID AAD</h1>
+			<p class="post__lead">non function custom claims</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-09-16T00:00:00">September 16, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OpenShift</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+<h1 id="openid-aad">OPENID AAD</h1>
+<p><strong>OpenID Connect authorize proti AAD. Uživatel se autorizuje a je následně vytvořen v OCP.</strong><br>
+Jakým způsobem je možné provést párování mezi unikáním identifikátorem pro AAD a OCP.<br>
+Je možno v rámcí provisioningu dotáhnout &ldquo;groupMembershipClaims&rdquo; se seznamem skupin z AAD a jakým způsobem provést provisioning těchto skupin v rámci OCP.</p>
+<p><a href="https://www.tomaskubica.cz/post/2019/moderni-autentizace-overovani-interniho-uzivatele-s-openid-connect-a-aad/">jwt token inspekce</a></p>
+<h2 id="definice-ms-openid">DEFINICE MS openid</h2>
+<p><a href="https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/v2.0/.well-known/openid-configuration">openid spec</a></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># shortened </span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>{<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;token_endpoint&#34;: </span><span style="color:#b44">&#34;https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/oauth2/v2.0/token&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;token_endpoint_auth_methods_supported&#34;: </span>[<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;client_secret_post&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;private_key_jwt&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;client_secret_basic&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>],<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;jwks_uri&#34;: </span><span style="color:#b44">&#34;https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/discovery/v2.0/keys&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;response_modes_supported&#34;: </span>[<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;query&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;fragment&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;form_post&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>],<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;subject_types_supported&#34;: </span>[<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;pairwise&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>],<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;id_token_signing_alg_values_supported&#34;: </span>[<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;RS256&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>],<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;response_types_supported&#34;: </span>[<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;code&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;id_token&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;code id_token&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;id_token token&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>],<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;scopes_supported&#34;: </span>[<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;openid&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;profile&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;email&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;offline_access&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>],<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;claims_supported&#34;: </span>[<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;sub&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;iss&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;cloud_instance_name&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;cloud_instance_host_name&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;cloud_graph_host_name&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;msgraph_host&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;aud&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;exp&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;iat&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;auth_time&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;acr&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;nonce&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;preferred_username&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;name&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;tid&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;ver&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;at_hash&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;c_hash&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;email&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>],<span style="color:#bbb">
+</span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></code></pre></div><h3 id="openshift-provider-definition">Openshift provider definition</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#00f;font-weight:bold">---</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>config.openshift.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>OAuth<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>cluster<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">identityProviders</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- <span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>AzureAD<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">mappingMethod</span>:<span style="color:#bbb"> </span>claim<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>OpenID<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">openID</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">claims</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#080;font-style:italic"># base mapping</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">preferredUsername</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>- upn<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>- preferred_username<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">email</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>- email<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>- name<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">clientID</span>:<span style="color:#bbb"> </span>c2d29042-792d-4b23-9bdf-9e341e465083<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">clientSecret</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>aadidp-secret<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">extraAuthorizeParameters</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">include_granted_scopes</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;true&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">extraScopes</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- email<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- profile<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- groups<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- name<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- upn<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">issuer</span>:<span style="color:#bbb"> </span>https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d<span style="color:#bbb">
+</span></code></pre></div><h3 id="oc-users">OC USERS</h3>
+<p>login over openshift console, login sucess, user provisioned</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get identities
+oc get user user-12@mspassporttrask.onmicrosoft.com -o json
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">{<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;: </span><span style="color:#b44">&#34;user.openshift.io/v1&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">&#34;fullName&#34;: </span><span style="color:#b44">&#34;user-12&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">&#34;groups&#34;: </span><span style="color:#a2f;font-weight:bold">null</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">&#34;identities&#34;: </span>[<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#b44">&#34;AzureAD:zyBX-mCiVnA05CSohv2W2ZIPbmA7N8sKojx6IQlkP2g&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>],<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">&#34;kind&#34;: </span><span style="color:#b44">&#34;User&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">&#34;metadata&#34;: </span>{<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">&#34;creationTimestamp&#34;: </span><span style="color:#b44">&#34;2019-12-06T10:08:38Z&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">&#34;name&#34;: </span><span style="color:#b44">&#34;user-12@mspassporttrask.onmicrosoft.com&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">&#34;resourceVersion&#34;: </span><span style="color:#b44">&#34;14731567&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">&#34;selfLink&#34;: </span><span style="color:#b44">&#34;/apis/user.openshift.io/v1/users/user-12%40mspassporttrask.onmicrosoft.com&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">&#34;uid&#34;: </span><span style="color:#b44">&#34;e1011ef5-cac1-4b0b-8c18-b5a6da366d5f&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></code></pre></div><h3 id="aad-user">AAD user</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">az ad user list |jq -r <span style="color:#b44">&#39;.[]|select(.userPrincipalName ==&#34;user-12@mspassporttrask.onmicrosoft.com&#34;)&#39;</span>
+</code></pre></div><h3 id="jwt-token">JWT token</h3>
+<p>obtain JWT token:
+<strong>Azure console &ndash;&gt; app registration &mdash;&gt;redirect uri &ndash;&gt; http://localhost</strong></p>
+<ul>
+<li>client_id
+identifikátor naší aplikace, který vznikl při její registraci v AAD (označuje se tam jako Application ID)</li>
+<li>response_type
+jakou odpověď očekáváme, pro začátek s implicitním flow (doručení rovnou tokenu) tady dáme id_token</li>
+<li>redirect_url
+to bude kopírovat nastavení při registraci, tedy v našem případě http://localhost (v URL encode, protože znaky :// by prohlížeč zmátly)</li>
+<li>response_mode
+říkáme, jakým způsobem chceme token v redirectu doručit. Genericky vzato jsou tu varianty from_post (výsledek vypadá jako při odeslání HTML formuláře, tedy je to POST na nějaký endpoint), query (odpověď přijde jako běžné parametry GETu za otazníkem) nebo fragment (informace přijdou za symbolem #, což se dostane do browseru, ale ne dál - typické pro single-page aplikace). Ne všechny možnosti jsou z různých (primárně bezpečnostních) důvodů k dispozici u všech typů přihlášení/autorizace. U implicitního flow v dnešním článku použijeme fragment.</li>
+<li>scope
+tady říkáme u OAuth2 k čemu chceme získat práva, v našem případě jde o právo na přihlášení a dává se sem openid</li>
+<li>state
+nějaké náhodné číslo, které se nám vrátí i v odpovědi a my zkontrolujeme, že je stejné (brání před některými útoky)</li>
+<li>nonce
+opět nějaké náhodné číslo, které AAD vloží přímo do id_tokenu (a podepíše) a my si zkontrlujeme, že je stejné (bráníme se před replay útoky)</li>
+</ul>
+<p>takže:</p>
+<p><a href="https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/oauth2/v2.0/authorize?client_id=5ecafeb2-5759-405b-9d73-2b28879e17a0&amp;response_type=id_token&amp;redirect_url=http%3A%2F%2Flocalhost&amp;response_mode=fragment&amp;scope=openid+profile+email+offline_access&amp;state=12345&amp;nonce=54321">localhost-token</a></p>
+<p>vrátí se nám 403 a zkopírujeme string za http://localhost/#id_token=<br>
+do <a href="https://jwt.ms">jwt.ms</a></p>
+<p>token:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">{<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;typ&#34;: </span><span style="color:#b44">&#34;JWT&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;alg&#34;: </span><span style="color:#b44">&#34;RS256&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;kid&#34;: </span><span style="color:#b44">&#34;BB8CeFVqyaGrGNuehJIiL4dfjzw&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>}.{<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;aud&#34;: </span><span style="color:#b44">&#34;c2d29042-792d-4b23-9bdf-9e341e465083&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;iss&#34;: </span><span style="color:#b44">&#34;https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/v2.0&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;iat&#34;: </span><span style="color:#666">1575980563</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;nbf&#34;: </span><span style="color:#666">1575980563</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;exp&#34;: </span><span style="color:#666">1575984463</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;aio&#34;: </span><span style="color:#b44">&#34;ATQAy/8NAAAAICL+OHHE/lPlSFx6/OS2mtEemb0yt0fjJ7dZzSL65XqhnKVgwZDTMCiI8oTXt16P&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;groups&#34;: </span>[<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#34;111980ba-31f2-499d-b021-6d90b684ba54&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>],<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;name&#34;: </span><span style="color:#b44">&#34;user-15&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;nonce&#34;: </span><span style="color:#b44">&#34;54321&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;oid&#34;: </span><span style="color:#b44">&#34;ac21b13a-84a3-4123-9ebf-70ef264c85d8&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;preferred_username&#34;: </span><span style="color:#b44">&#34;user-15@mspassporttrask.onmicrosoft.com&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;sub&#34;: </span><span style="color:#b44">&#34;CBrSMAstqP5tAWMIL6KcD0LzDKpdnMiJ5ws18sAkfeg&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;tid&#34;: </span><span style="color:#b44">&#34;b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;uti&#34;: </span><span style="color:#b44">&#34;i6PrMfxar0S6Tqre21L8AA&#34;</span>,<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;ver&#34;: </span><span style="color:#b44">&#34;2.0&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></code></pre></div><h3 id="role-a-clusterrole">Role a ClusterRole</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># pridam prava pro skupinu v tokenu</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">---</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>ClusterRoleBinding<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>rbac.authorization.k8s.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>clusteradmin<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">subjects</span>:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">apiGroup</span>:<span style="color:#bbb"> </span>rbac.authorization.k8s.io<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Group<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;111980ba-31f2-499d-b021-6d90b684ba54&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">roleRef</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>ClusterRole<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>cluster-admin<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">apiGroup</span>:<span style="color:#bbb"> </span>rbac.authorization.k8s.io<span style="color:#bbb">
+</span></code></pre></div><p>V JWT tokenu sice group mame ale v provisioningu do OCP se neprojeví a uživatel nemá práva přijatá z tokenu.<br>
+Práva získá až po manuálním přiřazení do skupiny.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>user.openshift.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Group<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>111980ba-31f2-499d-b021-6d90b684ba54<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">users</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- tdedic@mspassporttrask.onmicrosoft.com<span style="color:#bbb">
+</span></code></pre></div></div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/aad/" rel="tag">AAD</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/azure/" rel="tag">Azure</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/todo/egress/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Egress question</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

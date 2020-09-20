@@ -5,18 +5,19 @@
 	{{- end }}
 	{{- with .Site.Author.avatar }}
 	<figure class="authorbox__avatar">
-		<img alt="{{ $.Site.Author.name }} avatar" src="{{ $.Site.Author.avatar | relURL }}" class="avatar" height="90" width="90">
+		<img alt="{{ $.Site.Author.name }} avatar" src="{{ $.Site.Author.avatar | relURL }}" class="avatar" height="30" width="30">
 	</figure>
 	{{- end }}
 	{{- with .Site.Author.name }}
 	<div class="authorbox__header">
-		<span class="authorbox__name">{{ T "authorbox_name" . }}</span>
+		<!-- <span class="authorbox__name">{{ T "authorbox_name" . }}</span> -->
+		<span class="authorbox__name">{{ . }}</span>
 	</div>
 	{{- end }}
-	{{- with .Site.Author.bio }}
-	<div class="authorbox__description">
-		{{ . }}
-	</div>
-	{{- end }}
+	<!-- {{- with .Site.Author.bio }} -->
+	<!-- <div class="authorbox__description"> -->
+	<!-- 	{{ . }} -->
+	<!-- </div> -->
+	<!-- {{- end }} -->
 </div>
 {{- end }}

@@ -1,3 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Containers on MADDIV</title><link>/ocpdoc/tags/containers/</link><description>Recent content in Containers on MADDIV</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 21 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="/ocpdoc/tags/containers/index.xml" rel="self" type="application/rss+xml"/><item><title>Podman,buildah,skopeo</title><link>/ocpdoc/tech/ocp/podman_buildah_skopeo/</link><pubDate>Fri, 21 Feb 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tech/ocp/podman_buildah_skopeo/</guid><description>Demos git repository
-PODMAN IMAGES enable podman user namespaces must be enabled in kernel to run container rootless
-sudo sysctl -w kernel.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Containers on DIVIDED DOCUMENTATION</title>
+    <link>//localhost:1112/tags/containers/</link>
+    <description>Recent content in Containers on DIVIDED DOCUMENTATION</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/containers/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Case usage of Artifactory as container proxy for public images</title>
+      <link>//localhost:1112/openshift/artifactory_as_proxy_for_containerregistries/</link>
+      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/artifactory_as_proxy_for_containerregistries/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

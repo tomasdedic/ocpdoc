@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Certbot DNS 01 and apply certs to OCP - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="How to create wildchar letsencrypt cert for domain">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="Certbot DNS 01 and apply certs to OCP" />
+<meta property="og:description" content="How to create wildchar letsencrypt cert for domain" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/openshift/certbot-dns01-cert_add/" />
+<meta property="article:published_time" content="2020-03-19T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-03-19T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Certbot DNS 01 and apply certs to OCP</h1>
+			<p class="post__lead">ACME cert bot</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-03-19T00:00:00">March 19, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">Openshift</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+<h2 id="use-certbot-to-generate-certificate">Use certbot to generate certificate</h2>
+<p>A <em>Domain Name</em> consisting of a single asterisk character followed by a single full
+stop character (*.) followed by a Fully-Qualified Domain Name. For each <strong>apps</strong> subdomain we need to define cert. Not posible to use (*.*.*.csas.elostech.cz)</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">sudo certbot -d <span style="color:#b44">&#34;*.apps.poshi4.csas.elostech.cz&#34;</span>   --manual --preferred-challenges dns certonly
+sudo certbot -d <span style="color:#b44">&#34;*.apps.oshi43.csas.elostech.cz&#34;</span>   --manual --preferred-challenges dns certonly
+
+  Please deploy a DNS TXT record under the name to your DNS
+test:
+dig _acme-challenge.apps.toshi44.csas.elostech.cz txt 
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic">#check certificate</span>
+openssl x509 -noout -text -in fullchain.pem
+</code></pre></div><h2 id="replacing-default-ingress-certificate">Replacing default ingress certificate</h2>
+<ul>
+<li>You must have a wildcard certificate and its private key, both in the PEM format, for use.</li>
+<li>The certificate must have a subjectAltName extension of *.apps.<!-- raw HTML omitted -->.<!-- raw HTML omitted -->.</li>
+</ul>
+<p>in case of using clusterwide proxy (not neccessary)</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic">#config map for CA</span>
+oc create configmap custom-ca <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>     --from-file<span style="color:#666">=</span>ca-bundle.crt<span style="color:#666">=</span>ca.crt <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>     -n openshift-config
+ oc patch proxy/cluster <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>     --type<span style="color:#666">=</span>merge <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>     --patch<span style="color:#666">=</span><span style="color:#b44">&#39;{&#34;spec&#34;:{&#34;trustedCA&#34;:{&#34;name&#34;:&#34;custom-ca&#34;}}}&#39;</span>
+</code></pre></div><p>all ingress routes:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc create secret tls letsencrypt --cert<span style="color:#666">=</span>fullchain.pem --key privkey.pem -n openshift-ingress
+ <span style="color:#080;font-style:italic"># or replace</span>
+oc create secret tls letsencrypt --cert<span style="color:#666">=</span>fullchain.pem --key privkey.pem -n openshift-ingress --dry-run -o yaml|oc replace -f -
+oc patch ingresscontroller.operator default <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>       --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>       <span style="color:#b44">&#39;{&#34;spec&#34;:{&#34;defaultCertificate&#34;: {&#34;name&#34;: &#34;letsencrypt&#34;}}}&#39;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>       -n openshift-ingress-operator
+ <span style="color:#080;font-style:italic"># or force recreate</span>
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -n openshift-ingress -o name<span style="color:#666">)</span>; oc delete -n openshift-ingress <span style="color:#b8860b">$i</span>;end
+</code></pre></div></div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/azure/" rel="tag">Azure</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/config/" rel="tag">Config</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/openshift/artifactory_as_quay_repository/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Case usage of Artifactory as container proxy for Quay and public images</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/openshift/dns/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">DNS deepDive OPC/Azure/OnPremise</p></a>
+	</div>
+</nav>
+
+			</div>
+			<aside class="sidebar">
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openshift/openid-provider/">OPENID AAD</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openshift/todo/egress/">Egress question</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openshift/todo/todo/">TODO LIST</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openshift/debug/openshiftapiserver-tls/">OPENSHIFT API-SERVER TLS handshake error</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openshift/debug/debug-monitoring-degraded/">Monitoring operator degraded </a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openshift/debug/install-do-ext/">Debug private install with UDR </a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openshift/snippets/">Openshift Snippets</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openshift/operatorlifecyclemanager/">Operator Life Cycle Manager</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openshift/debug/debug-oauth/">Authentication operator degraded </a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openshift/fluentd/">FluentD</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/aad" title="Aad">Aad (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/acr" title="Acr">Acr (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/artifactory" title="Artifactory">Artifactory (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/azure" title="Azure">Azure (5)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/config" title="Config">Config (2)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/containers" title="Containers">Containers (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/debug" title="Debug">Debug (4)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/dns" title="Dns">Dns (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/git" title="Git">Git (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/install" title="Install">Install (2)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/logging" title="Logging">Logging (2)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/ocp" title="Ocp">Ocp (18)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/operator" title="Operator">Operator (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/privatecluster" title="Privatecluster">Privatecluster (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/snippets" title="Snippets">Snippets (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/storage" title="Storage">Storage (1)</a>
+	</div>
+</div>
+
+</aside>
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

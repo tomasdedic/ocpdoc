@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Openshifts on DIVIDED DOCUMENTATION</title>
+    <link>//localhost:1112/openshift/</link>
+    <description>Recent content in Openshifts on DIVIDED DOCUMENTATION</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/openshift/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Case usage of Artifactory as container proxy for public images</title>
+      <link>//localhost:1112/openshift/artifactory_as_proxy_for_containerregistries/</link>
+      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/artifactory_as_proxy_for_containerregistries/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ARO install</title>
+      <link>//localhost:1112/openshift/install/installaro/</link>
+      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/install/installaro/</guid>
+      <description>Proces instalace az provider register -n Microsoft.RedHatOpenShift --wait az account set --subscription 7504de90-f639-4328-a5b6-fde85e0a7fd9 az account show # je potreba pouzit az login na SP az login --service-principal --username 126501b0-ae03-4aad-aff2-19ced106b169 --password 05b154b3-afc3-42dd-bd53-746e6fa0d368 --tenant d2480fab-7029-4378-9e54-3b7a474eb327 export RESOURCEGROUP=&amp;quot;aro-test&amp;quot; export LOCATION=&amp;quot;westeurope&amp;quot; export CLUSTER=&amp;quot;arozinite&amp;quot; az group create --name $RESOURCEGROUP --location $LOCATION az network vnet create \ --resource-group $RESOURCEGROUP \ --name aro-vnet \ --address-prefixes 10.</description>
+    </item>
+    
+    <item>
+      <title>OPENID AAD</title>
+      <link>//localhost:1112/openshift/openid-provider/</link>
+      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/openid-provider/</guid>
+      <description>OPENID AAD OpenID Connect authorize proti AAD. Uživatel se autorizuje a je následně vytvořen v OCP.
+Jakým způsobem je možné provést párování mezi unikáním identifikátorem pro AAD a OCP.</description>
+    </item>
+    
+    <item>
+      <title>OPENSHIFT PROJECT STATUS a TODO LIST</title>
+      <link>//localhost:1112/openshift/project_status/</link>
+      <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/project_status/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OPENSHIFT API-SERVER TLS handshake error</title>
+      <link>//localhost:1112/openshift/debug/openshiftapiserver-tls/</link>
+      <pubDate>Mon, 03 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/debug/openshiftapiserver-tls/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Monitoring operator degraded </title>
+      <link>//localhost:1112/openshift/debug/debug-monitoring-degraded/</link>
+      <pubDate>Tue, 28 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/debug/debug-monitoring-degraded/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Debug private install with UDR </title>
+      <link>//localhost:1112/openshift/install/install-do-ext/</link>
+      <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/install/install-do-ext/</guid>
+      <description>Instalace do extenze datacentra # remote tunnel pro proxy z proxy serveru na bastion node určený k instalaci # ssh spider@10.</description>
+    </item>
+    
+    <item>
+      <title>Openshift Snippets</title>
+      <link>//localhost:1112/openshift/snippets/</link>
+      <pubDate>Thu, 23 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/snippets/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Operator Life Cycle Manager</title>
+      <link>//localhost:1112/openshift/operatorlifecyclemanager/</link>
+      <pubDate>Wed, 08 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/operatorlifecyclemanager/</guid>
+      <description>How can I use the Operators in my Openshift4 cluster? And how are updated and managed by the Operator Lifecycle Manager?</description>
+    </item>
+    
+    <item>
+      <title>Authentication operator degraded </title>
+      <link>//localhost:1112/openshift/debug/debug-oauth/</link>
+      <pubDate>Mon, 06 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/debug/debug-oauth/</guid>
+      <description>Nejde se zalogovat prez konzoli. Authentication operator je ve stavu Degraded.
+Authentication and Authentication Operator # cluster operator oc get co # operator logs  set ns openshift-authentication-operator;oc logs -n &amp;#34;$ns&amp;#34; (oc get pods -n &amp;#34;$ns&amp;#34; -o name) # warning and errors set ns openshift-authentication-operator;oc logs -n &amp;#34;$ns&amp;#34; (oc get pods -n &amp;#34;$ns&amp;#34; -o name)|grep -E &amp;#34;[W,E][[:digit:]]{4}&amp;#34; OAuthClientsDegraded: the server is currently unable to handle the request (get oauthclients.</description>
+    </item>
+    
+    <item>
+      <title>FluentD</title>
+      <link>//localhost:1112/openshift/fluentd/</link>
+      <pubDate>Fri, 19 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/fluentd/</guid>
+      <description>Konfigurace fluentD v rámci Openshift clusteru. Bude řešen sběr a směrování logů typu SystemD, ContainerLog, EventLog (Etcd API store). Obohacování jednotlivých zpráv a směrování do ElasticSearch a Kafka (prezentovaná EventHubem).</description>
+    </item>
+    
+    <item>
+      <title>OCP v4 AzureFile persistence file storage</title>
+      <link>//localhost:1112/openshift/azurefile-persistencefilestorage/</link>
+      <pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/azurefile-persistencefilestorage/</guid>
+      <description>OCP v4 AzureFile PERSISTENT FILE STORAGE Our need is to use a reliable storage as default StorageClass(SC) for OCP. Main requirement is zone redundancy together with security and reasonable management, in ideal state maintanance free.</description>
+    </item>
+    
+    <item>
+      <title>Agreggated loging</title>
+      <link>//localhost:1112/openshift/logging/</link>
+      <pubDate>Mon, 08 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/logging/</guid>
+      <description>Cluster logging components, provisioning and configuration.</description>
+    </item>
+    
+    <item>
+      <title>Self signed cert for Ingress Nginx</title>
+      <link>//localhost:1112/openshift/selfsignedcert_foringress/</link>
+      <pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/selfsignedcert_foringress/</guid>
+      <description>Generate self signed TLS certificate for Ingress for use with Artifactory docker registry.
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.</description>
+    </item>
+    
+    <item>
+      <title>ARM resource limits for OCP</title>
+      <link>//localhost:1112/openshift/arm-apiresources-deplated/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/arm-apiresources-deplated/</guid>
+      <description>ARM limitations For each Azure subscription and tenant, Resource Manager allows up to 12,000 read requests per hour and 1,200 write requests per hour, for certain resources it can be smaller.</description>
+    </item>
+    
+    <item>
+      <title>Node NotReady, SchedulingDisabled</title>
+      <link>//localhost:1112/openshift/debug/debug-nodenotready/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/debug/debug-nodenotready/</guid>
+      <description>After upgrade to version 4.3.3 two nodes (one master and one worker) are in state NotReady. Cluster seems to be ok, but I cannot ssh into affected nodes and cannot get some debug info.</description>
+    </item>
+    
+    <item>
+      <title>OPENSHIFT AZURE INSTALL and CUSTOMIZE</title>
+      <link>//localhost:1112/openshift/install/instalaceazure/</link>
+      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/install/instalaceazure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DNS deepDive OPC/Azure/OnPremise</title>
+      <link>//localhost:1112/openshift/dns/</link>
+      <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/dns/</guid>
+      <description>How can I use a custom DNS in our cluster without modify the actual cluster DNS on top of Azure? How can I forward custom DNS and use specific DNS in an On-Premise Datacenter?</description>
+    </item>
+    
+    <item>
+      <title>Certbot DNS 01 and apply certs to OCP</title>
+      <link>//localhost:1112/openshift/certbot-dns01-cert_add/</link>
+      <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/certbot-dns01-cert_add/</guid>
+      <description>Use certbot to generate certificate A Domain Name consisting of a single asterisk character followed by a single full stop character (*.</description>
+    </item>
+    
+    <item>
+      <title>Uploading local container images to OCP registry</title>
+      <link>//localhost:1112/openshift/uploading_container_image_to_ocp_registry/</link>
+      <pubDate>Sat, 01 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/uploading_container_image_to_ocp_registry/</guid>
+      <description>#!/bin/bash  # Define constants set registry_namespace openshift-image-registry set registry_svc image-registry set LOCAL_PORT 5000 # Get port where the remote registry is on registry_port=$(oc get svc $registry_svc -n $registry_namespace -o jsonpath=&amp;#39;{.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>//localhost:1112/openshift/debug/debug-openshiftapiserver/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/debug/debug-openshiftapiserver/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

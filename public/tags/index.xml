@@ -1,1 +1,155 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tags on MADDIV</title><link>/ocpdoc/tags/</link><description>Recent content in Tags on MADDIV</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 19 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="/ocpdoc/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>OCP</title><link>/ocpdoc/tags/ocp/</link><pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/ocp/</guid><description/></item><item><title>DEBUG</title><link>/ocpdoc/tags/debug/</link><pubDate>Mon, 03 Aug 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/debug/</guid><description/></item><item><title>Install</title><link>/ocpdoc/tags/install/</link><pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/install/</guid><description/></item><item><title>Snippets</title><link>/ocpdoc/tags/snippets/</link><pubDate>Thu, 23 Jul 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/snippets/</guid><description/></item><item><title>OPERATOR</title><link>/ocpdoc/tags/operator/</link><pubDate>Wed, 08 Jul 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/operator/</guid><description/></item><item><title>AAD</title><link>/ocpdoc/tags/aad/</link><pubDate>Fri, 26 Jun 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/aad/</guid><description/></item><item><title>Azure</title><link>/ocpdoc/tags/azure/</link><pubDate>Fri, 26 Jun 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/azure/</guid><description/></item><item><title>LOGGING</title><link>/ocpdoc/tags/logging/</link><pubDate>Fri, 19 Jun 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/logging/</guid><description/></item><item><title>Storage</title><link>/ocpdoc/tags/storage/</link><pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/storage/</guid><description/></item><item><title>GIT</title><link>/ocpdoc/tags/git/</link><pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/git/</guid><description/></item><item><title>ACR</title><link>/ocpdoc/tags/acr/</link><pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/acr/</guid><description/></item><item><title>Config</title><link>/ocpdoc/tags/config/</link><pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/config/</guid><description/></item><item><title>Artifactory</title><link>/ocpdoc/tags/artifactory/</link><pubDate>Mon, 02 Mar 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/artifactory/</guid><description/></item><item><title>PrivateCluster</title><link>/ocpdoc/tags/privatecluster/</link><pubDate>Mon, 02 Mar 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/privatecluster/</guid><description/></item><item><title>Containers</title><link>/ocpdoc/tags/containers/</link><pubDate>Fri, 21 Feb 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tags/containers/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on DIVIDED DOCUMENTATION</title>
+    <link>//localhost:1112/tags/</link>
+    <description>Recent content in Tags on DIVIDED DOCUMENTATION</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Artifactory</title>
+      <link>//localhost:1112/tags/artifactory/</link>
+      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/artifactory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Containers</title>
+      <link>//localhost:1112/tags/containers/</link>
+      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/containers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ARO</title>
+      <link>//localhost:1112/tags/aro/</link>
+      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/aro/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Install</title>
+      <link>//localhost:1112/tags/install/</link>
+      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/install/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AAD</title>
+      <link>//localhost:1112/tags/aad/</link>
+      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/aad/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Azure</title>
+      <link>//localhost:1112/tags/azure/</link>
+      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/azure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OCP</title>
+      <link>//localhost:1112/tags/ocp/</link>
+      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/ocp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DEBUG</title>
+      <link>//localhost:1112/tags/debug/</link>
+      <pubDate>Mon, 03 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/debug/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Snippets</title>
+      <link>//localhost:1112/tags/snippets/</link>
+      <pubDate>Thu, 23 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/snippets/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OPERATOR</title>
+      <link>//localhost:1112/tags/operator/</link>
+      <pubDate>Wed, 08 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/operator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>LOGGING</title>
+      <link>//localhost:1112/tags/logging/</link>
+      <pubDate>Fri, 19 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/logging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Storage</title>
+      <link>//localhost:1112/tags/storage/</link>
+      <pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/storage/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ACR</title>
+      <link>//localhost:1112/tags/acr/</link>
+      <pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/acr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Config</title>
+      <link>//localhost:1112/tags/config/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/config/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DNS</title>
+      <link>//localhost:1112/tags/dns/</link>
+      <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/dns/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SSL/TLS</title>
+      <link>//localhost:1112/tags/ssl/tls/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/ssl/tls/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

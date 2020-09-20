@@ -1,1 +1,223 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"><url><loc>/ocpdoc/categories/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/todo/egress/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/ocp/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/categories/openshift/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/todo/todo/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/debug/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/debug/openshiftapiserver-tls/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/debug/debug-monitoring-degraded/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/debug/install-do-ext/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/install/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/snippets/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/snippets/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/operator/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/operatorlifecyclemanager/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/debug/debug-oauth/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/aad/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/azure/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/openid-provider/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/fluentd/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/logging/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/azurefile-persistencefilestorage/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/storage/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/logging/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/git/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/categories/git/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/github-actions/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/acr/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/categories/azure/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/selfsignedcert_foringress/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/arm-resourcesexp/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/config/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/debug/debug-nodenotready/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/instalaceazure/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/dns/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/certbot-dns01-cert_add/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/artifactory/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/artifactory_as_quay_repository/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/privatecluster/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tags/containers/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/categories/containers/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/podman_buildah_skopeo/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/uploading_container_image_to_ocp_registry/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/about/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/search/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/arogameplay/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url><url><loc>/ocpdoc/tech/ocp/debug/debug-openshiftapiserver/</loc><lastmod>2020-09-12T23:28:48+02:00</lastmod></url></urlset>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>//localhost:1112/</loc>
+    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/artifactory/</loc>
+    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/artifactory_as_proxy_for_containerregistries/</loc>
+    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/</loc>
+    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/containers/</loc>
+    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/openshift/</loc>
+    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/</loc>
+    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/</loc>
+    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/aro/</loc>
+    <lastmod>2020-09-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/install/installaro/</loc>
+    <lastmod>2020-09-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/azure/</loc>
+    <lastmod>2020-09-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/install/</loc>
+    <lastmod>2020-09-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/aad/</loc>
+    <lastmod>2020-09-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/azure/</loc>
+    <lastmod>2020-09-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/ocp/</loc>
+    <lastmod>2020-09-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/openid-provider/</loc>
+    <lastmod>2020-09-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/project_status/</loc>
+    <lastmod>2020-08-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/debug/</loc>
+    <lastmod>2020-08-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/debug/openshiftapiserver-tls/</loc>
+    <lastmod>2020-08-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/debug/debug-monitoring-degraded/</loc>
+    <lastmod>2020-07-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/install/install-do-ext/</loc>
+    <lastmod>2020-07-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/snippets/</loc>
+    <lastmod>2020-07-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/snippets/</loc>
+    <lastmod>2020-07-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/operator/</loc>
+    <lastmod>2020-07-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/operatorlifecyclemanager/</loc>
+    <lastmod>2020-07-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/debug/debug-oauth/</loc>
+    <lastmod>2020-07-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/fluentd/</loc>
+    <lastmod>2020-06-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/logging/</loc>
+    <lastmod>2020-06-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/azurefile-persistencefilestorage/</loc>
+    <lastmod>2020-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/storage/</loc>
+    <lastmod>2020-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/logging/</loc>
+    <lastmod>2020-06-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/acr/</loc>
+    <lastmod>2020-06-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/selfsignedcert_foringress/</loc>
+    <lastmod>2020-06-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/arm-apiresources-deplated/</loc>
+    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/config/</loc>
+    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/debug/debug-nodenotready/</loc>
+    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/install/instalaceazure/</loc>
+    <lastmod>2020-05-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/dns/</loc>
+    <lastmod>2020-05-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/dns/</loc>
+    <lastmod>2020-05-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/certbot-dns01-cert_add/</loc>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/uploading_container_image_to_ocp_registry/</loc>
+    <lastmod>2020-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/debug/debug-openshiftapiserver/</loc>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/search/</loc>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/ssl/tls/</loc>
+  </url>
+  
+</urlset>

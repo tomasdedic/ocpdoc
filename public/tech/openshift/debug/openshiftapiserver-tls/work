@@ -1,0 +1,34 @@
+endpoint tester
+
+export TOKEN="eyJhbGciOiJSUzI1NiIsImtpZCI6ImNTMG5NVnZaS0hxTk52LWV3Z3BkcjhNTkExV2k4dGNPa1BuaWx4dnlSSnMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6InNhZG1pbi10b2tlbi13dHJ6ciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJzYWRtaW4iLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJhMGI3OTAxNy0zNGZkLTQ5NGMtYjkwMS1jNTkzZjk4ZDExMjMiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6ZGVmYXVsdDpzYWRtaW4ifQ.mvPj3zM2USN5stFRsBv0usNG9I6ocaamOP04DED3ZK9nsybDSyX_--RWU_Rr28i0Ou1_V1di7xlWeLa3PVLLy73E143jIjRcbxSwTOJDGVAUkGKEaTob0yufXpb7xEElt0CeMLE0CyPEnSL4Ol6m4jjV4eELkakZoZxDRzn2gTD-ggwa5U0m_-VQBJMNp2UExoKEPjbnj7FNc3kIvGmVHohTCPwvVN55NT8tTP_-qtGZ-bgkpoL5elB17aBCOkr09jyQtAXrFrCG8q8kqrGjVvzm95HOFjWnpiZ6vR4H_EKAyFqjHfAwQRqfz9HGaFlAAJPCWnx-SL8bD1ny0laauw"
+
+
+oc get endpoints -n openshift-kube-apiserver
+  NAME        ENDPOINTS                                                  AGE
+  apiserver   10.88.233.196:6443,10.88.233.198:6443,10.88.233.200:6443   11d
+oc get endpoints -n openshift-apiserver
+  NAME   ENDPOINTS                                             AGE
+  api    10.128.0.97:8443,10.129.0.78:8443,10.130.0.117:8443   11d
+
+
+#set NAMESPACE openshift-apiserver
+set NAMESPACE openshift-kube-apiserver
+#string interpolation
+set ENDPOINTS (oc get endpoints -n $NAMESPACE -o json|jq -r '.items[].subsets[]|  "\(.addresses[].ip):\(.ports[].port)"')
+#get token
+set  SERVICE_ACCOUNT sadmin
+set  SECRET (oc get serviceaccount -n default {$SERVICE_ACCOUNT} -o json|jq -Mr '.secrets[].name|select(contains("token"))')
+set  TOKEN (oc get secret {$SECRET} -o json | jq -Mr '.data.token' | base64 -d)
+set  API apis/route.openshift.io/v1
+#set env variables
+oc exec -it -n openshift-apiserver apiserver-7d755fbd6-w5x8v -- env -u HTTP_PROXY env -u HTTPS_PROXY env TOKEN="$TOKEN" env API="$API" env ENDPOINTS="$ENDPOINTS" bash -c 'for i in $ENDPOINTS; do echo -e "https://$i/$API"; curl -v -k "https://$i/$API" --header "Authorization: Bearer $TOKEN" --connect-timeout 10; echo; done'
+
+--silent --output /dev/null --show-error --fail
+#run on pod
+for i in $ENDPOINTS
+do
+echo -e "https://$i/$API"
+curl -k "https://$i/$API" --header "Authorization: Bearer $TOKEN" --connect-timeout 10
+echo
+done
+

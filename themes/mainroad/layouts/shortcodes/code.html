@@ -10,7 +10,7 @@
   {{ $lang := .Get "lang" }}
   {{ (print "```" $lang "\n" $file "\n```") | markdownify }}
 {{ else }}
-  {{ (print "*Err: File [ " $sourcefile " ] not found*")| markdownify }}
+  {{ (print "\n*Err: File [ " $sourcefile " ] not found*")| markdownify }}
 {{ end }}
 <!-- {{ print (.Page.File.Path) }} -->
 {{- print "" -}}

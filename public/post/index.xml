@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on MADDIV</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on MADDIV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kubernetes LOAD service on Docker container</title>
+      <link>/post/kubernetes-scaling-create-load/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/kubernetes-scaling-create-load/</guid>
+      <description>Service to generate load on all selector pods in GKE. Main reason is to generate homogenous load for HPA (horizntal pod autoscaling) metrics with showcase as Prometheus/Grafana operator.</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes API CURL</title>
+      <link>/post/kubernetes-api-curl/</link>
+      <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/kubernetes-api-curl/</guid>
+      <description>Kubernetes API je celkem komplexní nástroj a vše se točí kolem API, pojďme ho prozkoumat přez CURL a servisní RBAC účet.</description>
+    </item>
+    
+    <item>
+      <title>deploy BIOMETRY on GKE</title>
+      <link>/post/biometry/</link>
+      <pubDate>Sat, 02 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/biometry/</guid>
+      <description>Snažim se přesunout aplikaci Biometrie do GKE, v podstatě se v základu jedná o dvě části a to aplikční část běžící na Tomcat a databázová část na MSSQL.</description>
+    </item>
+    
+    <item>
+      <title>Docker custom image</title>
+      <link>/post/docker-custom/</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/docker-custom/</guid>
+      <description>Docker custom image stahneme si image na kterem budeme stavet:
+docker pull bitnami/minideb:latest #v tompto pripade minidebian docker run --name cmindev -ti bitnami/minideb:latest  customizujeme a commit:</description>
+    </item>
+    
+    <item>
+      <title>GKE custom load and scalling</title>
+      <link>/post/gke-customload-zacatky/</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/gke-customload-zacatky/</guid>
+      <description>Kubernetes GCE autoscaler pouzijeme autoscale funkcionalitu clusteru a uvidime jak se to vlastne chova !!!!zatim vynecham a vrhnema se na deployment a replicas</description>
+    </item>
+    
+  </channel>
+</rss>

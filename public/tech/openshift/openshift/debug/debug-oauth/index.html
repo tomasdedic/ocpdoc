@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Authentication operator degraded  - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="Cannot login into cluster, auth operator in degraded STATE">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="Authentication operator degraded " />
+<meta property="og:description" content="Cannot login into cluster, auth operator in degraded STATE" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/openshift/debug/debug-oauth/" />
+<meta property="article:published_time" content="2020-07-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-07-06T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Authentication operator degraded </h1>
+			<p class="post__lead">DEBUG</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-07-06T00:00:00">July 06, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">Openshift</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+<p>Nejde se zalogovat prez konzoli. Authentication operator je ve stavu <strong>Degraded</strong>.</p>
+<h3 id="authentication-and-authentication-operator">Authentication and Authentication Operator</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># cluster operator</span>
+oc get co 
+<span style="color:#080;font-style:italic"># operator logs </span>
+<span style="color:#a2f">set</span> ns openshift-authentication-operator;oc logs -n <span style="color:#b44">&#34;</span><span style="color:#b8860b">$ns</span><span style="color:#b44">&#34;</span> <span style="color:#666">(</span>oc get pods -n <span style="color:#b44">&#34;</span><span style="color:#b8860b">$ns</span><span style="color:#b44">&#34;</span> -o name<span style="color:#666">)</span>
+<span style="color:#080;font-style:italic"># warning and errors</span>
+<span style="color:#a2f">set</span> ns openshift-authentication-operator;oc logs -n <span style="color:#b44">&#34;</span><span style="color:#b8860b">$ns</span><span style="color:#b44">&#34;</span> <span style="color:#666">(</span>oc get pods -n <span style="color:#b44">&#34;</span><span style="color:#b8860b">$ns</span><span style="color:#b44">&#34;</span> -o name<span style="color:#666">)</span>|grep -E <span style="color:#b44">&#34;[W,E][[:digit:]]{4}&#34;</span>
+
+  OAuthClientsDegraded: the server is currently unable to handle the request <span style="color:#666">(</span>get oauthclients.oauth.openshift.io openshift-browser-client<span style="color:#666">)</span> 
+  to RouteStatusDegraded: the server is currently unable to handle the request <span style="color:#666">(</span>get routes.route.openshift.io oauth-openshift<span style="color:#666">)</span>
+
+  OAuthClientsDegraded: the server is currently unable to handle the request <span style="color:#666">(</span>get oauthclients.oauth.openshift.io openshift-browser-client<span style="color:#666">)</span>
+  failed handling the route: the server is currently unable to handle the request <span style="color:#666">(</span>get routes.route.openshift.io oauth-openshift<span style="color:#666">)</span>
+  lookup oauth-openshift.apps.toshi44.csas.elostech.cz on 172.30.0.10:53: <span style="color:#a2f">read</span> udp 10.130.0.215:56716-&gt;172.30.0.10:53: i/o timeout
+  failed with: the server is currently unable to handle the request <span style="color:#666">(</span>post oauthclients.oauth.openshift.io<span style="color:#666">)</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># curl na oauth endpoint vraci timeout pri kazdem x-tem pokusu</span>
+curl -k https://oauth-openshift.apps.oaz-dev.azure.csint.cz/oauth/token/display
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get route -A|grep oauth
+  Error from server <span style="color:#666">(</span>ServiceUnavailable<span style="color:#666">)</span>: the server is currently unable to handle the request <span style="color:#666">(</span>get routes.route.openshift.io<span style="color:#666">)</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">stern -n openshift-authentication oauth|grep -E <span style="color:#b44">&#34;E[[:digit:]]{4}&#34;</span>
+<span style="color:#080;font-style:italic"># try to delete all</span>
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -o name --selector <span style="color:#b8860b">app</span><span style="color:#666">=</span>oauth-openshift -n openshift-authentication<span style="color:#666">)</span>;
+  oc delete <span style="color:#b8860b">$i</span> -n openshift-authentication;
+  end
+</code></pre></div><h3 id="etcd">ETCD</h3>
+<p>seems to be quite happy</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">stern -n openshift-etcd-operator etcd|grep -E <span style="color:#b44">&#34;[W,E][[:digit:]]{4}&#34;</span>
+</code></pre></div><p>ale openshift-etcd-operator(D: etcd-operator) si stale stezuje<br>
+<strong>unhealthy members: toshi44-l9tcd-master-1,toshi44-l9tcd-master-0,toshi44-l9tcd-master-2</strong><br>
+kubeAPI ma velkou latenci a to muze klidne s nezdravosti etcd souviset</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">etcdctl member list -w table
+  24dd89393f91e72e, started, toshi44-l9tcd-master-1, https://10.4.0.4:2380, https://10.4.0.4:2379
+  3672e44507206aee, started, toshi44-l9tcd-master-0, https://10.4.0.6:2380, https://10.4.0.6:2379
+  d9eaeebdf47b1d9a, started, toshi44-l9tcd-master-2, https://10.4.0.7:2380, https://10.4.0.7:2379
+
+etcdctl endpoint health --cluster
+  https://10.4.0.6:2379 is healthy: successfully committed proposal: <span style="color:#b8860b">took</span> <span style="color:#666">=</span> 10.984237ms
+  https://10.4.0.7:2379 is healthy: successfully committed proposal: <span style="color:#b8860b">took</span> <span style="color:#666">=</span> 17.462818ms
+  https://10.4.0.4:2379 is healthy: successfully committed proposal: <span style="color:#b8860b">took</span> <span style="color:#666">=</span> 22.100276ms
+
+<span style="color:#080;font-style:italic"># get events</span>
+oc get events --all-namespaces -o json|jq -r <span style="color:#b44">&#39;.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}&#39;</span>|jq -r <span style="color:#b44">&#39;select (.namespace |contains(&#34;etcd&#34;))&#39;</span>
+</code></pre></div><p>nedari se mi prijit na to co se etcd nelibi</p>
+<h3 id="get-events">get EVENTS</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get events --all-namespaces -o json <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>|jq -r <span style="color:#b44">&#39;.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}&#39;</span><span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>|jq -r <span style="color:#b44">&#39;select (.namespace |contains(&#34;csas&#34;)|not)&#39;</span><span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>|jq -r <span style="color:#b44">&#39;select (.namespace | contains(&#34;authentication&#34;))&#39;</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">&#34;obj&#34;</span>: <span style="color:#b44">&#34;authentication-operator&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;namespace&#34;</span>: <span style="color:#b44">&#34;openshift-authentication-operator&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;message&#34;</span>: <span style="color:#b44">&#34;Status for clusteroperator/authentication changed: Degraded message changed from \&#34;\&#34; to \&#34;WellKnownEndpointDegraded: failed to GET well-known https://10.4.0.4:6443/.well-known/oauth-authorization-server: net/http: TLS handshake timeout\&#34;&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;last&#34;</span>: <span style="color:#b44">&#34;2020-07-07T08:46:38Z&#34;</span>
+}
+{
+  <span style="color:#008000;font-weight:bold">&#34;obj&#34;</span>: <span style="color:#b44">&#34;authentication-operator&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;namespace&#34;</span>: <span style="color:#b44">&#34;openshift-authentication-operator&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;message&#34;</span>: <span style="color:#b44">&#34;Status for clusteroperator/authentication changed: Degraded message changed from \&#34;WellKnownEndpointDegraded: failed to GET well-known https://10.4.0.4:6443/.well-known/oauth-authorization-server: net/http: TLS handshake timeout\&#34; to \&#34;\&#34;&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;last&#34;</span>: <span style="color:#b44">&#34;2020-07-07T08:46:41Z&#34;</span>
+}
+{
+  <span style="color:#008000;font-weight:bold">&#34;obj&#34;</span>: <span style="color:#b44">&#34;authentication-operator&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;namespace&#34;</span>: <span style="color:#b44">&#34;openshift-authentication-operator&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;message&#34;</span>: <span style="color:#b44">&#34;Status for clusteroperator/authentication changed: Degraded message changed from \&#34;\&#34; to \&#34;RouteHealthDegraded: failed to GET route: dial tcp: lookup oauth-openshift.apps.toshi44.csas.elostech.cz on 172.30.0.10:53: read udp 10.130.0.215:55146-&gt;172.30.0.10:53: i/o timeout\&#34;&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;last&#34;</span>: <span style="color:#b44">&#34;2020-07-07T06:00:35Z&#34;</span>
+}
+</code></pre></div><h3 id="openshift-api-server-and-api-resources">Openshift API server and API resources</h3>
+<p>every three runs</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc api-resources
+
+  error: unable to retrieve the <span style="color:#a2f">complete</span> list of server apis: project.openshift.io/v1: the server is currently unable to handle the request,  
+  route.openshift.io/v1: the server is currently unable to handle the request,  
+  security.openshift.io/v1: the server is currently unable to handle the request,  
+  template.openshift.io/v1: the server is currently unable to handle the request,  
+  user.openshift.io/v1: the server is currently unable to handle the request  
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">stern -n openshift-apiserver apiserver
+ <span style="color:#080;font-style:italic"># common error</span>
+  http: TLS handshake error from 10.129.0.1:4963
+</code></pre></div><h3 id="dns">DNS</h3>
+<p>problem se castecne vyresil restartem dns ale neda se tomu rozhodne rikat celkove reseni. Zaroven se mi nezda ze by byl problem v DNS (samozrejme nejake problemy s resolvingem se z logu vycist daji)</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f">set</span> ns openshift-dns; <span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -n <span style="color:#b44">&#34;</span><span style="color:#b8860b">$ns</span><span style="color:#b44">&#34;</span> -o name <span style="color:#666">)</span>; oc delete -n <span style="color:#b44">&#34;</span><span style="color:#b8860b">$ns</span><span style="color:#b44">&#34;</span> <span style="color:#b8860b">$i</span>; end
+</code></pre></div><h3 id="packageserver">PackageServer</h3>
+<p>package server ma problemy a zpusobuje obcasnou nedostupnost API<br>
+tyka se to operator-lifecycle-manager-packageserver</p>
+<pre><code class="language-log" data-lang="log">packageserver-5df56b8c8-xz257 packageserver I0707 11:13:24.539873       1 log.go:172] http: TLS handshake error from 10.129.0.1:50886: remote error: tls: bad certificate
+</code></pre><p>skusime je procistit</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f">set</span> ns openshift-operator-lifecycle-manager; <span style="color:#a2f">set</span> sel <span style="color:#b44">&#34;app=packageserver&#34;</span>; <span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -n <span style="color:#b44">&#34;</span><span style="color:#b8860b">$ns</span><span style="color:#b44">&#34;</span> --selector <span style="color:#b8860b">$sel</span> -o name <span style="color:#666">)</span>; oc delete -n <span style="color:#b44">&#34;</span><span style="color:#b8860b">$ns</span><span style="color:#b44">&#34;</span> <span style="color:#b8860b">$i</span>; end
+</code></pre></div><h2 id="hodnoceni">HODNOCENI</h2>
+<p>zda se mi ze za celym problemem se nachazi castecna nedostupnost OpenShift API serveru, kdy pri jenom ze 3 requestu probehne timeout. Otazka je co to zpusobuje.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">stern -n openshift-apiserver apiserver
+apiserver-6756b4f77b-fq2sp openshift-apiserver I0707 12:35:04.255724       <span style="color:#666">1</span> log.go:172<span style="color:#666">]</span> http: TLS handshake error from 10.129.0.1:48138: EOF
+</code></pre></div></div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/debug/" rel="tag">DEBUG</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/openshift/fluentd/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">FluentD</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/openshift/operatorlifecyclemanager/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Operator Life Cycle Manager</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

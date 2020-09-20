@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>OPENSHIFT API-SERVER TLS handshake error - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="TLS handshake error">
+	<meta name="generator" content="Hugo 0.69.0-DEV" />
+	<meta property="og:title" content="OPENSHIFT API-SERVER TLS handshake error" />
+<meta property="og:description" content="TLS handshake error" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/debug/openshiftapiserver-tls/debug-tls/" />
+<meta property="article:published_time" content="2020-08-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-08-03T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">OPENSHIFT API-SERVER TLS handshake error</h1>
+			<p class="post__lead">DEBUG</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-08-03T00:00:00">August 03, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">Openshift</a></span>
+</div>
+</div>
+		</header>
+		
+<div class="content post__content clearfix">
+      <p><strong>Původce: Objevily se problémy s přihlašováním. Všechny api-resources poskytovane openshift-api jsou částečně nedostupné.</strong>
+Jelikož je problém objevuje jen na 1/3 podů, cluster je částečně funkční. Přihlašování dělám přez token jednoho z podů openshift-apiserver &ndash;&gt; /run/secrets/kubernetes.io/serviceaccount/token</p>
+<h3 id="gather-informations">Gather Informations</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get clusteroperator
+  NAME                                       VERSION                             AVAILABLE   PROGRESSING   DEGRADED   SINCE
+  authentication                             4.6.0-0.nightly-2020-07-24-111750   True        False         True       5d19h
+  image-registry                             4.6.0-0.nightly-2020-07-24-111750   True        False         True       6d20h
+  kube-apiserver                             4.6.0-0.nightly-2020-07-24-111750   True        True          False      9d
+  monitoring                                 4.6.0-0.nightly-2020-07-24-111750   False       True          True       35h
+  openshift-apiserver                        4.6.0-0.nightly-2020-07-24-111750   False       False         False      18h
+
+<span style="color:#080;font-style:italic"># involved events</span>
+oc get events --all-namespaces -o json|jq -r <span style="color:#b44">&#39;.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}&#39;</span>
+oc get events -n openshift-apiserver-operator
+
+oc api-resources
+
+  error: unable to retrieve the <span style="color:#a2f">complete</span> list of server APIs: 
+  authorization.openshift.io/v1: the server is currently unable to handle the request,
+  oauth.openshift.io/v1: the server is currently unable to handle the request,
+  packages.operators.coreos.com/v1: the server is currently unable to handle the request,
+  route.openshift.io/v1: the server is currently unable to handle the request,
+  security.openshift.io/v1: the server is currently unable to handle the request
+
+<span style="color:#080;font-style:italic"># log agregation</span>
+stern -n openshift-apiserver apiserver
+  apiserver-hv5p5 openshift-apiserver I0524 22:17:43.670943       <span style="color:#666">1</span> log.go:172<span style="color:#666">]</span> http: TLS handshake error from 10.131.0.1:45118: EOF
+  apiserver-hv5p5 openshift-apiserver I0524 22:17:47.656841       <span style="color:#666">1</span> log.go:172<span style="color:#666">]</span> http: TLS handshake error from 10.131.0.1:45152: EOF
+  apiserver-hv5p5 openshift-apiserver I0524 22:17:57.658147       <span style="color:#666">1</span> log.go:172<span style="color:#666">]</span> http: TLS handshake error from 10.131.0.1:45240: 
+
+oc rsh -n openshift-apiserver apiserver-hv5p5
+  yum install net-tools
+  netstat -nputw
+  netstat -nputwc
+   - z 10.131.0.1 prichazeji requesty a jsou ve stavu ESTABILISHED
+   - nektere se objevi v chybach, zda se ze bude problem s timeoutem
+</code></pre></div><h3 id="debug-description">Debug Description</h3>
+<p>Two net error appears in logs.</p>
+<ul>
+<li>
+<p><strong>http: TLS handshake error from 151.38.29.250:44235: EOF</strong><br>
+This means that while the server and the client were performing the TLS handshake, the server saw the connection being closed, aka EOF.</p>
+</li>
+<li>
+<p><strong>http: TLS handshake error from 2.239.197.163:6742: read tcp x.xxx.xxx.xxx:443-&gt;2.239.197.163:6742: i/o timeout</strong><br>
+This means that while the server was waiting to read from the client during the TLS handshake, the client didn&rsquo;t send anything before closing the connection.</p>
+</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc debug node/&lt;nodename&gt;
+ <span style="color:#080;font-style:italic"># get container pid</span>
+chroot /host crictl ps |grep openshift-apiserver
+chroot /host crictl inspect 5c831210d2594 |grep <span style="color:#b44">&#39;&#34;pid&#34;:&#39;</span>
+ <span style="color:#080;font-style:italic"># nsenter run program in different namespaces</span>
+nsenter -n -t <span style="color:#b8860b">$pid</span> -- ip a
+nsenter -n -t <span style="color:#666">2205119</span> -- tcpdump -nn -i eth0 <span style="color:#b44">&#34;tcp port 8443&#34;</span> -w /host/tmp/tcpdump.pcap
+<span style="color:#080;font-style:italic">#copy output to localhost</span>
+oc get pods  <span style="color:#080;font-style:italic">#oaz-dev-tnhr6-master-2-debug</span>
+oc cp oaz-dev-tnhr6-master-2-debug:/host/tmp/tcpdump.pcap tcpdump.pcap
+<span style="color:#080;font-style:italic"># and visualize in wireshark</span>
+</code></pre></div><h3 id="solution">Solution</h3>
+<p>Jako řešení se jeví, vypnutí postiženého master nodu a jeho následné zapnutí. A smazání jednotlivých podů v <strong>namespace: openshift-apiserver</strong> a redeploy <strong>DaemonSet &ldquo;openshift-sdn/sdn</strong>. Jako jeden ze symptomu se ukazal CrashLoopBackOff jednoho podu v <strong>openshift-sdn</strong>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -n openshift-apiserver -o name<span style="color:#666">)</span>; oc delete -n openshift-apiserver <span style="color:#b8860b">$i</span>;end
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -n openshift-sdn --selector <span style="color:#b8860b">app</span><span style="color:#666">=</span>sdn -o name<span style="color:#666">)</span>; oc delete -n openshift-sdn <span style="color:#b8860b">$i</span>;end
+</code></pre></div></div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/debug/" rel="tag">DEBUG</a></li>
+	</ul>
+</div>
+	</article>
+  
+  []
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/debug/openshiftapiserver-tls/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">OPENSHIFT API-SERVER TLS handshake error</p></a>
+	</div>
+</nav>
+
+			</div>
+			<aside class="sidebar">
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/debug/openshiftapiserver-tls/debug-tls/">OPENSHIFT API-SERVER TLS handshake error</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/debug/openshiftapiserver-tls/">OPENSHIFT API-SERVER TLS handshake error</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/debug/debug-monitoring-degraded/">Monitoring operator degraded </a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/debug/install-do-ext/">Debug private install with UDR </a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/snippets/">Openshift Snippets</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/operatorlifecyclemanager/">Operator Life Cycle Manager</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/debug/debug-oauth/">Authentication operator degraded </a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/openid-provider/">OPENID AAD</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/fluentd/">FluentD</a></li>
+			
+			<li class="widget__item"><a class="widget__link" href="/tech/openshift/azurefile-persistencefilestorage/">OCP v4 AzureFile persistence file storage</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/aad" title="Aad">Aad (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/acr" title="Acr">Acr (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/artifactory" title="Artifactory">Artifactory (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/azure" title="Azure">Azure (6)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/config" title="Config">Config (2)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/containers" title="Containers">Containers (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/debug" title="Debug">Debug (4)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/git" title="Git">Git (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/install" title="Install">Install (2)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/logging" title="Logging">Logging (2)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/ocp" title="Ocp">Ocp (17)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/operator" title="Operator">Operator (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/privatecluster" title="Privatecluster">Privatecluster (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/snippets" title="Snippets">Snippets (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/storage" title="Storage">Storage (1)</a>
+	</div>
+</div>
+
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title> - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="" />
+<meta property="og:description" content="az provider register -n Microsoft.RedHatOpenShift &ndash;wait az account set &ndash;subscription 7504de90-f639-4328-a5b6-fde85e0a7fd9 az account show
+je potreba pouzit az login na SP az login &ndash;service-principal &ndash;username 126501b0-ae03-4aad-aff2-19ced106b169 &ndash;password 05b154b3-afc3-42dd-bd53-746e6fa0d368 &ndash;tenant d2480fab-7029-4378-9e54-3b7a474eb327" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/arogameplay/" />
+
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title"></h1>
+			
+		</header>
+		
+		<div class="content post__content clearfix">
+<p>az provider register -n Microsoft.RedHatOpenShift &ndash;wait
+az account set &ndash;subscription 7504de90-f639-4328-a5b6-fde85e0a7fd9
+az account show</p>
+<h1 id="je-potreba-pouzit-az-login-na-sp">je potreba pouzit az login na SP</h1>
+<p>az login &ndash;service-principal &ndash;username 126501b0-ae03-4aad-aff2-19ced106b169 &ndash;password 05b154b3-afc3-42dd-bd53-746e6fa0d368 &ndash;tenant d2480fab-7029-4378-9e54-3b7a474eb327</p>
+<p>export RESOURCEGROUP=&quot;aro-test&rdquo;
+export LOCATION=&quot;westeurope&rdquo;
+export CLUSTER=&quot;arozinite&rdquo;
+az group create &ndash;name $RESOURCEGROUP &ndash;location $LOCATION</p>
+<p>az network vnet create<br>
+&ndash;resource-group $RESOURCEGROUP<br>
+&ndash;name aro-vnet<br>
+&ndash;address-prefixes 10.10.8.0/22</p>
+<p>az network vnet subnet create<br>
+&ndash;resource-group $RESOURCEGROUP<br>
+&ndash;vnet-name aro-vnet<br>
+&ndash;name master-subnet<br>
+&ndash;address-prefixes 10.10.8.0/23<br>
+&ndash;service-endpoints Microsoft.ContainerRegistry</p>
+<p>az network vnet subnet create<br>
+&ndash;resource-group $RESOURCEGROUP<br>
+&ndash;vnet-name aro-vnet<br>
+&ndash;name worker-subnet<br>
+&ndash;address-prefixes 10.10.10.0/23<br>
+&ndash;service-endpoints Microsoft.ContainerRegistry</p>
+<p>az network vnet subnet update<br>
+&ndash;name master-subnet<br>
+&ndash;resource-group $RESOURCEGROUP<br>
+&ndash;vnet-name aro-vnet<br>
+&ndash;disable-private-link-service-network-policies true</p>
+<p>az aro create<br>
+&ndash;resource-group $RESOURCEGROUP<br>
+&ndash;name $CLUSTER<br>
+&ndash;vnet aro-vnet<br>
+&ndash;master-subnet master-subnet<br>
+&ndash;worker-subnet worker-subnet<br>
+&ndash;pull-secret @pull-secret.txt</p>
+<h1 id="--apiserver-visibility-private-">&ndash;apiserver-visibility Private \</h1>
+<h1 id="--ingress-visibility-private">&ndash;ingress-visibility Private</h1>
+<h1 id="--client-id-126501b0-ae03-4aad-aff2-19ced106b169-">&ndash;client-id &ldquo;126501b0-ae03-4aad-aff2-19ced106b169&rdquo; \</h1>
+<h1 id="--client-secret-05b154b3-afc3-42dd-bd53-746e6fa0d368">&ndash;client-secret &ldquo;05b154b3-afc3-42dd-bd53-746e6fa0d368&rdquo;</h1>
+<p>az aro delete &ndash;resource-group $RESOURCEGROUP &ndash;name $CLUSTER</p>
+<p>az network nic ip-config create &ndash;name sec1 &ndash;nic-name arozinite-r4ttx-worker-westeurope1-wf7jj-nic &ndash;private-ip-address 10.10.11.1 &ndash;resource-group aro-t6sjpdhb</p>
+<p>{
+&ldquo;kubeadminPassword&rdquo;: &ldquo;8yLjU-rpEvQ-gmEJv-A8b84&rdquo;,
+&ldquo;kubeadminUsername&rdquo;: &ldquo;kubeadmin&rdquo;
+&ldquo;api&rdquo;: &ldquo;<a href="https://api.t6sjpdhb.westeurope.aroapp.io">https://api.t6sjpdhb.westeurope.aroapp.io</a>:6443/&rdquo;
+&ldquo;console&rdquo;: &ldquo;<a href="https://console-openshift-console.apps.t6sjpdhb.westeurope.aroapp.io/%22">https://console-openshift-console.apps.t6sjpdhb.westeurope.aroapp.io/&quot;</a>
+}</p>
+<p>{- Finished ..
+&ldquo;apiserverProfile&rdquo;: {
+&ldquo;ip&rdquo;: &ldquo;20.50.213.192&rdquo;,
+&ldquo;url&rdquo;: &ldquo;<a href="https://api.t6sjpdhb.westeurope.aroapp.io">https://api.t6sjpdhb.westeurope.aroapp.io</a>:6443/&rdquo;,
+&ldquo;visibility&rdquo;: &ldquo;Public&rdquo;
+},
+&ldquo;clusterProfile&rdquo;: {
+&ldquo;domain&rdquo;: &ldquo;t6sjpdhb&rdquo;,
+&ldquo;pullSecret&rdquo;: null,
+&ldquo;resourceGroupId&rdquo;: &ldquo;/subscriptions/7504de90-f639-4328-a5b6-fde85e0a7fd9/resourceGroups/aro-t6sjpdhb&rdquo;,
+&ldquo;version&rdquo;: &ldquo;4.4.10&rdquo;
+},
+&ldquo;consoleProfile&rdquo;: {
+&ldquo;url&rdquo;: &ldquo;<a href="https://console-openshift-console.apps.t6sjpdhb.westeurope.aroapp.io/%22">https://console-openshift-console.apps.t6sjpdhb.westeurope.aroapp.io/&quot;</a>
+},
+&ldquo;id&rdquo;: &ldquo;/subscriptions/7504de90-f639-4328-a5b6-fde85e0a7fd9/resourceGroups/aro-test/providers/Microsoft.RedHatOpenShift/openShiftClusters/arozinite&rdquo;,
+&ldquo;ingressProfiles&rdquo;: [
+{
+&ldquo;ip&rdquo;: &ldquo;51.105.237.82&rdquo;,
+&ldquo;name&rdquo;: &ldquo;default&rdquo;,
+&ldquo;visibility&rdquo;: &ldquo;Public&rdquo;
+}
+],
+&ldquo;location&rdquo;: &ldquo;westeurope&rdquo;,
+&ldquo;masterProfile&rdquo;: {
+&ldquo;subnetId&rdquo;: &ldquo;/subscriptions/7504de90-f639-4328-a5b6-fde85e0a7fd9/resourceGroups/aro-test/providers/Microsoft.Network/virtualNetworks/aro-vnet/subnets/master-subnet&rdquo;,
+&ldquo;vmSize&rdquo;: &ldquo;Standard_D8s_v3&rdquo;
+},
+&ldquo;name&rdquo;: &ldquo;arozinite&rdquo;,
+&ldquo;networkProfile&rdquo;: {
+&ldquo;podCidr&rdquo;: &ldquo;10.128.0.0/14&rdquo;,
+&ldquo;serviceCidr&rdquo;: &ldquo;172.30.0.0/16&rdquo;
+},
+&ldquo;provisioningState&rdquo;: &ldquo;Succeeded&rdquo;,
+&ldquo;resourceGroup&rdquo;: &ldquo;aro-test&rdquo;,
+&ldquo;servicePrincipalProfile&rdquo;: {
+&ldquo;clientId&rdquo;: &ldquo;e4346940-23f1-41f6-8a39-0c09b7e54225&rdquo;,
+&ldquo;clientSecret&rdquo;: null
+},
+&ldquo;tags&rdquo;: null,
+&ldquo;type&rdquo;: &ldquo;Microsoft.RedHatOpenShift/openShiftClusters&rdquo;,
+&ldquo;workerProfiles&rdquo;: [
+{
+&ldquo;count&rdquo;: 1,
+&ldquo;diskSizeGb&rdquo;: 128,
+&ldquo;name&rdquo;: &ldquo;arozinite-r4ttx-worker-westeurope1&rdquo;,
+&ldquo;subnetId&rdquo;: &ldquo;/subscriptions/7504de90-f639-4328-a5b6-fde85e0a7fd9/resourceGroups/aro-test/providers/Microsoft.Network/virtualNetworks/aro-vnet/subnets/worker-subnet&rdquo;,
+&ldquo;vmSize&rdquo;: &ldquo;Standard_D4s_v3&rdquo;
+},
+{
+&ldquo;count&rdquo;: 1,
+&ldquo;diskSizeGb&rdquo;: 128,
+&ldquo;name&rdquo;: &ldquo;arozinite-r4ttx-worker-westeurope2&rdquo;,
+&ldquo;subnetId&rdquo;: &ldquo;/subscriptions/7504de90-f639-4328-a5b6-fde85e0a7fd9/resourceGroups/aro-test/providers/Microsoft.Network/virtualNetworks/aro-vnet/subnets/worker-subnet&rdquo;,
+&ldquo;vmSize&rdquo;: &ldquo;Standard_D4s_v3&rdquo;
+},
+{
+&ldquo;count&rdquo;: 1,
+&ldquo;diskSizeGb&rdquo;: 128,
+&ldquo;name&rdquo;: &ldquo;arozinite-r4ttx-worker-westeurope3&rdquo;,
+&ldquo;subnetId&rdquo;: &ldquo;/subscriptions/7504de90-f639-4328-a5b6-fde85e0a7fd9/resourceGroups/aro-test/providers/Microsoft.Network/virtualNetworks/aro-vnet/subnets/worker-subnet&rdquo;,
+&ldquo;vmSize&rdquo;: &ldquo;Standard_D4s_v3&rdquo;
+}
+]
+}</p>
+</div>
+		
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/debug/debug-openshiftapiserver/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title"></p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/uploading_container_image_to_ocp_registry/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Uploading local container images to OCP registry</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

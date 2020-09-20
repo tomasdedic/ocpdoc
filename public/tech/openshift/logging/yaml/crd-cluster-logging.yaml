@@ -1,0 +1,66 @@
+apiVersion: logging.openshift.io/v1
+kind: ClusterLogging
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  managementState: Managed
+  logStore:
+    type: elasticsearch
+    elasticsearch:
+      nodeSelector:
+        sel: elastic
+      tolerations:
+      - key: "iselastic"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      nodeCount: 1
+      redundancyPolicy: ZeroRedundancy
+      storage:
+        storageClassName: azure-file-zrs
+        size: 200G
+      resources:
+          limits:
+            cpu: "800m"
+            memory: "5Gi"
+          requests:
+            cpu: "100m"
+            memory: "2Gi"
+  visualization:
+    type: kibana
+    kibana:
+      tolerations:
+      - key: "iselastic"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      replicas: 1
+      resources:
+        limits:
+          memory: 2Gi
+        requests:
+          cpu: 100m
+          memory: 1Gi
+  curation:
+    type: curator
+    curator:
+    tolerations: 
+      resources:
+        limits:
+          memory: 200Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      schedule: "*/5 * * * *"
+  collection:
+    logs:
+      type: fluentd
+      fluentd:
+        tolerations: 
+        resources:
+          limits:
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 1Gi

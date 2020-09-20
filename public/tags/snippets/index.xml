@@ -1,1 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Snippets on MADDIV</title><link>/ocpdoc/tags/snippets/</link><description>Recent content in Snippets on MADDIV</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 23 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="/ocpdoc/tags/snippets/index.xml" rel="self" type="application/rss+xml"/><item><title>Openshift Snippets</title><link>/ocpdoc/tech/ocp/snippets/</link><pubDate>Thu, 23 Jul 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tech/ocp/snippets/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Snippets on DIVIDED DOCUMENTATION</title>
+    <link>//localhost:1112/tags/snippets/</link>
+    <description>Recent content in Snippets on DIVIDED DOCUMENTATION</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 23 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/snippets/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Openshift Snippets</title>
+      <link>//localhost:1112/openshift/snippets/</link>
+      <pubDate>Thu, 23 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/snippets/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

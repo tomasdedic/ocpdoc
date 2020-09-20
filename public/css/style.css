@@ -1,15 +1,16 @@
 /* Auto Numbering */
-body {counter-reset: h2}
+body {counter-reset: h2 }
 h2 {counter-reset: h3}
 h3 {counter-reset: h4}
 h4 {counter-reset: h5}
+/* body {counter-reset: item} */
 
-/* article[autonumbering] h2:before {counter-increment: h2; content: counter(h2) ". "} */
-article[autonumbering] h3:before {counter-increment: h3; content: counter(h3) ". "}
+article[autonumbering] h2:before {counter-increment: h2; content: counter(h2) ". "} 
+article[autonumbering] h3:before {counter-increment: h3; content: counter(h2) "." counter(h3) ". "}
 article[autonumbering] h4:before {counter-increment: h4; content: counter(h3) "." counter(h4) ". "}
 
-article[autonumbering] .toc__menu ul { counter-reset: item }
-article[autonumbering] .toc__menu li a:before { content: counters(item, ".") ". "; counter-increment: item }
+/* article[autonumbering] .toc_menu ul { counter-reset: item } */
+/* article[autonumbering] .toc__menu li a:before { content: counters(item, ".") ". "; counter-increment: item } */
 
 *,
 *::before,
@@ -68,7 +69,7 @@ body {
 .container {
 	position: relative;
 	width: 100%;
-	max-width: 1080px;
+	max-width: 1280px;
 	margin: 0 auto;
 }
 
@@ -269,6 +270,8 @@ figcaption {
   position: relative;
   left: 10px;
 }
+figcaption p:before {
+	 content: "Fig: ";
 
 figcaption h4 {
 	font-size: 12px;
@@ -770,19 +773,20 @@ button:not(:-moz-focusring):focus > .menu__btn-title {
 /* Table of Contents */
 .toc {
 	margin-bottom: 20px;
+	/* font-weight: 700; */
 	font-weight: 700;
 	color: #7a8288;
 	background: #fff;
 	border-color: #ebebeb;
 	border-style: solid;
 	border-top-width: 1px;
-	border-right-width: 1px;
+	border-right-width: 0px;
 	border-bottom-width: 0;
-	border-left-width: 1px;
+	border-left-width: 0px;
 }
 
 .toc__title {
-	padding: 5px 10px;
+	padding: 5px 5px;
 	color: #fff;
 	text-transform: uppercase;
 	-webkit-user-select: none;
@@ -790,7 +794,7 @@ button:not(:-moz-focusring):focus > .menu__btn-title {
 	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
-	background: #2a2a2a;
+	background: #B69F9F;
 }
 
 .toc__menu ul {
@@ -817,11 +821,16 @@ button:not(:-moz-focusring):focus > .menu__btn-title {
 .toc__menu li {
 	margin: 0;
 }
-
+.toc__menu a:before {
+	 content: "+ ";
+}
 .toc__menu a {
+
+	font-size: 12px;
+	font-weight: 500;
 	display: block;
 	padding: 5px 10px;
-	color: #e64946;
+	color: #383737;
 	border-bottom: 1px solid #ebebeb;
 }
 
@@ -841,7 +850,7 @@ button:not(:-moz-focusring):focus > .menu__btn-title {
 .authorbox__avatar {
 	float: left;
 	padding: 3px;
-	margin: 0 25px 0 0;
+	margin: 0 5px 0 0;
 	border: 1px solid #ebebeb;
 }
 

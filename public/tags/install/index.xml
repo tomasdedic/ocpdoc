@@ -1,1 +1,38 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Install on MADDIV</title><link>/ocpdoc/tags/install/</link><description>Recent content in Install on MADDIV</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 24 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="/ocpdoc/tags/install/index.xml" rel="self" type="application/rss+xml"/><item><title>Debug private install with UDR</title><link>/ocpdoc/tech/ocp/debug/install-do-ext/</link><pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tech/ocp/debug/install-do-ext/</guid><description>Instalace do extenze datacentra # remote tunnel pro proxy z proxy serveru na bastion node určený k instalaci # ssh spider@10.</description></item><item><title>OPENSHIFT AZURE INSTALL and CUSTOMIZE</title><link>/ocpdoc/tech/ocp/instalaceazure/</link><pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate><guid>/ocpdoc/tech/ocp/instalaceazure/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Install on DIVIDED DOCUMENTATION</title>
+    <link>//localhost:1112/tags/install/</link>
+    <description>Recent content in Install on DIVIDED DOCUMENTATION</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/install/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ARO install</title>
+      <link>//localhost:1112/openshift/install/installaro/</link>
+      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/install/installaro/</guid>
+      <description>Proces instalace az provider register -n Microsoft.RedHatOpenShift --wait az account set --subscription 7504de90-f639-4328-a5b6-fde85e0a7fd9 az account show # je potreba pouzit az login na SP az login --service-principal --username 126501b0-ae03-4aad-aff2-19ced106b169 --password 05b154b3-afc3-42dd-bd53-746e6fa0d368 --tenant d2480fab-7029-4378-9e54-3b7a474eb327 export RESOURCEGROUP=&amp;quot;aro-test&amp;quot; export LOCATION=&amp;quot;westeurope&amp;quot; export CLUSTER=&amp;quot;arozinite&amp;quot; az group create --name $RESOURCEGROUP --location $LOCATION az network vnet create \ --resource-group $RESOURCEGROUP \ --name aro-vnet \ --address-prefixes 10.</description>
+    </item>
+    
+    <item>
+      <title>Debug private install with UDR </title>
+      <link>//localhost:1112/openshift/install/install-do-ext/</link>
+      <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/install/install-do-ext/</guid>
+      <description>Instalace do extenze datacentra # remote tunnel pro proxy z proxy serveru na bastion node určený k instalaci # ssh spider@10.</description>
+    </item>
+    
+    <item>
+      <title>OPENSHIFT AZURE INSTALL and CUSTOMIZE</title>
+      <link>//localhost:1112/openshift/install/instalaceazure/</link>
+      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/install/instalaceazure/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

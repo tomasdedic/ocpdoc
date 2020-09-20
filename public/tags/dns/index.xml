@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DNS on DIVIDED DOCUMENTATION</title>
+    <link>//localhost:1112/tags/dns/</link>
+    <description>Recent content in DNS on DIVIDED DOCUMENTATION</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 14 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/dns/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DNS deepDive OPC/Azure/OnPremise</title>
+      <link>//localhost:1112/openshift/dns/</link>
+      <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/dns/</guid>
+      <description>How can I use a custom DNS in our cluster without modify the actual cluster DNS on top of Azure? How can I forward custom DNS and use specific DNS in an On-Premise Datacenter?</description>
+    </item>
+    
+  </channel>
+</rss>

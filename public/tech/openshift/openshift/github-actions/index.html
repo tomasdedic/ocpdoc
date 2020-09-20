@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>GitHub actions review - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="Desc">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="GitHub actions review" />
+<meta property="og:description" content="Desc" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/openshift/github-actions/" />
+<meta property="article:published_time" content="2020-06-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-06-03T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">GitHub actions review</h1>
+			<p class="post__lead">working</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-06-03T00:00:00">June 03, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/git" rel="category">GIT</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+<p>Postřehy z PoC GitHubu v kontextu České spořitelny.</p>
+<h3 id="github-hosted-runners">GitHub-Hosted Runners</h3>
+<p>běží v Azure
+mají password-less roota, tzn funkční sudo apt install atd
+jsou jednorázové - VM se po doběhnutí zahodí
+mají nodejs a Docker
+mají předcachované nějaké docker image a nejrůznější běžně používané balíky pro zlepšení performance (a šetření zdrojů MS :)
+jsou hostované v USA
+jsou placené, ale náklady nejsou drasticky vysoké, a můžeme jich mít nárazově kolik chceme
+GH garantuje latest security patche atd.</p>
+<h3 id="self-hosted-runners">Self-Hosted Runners</h3>
+<p>Je třeba udržovat hosty, může být X instancí na hosta
+Statická registrace, tedy i počet runnerů
+Stahuje se binárka z webu ručně, ale pak se umí sama aktualizovat
+workflow musí obsahovat runs-on: self-hosted (je to label, můžeme si definovat vlastní)
+podle mých pozorování se shell skripty pouští přímo na hostu, bez chrootu nebo jiných omezeních (pozn: tohle odpovídá pokud vím TeamCity)
+je možné používat tooling z hostu, ale to dělá workflow zcela nepřenosné a je to antipattern - správné je používat Actions, případně si psát vlastní</p>
+<h3 id="user-experience">User Experience</h3>
+<p>Chybí možnost spustit Workflow manuálně, natož s parametry. Jediná možnost je zobrazit si detail již ukončeného běhu a ten restartovat.
+Možnost “pustit nad větví” prostě není. Právě tato chybějící možnost prakticky znemožňuje použití pro jakoukoliv automatizaci, a bude otravovat život úplně všem.
+UI není zas tak moc user-friendly, sem tam mi chybí nějaký proklik, nebo shrnutí - neexistuje třeba na webu overview všech workflow, které mohu vidět, ideální by to bylo dle teamu.
+Pokud omezíme Marketplace (což je otázka, jestli to skutečně dává smysl, je to podobné, jako když používáme Maven pluginy, a ty také newhitelistujeme), UI stejně hledá v celém Marketplace
+Není možnost Workflow pozastavit a pokračovat na manální akci - tohoto se dá dosáhnout pouze přes vytvoření PR v rámcí původního Workflow nad jiným repository/branch, a po jeho manálním schválením pokračovat tam.
+To může vést na lepší design celého CI, ale je to složitější, a chybí pak náhled na celou pipeline.
+Nenasel jsem jednoduchý způsob, jak držet konfigurace napříč různými workflow ve stejném repu, jediná možnost je Secret (kde se ale nedá podívat na hodnotu). Dá se manuálně načíst JSON/YAML soubor z repa.</p>
+<h3 id="questions-for-github">Questions for GitHub</h3>
+<p>Některé body jsou duplicitní k předchozím postřehům (záměrně).</p>
+<ul>
+<li>What is a security model for self-hosted runners?</li>
+<li>Is action code executed in sandbox, chroot, container, or at least random uid?</li>
+<li>And same for raw shell commands?</li>
+<li>Is there a way to prevent PRs outside organization from being executed on self-hosted runners? (note PRs from inside the organization are fine). This is an important security request, disabling Actions for all public repositories is a very thin security barrier (and limits usability).</li>
+<li>Is it a supported way to auto-register new runners?</li>
+<li>I did not find any configuration for whitelisting actions from the marketplace - only setting to limit execution to local actions. Is this correct? During the initial presentation, it was stated that whitelisting is possible.</li>
+<li>The permission config for Actions states: &ldquo;Enable local Actions only for this organization; This allows all repositories to execute any Action as long as the code for the Action exists within the same repository.&rdquo; However it seems that it actually allows Actions &ldquo;within the same organization&rdquo;. Is this correct, and the description on the website is actually wrong?</li>
+<li>When organization is limited to local actions only,  even &ldquo;actions/checkout&rdquo; is blocked, it is forcing us to actually fork &ldquo;built-in&rdquo; actions as well, is this correct? Adding &ldquo;actions/*&rdquo; as allowed actions even with local action limitation would be helpful.</li>
+<li>There is no way to execute workflow manually, ideally with custom parameters (something like Jenkins pipeline with parameters) - this is very useful for automation, and this missing feature greatly decreases Actions usability across organization (and started to be annoying in about 2 hours of experimenting with Actions).</li>
+<li>At least start on revision/branch/tag on choice is needed. Example use-case: I’ve accidentally deleted binary artifact from repository and need to rebuild it, and that from specific tag X.Y.</li>
+<li>When job is re-run, the previous run logs (but also information that it executed and when) are lost forever. Expected behavior is to generate new execution entry.</li>
+<li>Looks like there is still no way for manual approvement during workflow execution (I have found this  <a href="https://github.community/t5/GitHub-Actions/GitHub-Actions-Manual-Trigger-Approvals/td-p/31504/highlight/true)">https://github.community/t5/GitHub-Actions/GitHub-Actions-Manual-Trigger-Approvals/td-p/31504/highlight/true)</a>. A lot can be accomplished by chaining workflows via making PRs, but not everything. When chaining workflows, there is now overview of the whole process.</li>
+<li>UX: When organization is limited to local actions only, Marketplace still searches everything, without any warning, and fails on execution. Best behavior in this case seems like searching allowed actions only, with a button to extend the search globally, outside organization. Are there any plans to improve this?</li>
+<li>UX: When editing a pipeline, if I copy action identification (e.g. &ldquo;<a href="mailto:docker/build-push-action@v1.1.0">docker/build-push-action@v1.1.0</a>&rdquo;), it does not find the said action. This is annoying, since there is no easy way to view documentation for already used action. It obviously searches only for human-readable names, and not the action IDs.</li>
+<li>UX: It would be nice to have all Workflows view in Team view (for all its repositories).</li>
+<li>UX: Are there plans to support non-Secret configurations? Just like K8s have secrets and configmaps.</li>
+<li>UX: Missing simple features, like getting tag/branch name without refs/ prefix, see discussion here <a href="https://github.community/t/how-to-get-just-the-tag-name/16241">https://github.community/t/how-to-get-just-the-tag-name/16241</a></li>
+</ul>
+<h4 id="summary">Summary</h4>
+<p>Points 7-9 decreases usability in our use case to the point where it is unacceptable as replacement for classic CI tools, acting only as “scriptable webhooks”.
+Point 2 (foreign PRs being executed on local infrastructure) is great security concern, which might prevent use within our organization. And we do need self-hosted runners to execute tests in local network.</p>
+</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/git/" rel="tag">GIT</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/openshift/selfsignedcert_foringress/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Self signed cert for Ingress Nginx</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/openshift/logging/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Agreggated loging</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

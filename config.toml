@@ -1,5 +1,5 @@
 baseurl = "/"
-title = "MADDIV"
+title = "DIVIDED DOCUMENTATION"
 languageCode = "en-us"
 paginate = "20" # Number of posts per page
 theme = "mainroad"
@@ -7,12 +7,12 @@ disqusShortname = "" # Enable comments by entering your Disqus shortname
 googleAnalytics = "" # Enable Google Analytics by entering your tracking id
 summaryLength = 20 # nastaveni delky summary v indexu na 20 slov
 [Author] # Used in authorbox
-  name = "Tomas Dedic"
+  name = "Tomáš Dědič"
   bio = "VeryravenRetroroyalRoger"
   avatar = "img/avatar.png"
 
 [Params]
-  subtitle = "Tech howto and pancakes, 51% motherfucker, 49% son of a bitch" 
+  subtitle = "Tech howto, pancakes and syrup"
   description = "" # Site description. Used in meta description
   #copyright = "Tomas Dedic" # copyright holder, otherwise will use site title
   opengraph = true # Enable OpenGraph if true
@@ -23,7 +23,7 @@ summaryLength = 20 # nastaveni delky summary v indexu na 20 slov
   post_navigation = true # Show post navigation at bottom of pages if true
   post_meta = ["date", "categories", "translations"] # Order of post meta information. Use ["none"] to turn off completely.
   #postSections = ["post","data","tech"] # the section pages to show on home page and the "Recent articles" widget
-   postSections = ["tech"] 
+  postSections = ["openshift"] 
   #dateformat = "2006-01-02" # change the format of dates
   #mathjax = true # Enable MathJax
   #mathjaxPath = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" # Specify MathJax path
@@ -31,8 +31,8 @@ summaryLength = 20 # nastaveni delky summary v indexu na 20 slov
   customCSS = ["css/custom.css"] # Include custom CSS files
 
 [Params.sidebar]
-  home = "right" # Configure layout for home page
-  list = "right"  # Configure layout for list pages
+  home = "left" # Configure layout for home page
+  list = "left"  # Configure layout for list pages
   single = false # Configure layout for single pages
   # Enable widgets in given order
   # widgets = ["search", "recent", "categories", "taglist", "social", "languages"]
@@ -40,7 +40,7 @@ summaryLength = 20 # nastaveni delky summary v indexu na 20 slov
   widgets = ["recent", "taglist"]
 
 [Params.widgets]
-  recent_num = 10 # Set the number of articles in the "Recent articles" widget
+  recent_num = 15 # Set the number of articles in the "Recent articles" widget
   tags_counter = true # Enable counter for each tag in "Tags" widget (disabled by default)
 
 [Params.widgets.social]

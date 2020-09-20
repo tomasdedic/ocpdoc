@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>OPENSHIFT API-SERVER TLS handshake error - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="TLS handshake error">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="OPENSHIFT API-SERVER TLS handshake error" />
+<meta property="og:description" content="TLS handshake error" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/openshift/debug/openshiftapiserver-tls/" />
+<meta property="article:published_time" content="2020-08-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-08-03T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">OPENSHIFT API-SERVER TLS handshake error</h1>
+			<p class="post__lead">DEBUG</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-08-03T00:00:00">August 03, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">Openshift</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+      <div class="post__item">
+        *file: ebug-routing *
+      </div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc scale --replicas <span style="color:#666">1</span> -n openshift-kube-apiserver-operator deployments/kube-apiserver-operator
+oc scale --replicas <span style="color:#666">1</span> -n openshift-apiserver-operator deployments/openshift-apiserver-operator
+oc delete -n openshift-kube-apiserver podnetworkconnectivitycheck --all
+</code></pre></div>
+      <div class="post__item">
+        *file: ebug-TLS *
+      </div><p><strong>Původce: Objevily se problémy s přihlašováním. Všechny api-resources poskytovane openshift-api jsou částečně nedostupné.</strong>
+Jelikož je problém objevuje jen na 1/3 podů, cluster je částečně funkční.Přihlašování dělám přez token jednoho z podů openshift-apiserver &ndash;&gt; /run/secrets/kubernetes.io/serviceaccount/token</p>
+<h3 id="gather-informations">Gather Informations</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get proxy.config cluster -o yaml
+
+  apiVersion: config.openshift.io/v1
+  kind: Proxy
+  spec:
+    httpProxy: http://10.88.233.244:3128
+    httpsProxy: http://10.88.233.244:3128
+    noProxy: .cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.csint.cz,10.128.0.0/14
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get clusteroperator
+  NAME                                       VERSION                             AVAILABLE   PROGRESSING   DEGRADED   SINCE
+  authentication                             4.6.0-0.nightly-2020-07-24-111750   True        False         True       5d19h
+  image-registry                             4.6.0-0.nightly-2020-07-24-111750   True        False         True       6d20h
+  monitoring                                 4.6.0-0.nightly-2020-07-24-111750   False       True          True       35h
+  openshift-apiserver                        4.6.0-0.nightly-2020-07-24-111750   False       False         False      18h
+
+<span style="color:#080;font-style:italic"># involved events</span>
+oc get events --all-namespaces -o json|jq -r <span style="color:#b44">&#39;.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}&#39;</span>
+oc get events -n openshift-apiserver-operator
+
+<span style="color:#080;font-style:italic"># api resources</span>
+oc api-resources
+
+  error: unable to retrieve the <span style="color:#a2f">complete</span> list of server APIs: 
+  authorization.openshift.io/v1: the server is currently unable to handle the request,
+  oauth.openshift.io/v1: the server is currently unable to handle the request,
+  packages.operators.coreos.com/v1: the server is currently unable to handle the request,
+  route.openshift.io/v1: the server is currently unable to handle the request,
+  security.openshift.io/v1: the server is currently unable to handle the request
+
+<span style="color:#080;font-style:italic"># log agregation</span>
+stern -n openshift-apiserver apiserver
+
+  apiserver-hv5p5 openshift-apiserver I0524 22:17:43.670943       <span style="color:#666">1</span> log.go:172<span style="color:#666">]</span> http: TLS handshake error from 10.131.0.1:45118: EOF
+  apiserver-hv5p5 openshift-apiserver I0524 22:17:47.656841       <span style="color:#666">1</span> log.go:172<span style="color:#666">]</span> http: TLS handshake error from 10.131.0.1:45152: EOF
+  apiserver-hv5p5 openshift-apiserver I0524 22:17:57.658147       <span style="color:#666">1</span> log.go:172<span style="color:#666">]</span> http: TLS handshake error from 10.131.0.1:45240: 
+
+<span style="color:#080;font-style:italic"># kube-apiserver </span>
+stern -n openshift-kube-apiserver kube-apiserver|grep -Eo <span style="color:#b44">&#34;E[[:digit:]]{4}.*&#34;</span>
+
+  E0805 05:01:25.907233      <span style="color:#666">17</span> controller.go:114<span style="color:#666">]</span> loading OpenAPI spec <span style="color:#a2f;font-weight:bold">for</span> <span style="color:#b44">&#34;v1.build.openshift.io&#34;</span> failed with: failed to retrieve openAPI spec, http error: ResponseCode: 503, Body: Error trying to reach service: <span style="color:#b44">&#39;net/http: TLS handshake timeout&#39;</span>, Header: map<span style="color:#666">[</span>Content-Type:<span style="color:#666">[</span>text/plain; <span style="color:#b8860b">charset</span><span style="color:#666">=</span>utf-8<span style="color:#666">]</span> X-Content-Type-Options:<span style="color:#666">[</span>nosniff<span style="color:#666">]]</span>
+  E0805 05:01:45.937641      <span style="color:#666">17</span> controller.go:114<span style="color:#666">]</span> loading OpenAPI spec <span style="color:#a2f;font-weight:bold">for</span> <span style="color:#b44">&#34;v1.image.openshift.io&#34;</span> failed with: failed to retrieve openAPI spec, http error: ResponseCode: 503, Body: Error trying to reach service: <span style="color:#b44">&#39;net/http: TLS handshake timeout&#39;</span>, Header: map<span style="color:#666">[</span>Content-Type:<span style="color:#666">[</span>text/plain; <span style="color:#b8860b">charset</span><span style="color:#666">=</span>utf-8<span style="color:#666">]</span> X-Content-Type-Options:<span style="color:#666">[</span>nosniff<span style="color:#666">]]</span>
+
+
+</code></pre></div><h3 id="debug-description">Debug Description</h3>
+<h4 id="1-tcpdump-on-api-server-pod">1. tcpdump on api-server pod</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc debug node/&lt;nodename&gt;
+ <span style="color:#080;font-style:italic"># get container pid</span>
+chroot /host crictl ps |grep openshift-apiserver
+chroot /host crictl inspect 5c831210d2594 |grep <span style="color:#b44">&#39;&#34;pid&#34;:&#39;</span>
+ <span style="color:#080;font-style:italic"># nsenter run program in different namespaces</span>
+nsenter -n -t <span style="color:#b8860b">$pid</span> -- ip a
+nsenter -n -t <span style="color:#666">2205119</span> -- tcpdump -nn -i eth0 <span style="color:#b44">&#34;tcp port 8443&#34;</span> -w /host/tmp/tcpdump.pcap
+<span style="color:#080;font-style:italic">#copy output to localhost</span>
+oc get pods  <span style="color:#080;font-style:italic">#oaz-dev-tnhr6-master-2-debug</span>
+oc cp oaz-dev-tnhr6-master-2-debug:/host/tmp/tcpdump.pcap tcpdump.pcap
+<span style="color:#080;font-style:italic"># and visualize in wireshark</span>
+</code></pre></div><p>Two errors occures in logs and their net stack errors:
+<figure>
+    <img src="img/Screenshot_2020-07-30_14-04-29.png"/> <figcaption>
+            <h4>EOF</h4>
+        </figcaption>
+</figure>
+
+<strong>http: TLS handshake error from xxx: EOF</strong><br>
+This means that while the server and the client were performing the TLS handshake, the server saw the connection being closed, aka EOF.
+<figure>
+    <img src="img/Screenshot_2020-07-30_14-08-47.png"/> <figcaption>
+            <h4>i/o timeout</h4>
+        </figcaption>
+</figure>
+
+<strong>http: TLS handshake error from xxx: read tcp x.xxx.xxx.xxx:443-&gt;xxx:6742: i/o timeout</strong><br>
+This means that while the server was waiting to read from the client during the TLS handshake, the client didn&rsquo;t send anything before closing the connection.</p>
+<h4 id="2-netstat">2. netstat</h4>
+<p>oc rsh -n openshift-apiserver apiserver-hv5p5
+yum install net-tools
+netstat -nputw
+netstat -nputwc</p>
+<ul>
+<li>z 10.131.0.1 prichazeji requesty a jsou ve stavu ESTABILISHED</li>
+<li>nektere se objevi v chybach, zda se ze bude problem s timeoutem</li>
+</ul>
+<h4 id="3-use-ss-to-list-all-tcp4-connections">3. use SS to list all tcp4 connections</h4>
+<p>from master node</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f;font-weight:bold">while</span> true;<span style="color:#a2f;font-weight:bold">do</span> sleep 2;ss -nt4pe -o state established &gt;sslog;<span style="color:#a2f;font-weight:bold">done</span>
+<span style="color:#080;font-style:italic">#find source ports in log</span>
+</code></pre></div><p>The ss program is using a sock_diag(7) netlink socket to retrieve information about sockets. But the sock_diag interface doesn&rsquo;t support a &ldquo;monitor&rdquo;/watching/listening mode, as rtnetlink(7) does. You can only do queries via a sock_diag socket.</p>
+<h4 id="4-force-restart-api-servers">4. force restart api servers</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># openshift-api</span>
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -n openshift-apiserver -o name<span style="color:#666">)</span>; oc delete -n openshift-apiserver <span style="color:#b8860b">$i</span>;end
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -n openshift-sdn --selector <span style="color:#b8860b">app</span><span style="color:#666">=</span>sdn -o name<span style="color:#666">)</span>; oc delete -n openshift-sdn <span style="color:#b8860b">$i</span>;end
+<span style="color:#080;font-style:italic"># openshift-kube-apiserver runs as static pod</span>
+<span style="color:#080;font-style:italic"># from masternode {kube-apiserver,kube-apiserver-check-endpoints}</span>
+crictl ps |grep kube-apiserver
+crictl stop/start  UID
+</code></pre></div><h4 id="5-delete-podnetworkconnectivitycheck">5. delete podnetworkconnectivitycheck</h4>
+<p>I have found some errors like routing to non-existing pods, delete will force to update.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc scale --replicas <span style="color:#666">0</span> -n openshift-kube-apiserver-operator deployments/openshift-kube-apiserver-operator
+oc scale --replicas <span style="color:#666">0</span> -n openshift-apiserver-operator deployments/openshift-apiserver-operator
+oc delete -n openshift-kube-apiserver podnetworkconnectivitycheck --all
+oc delete -n openshift-apiserver podnetworkconnectivitycheck --all
+oc scale --replicas <span style="color:#666">1</span> -n openshift-kube-apiserver-operator deployments/openshift-kube-apiserver-operator
+oc scale --replicas <span style="color:#666">1</span> -n openshift-apiserver-operator deployments/openshift-apiserver-operator
+</code></pre></div><h4 id="6-curl-api-from-different-locations">6. curl API from different locations</h4>
+<p>Curl does not support CIDR in NO_PROXY &ldquo;A comma-separated list of host names that shouldn&rsquo;t go through any proxy is set in &hellip; NO_PROXY&rdquo;.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># openshift apiserver endpoints</span>
+oc get endpoints -n openshift-apiserver
+  NAME   ENDPOINTS                                            AGE
+  api    10.128.0.40:8443,10.129.0.28:8443,10.130.0.55:8443   11d
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic">#kube apiservers</span>
+oc get pods -n openshift-kube-apiserver -o wide|sed -n <span style="color:#b44">&#39;1p;/kube-apiserver/p&#39;</span>|awk <span style="color:#b44">&#39;{print $1&#34;  &#34;$6&#34;   &#34;$7}&#39;</span>
+
+  NAME                                   IP              NODE
+  kube-apiserver-oaz-dev-tnhr6-master-0  10.88.233.196   oaz-dev-tnhr6-master-0
+  kube-apiserver-oaz-dev-tnhr6-master-1  10.88.233.198   oaz-dev-tnhr6-master-1
+  kube-apiserver-oaz-dev-tnhr6-master-2  10.88.233.200   oaz-dev-tnhr6-master-2
+</code></pre></div><pre><code class="language-ssh" data-lang="ssh">oc rsh  -n openshift-kube-apiserver kube-apiserver-oaz-dev-tnhr6-master-0
+for i in {10.128.0.40:8443,10.129.0.28:8443,10.130.0.55:8443}; do echo -e &quot;https://$i/apis&quot;;curl -k https://$i/apis --header &quot;Authorization: Bearer $TOKEN&quot; --connect-timeout 10 ;echo;done
+
+  https://10.128.0.40:8443/apis
+  curl: (28) Operation timed out after 10001 milliseconds with 0 out of 0 bytes received
+  
+  https://10.129.0.28:8443/apis
+  {
+    &quot;kind&quot;: &quot;APIGroupList&quot;,
+    &quot;groups&quot;: []
+  }
+  https://10.130.0.55:8443/apis
+  {
+    &quot;kind&quot;: &quot;APIGroupList&quot;,
+    &quot;groups&quot;: []
+  }
+</code></pre><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc rsh  -n openshift-kube-apiserver kube-apiserver-oaz-dev-tnhr6-master-1
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">{</span>10.128.0.40:8443,10.129.0.28:8443,10.130.0.55:8443<span style="color:#666">}</span>; <span style="color:#a2f;font-weight:bold">do</span> <span style="color:#a2f">echo</span> -e <span style="color:#b44">&#34;https://</span><span style="color:#b8860b">$i</span><span style="color:#b44">/apis&#34;</span>;curl -k https://<span style="color:#b8860b">$i</span>/apis --header <span style="color:#b44">&#34;Authorization: Bearer </span><span style="color:#b8860b">$TOKEN</span><span style="color:#b44">&#34;</span> --connect-timeout <span style="color:#666">10</span> ;echo;<span style="color:#a2f;font-weight:bold">done</span>
+https://10.128.0.40:8443/apis
+<span style="color:#666">{</span>
+  <span style="color:#b44">&#34;kind&#34;</span>: <span style="color:#b44">&#34;APIGroupList&#34;</span>,
+  <span style="color:#b44">&#34;groups&#34;</span>: <span style="color:#666">[]</span>
+<span style="color:#666">}</span>
+https://10.129.0.28:8443/apis
+<span style="color:#666">{</span>
+  <span style="color:#b44">&#34;kind&#34;</span>: <span style="color:#b44">&#34;APIGroupList&#34;</span>,
+  <span style="color:#b44">&#34;groups&#34;</span>: <span style="color:#666">[]</span>
+<span style="color:#666">}</span>
+https://10.130.0.55:8443/apis
+curl: <span style="color:#666">(</span>28<span style="color:#666">)</span> Operation timed out after <span style="color:#666">10001</span> milliseconds with <span style="color:#666">0</span> out of <span style="color:#666">0</span> bytes received
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc rsh  -n openshift-kube-apiserver kube-apiserver-oaz-dev-tnhr6-master-2
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">{</span>10.128.0.40:8443,10.129.0.28:8443,10.130.0.55:8443<span style="color:#666">}</span>; <span style="color:#a2f;font-weight:bold">do</span> <span style="color:#a2f">echo</span> -e <span style="color:#b44">&#34;https://</span><span style="color:#b8860b">$i</span><span style="color:#b44">/apis&#34;</span>;curl -k https://<span style="color:#b8860b">$i</span>/apis --header <span style="color:#b44">&#34;Authorization: Bearer </span><span style="color:#b8860b">$TOKEN</span><span style="color:#b44">&#34;</span> --connect-timeout <span style="color:#666">10</span> ;echo;<span style="color:#a2f;font-weight:bold">done</span>
+https://10.128.0.40:8443/apis
+<span style="color:#666">{</span>
+  <span style="color:#b44">&#34;kind&#34;</span>: <span style="color:#b44">&#34;APIGroupList&#34;</span>,
+  <span style="color:#b44">&#34;groups&#34;</span>: <span style="color:#666">[]</span>
+<span style="color:#666">}</span>
+https://10.129.0.28:8443/apis
+<span style="color:#666">{</span>
+  <span style="color:#b44">&#34;kind&#34;</span>: <span style="color:#b44">&#34;APIGroupList&#34;</span>,
+  <span style="color:#b44">&#34;groups&#34;</span>: <span style="color:#666">[]</span>
+<span style="color:#666">}</span>
+https://10.130.0.55:8443/apis
+curl: <span style="color:#666">(</span>28<span style="color:#666">)</span> Operation timed out after <span style="color:#666">10001</span> milliseconds with <span style="color:#666">0</span> out of <span style="color:#666">0</span> bytes received
+</code></pre></div></div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/debug/" rel="tag">DEBUG</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/openshift/debug/debug-monitoring-degraded/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Monitoring operator degraded </p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/openshift/todo/todo/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">TODO LIST</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

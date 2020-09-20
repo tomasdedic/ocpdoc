@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Prometheus on MADDIV</title>
+    <link>/tags/prometheus/</link>
+    <description>Recent content in Prometheus on MADDIV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/prometheus/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>deploy BIOMETRY on GKE</title>
+      <link>/post/biometry/</link>
+      <pubDate>Sat, 02 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/biometry/</guid>
+      <description>Snažim se přesunout aplikaci Biometrie do GKE, v podstatě se v základu jedná o dvě části a to aplikční část běžící na Tomcat a databázová část na MSSQL.</description>
+    </item>
+    
+  </channel>
+</rss>

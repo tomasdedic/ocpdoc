@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Case usage of Artifactory as container proxy for public images - DIVIDED DOCUMENTATION</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="Konfigurace Artifactory jako &#34;proxy&#34; pro &#34;container registries&#34; ve veřejné síti ">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="Case usage of Artifactory as container proxy for public images" />
+<meta property="og:description" content="Konfigurace Artifactory jako &#34;proxy&#34; pro &#34;container registries&#34; ve veřejné síti " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/openshift/artifactory_as_proxy_for_containerregistries/" />
+<meta property="article:published_time" content="2020-09-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-09-20T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post" autonumbering>
+		<header class="post__header">
+			<h1 class="post__title">Case usage of Artifactory as container proxy for public images</h1>
+			<p class="post__lead">install and configuration</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-09-20T00:00:00">September 20, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">Openshift</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+        <div class="post__toc toc">
+	      <div class="toc__title">Content</div>
+	      <div class="toc__menu">
+          
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#artifactory-fact">Artifactory fact</a></li>
+    <li><a href="#použití-proxy-repository-při-instalaci-ocp-quayio-repository">Použití &ldquo;proxy repository&rdquo; při instalaci OCP (QUAY.IO repository)</a>
+      <ul>
+        <li><a href="#create-pull-secret-file-for-install-configyaml">CREATE PULL SECRET FILE for install-config.yaml</a></li>
+        <li><a href="#configure-remote-repository-for-install-configyaml">Configure remote repository for install-config.yaml</a></li>
+        <li><a href="#debugtest-bootstrap-machine-for-configuration-set">DEBUG/TEST bootstrap machine for configuration set</a></li>
+      </ul>
+    </li>
+    <li><a href="#prezentace-imagecontentsourcepolicy-na-nodech">Prezentace imageContentSourcepolicy na nodech</a></li>
+    <li><a href="#obecné-řešení-použití-proxy-repository">Obecné řešení použití proxy repository</a></li>
+    <li><a href="#change-proxy-repository-adress-and-pullsecrets-on-running-cluster">Change proxy repository adress and pullsecrets on running cluster</a></li>
+  </ul>
+</nav>
+	      </div>
+        </div>
+      
+      <div class="post__item">
+        *file: artifactory_as_containerproxy *
+      </div><p>Pro instalaci a používání OCP v privátní síti bude jako zdroj všech kontejnerů využita Artifactory. Všechny remote repository (vnější) budou whitelistovány přez ní a bude pro ně vytvořena konfigurace.</p>
+<h2 id="artifactory-fact">Artifactory fact</h2>
+<p><a href="https://artifactory.csas.elostech.cz/ui/login/">Artifactory link</a> &ndash; adresa se může do budoucna lišit udávám jen z důvodu reference</p>
+<p>repository:</p>
+<ul>
+<li>artifactory.csas.elostech.cz/docker-quay (remote repositoru directed to  <strong>quay.io</strong>)</li>
+<li>artifactory.csas.elostech.cz/docker-quay-local (local repository for mirroring)</li>
+</ul>
+<p>Na artifactory je potřeba konfiguraci typu remote repository vytvořit. Zatím nejsou standartizovány názvy. Obrázek níže je informativního charakteru.
+<figure>
+    <img src="img/remote_repository_settings.png"
+         alt="artifactory remote repository settings"/> <figcaption>
+            <p>artifactory remote repository settings</p>
+        </figcaption>
+</figure>
+</p>
+<h2 id="použití-proxy-repository-při-instalaci-ocp-quayio-repository">Použití &ldquo;proxy repository&rdquo; při instalaci OCP (QUAY.IO repository)</h2>
+<p>Upravíme konfigurační soubor install-config.yaml tak aby použil remote repository jako mirror a vytvořil tak CRD ImageContentSourcePolicy.<br>
+<strong>Trusted TLS cert must be used for docker registry, there is no option to use insecure container repo during install.</strong></p>
+<h3 id="create-pull-secret-file-for-install-configyaml">CREATE PULL SECRET FILE for install-config.yaml</h3>
+<p>Now we will create pull secret against Artifactory. Content of this file will be put to .pullSecret key in install-config.yaml</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># pull secret is from redhat for quay.io repository usage</span>
+ <span style="color:#080;font-style:italic"># create auth</span>
+<span style="color:#a2f">echo</span> -n <span style="color:#b44">&#39;usernametoartifactory:password&#39;</span>|base64 -w0
+ <span style="color:#080;font-style:italic"># download pull secret file from redhat and add artifactory secret to it</span>
+cat pull-secret.json |jq <span style="color:#b44">&#39;.auths += {&#34;artifactory.csas.elostech.cz&#34;: {&#34;auth&#34;: &#34;dXNxxxzQxckpGQXVISk5pMg==&#34;,&#34;email&#34;: &#34;dedtom@gmail.com&#34;}}&#39;</span> &gt;pull-secret2.json
+</code></pre></div><h3 id="configure-remote-repository-for-install-configyaml">Configure remote repository for install-config.yaml</h3>
+<p>In this case we will use <strong>remote repository</strong> configured on <strong>Artifactory</strong></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc adm release info --image-for<span style="color:#666">=</span>machine-os-content quay.io/openshift-release-dev/ocp-release@sha256:ea7ac3ad42169b39fce07e5e53403a028644810bee9a212e7456074894df40f3                                                                                                                     
+ &gt; quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:be4802b6fe6343053d9f5668acecd68dfb38c4be364a9a3c06e818d56ed61ad1
+ <span style="color:#080;font-style:italic"># decode Redhat quay.io pull secret:</span>
+cat pull-secret2.json|jq -r <span style="color:#b44">&#39;.auths.&#34;quay.io&#34;.auth&#39;</span>|base64 -d
+ &gt; openshift-release-dev+dedtomrund93wu0v54cs60osj6x1sk5i:Z56AATkk2OIGKV9OJVTKP8T3G357329ECKAUX0LBRHIGUGJ4H3UGOLHSIJPNHK4N
+ <span style="color:#080;font-style:italic"># it is a robot login</span>
+docker login -u firstpart -p secondpart quay.io
+ <span style="color:#080;font-style:italic"># test it</span>
+podman pull quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:8a752dfed8c27a60d13f3dc578a1ea15efb2800041810204dd7b3bb79eedee04
+</code></pre></div><p>add this part to install-config.yaml</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># artifactory.csas.elostech.cz/docker-quay is remote repository</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">imageContentSources</span>:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- artifactory.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-release<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-release<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- artifactory.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
+</span></code></pre></div><p><strong>On artifactory UI page go to Remote registry, enable Token Authentication and in Advanced tab&ndash;&gt; Remote Authentication add
+username and password from</strong></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> cat pull-secret2.json|jq -r <span style="color:#b44">&#39;.auths.&#34;quay.io&#34;.auth&#39;</span>|base64 -d
+</code></pre></div><p><figure>
+    <img src="img/artifactory.png"
+         alt="artifactory remote authentication settings"/> <figcaption>
+            <p>artifactory remote authentication settings</p>
+        </figcaption>
+</figure>
+
+and test it</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker pull artifactory.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev@sha256:8a752dfed8c27a60d13f3dc578a1ea15efb2800041810204dd7b3bb79eedee04
+</code></pre></div><p>install:
+copy install-config.yaml to ./install dir and run</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">./openshift-install create cluster --log-level debug --dir ./install
+</code></pre></div><h3 id="debugtest-bootstrap-machine-for-configuration-set">DEBUG/TEST bootstrap machine for configuration set</h3>
+<p><em>Only fact check.</em></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># use id_rsa  key used during installation </span>
+ssh core@bootSTRAPmachineIP
+
+cat /etc/containers/registries.conf
+<span style="color:#666">[[</span>registry<span style="color:#666">]]</span>
+<span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;quay.io/openshift-release-dev/ocp-release&#34;</span>
+<span style="color:#b8860b">insecure</span> <span style="color:#666">=</span> <span style="color:#a2f">false</span>
+mirror-by-digest-only <span style="color:#666">=</span> <span style="color:#a2f">true</span>
+
+<span style="color:#666">[[</span>registry.mirror<span style="color:#666">]]</span>
+<span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;artifactory.csas.elostech.cz/docker-quay/ocp-release&#34;</span>
+<span style="color:#b8860b">insecure</span> <span style="color:#666">=</span> <span style="color:#a2f">false</span>
+
+</code></pre></div><ul>
+<li><strong>The first working mirror is used to supply the pulled image</strong></li>
+<li><strong>The main registry will only be used if no other mirror works</strong></li>
+<li><strong>From the system context, the Insecure flags are used as fallback</strong></li>
+</ul>
+<h2 id="prezentace-imagecontentsourcepolicy-na-nodech">Prezentace imageContentSourcepolicy na nodech</h2>
+<p>Soubor <strong>/etc/containers/registries.conf</strong> plnen je  operatorem z CRD imageContentSourcepolicy(vezme vsechny NAME a conctatne je do jednoho souboru) jako Machineconfig</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get machineconfig|grep registries
+ &gt; 99-master-c8f3919a-ee7b-4c98-a1f7-96f7bdbb3747-registries   
+ &gt; 99-worker-72f09b45-8b75-4609-9071-b2c50143f309-registries
+
+oc get imeagecontentsourcepolicy
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># zkraceno</span>
+oc get machineconfig 99-master-c8f3919a-ee7b-4c98-a1f7-96f7bdbb3747-registries -o yaml
+
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+    machineconfiguration.openshift.io/role: master
+  ownerReferences:
+  - apiVersion: config.openshift.io/v1
+    kind: Image
+    name: cluster
+    uid: 1fec13ef-ba84-438a-bf81-399fc84938c5
+  resourceVersion: <span style="color:#b44">&#34;32543687&#34;</span>
+  selfLink: /apis/machineconfiguration.openshift.io/v1/machineconfigs/99-master-d3244d0a-138d-443a-bb62-6a1bff43fd4e-registries
+  uid: f1d61040-b385-445d-b3cf-fdb5473ac9e3
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents:
+          source: data:text/plain,unqualified-search-registries%20%3D%20%5B%22registry.access.redhat.com%22%2C%20%22docker.io%22%5D%0A%0A%5B%5Bregistry%5D%5D%0A%20%20prefix%20%3D%20%22%22%0A%20%20location%20%3D%20%22quay.io%2Fopenshift-release-dev%2Focp-release%22%0A%20%20mirror-by-digest-only%20%3D%20true%0A%0A%20%20%5B%5Bregistry.mirror%5D%5D%0A%20%20%20%20location%20%3D%20%22artifactory.csas.elostech.cz%2Fdocker-quay%2Fopenshift-release-dev%2Focp-release%22%0A%0A%5B%5Bregistry%5D%5D%0A%20%20prefix%20%3D%20%22%22%0A%20%20location%20%3D%20%22quay.io%2Fopenshift-release-dev%2Focp-v4.0-art-dev%22%0A%20%20mirror-by-digest-only%20%3D%20true%0A%0A%20%20%5B%5Bregistry.mirror%5D%5D%0A%20%20%20%20location%20%3D%20%22artifactory.csas.elostech.cz%2Fdocker-quay%2Fopenshift-release-dev%2Focp-v4.0-art-dev%22%0A
+        filesystem: root
+        mode: <span style="color:#666">420</span>
+        path: /etc/containers/registries.conf
+  fips: <span style="color:#a2f">false</span>
+  kernelArguments: null
+  kernelType: <span style="color:#b44">&#34;&#34;</span>
+  osImageURL: <span style="color:#b44">&#34;&#34;</span>
+</code></pre></div><p>O zapis  se  tedy stara coreOS ignition.</p>
+<h2 id="obecné-řešení-použití-proxy-repository">Obecné řešení použití proxy repository</h2>
+<blockquote>
+<p>pozn: konfigurace repozitářů bude řešena přez ArgoCD v rámci jeho inicializace.</p>
+</blockquote>
+<p><strong>Problém je že imageContentSourcepolicy tedy vytvoří machineconfig a následně soubor registries.conf ale vždy obsahuje mirror-by-digest-only=true a taky nelze upravovat na přímo ostatní parametry. Mirror-by-digest-only se použije jen pro instalaci a upgrade kde se odkazujeme digestem.</strong></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc explain Imagecontentsourcepolicy --recursive
+</code></pre></div><p>Přez machineconfig vytvoříme  soubory v /etc/containers/registries.conf.d/ které budou obsahovat kustomizovanou konfiguraci pro jednotlivé registry.<br>
+příklad konfigurace:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>machineconfiguration.openshift.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>MachineConfig<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">labels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">machineconfiguration.openshift.io/role</span>:<span style="color:#bbb"> </span>worker<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#666">99</span>-csas-mirror-registry<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">config</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">ignition</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">version</span>:<span style="color:#bbb"> </span><span style="color:#666">2.2.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">storage</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">files</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- <span style="color:#008000;font-weight:bold">contents</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>data:text/plain;charset=utf-8;base64,W1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIucGtnLmdpdGh1Yi5jb20iCiAgbWlycm9yLWJ5LWRpZ2VzdC1vbmx5ID0gZmFsc2UKCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAiYXJ0aWZhY3RvcnkuY3Nhcy5lbG9zdGVjaC5jejo0NDMvZG9j<span style="color:#bbb">
+</span><span style="color:#bbb"></span>a2VyIgoKW1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIuaW8iCiAgbWlycm9yLWJ5LWRpZ2VzdC1vbmx5ID0gZmFsc2UKCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAiYXJ0aWZhY3RvcnkuY3Nhcy5lbG9zdGVjaC5jejo0NDMvZG9ja2VyIgo=<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">filesystem</span>:<span style="color:#bbb"> </span>root<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">path</span>:<span style="color:#bbb"> </span>/etc/containers/registries.conf.d/csas-mirror-registry.conf<span style="color:#bbb">
+</span></code></pre></div><p>příklad konfigurace, remote repository musí být na artifactory nakonfigurovány:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#a2f">echo</span> <span style="color:#b44">&#39;W1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIucGtnLmdpdGh1Yi5jb20iCiAgbWlycm9yLWJ5LWRpZ2VzdC1vbmx5ID0gZmFsc2UKCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAiYXJ0aWZhY3RvcnkuY3Nhcy5lbG9zdGVjaC5jejo0NDMvZG9j
+</span><span style="color:#b44">a2VyIgoKW1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIuaW8iCiAgbWlycm9yLWJ5LWRpZ2VzdC1vbmx5ID0gZmFsc2UKCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAiYXJ0aWZhY3RvcnkuY3Nhcy5lbG9zdGVjaC5jejo0NDMvZG9ja2VyIgo=&#39;</span>|base64 -d
+<span style="color:#666">[[</span>registry<span style="color:#666">]]</span>
+  <span style="color:#b8860b">prefix</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;&#34;</span>
+  <span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;docker.pkg.github.com&#34;</span>
+  mirror-by-digest-only <span style="color:#666">=</span> <span style="color:#a2f">false</span>
+
+  <span style="color:#666">[[</span>registry.mirror<span style="color:#666">]]</span>
+    <span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;artifactory.csas.elostech.cz:443/docker&#34;</span>
+
+<span style="color:#666">[[</span>registry<span style="color:#666">]]</span>
+  <span style="color:#b8860b">prefix</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;&#34;</span>
+  <span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;docker.io&#34;</span>
+  mirror-by-digest-only <span style="color:#666">=</span> <span style="color:#a2f">false</span>
+
+  <span style="color:#666">[[</span>registry.mirror<span style="color:#666">]]</span>
+    <span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;artifactory.csas.elostech.cz:443/docker&#34;</span>
+</code></pre></div><p><em>pozn: abychom mohli delat presmerovani potrebujeme dostat do souboru hodnoty</em></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#666">[[</span>registry<span style="color:#666">]]</span>
+<span style="color:#b8860b">prefix</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;presmerovani_repozitare&#34;</span>
+<span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;pozadovany_repozitar&#34;</span>
+</code></pre></div><h2 id="change-proxy-repository-adress-and-pullsecrets-on-running-cluster">Change proxy repository adress and pullsecrets on running cluster</h2>
+<p>How to change a repository values on running cluster (adress of artifactory has changed).
+Content of .pullSecret is stored in <strong>MachineConfig</strong> and as a secret in</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get machineconfig 00-master -o yaml|grep artifactory -A4
+oc get machineconfig 00-worker -o yaml|grep artifactory -A4
+ <span style="color:#080;font-style:italic"># nebo si vsechny hodnoty muzeme vytahnout z renderconfigu</span>
+</code></pre></div><p>Machineconfig odkazuje na soubor <strong>/var/lib/kubelet/config.json</strong>  ktery obsahuje pull secrety pro container registry. Neni potreba ho menit prez machineconfig ale pokud upravime
+<strong>secret openshift-config/pull-secret</strong> tak se jeho hodnoty propisi sem (neprisel jsem na to jak zjistit vazbu, zjisteno experimentalne)</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:#b44">&#39;.data[]&#39;</span>|base64 -d
+ <span style="color:#080;font-style:italic"># a pridani hodnot pro novou artifactory repository</span>
+ <span style="color:#a2f">echo</span> -n <span style="color:#b44">&#39;username:password&#39;</span>|base64 -w0
+ <span style="color:#080;font-style:italic"># pridani nove hodnoty do stavajicich pull-secretu</span>
+ oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:#b44">&#39;.data[]&#39;</span>|base64 -d|jq <span style="color:#b44">&#39;.auths += {&#34;artifactory.csas.elostech.cz&#34;:{&#34;auth&#34;:&#34;b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==&#34;,&#34;email&#34;:&#34;dedtom@gmail.com&#34;}}&#39;</span> &gt;pull-secret.json
+ oc <span style="color:#a2f">set</span> data secret/pull-secret -n openshift-config --from-file<span style="color:#666">=</span>.dockerconfigjson<span style="color:#666">=</span>pull-secret.json
+ <span style="color:#080;font-style:italic"># dojde k postupnemu restartu vsech nodu</span>
+</code></pre></div><p>Zbyva jeste upravit zaznam v machineconfigu pro *<em>/etc/containers/registries.conf a /etc/containers/registries.conf.d/</em> **
+Tento soubor je castecne definovan z  <strong>crd imageContentSourcepolicy</strong> případně z custom <strong>machineconfig</strong>, po jejich úpravě se provede restart nodů.</p>
+<p><strong>!HAPPY GUNNING!</strong></p>
+</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/artifactory/" rel="tag">Artifactory</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/containers/" rel="tag">Containers</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/openshift/install/installaro/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">ARO install</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 DIVIDED DOCUMENTATION.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

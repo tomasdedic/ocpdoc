@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title> - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.69.0-DEV" />
+	<meta property="og:title" content="" />
+<meta property="og:description" content="FluentD The fluentd component runs as a daemonset it means one pod runs on each node in cluster. As nodes are added/removed, kubernetes orchestration ensures that there is one fluentd pod running on each node." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/logging/02-fluentd-openshiftscope/" />
+
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title"></h1>
+			
+		</header>
+		
+<div class="content post__content clearfix">
+      <h1 id="fluentd">FluentD</h1>
+<p>The fluentd component runs as a <strong>daemonset</strong> it means one pod runs on each node in cluster. As nodes are added/removed, kubernetes orchestration ensures that there is one fluentd pod running on each node. Fluentd is configured to run as a privileged container. <strong>It is able to collect logs from all pods on the node, convert them to a structured format and pass them to log aggregator.</strong></p>
+<h2 id="architecture">Architecture</h2>
+<p>Kubernetes, containerized applications that log to stdout and stderr have their log streams captured and redirected to JSON files on the nodes. The Fluentd Pod will tail these log files, filter log events, transform the log data, and ship it off to the Elasticsearch logging backend
+<figure>
+    <img src="img/fluentd-architecture.jpg"/> <figcaption>
+            <h4>fluentD architecture</h4>
+        </figcaption>
+</figure>
+</p>
+<h2 id="events">Events</h2>
+<p>By kubernetes events we understand log messages internal to kubernetes, accessible through the kubernetes API <em>/api/v1/events?watch=true</em>, originally stored in etcd. The <strong>etcd storage has time and performance constraints</strong>, therefore, we would like to collect and store them permanently in EFK.</p>
+<ul>
+<li><strong>eventrouter</strong> is deployed to logging project, has a service account and its own role to read events</li>
+<li><strong>eventrouter</strong> watches kubernetes events, marshalls them to JSON and outputs to its STDOUT</li>
+<li><strong>fluentd</strong> picks them up and inserts to elastic search logging project index</li>
+</ul>
+<h3 id="configuring-the-event-router">Configuring the Event Router</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc project openshift-logging
+oc get ds
+Set <span style="color:#b8860b">TRANSFORM_EVENTS</span><span style="color:#666">=</span><span style="color:#a2f">true</span> in order to process and store event router events in Elasticsearch.
+Set cluster logging to the unmanaged state in web console
+oc <span style="color:#a2f">set</span> env ds/fluentd <span style="color:#b8860b">TRANSFORM_EVENTS</span><span style="color:#666">=</span><span style="color:#a2f">true</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get clusterlogging instance -o yaml
+oc edit ClusterLogging instance
+</code></pre></div><p>get logs:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc <span style="color:#a2f">exec</span> fluentd-ht42r -n openshift-logging -- logs
+</code></pre></div><p>You can send Elasticsearch logs to external devices, such as an externally-hosted Elasticsearch instance or an external syslog server. You can also configure Fluentd to send logs to an external log aggregator.</p>
+<p>Configuring Fluentd to send logs to an external log aggregator
+You can configure Fluentd to send a copy of its logs to an external log aggregator, and not the default Elasticsearch, using the secure-forward plug-in. From there, you can further process log records after the locally hosted Fluentd has processed them.</p>
+<p>&ndash;&gt;to v podstate znamena pouzitu secure-forward &mdash;&gt; jina instance fluentD s Kafka pluginem a dal do Kafky</p>
+<blockquote>
+<p>fluentd nema forward plugin pro Kafku a Redhat ani neplanuje</p>
+</blockquote>
+<blockquote>
+<p>[object Object]: [security_exception] no permissions for [indices:data/read/field_caps] and User [name=CN=system.logging.kibana,OU=OpenShift,O=Logging, roles=[]]</p>
+</blockquote>
+<h2 id="fluentd-base-configuration-and-customization">FLUENTD BASE CONFIGURATION and CUSTOMIZATION</h2>
+<p>Base configuration is stored in ConfigMap</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get cm fluentd -o json|jq -r <span style="color:#b44">&#39;.data[&#34;fluent.conf&#34;]&#39;</span>|vim -
+oc get cm fluentd -o json|jq -r <span style="color:#b44">&#39;.data[&#34;run.sh&#34;]&#39;</span>|vim -
+</code></pre></div><p>Version of fluentD from logging-operator csv 4.4 is without fluentd-kafka-plugin</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># list ruby gems on container</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>scl<span style="color:#bbb"> </span>enable<span style="color:#bbb"> </span>rh-ruby25<span style="color:#bbb"> </span>-- gem<span style="color:#bbb"> </span>list<span style="color:#bbb">
+</span></code></pre></div><p>I made a version of fluentd with kafka and other plugins compiled into gems. So let&rsquo;s try as kafka we will use Azure EventHub</p>
+<h3 id="test-fluentd-locally-with-podman">TEST FLUENTD locally with podman</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">podman pull fluent/fluentd:v1.11-debian-1
+ <span style="color:#080;font-style:italic">#with conffile mount</span>
+podman run -p 8888:8888 -ti  --rm -v  /home/ts/git_repositories/work/openshift/oshi/logging:/fluentd/etc docker.io/fluent/fluentd:v1.11-debian-1 fluentd -c /fluentd/etc/fluent.conf
+</code></pre></div><h3 id="use-azure-eventhub-instead-of-kafka">USE Azure EventHub instead of Kafka</h3>
+<p>Azure EventHub is able to consume kafka_output, for testing purposes we will use one.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Kafka Concept vs Event Hubs Concept
+Cluster     &lt;----&gt;     Namespace
+Topic       &lt;----&gt;     Event Hub
+Partition   &lt;----&gt;     Partition
+Consumer    &lt;----&gt;     Group	Consumer Group
+Offset      &lt;----&gt;     Offset
+</code></pre></div><p>fluentD kafka output sample configuration:</p>
+<pre><code class="language-conf" data-lang="conf">  &lt;store&gt;
+  @type kafka2
+  brokers fluentd-eventhub-oshi.servicebus.windows.net:9093
+  flush_interval 3s
+  &lt;buffer topic&gt;
+    @type file
+    path '/var/lib/fluentd/retry_clo_default_kafka_out'
+		flush_interval &quot;#{ENV['ES_FLUSH_INTERVAL'] || '1s'}&quot;
+		flush_thread_count &quot;#{ENV['ES_FLUSH_THREAD_COUNT'] || 2}&quot;
+		flush_at_shutdown &quot;#{ENV['FLUSH_AT_SHUTDOWN'] || 'false'}&quot;
+		retry_max_interval &quot;#{ENV['ES_RETRY_WAIT'] || '300'}&quot;
+		retry_forever true
+		queue_limit_length &quot;#{ENV['BUFFER_QUEUE_LIMIT'] || '32' }&quot;
+		chunk_limit_size &quot;#{ENV['BUFFER_SIZE_LIMIT'] || '8m' }&quot;
+		overflow_action &quot;#{ENV['BUFFER_QUEUE_FULL_ACTION'] || 'block'}&quot;
+    flush_interval 3s
+  &lt;/buffer&gt;
+
+  # topic settings
+  default_topic kafka_output 
+
+  # producer settings
+  max_send_retries 1
+  required_acks 1
+  &lt;format&gt;
+    @type json
+  &lt;/format&gt;
+  ssl_ca_certs_from_system true
+
+  username $ConnectionString
+  password &quot;Endpoint=sb://fluentd-eventhub-oshi.servicebus.windows.net/;SharedAccessKeyName=ss;SharedAccessKey=zeWz+9rSS/yWGanjcKrXMA2mAVCO0hL+MULhNWXHfkk=;EntityPath=kafka_output&quot;
+  &lt;/store&gt;
+</code></pre><h3 id="patch-original-cm-with-custom-map">PATCH original CM with custom map</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get cm fluentd -n openshift-logging &gt;fluentd-cm.yaml
+ <span style="color:#080;font-style:italic"># bass is fish specific in bash you can ommit, right way to do it in fish shell</span>
+ <span style="color:#080;font-style:italic"># is to use process substitution</span>
+ <span style="color:#080;font-style:italic"># yq w  -i test.yaml &#39;data.[fluent.conf]&#39; -- (cat fluent.conf|psub)</span> 
+ <span style="color:#080;font-style:italic"># but not working becouse I get FIFO not a stream</span>
+bass <span style="color:#b44">&#39;yq w -i fluentd-cm.yaml &#39;</span>data.<span style="color:#666">[</span>fluent.conf<span style="color:#666">]</span><span style="color:#b44">&#39;  -- &#34;$(&lt; fluent.conf)&#34;&#39;</span>
+oc apply -f fluentd-cm.yaml
+
+</code></pre></div><p>Custom map is mounted to pod in location</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/etc/fluentd/config.d/
+</code></pre></div><p>so restart of fluentD is neccesary</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -o name --selector <span style="color:#b8860b">component</span><span style="color:#666">=</span>fluentd<span style="color:#666">)</span>; oc delete <span style="color:#b8860b">$i</span>; end
+</code></pre></div></div>
+		
+	</article>
+  
+  []
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/uploading_container_image_to_ocp_registry/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Uploading local container images to OCP registry</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

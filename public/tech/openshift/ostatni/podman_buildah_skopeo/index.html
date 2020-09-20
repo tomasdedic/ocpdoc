@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Podman,buildah,skopeo - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="Podman, buildah, skopeo hands on">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="Podman,buildah,skopeo" />
+<meta property="og:description" content="Podman, buildah, skopeo hands on" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/ostatni/podman_buildah_skopeo/" />
+<meta property="article:published_time" content="2020-02-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-02-21T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Podman,buildah,skopeo</h1>
+			<p class="post__lead">working</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-02-21T00:00:00">February 21, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/containers" rel="category">Containers</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+<p><a href="https://github.com/containers/Demos">Demos git repository</a></p>
+<h1 id="podman-images">PODMAN IMAGES</h1>
+<h2 id="enable-podman">enable podman</h2>
+<p>user namespaces must be enabled in kernel to run container rootless</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">sudo sysctl -w kernel.unprivileged_userns_clone<span style="color:#666">=</span><span style="color:#666">1</span>
+</code></pre></div><h2 id="podman-cli">PODMAN CLI</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">podman version
+podman pull alpine
+podman images
+
+ <span style="color:#080;font-style:italic"># build container</span>
+cat ./Dockerfile.hello
+	FROM alpine
+	RUN apk add python3
+	ADD HelloFromContainer.py /home
+	WORKDIR HOME
+	CMD <span style="color:#666">[</span><span style="color:#b44">&#34;python3&#34;</span>,<span style="color:#b44">&#34;/home/HelloFromContainer.py&#34;</span><span style="color:#666">]</span>
+podman build -t hello -f ./Dockerfile.hello .
+podman run --name helloctr hello
+podman commit -q --author <span style="color:#b44">&#34;John Smith&#34;</span> helloctr myhello
+ <span style="color:#080;font-style:italic"># images</span>
+podman images
+podman images -q <span style="color:#080;font-style:italic">#only ID</span>
+podman images --noheading
+podman images --no-trunc <span style="color:#080;font-style:italic">#all</span>
+podman images --digests <span style="color:#080;font-style:italic">#digests</span>
+podman images --format <span style="color:#b44">&#34;table {{.ID}} {{.Repository}} {{.Tag}}&#34;</span>
+podman images --format json
+podman images --filter <span style="color:#b8860b">reference</span><span style="color:#666">=</span>alpine <span style="color:#080;font-style:italic">#only aplpine images</span>
+podman images --sort size
+ <span style="color:#080;font-style:italic"># clean</span>
+podman rm -a -f <span style="color:#080;font-style:italic">#containers</span>
+podman rmi -a -f <span style="color:#080;font-style:italic">#images</span>
+</code></pre></div><h2 id="podman-usage">PODMAN USAGE</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># run non-root as root</span>
+podman <span style="color:#a2f">exec</span> -it --user<span style="color:#666">=</span>root e0ab9b96579a /bin/bash
+</code></pre></div><h2 id="podman-inspect">PODMAN INSPECT</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">podman inspect -t image alpine | less
+podman run --name<span style="color:#666">=</span>myctr alpine  ls /etc/network
+podman inspect -t container myctr | less
+podman inspect --latest | less <span style="color:#080;font-style:italic">#inspect latest container</span>
+podman inspect  -t container --format <span style="color:#b44">&#34;imagename: {{.ImageName}}&#34;</span> myctr
+podman inspect  -t container --format <span style="color:#b44">&#34;table {{.GraphDriver.Name}}&#34;</span> myctr
+podman inspect -t image --format <span style="color:#b44">&#34;size: {{.Size}}&#34;</span> alpine
+</code></pre></div><h2 id="podman-pause-unpause">PODMAN PAUSE UNPAUSE</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># Let&#39;s create and run an alpine container for 10 minutes.</span>
+podman run --detach --name alpinectr alpine sh -c <span style="color:#b44">&#39;while true ;do sleep 600 ; done&#39;</span>
+ <span style="color:#080;font-style:italic"># Let&#39;s create and run a busybox container for 10 minutes.</span>
+podman run --detach --name busyboxctr busybox sh -c <span style="color:#b44">&#39;while true ;do sleep 600 ; done&#39;</span>
+podman ps --all
+podman pause busyboxctr
+podman unpause busyboxctr
+</code></pre></div><h2 id="buildah">BUILDAH</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">buildah version
+buildah info
+buildah pull alpine
+buildah images
+sudo buildah from docker.io/library/alpine
+sudo buildah containers
+ <span style="color:#080;font-style:italic"># Create an empty image from &#39;scratch&#39;</span>
+<span style="color:#b8860b">newcontainer</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>sudo buildah from scratch<span style="color:#a2f;font-weight:bold">)</span>
+ <span style="color:#080;font-style:italic"># Now mount the container saving the mount point</span>
+<span style="color:#b8860b">scratchmnt</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>sudo buildah mount <span style="color:#b8860b">$newcontainer</span><span style="color:#a2f;font-weight:bold">)</span>
+<span style="color:#a2f">echo</span> scratchmnt
+ <span style="color:#080;font-style:italic"># Install Fedora 29 bash and coreutils into the container from the host.                                                        </span>
+sudo dnf install --installroot <span style="color:#b8860b">$scratchmnt</span> --release <span style="color:#666">29</span> bash coreutils --setopt <span style="color:#b8860b">install_weak_deps</span><span style="color:#666">=</span><span style="color:#a2f">false</span> -y
+ <span style="color:#080;font-style:italic"># Show /usr/local/bin inside of the container</span>
+sudo buildah run <span style="color:#b8860b">$newcontainer</span> -- ls -alF /usr/local/bin
+---
+ <span style="color:#080;font-style:italic"># Display contents of runecho.sh</span>
+	cat ./runecho.sh
+	<span style="color:#080;font-style:italic">#!/usr/bin/env bash</span>
+	<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">{</span>1..9<span style="color:#666">}</span>;
+	<span style="color:#a2f;font-weight:bold">do</span>
+	   <span style="color:#a2f">echo</span> <span style="color:#b44">&#34;This is a new container from buildahdemo [&#34;</span> <span style="color:#b8860b">$i</span> <span style="color:#b44">&#34;]&#34;</span>
+	<span style="color:#a2f;font-weight:bold">done</span>
+---
+ <span style="color:#080;font-style:italic"># Copy the script into the container</span>
+sudo buildah copy <span style="color:#b8860b">$newcontainer</span> ./runecho.sh /usr/local/bin
+ <span style="color:#080;font-style:italic"># Set the cmd of the container to the script</span>
+sudo buildah config --cmd /usr/local/bin/runecho.sh <span style="color:#b8860b">$newcontainer</span>
+ <span style="color:#080;font-style:italic"># Let&#39;s run the container which will run the script</span>
+sudo buildah run working-container /usr/local/bin/runecho.sh
+ <span style="color:#080;font-style:italic"># Configure the container added created-by then author information</span>
+sudo buildah config --created-by <span style="color:#b44">&#34;buildahdemo&#34;</span>  <span style="color:#b8860b">$newcontainer</span>
+sudo buildah config --author <span style="color:#b44">&#34;buildahdemo&#34;</span> --label <span style="color:#b8860b">name</span><span style="color:#666">=</span>fedora29-bashecho <span style="color:#b8860b">$newcontainer</span>
+sudo buildah inspect <span style="color:#b8860b">$newcontainer</span>
+sudo buildah unmount <span style="color:#b8860b">$newcontainer</span>
+ <span style="color:#080;font-style:italic"># Commit the image that we&#39;ve created</span>
+sudo buildah commit <span style="color:#b8860b">$newcontainer</span> fedora-bashecho
+sudo buildah rm <span style="color:#b8860b">$newcontainer</span>
+</code></pre></div><h2 id="security">SECURITY</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># Buildah from scratch - building minimal images</span>
+<span style="color:#b8860b">ctr</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>sudo buildah from scratch<span style="color:#a2f;font-weight:bold">)</span>
+<span style="color:#b8860b">mnt</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>sudo buildah mount <span style="color:#b8860b">$ctr</span><span style="color:#a2f;font-weight:bold">)</span>
+sudo dnf install -y --installroot<span style="color:#666">=</span><span style="color:#b8860b">$mnt</span> busybox --releasever<span style="color:#666">=</span><span style="color:#666">29</span> --disablerepo<span style="color:#666">=</span>* --enablerepo<span style="color:#666">=</span>fedora
+sudo dnf clean all --installroot<span style="color:#666">=</span><span style="color:#b8860b">$mnt</span>
+sudo buildah unmount <span style="color:#b8860b">$ctr</span>
+sudo buildah commit --rm <span style="color:#b8860b">$ctr</span> minimal-image
+
+
+ <span style="color:#080;font-style:italic"># Buildah inside a container</span>
+cat Dockerfile.buildah <span style="color:#666">(</span>built previously<span style="color:#666">)</span>
+	FROM fedora
+	RUN dnf -y install buildah; dnf -y clean all
+	ENTRYPOINT <span style="color:#666">[</span><span style="color:#b44">&#34;/usr/bin/buildah&#34;</span><span style="color:#666">]</span>
+	WORKDIR /root
+cat Dockerfile <span style="color:#666">(</span>used inside buildah-ctr<span style="color:#666">)</span>
+	FROM ubi8-minimal
+	ENV <span style="color:#b8860b">foo</span><span style="color:#666">=</span>bar
+	LABEL <span style="color:#b8860b">colour</span><span style="color:#666">=</span>bright
+
+sudo podman run --device<span style="color:#666">=</span>/dev/fuse --rm -v <span style="color:#b8860b">$PWD</span>/myvol:/myvol:Z -v /var/lib/mycontainer:/var/lib/containers:Z buildah/stable buildah bud -t myimage /myvol
+sudo podman run --rm -v /var/lib/mycontainer:/var/lib/containers:Z buildah/stable buildah images
+sudo podman run --rm -v /var/lib/mycontainer:/var/lib/containers:Z buildah/stable buildah rmi --force --all
+</code></pre></div><h2 id="podman-as-rootless">Podman as rootless</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">podman images | grep ubi8-minimal
+podman pull ubi8-minimal
+ <span style="color:#080;font-style:italic"># non-privileged images</span>
+podman images
+ <span style="color:#080;font-style:italic"># privileged images</span>
+sudo podman images
+podman run --rm ubi8-minimal id <span style="color:#666">&amp;&amp;</span> <span style="color:#a2f">echo</span> On the host I am not root <span style="color:#666">&amp;&amp;</span> id
+
+ <span style="color:#080;font-style:italic"># The demo will now unshare the usernamespace of a rootless container,</span>
+ <span style="color:#080;font-style:italic"># using the &#39;buildah unshare&#39; command.</span>
+
+ <span style="color:#080;font-style:italic"># First outside of the container, we will cat /etc/subuid, and you should</span>
+ <span style="color:#080;font-style:italic"># see your username.  This indicates the UID map that is assigned to you.</span>
+ <span style="color:#080;font-style:italic"># When executing buildah unshare, it will map your UID to root within the container</span>
+ <span style="color:#080;font-style:italic"># and then map the range of UIDS in /etc/subuid starting at UID=1 within your container.</span>
+cat /etc/subuid
+
+ <span style="color:#080;font-style:italic"># Explore your home directory to see what it looks like while in a user namespace.</span>
+ <span style="color:#080;font-style:italic"># &#39;cat /proc/self/uid_map&#39; will show you the user namespace mapping.</span>
+ <span style="color:#080;font-style:italic"># &#39;ls -al&#39; will show a file owned by root on the host system, by nfsnobody in the userns.</span>
+buildah unshare
+ <span style="color:#080;font-style:italic"># Podman User Namespace Support</span>
+sudo podman run --uidmap 0:100000:5000 -d fedora:latest sleep <span style="color:#666">1000</span>
+sudo podman top --latest user huser | grep --color<span style="color:#666">=</span>auto -B <span style="color:#666">1</span> <span style="color:#666">100000</span>
+ps -ef | grep -v grep | grep --color<span style="color:#666">=</span>auto <span style="color:#666">100000</span>
+sudo podman run --uidmap 0:200000:5000 -d fedora:latest sleep <span style="color:#666">1000</span>
+sudo podman top --latest user huser | grep --color<span style="color:#666">=</span>auto -B <span style="color:#666">1</span> <span style="color:#666">200000</span>
+ps -ef | grep -v grep | grep --color<span style="color:#666">=</span>auto <span style="color:#666">200000</span>
+</code></pre></div><h2 id="podman-forkexec-model">PODMAN FORK/EXEC MODEL</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cat /proc/self/loginuid
+sudo podman run -ti --rm fedora:latest bash -c <span style="color:#b44">&#34;cat /proc/self/loginuid; echo&#34;</span>
+sudo docker run -ti --rm fedora:latest bash -c <span style="color:#b44">&#34;cat /proc/self/loginuid; echo&#34;</span>
+sudo auditctl -w /etc/shadow
+sudo podman run --rm --privileged -v /:/host fedora:latest touch /host/etc/shadow
+ausearch -m path -ts recent -i | grep touch | grep --color<span style="color:#666">=</span>auto <span style="color:#b44">&#39;auid=[^ ]*&#39;</span>
+sudo docker run --rm --privileged -v /:/host fedora:latest touch /host/etc/shadow
+ausearch -m path -ts recent -i | grep touch | grep --color<span style="color:#666">=</span>auto <span style="color:#b44">&#39;auid=[^ ]*&#39;</span>
+</code></pre></div><h2 id="podman-top">PODMAN TOP</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">sudo podman run -d fedora:latest sleep <span style="color:#666">1000</span>
+sudo podman top --latest pid hpid
+sudo podman top --latest label
+</code></pre></div><h2 id="skopeo">SKOPEO</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">skopeo inspect docker://docker.io/fedora
+ <span style="color:#080;font-style:italic"># Copy images from docker storage to podman storage</span>
+sudo skopeo copy docker-daemon:ubuntu:latest containers-storage:localhost/ubuntu:demo
+</code></pre></div><h2 id="udica-selinux">UDICA SELINUX</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">apt install udica setools-console
+getenforce
+podman run -v /home:/home:rw -v /var/spool:/var/spool:ro -p 21:21 -d fedora sleep 1h
+podman top -l label
+sesearch -A -s container_t -t home_root_t -c dir -p <span style="color:#a2f">read</span>
+sesearch -A -s container_t -t var_spool_t -c dir -p <span style="color:#a2f">read</span>
+sesearch -A -s container_t -t port_type -c tcp_socket
+podman ps
+podman inspect -l | udica  my_container
+semodule -i my_container.cil /usr/share/udica/templates/<span style="color:#666">{</span>base_container.cil,net_container.cil,home_container.cil<span style="color:#666">}</span>
+podman stop -l
+podman run --security-opt <span style="color:#b8860b">label</span><span style="color:#666">=</span>type:my_container.process -v /home:/home:rw -v /var/spool:/var/spool:ro -p 21:21 -d fedora sleep 1h
+podman top -l label
+sesearch -A -s my_container.process -t home_root_t -c dir -p <span style="color:#a2f">read</span>
+sesearch -A -s my_container.process -t var_spool_t -c dir -p <span style="color:#a2f">read</span>
+sesearch -A -s my_container.process -t port_type -c tcp_socket
+</code></pre></div></div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/containers/" rel="tag">Containers</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/ostatni/github-actions/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">GitHub actions review</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

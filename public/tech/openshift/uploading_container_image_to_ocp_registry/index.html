@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Uploading local container images to OCP registry - MADDIV</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="Upload local container image to OCP registry">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="Uploading local container images to OCP registry" />
+<meta property="og:description" content="Upload local container image to OCP registry" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/tech/openshift/uploading_container_image_to_ocp_registry/" />
+<meta property="article:published_time" content="2020-02-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-02-01T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="MADDIV" rel="home">
+				<div class="logo__title">MADDIV</div>
+				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/containers" title="Containers">Containers</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/git" title="Git">Git</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Uploading local container images to OCP registry</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-02-01T00:00:00">February 01, 2020</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OpenShift</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080">#!/bin/bash
+</span><span style="color:#080"></span>
+<span style="color:#080;font-style:italic"># Define constants</span>
+<span style="color:#a2f">set</span> registry_namespace openshift-image-registry
+<span style="color:#a2f">set</span> registry_svc image-registry
+<span style="color:#a2f">set</span> LOCAL_PORT <span style="color:#666">5000</span>
+
+
+
+<span style="color:#080;font-style:italic"># Get port where the remote registry is on</span>
+<span style="color:#b8860b">registry_port</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>oc get svc <span style="color:#b8860b">$registry_svc</span> -n <span style="color:#b8860b">$registry_namespace</span> -o <span style="color:#b8860b">jsonpath</span><span style="color:#666">=</span><span style="color:#b44">&#39;{.spec.ports[0].port}&#39;</span><span style="color:#a2f;font-weight:bold">)</span>
+<span style="color:#a2f">set</span> registry_port <span style="color:#666">(</span>oc get svc <span style="color:#b8860b">$registry_svc</span> -n <span style="color:#b8860b">$registry_namespace</span> -o json| jq <span style="color:#b44">&#39;.spec.ports[0].port&#39;</span><span style="color:#666">)</span>
+
+<span style="color:#080;font-style:italic"># Get object that we&#39;ll port forward to</span>
+<span style="color:#b8860b">port_fwd_obj</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>oc get pods -n <span style="color:#b8860b">$registry_namespace</span> | awk <span style="color:#b44">&#39;/^image-registry-/ {print $1}&#39;</span> <span style="color:#a2f;font-weight:bold">)</span>
+<span style="color:#a2f">set</span> port_fwd_obj <span style="color:#666">(</span>oc get pods -n <span style="color:#b8860b">$registry_namespace</span> | awk <span style="color:#b44">&#39;/^image-registry-/ {print $1}&#39;</span><span style="color:#666">)</span>
+
+<span style="color:#080;font-style:italic"># Do port forwarding on the needed pod</span>
+oc --loglevel<span style="color:#666">=</span><span style="color:#666">9</span> port-forward <span style="color:#b44">&#34;</span><span style="color:#b8860b">$port_fwd_obj</span><span style="color:#b44">&#34;</span> -n <span style="color:#b44">&#34;</span><span style="color:#b8860b">$registry_namespace</span><span style="color:#b44">&#34;</span> <span style="color:#b44">&#34;</span><span style="color:#b8860b">$LOCAL_PORT</span><span style="color:#b44">:</span><span style="color:#b8860b">$registry_port</span><span style="color:#b44">&#34;</span> &gt; pf.log 2&gt;&amp;<span style="color:#666">1</span> &amp;
+
+<span style="color:#b8860b">port_foward_proc</span><span style="color:#666">=</span><span style="color:#b8860b">$!</span>
+<span style="color:#a2f">echo</span> <span style="color:#b44">&#34;The process spawned is </span><span style="color:#b8860b">$port_foward_proc</span><span style="color:#b44">&#34;</span>
+
+<span style="color:#080;font-style:italic"># Get token for kubeadmin user</span>
+oc login -u kubeadmin -p <span style="color:#b44">&#34;</span><span style="color:#a2f;font-weight:bold">$(</span>cat ~/openshift-dev-cluster/auth/kubeadmin-password<span style="color:#a2f;font-weight:bold">)</span><span style="color:#b44">&#34;</span>
+
+<span style="color:#080;font-style:italic"># Use token to log in with docker</span>
+docker login -u <span style="color:#b44">&#34;kubeadmin&#34;</span> -p <span style="color:#b44">&#34;</span><span style="color:#a2f;font-weight:bold">$(</span>oc whoami -t<span style="color:#a2f;font-weight:bold">)</span><span style="color:#b44">&#34;</span> localhost:5000
+</code></pre></div><p>This allows you to use localhost:5000 as an endpoint to upload your images towards your clusters image registry. Note that you’ll need to specify the specific openshift “project” as part of the path when you’re uploading images.</p>
+<p>Lets say, for instance, that you want to upload the image my-image, and you have access to the project default. You’ll do:</p>
+<p>docker push localhost:5000/default/my-image:latest
+Note when you want to use your new image in an application, you must replace localhost:5000 with image-registry.openshift-image-registry.svc:5000, since that’s the URL that OpenShift makes available.</p>
+<p>So, you’ll have something as:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#00f;font-weight:bold">...</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">containers</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>...<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">image</span>:<span style="color:#bbb"> </span>image-registry.openshift-image-registry.svc:5000/default/my-image:latest<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">imagePullPolicy</span>:<span style="color:#bbb"> </span>Always<span style="color:#bbb">
+</span></code></pre></div></div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/tech/openshift/arogameplay/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title"></p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/tech/openshift/podman_buildah_skopeo/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Podman,buildah,skopeo</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 MADDIV.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>
