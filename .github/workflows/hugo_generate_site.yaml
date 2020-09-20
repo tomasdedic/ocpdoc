@@ -71,7 +71,7 @@ jobs:
         with:
           push: true
           context: .
-          file: ./_docker/Dockerfile
+          file: ./Dockerfile
           tags: ${{steps.prep.outputs.tags}}
           # tags: docker.pkg.github.com/tomasdedic/ocpdoc/hugogen:${{steps.get-id.outputs.sha}}
           # secrets: |
