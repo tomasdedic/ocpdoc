@@ -213,42 +213,6 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/debug/openshiftapiserver-tls/debug-routing/</loc>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/install/instalaceazure/instalace_popis/</loc>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/logging/01-provision-resources/</loc>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/logging/02-fluendd-eventrouter/</loc>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/logging/02-fluentd-openshiftscope/</loc>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/logging/03-elasticsearch/</loc>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/project_status/project_status/</loc>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/snippets/globalpullsecret/</loc>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/snippets/handycli/</loc>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/search/</loc>
   </url>
   

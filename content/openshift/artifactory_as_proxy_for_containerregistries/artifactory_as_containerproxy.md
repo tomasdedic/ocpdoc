@@ -8,7 +8,6 @@ repository:
 + artifactory.csas.elostech.cz/docker-quay-local (local repository for mirroring)
 
 Na artifactory je potřeba konfiguraci typu remote repository vytvořit. Zatím nejsou standartizovány názvy. Obrázek níže je informativního charakteru.
-![artifactory](img/remote_repository_settings.png)
 {{< figure src="img/remote_repository_settings.png" caption="artifactory remote repository settings" >}}
 
 ## Použití "proxy repository" při instalaci OCP (QUAY.IO repository)
@@ -208,7 +207,7 @@ oc get secret -n openshift-config pull-secret -o json |jq -r '.data[]'|base64 -d
  oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=pull-secret.json
  # dojde k postupnemu restartu vsech nodu
 ```
-Zbyva jeste upravit zaznam v machineconfigu pro **/etc/containers/registries.conf a /etc/containers/registries.conf.d/* **
+Zbyva jeste upravit zaznam v machineconfigu pro **/etc/containers/registries.conf a /etc/containers/registries.conf.d/\***
 Tento soubor je castecne definovan z  **crd imageContentSourcepolicy** případně z custom **machineconfig**, po jejich úpravě se provede restart nodů. 
 
 **!HAPPY GUNNING!**

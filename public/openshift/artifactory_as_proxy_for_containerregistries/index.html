@@ -109,7 +109,6 @@
 <li>artifactory.csas.elostech.cz/docker-quay-local (local repository for mirroring)</li>
 </ul>
 <p>Na artifactory je potřeba konfiguraci typu remote repository vytvořit. Zatím nejsou standartizovány názvy. Obrázek níže je informativního charakteru.
-<img src="img/remote_repository_settings.png" alt="artifactory">
 <figure>
     <img src="img/remote_repository_settings.png"
          alt="artifactory remote repository settings"/> <figcaption>
@@ -281,7 +280,7 @@ oc get machineconfig 00-worker -o yaml|grep artifactory -A4
  oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:#b44">&#39;.data[]&#39;</span>|base64 -d|jq <span style="color:#b44">&#39;.auths += {&#34;artifactory.csas.elostech.cz&#34;:{&#34;auth&#34;:&#34;b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==&#34;,&#34;email&#34;:&#34;dedtom@gmail.com&#34;}}&#39;</span> &gt;pull-secret.json
  oc <span style="color:#a2f">set</span> data secret/pull-secret -n openshift-config --from-file<span style="color:#666">=</span>.dockerconfigjson<span style="color:#666">=</span>pull-secret.json
  <span style="color:#080;font-style:italic"># dojde k postupnemu restartu vsech nodu</span>
-</code></pre></div><p>Zbyva jeste upravit zaznam v machineconfigu pro *<em>/etc/containers/registries.conf a /etc/containers/registries.conf.d/</em> **
+</code></pre></div><p>Zbyva jeste upravit zaznam v machineconfigu pro <strong>/etc/containers/registries.conf a /etc/containers/registries.conf.d/*</strong>
 Tento soubor je castecne definovan z  <strong>crd imageContentSourcepolicy</strong> případně z custom <strong>machineconfig</strong>, po jejich úpravě se provede restart nodů.</p>
 <p><strong>!HAPPY GUNNING!</strong></p>
 </div>
@@ -297,24 +296,6 @@ Tento soubor je castecne definovan z  <strong>crd imageContentSourcepolicy</stro
   
   
 </main>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
