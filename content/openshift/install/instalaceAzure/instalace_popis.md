@@ -1,17 +1,17 @@
-## POPIS INSTALACE OPENSHIFT 4.x stable build v prostředí Azure
+# POPIS INSTALACE OPENSHIFT 4.x stable build v prostředí Azure
 Popis instalace OpenShift ve verzi 4.x jako publish Internal tedy s definicí endpointů do private zóny.
+## Přípravné kroky
 ### Private DNS zone
-
 Při instalaci je potřeba nakonfigurovat automaticky vytvořenou **private DNS zone** tak že k ní budou přilinkovány Azure Vnet.  
 Privatni DNS zona se nechova jako klasicky DNS server, nemá IP adresy na které by se dala
 forwardnout z jinych DNS serveru.
 Zaznamy z ní muzou resolvnout pouze VM umisteny v Azure Vnet, která je přilinkovaná k
 private DNS zóně a to pouze za předpokladu že pro resolvování záznamu v těchto zónách
-používají Azure DNS server (168.63.129.16)
+používají Azure DNS server (168.63.129.16)  
 
 V Azure je pro přilinkování vytvořena policy která by měla během cca 10 minut provést přilinkování potřebných vnet k vytvořené private DNS zóně.  
 Konfigurace by pak měla vypadat následovně:
-{{< figure src="img/virtual_network_link-proprivateDNS.png" caption="fig: privateDNS virtual-network-links" >}}
+{{< figure src="img/virtual_network_link-proprivateDNS.png" caption="privateDNS virtual-network-links" >}}
 
 ### Příprava Azure účtu a service principals
 
@@ -51,19 +51,52 @@ Adresář *~/.azure* pak bude vypadat následovně:
 ├── azureProfile.json
 └── osServicePrincipal.json
 ```
-### 4. SSH klíče
+### SSH klíče
 Vytvoříme ssh klíče pro přístup na jednotlivé nody OCP. 
 ```sh
 ssh-keygen -f $HOME/.ssh/id_dsa -t dsa -b 1024
 chmod 700 ~/.ssh
 ```
-### 5. Instalace přez proxy server
-Pokud je omezena přímá komunikace typu outbound, můžeme použít instalaci přez PROXY server jako:
-```sh
-export https_proxy="https://adresa:port"
-export http_proxy="http://adresa:port"
+### Create Azure Vnet and Install with existing VNET
+> předpokládáme instalaci do existujících VNET je tedy potřeba pouze zkontrolovat nastavení NSG
+
+Vytvořit Azure Vnet s dvěmi **subnety** (jednu pro master nody a jednu pro worker nody).
+{{< figure src="img/vnet-definition.png" caption="vnet definition" >}}
+  
+Pro každou subnet vytvořit NSG(network security group) a přiřadit příslušným subnet. Hlavní důvod je ssh přístup na bootstrap VM, z kterého instalátor pracuje.  
+*Pozn: Při instalaci se NSG vytvoří automaticky v resource_group OCP objektů jen se nepřiřadí Subnetu, lze tedy použít i tu. Pokud se tak rozhodnete je potřeba to provést v průběhu instalace (provisioning objektů v Azure se dělá jako první).*  
+
+{{< figure src="img/masterNSG.png" caption="NSG pro master nodes" >}}
+{{< figure src="img/workerNSG.png" caption="NSG pro worker nodes" >}}
+
+yaml defince vnet(v samostatné RG)resouce_group:
+```yaml
+# install-config.yaml snippet
+	poshi_vnet_rg
+vnet:
+	poshi_vnet 10.2.0.0/16
+subnet:
+	poshi-worker-subnet 10.2.32.0/19
+	poshi-master-subnet 10.2.0.0/19
 ```
-při instalaci přez PROXY se následně proxy nadefinuje jako "cluster-wide" a **resource proxy** na OCP bude vypadat jako:
+## Síťové prostupy
+Instalace se provádí v topologii HUB_and_SPOKE se předkonfigurovaným routingem(route table ve VNET) , z pohledu Openshiftu UserDefinedRouting.  
+Pro instalaci v privátní zóně by měla být veškerá komunikace mimo privátní rozsah směrována přez proxy. Ne všechny kontejnery však přejímají nastavení CRD proxy.config jako ENV variable a je potřeba povolit komunikaci na VSEC GW. 
+
+|domény povolené na VSEC GW|
+|--------------------------|
+|.blob.core.windows.net    |
+|login.microsoftonline.com |
+|management.azure.com      |
+|168.63.129.168            |
+
+## Konfigurace cluster-wide proxy
+Jako proxy bude použita:  
+```sh
+httpProxy: http://ngproxy-test.csint.cz:8080
+httpsProxy: http://ngproxy-test.csint.cz:8080
+```
+
 ```yaml
 apiVersion: config.openshift.io/v1
 kind: Proxy
@@ -99,189 +132,38 @@ Jako noProxy, tedy whitelisting by bylo vhodné uvést důvěryhodné zdroje kte
 |api.openshift.com									 |	Required to check if updates are available for the cluster|
 |cloud.redhat.com/openshift				 |	Required for your cluster token|
 
-### 6. Instalační balíky
-Stáhneme a rozbalíme *openshift-client, openshift-install*.
+##  Instalace typu "INTERNAL" do private zóny
+Rozdíl mezi intalací typu Internal a External je pouze v publikaci endpointů.
+
+Stáhneme a rozbalíme balíky *openshift-client, openshift-install*.
 + [(stable installer)](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/)
-+ [(dev preview installer)](https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/) Při instalaci dev preview nebudou fungovat upgrady na vyšší verze.
++ [(dev preview installer)](https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/)  
+Při instalaci dev preview nebudou fungovat upgrady na vyšší verze.
+  
+[link na custom properties](https://github.com/openshift/installer/blob/master/docs/user/customization.md#platform-customization)  
+[link na azure platform properties](https://github.com/openshift/installer/blob/master/docs/user/azure/customization.md)  
 
-### 7. Automatická Instalace OCP 
-Openshift provede provisioning všech potřebných objektů(včetně vnet) v Azure automaticky. Vypublikuje **public** Endpointy pro routy a podobně.
 ```sh
+# jednotlivé elementy použitelné pro install-config.yaml lze vypsat 
+openshift-install explain installconfig
+```
+
+```sh
+# necháme si vygenerovat konfigurační soubor který budeme dál upravovat
 openshift-install create install-config --dir ./install_dir --log-level debug
 ```
-```yaml
- # případně upravíme ~/install_dir/install-config.yaml
- # příklad install-config.yaml
- apiVersion: v1
- baseDomain: csas.elostech.cz
- compute:
- - hyperthreading: Enabled
-   name: worker
-   platform: {}
-   replicas: 3
- controlPlane:
-   hyperthreading: Enabled
-   name: master
-   platform: {}
-   replicas: 3
- metadata:
-   creationTimestamp: null
-   name: poshi4
- networking:
-   clusterNetwork:
-   - cidr: 10.128.0.0/14
-     hostPrefix: 23
-   machineCIDR: 10.2.0.0/16
-   networkType: OpenShiftSDN
-   serviceNetwork:
-   - 172.30.0.0/16
- platform:
-   azure:
-    baseDomainResourceGroupName: ocp42-shared
-    region: westeurope
- publish: External
-```
 
-```sh
-openshift-install create cluster --dir ./install_dir --log-level debug
- # openshift vytvoří svojí resource group v subskripci
+### Použití Artifactory jako container registry
+Pro instalaci a používání OCP v privátní síti bude jako zdroj všech kontejnerů využita Artifactory. Všechny remote repository (vnější) budou whitelistovány přez ní a bude pro ně vytvořena konfigurace.  
+[link: artifactory_as_proxy_for_containerregistries obecně](/openshift/artifactory_as_proxy_for_containerregistries/)  
+[link: artifactory_as_proxy_for_containerregistries uprava install-config.yaml](/openshift/artifactory_as_proxy_for_containerregistries/#použití-remote-repository-při-instalaci-ocp-quayio-repository)
 
-  INFO Waiting up to 30m0s for the cluster at https://api.DNS:6443 to initialize...
-  INFO Waiting up to 10m0s for the openshift-console route to be created...
-  INFO Install complete!
-```
 
-### 8. Custom Private Instalace OCP
-The following items are not required or created when you install a private cluster:
+### Instalační soubor INSTALL-CONFIG.YAML
+následně upravíme vygenerovaný ~/install_dir/install-config.yaml, důležité části jsou s komentáři
+{{< code file="src/install-config.yaml" lang="yaml" >}}
 
-+ A BaseDomainResourceGroup, since the cluster does not create public records
-+ Public IP addresses
-+ Public DNS records
-+ Public endpoints
-
-[custom properties](https://github.com/openshift/installer/blob/master/docs/user/customization.md#platform-customization)  
-[azure custom properties](https://github.com/openshift/installer/blob/master/docs/user/azure/customization.md#existing-vnet)  
-
-#### Create Azure Vnet and Install with existing VNET
-Je potřeba vytvořit Azure Vnet s dvěmi **subnety** (jednu pro master nody a jednu pro worker nody).
-![virtual network definition](img/vnet-definition.png)
-Zárověn je potřeba vytvořit dvě NSG(network security group) a přiřadit příslušným subnet. Hlavní důvod je ssh přístup na bootstrap VM, z kterého instalátor pracuje.  
-*Pozn: Při instalaci se NSG vytvoří automaticky v resource_group OCP objektů jen se nepřiřadí Subnetu, lze tedy použít i tu. Pokud se tak rozhodnete je potřeba to provést v průběhu instalace (provisioning objektů v Azure se dělá jako první).*  
-Minimální nutné nastavení NSG odpovídá:
-
-Master nodes NSG
-![master NSG](img/masterNSG.png)
-
-Worker nodes NSG
-![worker NSG](img/workerNSG.png)
-
-yaml defince vnet(v samostatné RG)resouce_group:
-```yaml
- # install-config.yaml snippet
-	poshi_vnet_rg
-vnet:
-	poshi_vnet 10.2.0.0/16
-subnet:
-	poshi-worker-subnet 10.2.32.0/19
-	poshi-master-subnet 10.2.0.0/19
-```
-
-#### Použití lokální container repository
-Počítá se s instalací použítím lokální container repository (Artifactory = artifactory.apps.poshi4.csas.elostech.cz) s nakonfigurovanou remote repository **"docker-quay"** pro
-**"quay.io/openshift-release-dev/ocp-release"** a **"quay.io/openshift-release-dev/ocp-v4.0-art-dev"**.
-Instalaci pak upravíme jako:
-```yaml
- # install-config.yaml snippet
- # nakonfigurane remote repository na artifactory 
-imageContentSources:
-- mirrors:
-  - artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-release
-  source: quay.io/openshift-release-dev/ocp-release
-- mirrors:
-  - artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev
-  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
-```
-Pull secret pro artifactory je potřeba přidat do install-config.yaml .pullSecret
-Dá se provést například tak že si z Redhatu stáhnu pull secret a obohatím ho pull secret pro Artifactory.
-```sh
-echo -n 'usernametoartifactory:password'|base64 -w0
- # download pull secret from Redhat to pull-secret.json
-cat pull-secret.json |jq '.auths += {"artifactory.apps.poshi4.csas.elostech.cz": \
-{"auth": "dXNlcjpxeFloSmcyczQxckpGQXVISk5pMg==","email": "myemail"}}'>pull-secret2.json
- # add content of pull-secret2.json to install-config as element .pullSecret
-```
-
-Následné upgrade OCP clusteru se také budou provádět přez tuto repository. Na OCP clusteru se vytvoří objekt typu ImageContentSourcePolicy.
-
-```yaml
-apiVersion: operator.openshift.io/v1alpha1
-kind: ImageContentSourcePolicy
-metadata:
-  name: proxy
-spec:
-  repositoryDigestMirrors:
-  - mirrors:
-    - artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-release
-    source: quay.io/openshift-release-dev/ocp-release
-  - mirrors:
-    - artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev
-    source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
-```
-#### Instalace
-```sh
-openshift-install create install-config --dir ./install_dir --log-level debug
-```
-následně upravíme vygenerovaný ~/install_dir/install-config.yaml 
-```yaml
- # install-config.yaml
-apiVersion: v1
-baseDomain: csas.elostech.cz
-compute:
-- hyperthreading: Enabled
-  name: worker
-  platform:
-    azure:
-      type: Standard_D2S_v3
-  replicas: 3
-controlPlane:
-  hyperthreading: Enabled
-  name: master
-  platform:
-    azure:
-      type: Standard_D2S_v3
-  replicas: 3
-metadata:
-  creationTimestamp: null
-  name: privoshi4
-networking:
-  clusterNetwork:
-  - cidr: 10.128.0.0/14
-    hostPrefix: 23
-  machineCIDR: 10.6.0.0/16
-  networkType: OpenShiftSDN
-  serviceNetwork:
-  - 172.30.0.0/16
-platform:
-  azure:
-    region: westeurope
-    networkResourceGroupName: privoshi_vnet_rg
-    virtualNetwork: privoshi_vnet
-    controlPlaneSubnet: privoshi-master-subnet
-    computeSubnet: privoshi-worker-subnet
-publish: Internal
-imageContentSources:
-- mirrors:
-  - artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-release
-  source: quay.io/openshift-release-dev/ocp-release
-- mirrors:
-  - artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev
-  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
-sshKey: |
-  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDiLcwh8VT57cIPCLJf5DMDkrPyHHJs
-          l3Cvluw5AFPs5hs0MmbNKSs5XQjtZdQfMcBtdxkQ== user@machine
-pullSecret: pull secret jsou vygenerovany automaticky + upravime pripadne dalsi jako pro artifactory ... 
-```
-Spuštění instalace:
+### Spuštění instalace a případný debug
 ```sh
  # install 
 openshift-install create cluster --dir ./install_dir --log-level debug
@@ -290,9 +172,8 @@ openshift-install create cluster --dir ./install_dir --log-level debug
   INFO Waiting up to 10m0s for the openshift-console route to be created...
   INFO Install complete!
 ```
-
-### 9. Postinstalační testy
 ```sh
+# test
 export KUBECONFIG=$(pwd)/install_dir/auth/kubeconfig
 oc login --username=kubeadmin --password='password'
 oc get clusterversion
@@ -302,16 +183,22 @@ oc get clusteroperators
 oc adm must-gather
 ```
 
-### 10. Uninstall proces
+```sh
+# bootstrap server debug
+openshift-install gather bootstrap --bootstrap 51.124.79.94 --master 51.124.94.42
+openshift-install gather bootstrap
+```
+```sh
+# bootstrap journal logs
+journalctl -b  -u release-image.service -u bootkube.service|grep -E "E[[:digit:]]{4}"
+journalctl -b -f -u release-image.service -u bootkube.service
+ # grep all https://
+for i in $(find . -name \*.log); do cat $i|grep http; done|grep -Eo "https:\/\/[[:graph:]]*"
+```
+
+### Uninstall proces
 ```sh
 openshift-install destroy cluster --dir ./install_dir --log-level debug
 ```
 Provision části které vytvořil OCP při instalaci budou smazány (týká se to jeho vlastní RG v Azure)
 
-### 11. Problémy při instalaci
-Častý problém je že není možné se připojit na bootstrap VM přez port 22, potřeba nadefinovat v NSG. 
-```sh
- #konkretni problemy
-openshift-install gather bootstrap --bootstrap 51.124.79.94 --master 51.124.94.42
-openshift-install gather bootstrap
-```

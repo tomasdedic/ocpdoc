@@ -6,7 +6,34 @@
     <description>Recent content in Install on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/install/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 30 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/install/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OCP Konfigurace proxy</title>
+      <link>//localhost:1112/openshift/install/nastaveni_proxy/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/install/nastaveni_proxy/</guid>
+      <description>povolené adresy na PROXY (whitelist)     .api.openshift.com   cert-api.access.redhat.com   api.access.redhat.com   graph.</description>
+    </item>
+    
+    <item>
+      <title>OPENSHIFT AZURE INSTALL and CUSTOMIZE</title>
+      <link>//localhost:1112/openshift/install/instalaceazure/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/install/instalaceazure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Konfigurace OCP pro použití Artifactory remote repository</title>
+      <link>//localhost:1112/openshift/artifactory_as_proxy_for_containerregistries/</link>
+      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/artifactory_as_proxy_for_containerregistries/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>ARO install</title>
       <link>//localhost:1112/openshift/install/installaro/</link>
@@ -17,21 +44,12 @@
     </item>
     
     <item>
-      <title>Debug private install with UDR </title>
+      <title>Instalace OCP do EXT DC v privátním rozsahu </title>
       <link>//localhost:1112/openshift/install/install-do-ext/</link>
       <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
       
       <guid>//localhost:1112/openshift/install/install-do-ext/</guid>
       <description>Instalace do extenze datacentra # remote tunnel pro proxy z proxy serveru na bastion node určený k instalaci # ssh spider@10.</description>
-    </item>
-    
-    <item>
-      <title>OPENSHIFT AZURE INSTALL and CUSTOMIZE</title>
-      <link>//localhost:1112/openshift/install/instalaceazure/</link>
-      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/install/instalaceazure/</guid>
-      <description></description>
     </item>
     
   </channel>

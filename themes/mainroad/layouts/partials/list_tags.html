@@ -1,0 +1,33 @@
+<!-- <div class="widget-taglist widget"> -->
+<!-- 	<!-1- <h4 class="list-taglist">{{ T "list_tags_title" }}</h4> -1-> -->
+<!-- 	<div class="list-taglist__content"> -->
+<!-- 		{{- range $name, $items := .Site.Taxonomies.tags }} -->
+<!-- 		<a class="list-taglist__link list-btn" href="{{ "tags/" | relLangURL }}{{ $name | urlize | lower }}" title="{{ $name | humanize }}">{{ $name | humanize }}{{ if $.Site.Params.widgets.tags_counter }} ({{ $items.Count }}){{ end }}</a> -->
+<!-- 		{{- end }} -->
+<!-- 	</div> -->
+<!-- </div> -->
+{{ if ne .Type "tags" }}
+	{{- range .Paginator.Pages }}
+    {{ $tags := .Params.Tags }}
+      {{ range $r,$s := $tags }}
+      {{ $up := upper $s }}
+        {{ $.Scratch.Add "all_tags" (slice $up) }}
+      {{- end }}
+  {{- end }}
+  <!-- {{ $.Scratch.Get "all_tags" | uniq }} -->
+<!-- <div class="meta__item-categories meta__item"> -->
+<!-- 	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg> -->
+<!-- 	<span class="meta__text"> -->
+<!--     {{ range $index, $name := $.Scratch.Get "all_tags"| uniq }}{{ if gt $index 0 }}, {{ end }} -->
+<!--     <a class="meta__link" href="{{ "tags/" | relLangURL }}{{ . | urlize | lower }}" rel="category">{{ . }}</a>{{ end }}</span> -->
+<!-- </div> -->
+
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="32" height="32" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+      {{- range $.Scratch.Get "all_tags"|uniq }}
+      <li class="tags__item"><a class="tags__link btn" href="{{ "tags/" | relLangURL }}{{ . | urlize }}/" rel="tag">{{ . }}</a></li>
+		{{- end }}
+	</ul>
+</div>
+{{- end }}

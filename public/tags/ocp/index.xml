@@ -45,7 +45,7 @@ Jakým způsobem je možné provést párování mezi unikáním identifikátore
     </item>
     
     <item>
-      <title>Debug private install with UDR </title>
+      <title>Instalace OCP do EXT DC v privátním rozsahu </title>
       <link>//localhost:1112/openshift/install/install-do-ext/</link>
       <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
       
@@ -54,7 +54,7 @@ Jakým způsobem je možné provést párování mezi unikáním identifikátore
     </item>
     
     <item>
-      <title>Openshift Snippets</title>
+      <title>Snippets</title>
       <link>//localhost:1112/openshift/snippets/</link>
       <pubDate>Thu, 23 Jul 2020 00:00:00 +0000</pubDate>
       
@@ -83,10 +83,10 @@ Authentication and Authentication Operator # cluster operator oc get co # operat
     
     <item>
       <title>FluentD</title>
-      <link>//localhost:1112/openshift/fluentd/</link>
+      <link>//localhost:1112/openshift/agregate_logging/fluentd/</link>
       <pubDate>Fri, 19 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>//localhost:1112/openshift/fluentd/</guid>
+      <guid>//localhost:1112/openshift/agregate_logging/fluentd/</guid>
       <description>Konfigurace fluentD v rámci Openshift clusteru. Bude řešen sběr a směrování logů typu SystemD, ContainerLog, EventLog (Etcd API store). Obohacování jednotlivých zpráv a směrování do ElasticSearch a Kafka (prezentovaná EventHubem).</description>
     </item>
     
@@ -101,10 +101,10 @@ Authentication and Authentication Operator # cluster operator oc get co # operat
     
     <item>
       <title>Agreggated loging</title>
-      <link>//localhost:1112/openshift/logging/</link>
+      <link>//localhost:1112/openshift/agregate_logging/logging_notes/</link>
       <pubDate>Mon, 08 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>//localhost:1112/openshift/logging/</guid>
+      <guid>//localhost:1112/openshift/agregate_logging/logging_notes/</guid>
       <description>Cluster logging components, provisioning and configuration.</description>
     </item>
     
@@ -115,15 +115,6 @@ Authentication and Authentication Operator # cluster operator oc get co # operat
       
       <guid>//localhost:1112/openshift/debug/debug-nodenotready/</guid>
       <description>After upgrade to version 4.3.3 two nodes (one master and one worker) are in state NotReady. Cluster seems to be ok, but I cannot ssh into affected nodes and cannot get some debug info.</description>
-    </item>
-    
-    <item>
-      <title>OPENSHIFT AZURE INSTALL and CUSTOMIZE</title>
-      <link>//localhost:1112/openshift/install/instalaceazure/</link>
-      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/install/instalaceazure/</guid>
-      <description></description>
     </item>
     
     <item>

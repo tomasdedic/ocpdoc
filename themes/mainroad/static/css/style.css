@@ -185,6 +185,7 @@ h1 {
 h2 {
 	font-size: 24px;
 	font-size: 1.5rem;
+	text-decoration: underline;
 }
 
 h3 {
@@ -590,7 +591,19 @@ button:not(:-moz-focusring):focus > .menu__btn-title {
 .main__title {
 	font-size: 28px;
 	font-size: 1.75rem;
+	text-decoration: underline;
 }
+
+
+
+/* h1.main__title:before { */
+/* 	 content: ": "; */
+/*  } */
+
+/* h1.main__title:after { */
+/* 	 content: " /"; */
+/*  } */
+
 
 .main__content {
 	margin-bottom: 20px;
@@ -629,6 +642,11 @@ button:not(:-moz-focusring):focus > .menu__btn-title {
 
 .meta__text {
 	vertical-align: middle;
+}
+
+.recent__date {
+	font-size: xx-small;
+  color: grey;
 }
 
 .post__item {
@@ -731,7 +749,7 @@ button:not(:-moz-focusring):focus > .menu__btn-title {
 }
 
 .tags {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	margin-bottom: 1.25rem;
 	font-size: 12px;
 	font-size: .75rem;
@@ -976,7 +994,7 @@ video {
 
 /* Table */
 table {
-	width: 100%;
+	width: auto;
 	margin-bottom: 20px;
 	margin-bottom: 1.25rem;
 	border-spacing: 0;
@@ -993,8 +1011,10 @@ th {
 }
 
 th {
+  background: #ededed;
 	font-weight: 700;
 }
+
 
 /* Forms */
 input {
@@ -1070,6 +1090,41 @@ textarea {
 	border-bottom: 3px solid #e64946;
 }
 
+.list-taglist {
+	position: relative;
+	padding-bottom: 0px;
+	font-size: 10px;
+	font-size: 1rem;
+	text-transform: uppercase;
+}
+
+.list-taglist__content {
+	border-bottom: 2px solid black;
+}
+
+.list-taglist__link {
+	display: inline-block;
+	margin: 0 0 2px 0;
+	font-size: 12px;
+	text-transform: uppercase;
+}
+.list-btn {
+	padding: 5px 8px;
+	font-weight: 700;
+	color: #fff;
+	background: #2a2a2a;
+}
+
+.list-btn:hover {
+	color: #fff;
+	background: #e64946;
+}
+
+/* Animation */
+.list-btn {
+	transition: background-color .25s ease-out;
+}
+
 .widget__item {
 	display: block;
 	padding: 5px 0;
@@ -1138,7 +1193,7 @@ textarea {
 /* Tags Widget */
 .widget-taglist__link {
 	display: inline-block;
-	margin: 0 4px 8px 0;
+	margin: 0 4px 4px 0;
 	font-size: 12px;
 	text-transform: uppercase;
 }
@@ -1149,7 +1204,7 @@ textarea {
 }
 
 .widget-languages__link:hover .widget-languages__link-btn {
-	color: #fff;
+	color: #blue;
 	background: #e64946;
 }
 

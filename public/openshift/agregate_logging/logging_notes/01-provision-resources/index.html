@@ -1,0 +1,561 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title> - DIVIDED DOCUMENTATION</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="" />
+<meta property="og:description" content="Provision resources for logging stack on OCP Logging stack will be installed as an operator, for elasticsearch we will use dedicated node with propriate taint to allow only schedule pods with defined toleration (part of logging stack)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/openshift/agregate_logging/logging_notes/01-provision-resources/" />
+
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title"></h1>
+			
+		</header>
+		
+		<div class="content post__content clearfix">
+<h1 id="provision-resources-for-logging-stack-on-ocp">Provision resources for logging stack on OCP</h1>
+<p>Logging stack will be installed as an operator, for elasticsearch we will use dedicated node with propriate <strong>taint</strong>  to allow only schedule pods with defined <strong>toleration</strong> (part of logging stack).</p>
+<h2 id="create-custom-node-for-logging-purposes">Create custom node for logging purposes</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">taints</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#008000;font-weight:bold">effect</span>:<span style="color:#bbb"> </span>NoSchedule<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">key</span>:<span style="color:#bbb"> </span>node-role<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">value</span>:<span style="color:#bbb"> </span>logging<span style="color:#bbb">
+</span></code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">labels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">node.purpose</span>:<span style="color:#bbb"> </span>logging<span style="color:#bbb">
+</span></code></pre></div><p>In OCP 4.4.6 seems to be a problem to create only Machine resource, failing on <strong>Error Message:  Can&rsquo;t find created instance</strong>.
+I dediced to create(not to look for base problem)  MachineSet with replica 1 instead. I choose size <strong>Standard_D4S_v3 4vcpu 16GB memory</strong> for logging dedicated node<br>
+
+
+
+
+
+  <br>
+  <em>[ yaml/MachineSet-logging.yaml ]</em>
+  
+  
+  <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>machine.openshift.io/v1beta1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>MachineSet<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">labels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">machine.openshift.io/cluster-api-cluster</span>:<span style="color:#bbb"> </span>toshi44-l9tcd<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">machine.openshift.io/cluster-api-machine-role</span>:<span style="color:#bbb"> </span>infra<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">machine.openshift.io/cluster-api-machine-type</span>:<span style="color:#bbb"> </span>infra<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>toshi44-l9tcd-logging-westeurope3<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">namespace</span>:<span style="color:#bbb"> </span>openshift-machine-api<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">replicas</span>:<span style="color:#bbb"> </span><span style="color:#666">1</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">selector</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">matchLabels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">machine.openshift.io/cluster-api-cluster</span>:<span style="color:#bbb"> </span>toshi44-l9tcd<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">machine.openshift.io/cluster-api-machineset</span>:<span style="color:#bbb"> </span>toshi44-l9tcd-logging-westeurope3<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">template</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">taints</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#008000;font-weight:bold">effect</span>:<span style="color:#bbb"> </span>NoSchedule<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">key</span>:<span style="color:#bbb"> </span>node-role<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">value</span>:<span style="color:#bbb"> </span>logging<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">creationTimestamp</span>:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">labels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">machine.openshift.io/cluster-api-cluster</span>:<span style="color:#bbb"> </span>toshi44-l9tcd<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">machine.openshift.io/cluster-api-machine-role</span>:<span style="color:#bbb"> </span>infra<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">machine.openshift.io/cluster-api-machine-type</span>:<span style="color:#bbb"> </span>infra<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">machine.openshift.io/cluster-api-machineset</span>:<span style="color:#bbb"> </span>toshi44-l9tcd-logging-westeurope3<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">node.purpose</span>:<span style="color:#bbb"> </span>logging<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">creationTimestamp</span>:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">providerSpec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">value</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>azureproviderconfig.openshift.io/v1beta1<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">credentialsSecret</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>azure-cloud-credentials<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">namespace</span>:<span style="color:#bbb"> </span>openshift-machine-api<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">image</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">offer</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">publisher</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">resourceID</span>:<span style="color:#bbb"> </span>/resourceGroups/toshi44-l9tcd-rg/providers/Microsoft.Compute/images/toshi44-l9tcd<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">sku</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">version</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">internalLoadBalancer</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>AzureMachineProviderSpec<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">location</span>:<span style="color:#bbb"> </span>westeurope<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">managedIdentity</span>:<span style="color:#bbb"> </span>toshi44-l9tcd-identity<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">creationTimestamp</span>:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">natRule</span>:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">networkResourceGroup</span>:<span style="color:#bbb"> </span>toshi_vnet_rg<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">osDisk</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">diskSizeGB</span>:<span style="color:#bbb"> </span><span style="color:#666">128</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">managedDisk</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span><span style="color:#008000;font-weight:bold">storageAccountType</span>:<span style="color:#bbb"> </span>Premium_LRS<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">osType</span>:<span style="color:#bbb"> </span>Linux<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">publicIP</span>:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">false</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">publicLoadBalancer</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">resourceGroup</span>:<span style="color:#bbb"> </span>toshi44-l9tcd-rg<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">sshPrivateKey</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">sshPublicKey</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">subnet</span>:<span style="color:#bbb"> </span>toshi-worker-subnet<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">userDataSecret</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>worker-user-data<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">vmSize</span>:<span style="color:#bbb"> </span>Standard_D4S_v3<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">vnet</span>:<span style="color:#bbb"> </span>toshi_vnet<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">zone</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;3&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span></code></pre></div>
+
+
+</p>
+<p>Taints and Labels can be created later on</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># taint</span>
+kubectl taint nodes toshi44-l9tcd-logging-westeurope3-nb8lf node-role<span style="color:#666">=</span>logging:NoSchedule
+ <span style="color:#080;font-style:italic"># label</span>
+oc label nodes toshi44-l9tcd-logging-westeurope3-nb8lf node.purpose<span style="color:#666">=</span>logging
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># get all nodes taints</span>
+oc get nodes -o json|jq -r <span style="color:#b44">&#39;.items[].spec.taints&#39;</span>
+</code></pre></div><p>In case we need to remove taint &ldquo;use minus convention&rdquo;</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">kubectl taint nodes toshi44-l9tcd-logging-westeurope3-nb8lf node-role<span style="color:#666">=</span>logging:NoSchedule-
+</code></pre></div><h2 id="install-clusterlogging-operator-and-elasticsearch-operator">Install ClusterLogging Operator and Elasticsearch Operator</h2>
+<p><a href="https://docs.openshift.com/container-platform/4.4/logging/cluster-logging-deploying.html">Quite a long task described on RedHat</a> with more informations.</p>
+<p>Create a Namespace for the Elasticsearch Operator
+
+
+
+
+
+  <br>
+  <em>[ yaml/eo-namespace.yaml ]</em>
+  
+  
+  <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Namespace<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>openshift-operators-redhat <span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">annotations</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">openshift.io/node-selector</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">labels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">openshift.io/cluster-logging</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;true&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">openshift.io/cluster-monitoring</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;true&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span></code></pre></div>
+
+
+</p>
+<p>Create a Namespace for the Cluster Logging Operator
+
+
+
+
+
+  <br>
+  <em>[ yaml/clo-namespace.yaml ]</em>
+  
+  
+  <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Namespace<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>openshift-logging<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">annotations</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">openshift.io/node-selector</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">labels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">openshift.io/cluster-logging</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;true&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">openshift.io/cluster-monitoring</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;true&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span></code></pre></div>
+
+
+</p>
+<p>Create an Operator Group for Elasticsearch operator
+
+
+
+
+
+  <br>
+  <em>[ yaml/eo-operatorgroup.yaml ]</em>
+  
+  
+  <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>operators.coreos.com/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>OperatorGroup<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>openshift-operators-redhat<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">namespace</span>:<span style="color:#bbb"> </span>openshift-operators-redhat <span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span></code></pre></div>
+
+
+</p>
+<p>Create a Subscription for Elasticsearch operator
+
+
+
+
+
+  <br>
+  <em>[ yaml/eo-subscription.yaml ]</em>
+  
+  
+  <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#080;font-style:italic">#oc get packagemanifest cluster-logging -n openshift-marketplace -o jsonpath=&#39;{.status.defaultChannel}&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">---</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>operators.coreos.com/v1alpha1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Subscription<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;elasticsearch-operator&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">namespace</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;openshift-operators-redhat&#34;</span><span style="color:#bbb"> 
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># channel je vystup .status.channels[].name</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">channel</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;4.4&#34;</span><span style="color:#bbb"> 
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">installPlanApproval</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;Automatic&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;redhat-operators&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">sourceNamespace</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;openshift-marketplace&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;elasticsearch-operator&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span></code></pre></div>
+
+
+</p>
+<p>Verify Operator installation, there should be an Elasticsearch Operator in each Namespace</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get csv --all-namespaces
+</code></pre></div><p>Create an Operator Group for ClusterLogging operator
+
+
+
+
+
+  <br>
+  <em>[ yaml/clo-operatorgroup.yaml ]</em>
+  
+  
+  <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>operators.coreos.com/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>OperatorGroup<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>cluster-logging<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">namespace</span>:<span style="color:#bbb"> </span>openshift-logging <span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">targetNamespaces</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- openshift-logging <span style="color:#bbb">
+</span><span style="color:#bbb">
+</span></code></pre></div>
+
+
+</p>
+<p>Create a Subscription for ClusterLogging operator
+
+
+
+
+
+  <br>
+  <em>[ yaml/clo-subscription.yaml ]</em>
+  
+  
+  <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#080;font-style:italic"># channel=oc get packagemanifest cluster-logging -n openshift-marketplace -o jsonpath=&#39;{.status.defaultChannel}&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">---</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>operators.coreos.com/v1alpha1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Subscription<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>cluster-logging<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">namespace</span>:<span style="color:#bbb"> </span>openshift-logging<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">channel</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;4.4&#34;</span><span style="color:#bbb"> 
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>cluster-logging<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>redhat-operators<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">sourceNamespace</span>:<span style="color:#bbb"> </span>openshift-marketplace<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span></code></pre></div>
+
+
+</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get csv -n openshift-logging
+ <span style="color:#080;font-style:italic"># v namespace openshift-logging by se take mel objevit operator pod</span>
+oc get deploy -n openshift-logging
+ <span style="color:#080;font-style:italic"># do definice container v deploy pridame toleranci uvedenou vyse</span>
+</code></pre></div><h2 id="create-clusterlogging-instance-crd">Create CLusterLogging Instance CRD</h2>
+<p>The Cluster Logging Operator Custom Resource Definition (CRD) defines a complete cluster logging deployment that includes all the components of the logging stack to collect, store and visualize logs.<br>
+For deployment we must use correct tolerations to tolerate our node taint and allow to Schedule (can be defined in CRD). Elasticsearch will run with 1 Node and ZeroRedundancy configuration.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">tolerations</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- <span style="color:#008000;font-weight:bold">key</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;node-role&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">operator</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;Equal&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">value</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;logging&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">effect</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;NoSchedule&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#080;font-style:italic">#nebo</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- <span style="color:#008000;font-weight:bold">key</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;node-role&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">operator</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;Exists&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">effect</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;NoSchedule&#34;</span><span style="color:#bbb">
+</span></code></pre></div><p>For storage we will use default storageClass managed-premium class, but later I would like to migrate to azureFile SC.
+Name of the instance must be &ldquo;instance&rdquo; otherwise cluster-logging-operator bude failovat( OCP 4.4.6).</p>
+
+
+
+
+
+  <br>
+  <em>[ yaml/ClusterLogging-CRD.yaml ]</em>
+  
+  
+  <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>logging.openshift.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>ClusterLogging<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>instance<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">namespace</span>:<span style="color:#bbb"> </span>openshift-logging<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">managementState</span>:<span style="color:#bbb"> </span>Managed<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">logStore</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>elasticsearch<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">elasticsearch</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">nodeSelector</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">node.purpose</span>:<span style="color:#bbb"> </span>logging<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">tolerations</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- <span style="color:#008000;font-weight:bold">key</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;node-role&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">operator</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;Equal&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">value</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;logging&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">effect</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;NoSchedule&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">nodeCount</span>:<span style="color:#bbb"> </span><span style="color:#666">1</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">redundancyPolicy</span>:<span style="color:#bbb"> </span>ZeroRedundancy<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">storage</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">storageClassName</span>:<span style="color:#bbb"> </span>managed-premium<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">size</span>:<span style="color:#bbb"> </span>200G<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">resources</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">limits</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">cpu</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;800m&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">memory</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;8Gi&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">requests</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">cpu</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;100m&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">memory</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;8Gi&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">visualization</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>kibana<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">kibana</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">nodeSelector</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">node.purpose</span>:<span style="color:#bbb"> </span>logging<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">tolerations</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- <span style="color:#008000;font-weight:bold">key</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;node-role&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">operator</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;Equal&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">value</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;logging&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">effect</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;NoSchedule&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">replicas</span>:<span style="color:#bbb"> </span><span style="color:#666">1</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">resources</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">limits</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">memory</span>:<span style="color:#bbb"> </span>2Gi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">requests</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">cpu</span>:<span style="color:#bbb"> </span>100m<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">memory</span>:<span style="color:#bbb"> </span>1Gi<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">curation</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>curator<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">curator</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">tolerations</span>:<span style="color:#bbb"> 
+</span><span style="color:#bbb">       </span>- <span style="color:#008000;font-weight:bold">key</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;node-role&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">         </span><span style="color:#008000;font-weight:bold">operator</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;Equal&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">         </span><span style="color:#008000;font-weight:bold">value</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;logging&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">         </span><span style="color:#008000;font-weight:bold">effect</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;NoSchedule&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">resources</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">limits</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">memory</span>:<span style="color:#bbb"> </span>200Mi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">requests</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">cpu</span>:<span style="color:#bbb"> </span>100m<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">memory</span>:<span style="color:#bbb"> </span>100Mi<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">schedule</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;*/5 * * * *&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">collection</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">logs</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>fluentd<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">fluentd</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">tolerations</span>:<span style="color:#bbb"> 
+</span><span style="color:#bbb">        </span>- <span style="color:#008000;font-weight:bold">key</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;node-role&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">operator</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;Equal&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">value</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;logging&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">effect</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;NoSchedule&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">resources</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">limits</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">memory</span>:<span style="color:#bbb"> </span>2Gi<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">requests</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">cpu</span>:<span style="color:#bbb"> </span>100m<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#008000;font-weight:bold">memory</span>:<span style="color:#bbb"> </span>1Gi<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span></code></pre></div>
+
+
+
+<h3 id="check-status-of-logging-stack">Check status of logging stack</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get pods -n openshift-logging
+oc get clusterlogging instance -n openshift-logging -o yaml
+oc get Elasticsearch elasticsearch -n openshift-logging -o yaml
+oc get pods --selector <span style="color:#b8860b">component</span><span style="color:#666">=</span>elasticsearch -n openshift-logging -o name
+<span style="color:#080;font-style:italic">#health status for indexes</span>
+<span style="color:#080;font-style:italic">#indices je shell script na podu</span>
+oc <span style="color:#a2f">exec</span> -n openshift-logging pod/elasticsearch-cdm-1godmszn-1-6f8495-vp4lw -- indices
+oc get replicaSet --selector <span style="color:#b8860b">component</span><span style="color:#666">=</span>elasticsearch -o name -n openshift-logging
+</code></pre></div></div>
+		
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/openshift/agregate_logging/logging_notes/02-fluendd-eventrouter/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title"></p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/openshift/agregate_logging/logging_notes/01-intro-loggingarch/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title"></p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 DIVIDED DOCUMENTATION.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

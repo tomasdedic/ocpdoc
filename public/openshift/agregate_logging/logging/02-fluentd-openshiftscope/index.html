@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title> - DIVIDED DOCUMENTATION</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="" />
+<meta property="og:description" content="FluentD Everything that a containerized application writes to stdout or stderr is streamed somewhere by the container engine – in Docker’s case, for example, to a logging driver." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/openshift/agregate_logging/logging/02-fluentd-openshiftscope/" />
+
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title"></h1>
+			
+		</header>
+		
+		<div class="content post__content clearfix">
+<h1 id="fluentd">FluentD</h1>
+<p>Everything that a containerized application writes to stdout or stderr is streamed somewhere by the container engine – in Docker’s case,
+for example, to a logging driver. These logs are usually located in the /var/log/containers directory on your host.</p>
+<p>The fluentd component runs as a <strong>daemonset</strong> it means one pod runs on each node in cluster. As nodes are added/removed, kubernetes orchestration ensures that there is one fluentd pod running on each node. Fluentd is configured to run as a privileged container. <strong>It is able to collect logs from all pods on the node, convert them to a structured format and pass them to log aggregator.</strong></p>
+<h2 id="architecture">Architecture</h2>
+<p>Kubernetes, containerized applications that log to stdout and stderr have their log streams captured and redirected to JSON files on the nodes. The Fluentd Pod will tail these log files, filter log events, transform the log data, and ship it off to the Elasticsearch logging backend
+<figure>
+    <img src="img/fluentd-architecture.jpg"/> <figcaption>
+            <h4>fluentD architecture</h4>
+        </figcaption>
+</figure>
+</p>
+<h2 id="fluentd-base-configuration-and-customization">FLUENTD BASE CONFIGURATION and CUSTOMIZATION</h2>
+<p>Base configuration is stored in ConfigMap</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get cm fluentd -o json|jq -r <span style="color:#b44">&#39;.data[&#34;fluent.conf&#34;]&#39;</span>|vim -
+oc get cm fluentd -o json|jq -r <span style="color:#b44">&#39;.data[&#34;run.sh&#34;]&#39;</span>|vim -
+</code></pre></div><p>Version of fluentD from logging-operator csv 4.4 is without fluentd-kafka-plugin</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># list ruby gems on container</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>scl enable rh-ruby25 -- gem list<span style="color:#bbb">
+</span></code></pre></div><p>I made a version of fluentd with kafka and other plugins compiled into gems. So let&rsquo;s try as kafka we will use Azure EventHub
+dasdas</p>
+<h3 id="test-fluentd-locally-with-podman">TEST FLUENTD locally with podman</h3>
+<p>plugin used for fluentD build:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">gem install fluent-config-regexp-type 
+gem install fluent-mixin-config-placeholders 
+gem install fluent-plugin-concat 
+gem install fluent-plugin-elasticsearch 
+gem install fluent-plugin-kafka 
+gem install fluent-plugin-kubernetes_metadata_filter 
+gem install fluent-plugin-multi-format-parser 
+gem install fluent-plugin-prometheus 
+gem install fluent-plugin-record-modifier 
+gem install fluent-plugin-remote-syslog 
+gem install fluent-plugin-remote_syslog 
+gem install fluent-plugin-rewrite-tag-filter 
+gem install fluent-plugin-splunk-hec 
+gem install fluent-plugin-systemd 
+gem install fluent-plugin-viaq_data_model
+</code></pre></div><p>podman pull fluent/fluentd:v1.11-debian-1
+#with conffile mount
+podman run -p 8888:8888 -ti  &ndash;rm -v  /home/ts/git_repositories/work/openshift/oshi/logging:/fluentd/etc docker.io/fluent/fluentd:v1.11-debian-1 fluentd -c /fluentd/etc/fluent.conf</p>
+<pre><code>### USE Azure EventHub instead of Kafka
+Azure EventHub is able to consume kafka_output, for testing purposes we will use one.  
+
+```sh
+Kafka Concept vs Event Hubs Concept
+Cluster        &lt;----&gt;     Namespace
+Topic          &lt;----&gt;     Event Hub
+Partition      &lt;----&gt;     Partition
+Consumer Group &lt;----&gt;     Consumer Group
+Offset         &lt;----&gt;     Offset
+</code></pre><p>fluentD kafka output sample configuration:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  &lt;store&gt;
+  @type kafka2
+  brokers fluentd-eventhub-oshi.servicebus.windows.net:9093
+  flush_interval 3s
+  &lt;buffer topic&gt;
+    @type file
+    path <span style="color:#b44">&#39;/var/lib/fluentd/retry_clo_default_kafka_out&#39;</span>
+		flush_interval <span style="color:#b44">&#34;#{ENV[&#39;ES_FLUSH_INTERVAL&#39;] || &#39;1s&#39;}&#34;</span>
+		flush_thread_count <span style="color:#b44">&#34;#{ENV[&#39;ES_FLUSH_THREAD_COUNT&#39;] || 2}&#34;</span>
+		flush_at_shutdown <span style="color:#b44">&#34;#{ENV[&#39;FLUSH_AT_SHUTDOWN&#39;] || &#39;false&#39;}&#34;</span>
+		retry_max_interval <span style="color:#b44">&#34;#{ENV[&#39;ES_RETRY_WAIT&#39;] || &#39;300&#39;}&#34;</span>
+		retry_forever <span style="color:#a2f">true</span>
+		queue_limit_length <span style="color:#b44">&#34;#{ENV[&#39;BUFFER_QUEUE_LIMIT&#39;] || &#39;32&#39; }&#34;</span>
+		chunk_limit_size <span style="color:#b44">&#34;#{ENV[&#39;BUFFER_SIZE_LIMIT&#39;] || &#39;8m&#39; }&#34;</span>
+		overflow_action <span style="color:#b44">&#34;#{ENV[&#39;BUFFER_QUEUE_FULL_ACTION&#39;] || &#39;block&#39;}&#34;</span>
+    flush_interval 3s
+  &lt;/buffer&gt;
+
+  <span style="color:#080;font-style:italic"># topic settings</span>
+  default_topic kafka_output 
+
+  <span style="color:#080;font-style:italic"># producer settings</span>
+  max_send_retries <span style="color:#666">1</span>
+  required_acks <span style="color:#666">1</span>
+  &lt;format&gt;
+    @type json
+  &lt;/format&gt;
+  ssl_ca_certs_from_system <span style="color:#a2f">true</span>
+
+  username <span style="color:#b8860b">$ConnectionString</span>
+  password <span style="color:#b44">&#34;Endpoint=sb://fluentd-eventhub-oshi.servicebus.windows.net/;SharedAccessKeyName=ss;SharedAccessKey=zeWz+9rSS/yWGanjcKrXMA2mAVCO0hL+MULhNWXHfkk=;EntityPath=kafka_output&#34;</span>
+  &lt;/store&gt;
+</code></pre></div><h3 id="patch-original-cm-with-custom-map">PATCH original CM with custom map</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get cm fluentd -n openshift-logging &gt;fluentd-cm.yaml
+ <span style="color:#080;font-style:italic"># bass is fish specific in bash you can ommit, right way to do it in fish shell</span>
+ <span style="color:#080;font-style:italic"># is to use process substitution</span>
+ <span style="color:#080;font-style:italic"># yq w  -i test.yaml &#39;data.[fluent.conf]&#39; -- (cat fluent.conf|psub) </span>
+ <span style="color:#080;font-style:italic"># but not working becouse I get FIFO not a stream</span>
+bass <span style="color:#b44">&#39;yq w -i fluentd-cm.yaml &#39;</span>data.<span style="color:#666">[</span>fluent.conf<span style="color:#666">]</span><span style="color:#b44">&#39;  -- &#34;$(&lt; fluent.conf)&#34;&#39;</span>
+oc apply -f fluentd-cm.yaml
+</code></pre></div><p>Custom map is mounted to pod in location</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/etc/fluentd/config.d/
+</code></pre></div><p>so restart of fluentD is neccesary</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -o name --selector <span style="color:#b8860b">component</span><span style="color:#666">=</span>fluentd<span style="color:#666">)</span>; oc delete <span style="color:#b8860b">$i</span>; end
+</code></pre></div></div>
+		
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/openshift/agregate_logging/logging/03-elasticsearch/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title"></p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/openshift/agregate_logging/logging/02-fluendd-eventrouter/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title"></p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 DIVIDED DOCUMENTATION.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

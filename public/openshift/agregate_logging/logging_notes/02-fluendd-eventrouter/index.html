@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title> - DIVIDED DOCUMENTATION</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="" />
+<meta property="og:description" content="EventRouter Deployment which will periodically query events and store and process them over FluentD and store to ElasticSearch
+Events By kubernetes events we understand log messages internal to kubernetes, accessible through the kubernetes API /api/v1/events?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/openshift/agregate_logging/logging_notes/02-fluendd-eventrouter/" />
+
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title"></h1>
+			
+		</header>
+		
+		<div class="content post__content clearfix">
+<h1 id="eventrouter">EventRouter</h1>
+<p>Deployment which will periodically query <strong>events</strong> and store and process them over FluentD and store to ElasticSearch</p>
+<h2 id="events">Events</h2>
+<p>By kubernetes events we understand log messages internal to kubernetes, accessible through the kubernetes API <em>/api/v1/events?watch=true</em>, originally stored in etcd. The <strong>etcd storage has time and performance constraints</strong>, therefore, we would like to collect and store them permanently in EFK.</p>
+<ul>
+<li><strong>eventrouter</strong> is deployed to logging project, has a service account and its own role to read events</li>
+<li><strong>eventrouter</strong> watches kubernetes events, marshalls them to JSON and outputs to its STDOUT</li>
+<li><strong>fluentd</strong> picks them up and inserts to elastic search logging project index</li>
+</ul>
+<h3 id="eventrouter-depoloyment">EventRouter Depoloyment</h3>
+<p>use template from RHEL<br>
+<a href="yaml/eventrouter/eventRouter-template.yaml">event_router_template</a></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc process -f eventRouter-template.yaml  | oc apply -f -
+</code></pre></div><h3 id="configuring-the-event-router">Configuring the Event Router</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc project openshift-logging
+oc get ds
+Set <span style="color:#b8860b">TRANSFORM_EVENTS</span><span style="color:#666">=</span><span style="color:#a2f">true</span> in order to process and store event router events in Elasticsearch.
+Set cluster logging to the unmanaged state in web console
+oc <span style="color:#a2f">set</span> env ds/fluentd <span style="color:#b8860b">TRANSFORM_EVENTS</span><span style="color:#666">=</span><span style="color:#a2f">true</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get clusterlogging instance -o yaml
+oc edit ClusterLogging instance
+</code></pre></div><p>get logs:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc <span style="color:#a2f">exec</span> fluentd-ht42r -n openshift-logging -- logs
+ <span style="color:#080;font-style:italic"># logs is a binary to display logs </span>
+</code></pre></div><p>You can send Elasticsearch logs to external devices, such as an externally-hosted Elasticsearch instance or an external syslog server. You can also configure Fluentd to send logs to an external log aggregator.</p>
+<p>Configuring Fluentd to send logs to an external log aggregator
+You can configure Fluentd to send a copy of its logs to an external log aggregator, and not the default Elasticsearch, using the secure-forward plug-in. From there, you can further process log records after the locally hosted Fluentd has processed them.</p>
+<p>&ndash;&gt;to v podstate znamena pouzitu secure-forward &mdash;&gt; jina instance fluentD s Kafka pluginem a dal do Kafky</p>
+<blockquote>
+<p>fluentd nema forward plugin pro Kafku a Redhat ani neplanuje</p>
+</blockquote>
+<blockquote>
+<p>[object Object]: [security_exception] no permissions for [indices:data/read/field_caps] and User [name=CN=system.logging.kibana,OU=OpenShift,O=Logging, roles=[]]</p>
+</blockquote>
+</div>
+		
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/openshift/agregate_logging/logging_notes/02-fluentd-openshiftscope/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title"></p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/openshift/agregate_logging/logging_notes/01-provision-resources/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title"></p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 DIVIDED DOCUMENTATION.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

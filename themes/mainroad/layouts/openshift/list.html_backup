@@ -13,6 +13,7 @@
 	{{- range .Paginator.Pages }}
 		{{- .Render "summary" }}
 	{{- end }}
+  AHA
 </main>
 {{ partial "pagination.html" . }}
 {{ end }}

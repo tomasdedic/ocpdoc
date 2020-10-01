@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title> - DIVIDED DOCUMENTATION</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="" />
+<meta property="og:description" content="Elasticsearch Elasticsearch architecture Cluster: Any non-trivial Elasticsearch deployment consists of multiple instances forming a cluster. Distributed consensus is used to keep track of master/replica relationships." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/openshift/agregate_logging/logging_notes/03-elasticsearch/" />
+
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title"></h1>
+			
+		</header>
+		
+		<div class="content post__content clearfix">
+<h2 id="elasticsearch">Elasticsearch</h2>
+<h3 id="elasticsearch-architecture">Elasticsearch architecture</h3>
+<p><strong>Cluster</strong>: Any non-trivial Elasticsearch deployment consists of multiple instances forming a cluster. Distributed consensus is used to keep track of master/replica relationships.<br>
+<strong>Node</strong>: A single Elasticsearch instance.<br>
+<strong>Index</strong>: A collection of documents. This is similar to a  database in the traditional terminology.
+Each data provider (like fluentd logs from a single Kubernetes cluster) should use a separate index to store and search logs.
+An index is stored across multiple nodes to make data highly available.<br>
+<strong>Shard</strong>: Because Elasticsearch is a distributed search engine, an index is usually split into elements known as shards that are distributed across multiple nodes.(Elasticsearch automatically manages the arrangement of these shards. It also re-balances the shards as necessary, so users need not worry about these.)<br>
+<strong>Replica</strong>: By default, Elasticsearch creates five primary shards and one replica for each index. This means that each index will consist of five primary shards, and each shard will have one copy.</p>
+<p>Deploy
+<strong>Client</strong>: These nodes provide the API endpoint and can be used for queries. In a Kubernetes-based deployment these are deployed a service so that a logical dns endpoint can be used for queries regardless of number of client nodes.
+<strong>Master</strong>: These nodes provide coordination. A single master is elected at a time by using distributed consensus. That node is responsible for deciding shard placement, reindexing and rebalancing operations.
+<strong>Data</strong>: These nodes store the data and inverted index. Clients query Data nodes directly. The data is sharded and replicated so that a given number of data nodes can fail, without impacting availability.</p>
+<h4 id="exposing-elasticsearch-as-a-route">Exposing Elasticsearch as a route</h4>
+<p>For testing purposes and API queries</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># elasticsearch-route.yaml</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>route.openshift.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Route<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>elasticsearch<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">namespace</span>:<span style="color:#bbb"> </span>openshift-logging<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">host</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">to</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>elasticsearch<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">tls</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">termination</span>:<span style="color:#bbb"> </span>reencrypt<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">destinationCACertificate</span>:<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">| </span><span style="color:#bbb">
+</span></code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc extract secret/elasticsearch --to<span style="color:#666">=</span>. --keys<span style="color:#666">=</span>admin-ca
+cat ./admin-ca | sed -e <span style="color:#b44">&#34;s/^/      /&#34;</span> &gt;&gt; elasticsearch-route.yaml
+<span style="color:#a2f">set</span> token <span style="color:#666">(</span>oc whoami -t<span style="color:#666">)</span> <span style="color:#080;font-style:italic">#get Bearer token</span>
+<span style="color:#a2f">set</span> routeES <span style="color:#666">(</span>oc get route -n openshift-logging elasticsearch -o json|jq -Mr <span style="color:#b44">&#39;.spec.host&#39;</span><span style="color:#666">)</span>
+ <span style="color:#080;font-style:italic"># operations index</span>
+curl -s -tlsv1.2 --insecure -H <span style="color:#b44">&#34;Authorization: Bearer </span><span style="color:#b8860b">$token</span><span style="color:#b44">&#34;</span> <span style="color:#b44">&#34;https://</span><span style="color:#b8860b">$routeES</span><span style="color:#b44">/.operations.*/_search?size=1&#34;</span> | jq
+ <span style="color:#080;font-style:italic"># all indexes</span>
+curl -s -tlsv1.2 --insecure -H <span style="color:#b44">&#34;Authorization: Bearer </span><span style="color:#b8860b">$token</span><span style="color:#b44">&#34;</span> <span style="color:#b44">&#34;https://</span><span style="color:#b8860b">$routeES</span><span style="color:#b44">/_aliases&#34;</span> | jq
+</code></pre></div></div>
+		
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/openshift/agregate_logging/logging_notes/02-fluentd-openshiftscope/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title"></p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 DIVIDED DOCUMENTATION.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

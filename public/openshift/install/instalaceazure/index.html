@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html class="no-js" lang="en-us">
 <head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>OPENSHIFT AZURE INSTALL and CUSTOMIZE - DIVIDED DOCUMENTATION</title>
+  <title>OPENSHIFT AZURE INSTALL and CUSTOMIZE - DIVIDED DOCUMENTATION</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="IPI OPENSHIFT disconnected installation inside Azure datacentre extension ">
 	<meta name="generator" content="Hugo 0.75.0-DEV" />
@@ -13,8 +12,8 @@
 <meta property="og:description" content="IPI OPENSHIFT disconnected installation inside Azure datacentre extension " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="//localhost:1112/openshift/install/instalaceazure/" />
-<meta property="article:published_time" content="2020-05-26T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-05-26T00:00:00+00:00" />
+<meta property="article:published_time" content="2020-09-30T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-09-30T00:00:00+00:00" />
 
 	
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -23,6 +22,10 @@
 	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="/css/custom.css">
 	<link rel="shortcut icon" href="/favicon.ico">
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+
 </head>
 <body class="body">
 	<div class="container container--outer">
@@ -44,6 +47,8 @@
     <li class="menu__item">
 		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
     <li class="menu__item">
+		<a class="menu__link" href="/categories/logging" title="Logging">Logging</a>
+    <li class="menu__item">
 		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
     </li>
   </ul>
@@ -52,8 +57,10 @@
 	</div>
 </header>
 
+    
 		<div class="wrapper flex">
 			<div class="primary">
+        
 			
  
 
@@ -64,21 +71,58 @@
 			<div class="post__meta meta">
 <div class="meta__item-datetime meta__item">
 	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2020-05-26T00:00:00">May 26, 2020</time>
+	<time class="meta__text" datetime="2020-09-30T00:00:00">2020-09-30</time>
 </div>
 
 <div class="meta__item-categories meta__item">
 	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OpenShift</a></span>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/install" rel="category">INSTALL</a></span>
 </div>
 </div>
 		</header>
 		
 		<div class="content post__content clearfix">
+        <div class="post__toc toc">
+	      <div class="toc__title">Content</div>
+	      <div class="toc__menu">
+          
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#přípravné-kroky">Přípravné kroky</a>
+      <ul>
+        <li><a href="#private-dns-zone">Private DNS zone</a></li>
+        <li><a href="#příprava-azure-účtu-a-service-principals">Příprava Azure účtu a service principals</a></li>
+        <li><a href="#redhat-pull-secret">Redhat pull secret</a></li>
+        <li><a href="#konfigurační-soubory-azure">Konfigurační soubory Azure</a></li>
+        <li><a href="#ssh-klíče">SSH klíče</a></li>
+        <li><a href="#create-azure-vnet-and-install-with-existing-vnet">Create Azure Vnet and Install with existing VNET</a></li>
+      </ul>
+    </li>
+    <li><a href="#síťové-prostupy">Síťové prostupy</a></li>
+    <li><a href="#konfigurace-cluster-wide-proxy">Konfigurace cluster-wide proxy</a></li>
+    <li><a href="#instalace-typu-internal-do-private-zóny">Instalace typu &ldquo;INTERNAL&rdquo; do private zóny</a>
+      <ul>
+        <li><a href="#použití-artifactory-jako-container-registry">Použití Artifactory jako container registry</a></li>
+        <li><a href="#instalační-soubor-install-configyaml">Instalační soubor INSTALL-CONFIG.YAML</a></li>
+        <li><a href="#spuštění-instalace-a-případný-debug">Spuštění instalace a případný debug</a></li>
+        <li><a href="#uninstall-proces">Uninstall proces</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+	      </div>
+        </div>
+      
       <div class="post__item">
         *file: instalace_popis *
-      </div><h2 id="popis-instalace-openshift-4x-stable-build-v-prostředí-azure">POPIS INSTALACE OPENSHIFT 4.x stable build v prostředí Azure</h2>
+      </div><h1 id="popis-instalace-openshift-4x-stable-build-v-prostředí-azure">POPIS INSTALACE OPENSHIFT 4.x stable build v prostředí Azure</h1>
 <p>Popis instalace OpenShift ve verzi 4.x jako publish Internal tedy s definicí endpointů do private zóny.</p>
+<h2 id="přípravné-kroky">Přípravné kroky</h2>
 <h3 id="private-dns-zone">Private DNS zone</h3>
 <p>Při instalaci je potřeba nakonfigurovat automaticky vytvořenou <strong>private DNS zone</strong> tak že k ní budou přilinkovány Azure Vnet.<br>
 Privatni DNS zona se nechova jako klasicky DNS server, nemá IP adresy na které by se dala
@@ -90,8 +134,8 @@ používají Azure DNS server (168.63.129.16)</p>
 Konfigurace by pak měla vypadat následovně:
 <figure>
     <img src="img/virtual_network_link-proprivateDNS.png"
-         alt="fig: privateDNS virtual-network-links"/> <figcaption>
-            <p>fig: privateDNS virtual-network-links</p>
+         alt="privateDNS virtual-network-links"/> <figcaption>
+            <p>privateDNS virtual-network-links</p>
         </figcaption>
 </figure>
 </p>
@@ -124,16 +168,75 @@ az account list --output table
 ├── accessTokens.json
 ├── azureProfile.json
 └── osServicePrincipal.json
-</code></pre></div><h3 id="4-ssh-klíče">4. SSH klíče</h3>
+</code></pre></div><h3 id="ssh-klíče">SSH klíče</h3>
 <p>Vytvoříme ssh klíče pro přístup na jednotlivé nody OCP.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">ssh-keygen -f <span style="color:#b8860b">$HOME</span>/.ssh/id_dsa -t dsa -b <span style="color:#666">1024</span>
 chmod <span style="color:#666">700</span> ~/.ssh
-</code></pre></div><h3 id="5-instalace-přez-proxy-server">5. Instalace přez proxy server</h3>
-<p>Pokud je omezena přímá komunikace typu outbound, můžeme použít instalaci přez PROXY server jako:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f">export</span> <span style="color:#b8860b">https_proxy</span><span style="color:#666">=</span><span style="color:#b44">&#34;https://adresa:port&#34;</span>
-<span style="color:#a2f">export</span> <span style="color:#b8860b">http_proxy</span><span style="color:#666">=</span><span style="color:#b44">&#34;http://adresa:port&#34;</span>
-</code></pre></div><p>při instalaci přez PROXY se následně proxy nadefinuje jako &ldquo;cluster-wide&rdquo; a <strong>resource proxy</strong> na OCP bude vypadat jako:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>config.openshift.io/v1<span style="color:#bbb">
+</code></pre></div><h3 id="create-azure-vnet-and-install-with-existing-vnet">Create Azure Vnet and Install with existing VNET</h3>
+<blockquote>
+<p>předpokládáme instalaci do existujících VNET je tedy potřeba pouze zkontrolovat nastavení NSG</p>
+</blockquote>
+<p>Vytvořit Azure Vnet s dvěmi <strong>subnety</strong> (jednu pro master nody a jednu pro worker nody).
+<figure>
+    <img src="img/vnet-definition.png"
+         alt="vnet definition"/> <figcaption>
+            <p>vnet definition</p>
+        </figcaption>
+</figure>
+</p>
+<p>Pro každou subnet vytvořit NSG(network security group) a přiřadit příslušným subnet. Hlavní důvod je ssh přístup na bootstrap VM, z kterého instalátor pracuje.<br>
+<em>Pozn: Při instalaci se NSG vytvoří automaticky v resource_group OCP objektů jen se nepřiřadí Subnetu, lze tedy použít i tu. Pokud se tak rozhodnete je potřeba to provést v průběhu instalace (provisioning objektů v Azure se dělá jako první).</em></p>
+<p><figure>
+    <img src="img/masterNSG.png"
+         alt="NSG pro master nodes"/> <figcaption>
+            <p>NSG pro master nodes</p>
+        </figcaption>
+</figure>
+
+<figure>
+    <img src="img/workerNSG.png"
+         alt="NSG pro worker nodes"/> <figcaption>
+            <p>NSG pro worker nodes</p>
+        </figcaption>
+</figure>
+</p>
+<p>yaml defince vnet(v samostatné RG)resouce_group:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#080;font-style:italic"># install-config.yaml snippet</span><span style="color:#bbb">
+</span><span style="color:#bbb">	</span>poshi_vnet_rg<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">vnet</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">	</span>poshi_vnet 10.2.0.0/16<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">subnet</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">	</span>poshi-worker-subnet 10.2.32.0/19<span style="color:#bbb">
+</span><span style="color:#bbb">	</span>poshi-master-subnet 10.2.0.0/19<span style="color:#bbb">
+</span></code></pre></div><h2 id="síťové-prostupy">Síťové prostupy</h2>
+<p>Instalace se provádí v topologii HUB_and_SPOKE se předkonfigurovaným routingem(route table ve VNET) , z pohledu Openshiftu UserDefinedRouting.<br>
+Pro instalaci v privátní zóně by měla být veškerá komunikace mimo privátní rozsah směrována přez proxy. Ne všechny kontejnery však přejímají nastavení CRD proxy.config jako ENV variable a je potřeba povolit komunikaci na VSEC GW.</p>
+<table>
+<thead>
+<tr>
+<th>domény povolené na VSEC GW</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.blob.core.windows.net</td>
+</tr>
+<tr>
+<td>login.microsoftonline.com</td>
+</tr>
+<tr>
+<td>management.azure.com</td>
+</tr>
+<tr>
+<td>168.63.129.168</td>
+</tr>
+</tbody>
+</table>
+<h2 id="konfigurace-cluster-wide-proxy">Konfigurace cluster-wide proxy</h2>
+<p>Jako proxy bude použita:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">httpProxy: http://ngproxy-test.csint.cz:8080
+httpsProxy: http://ngproxy-test.csint.cz:8080
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>config.openshift.io/v1<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Proxy<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">generation</span>:<span style="color:#bbb"> </span><span style="color:#666">2</span><span style="color:#bbb">
@@ -168,7 +271,7 @@ chmod <span style="color:#666">700</span> ~/.ssh
 </tr>
 <tr>
 <td>sso.redhat.com</td>
-<td align="left">The <a href="https://cloud.redhat.com/openshift">https://cloud.redhat.com/openshift</a> site uses authentication from</td>
+<td align="left">The https://cloud.redhat.com/openshift site uses authentication from</td>
 </tr>
 <tr>
 <td>cert-api.access.redhat.com</td>
@@ -208,192 +311,141 @@ chmod <span style="color:#666">700</span> ~/.ssh
 </tr>
 </tbody>
 </table>
-<h3 id="6-instalační-balíky">6. Instalační balíky</h3>
-<p>Stáhneme a rozbalíme <em>openshift-client, openshift-install</em>.</p>
+<h2 id="instalace-typu-internal-do-private-zóny">Instalace typu &ldquo;INTERNAL&rdquo; do private zóny</h2>
+<p>Rozdíl mezi intalací typu Internal a External je pouze v publikaci endpointů.</p>
+<p>Stáhneme a rozbalíme balíky <em>openshift-client, openshift-install</em>.</p>
 <ul>
 <li><a href="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/">(stable installer)</a></li>
-<li><a href="https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/">(dev preview installer)</a> Při instalaci dev preview nebudou fungovat upgrady na vyšší verze.</li>
+<li><a href="https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/">(dev preview installer)</a><br>
+Při instalaci dev preview nebudou fungovat upgrady na vyšší verze.</li>
 </ul>
-<h3 id="7-automatická-instalace-ocp">7. Automatická Instalace OCP</h3>
-<p>Openshift provede provisioning všech potřebných objektů(včetně vnet) v Azure automaticky. Vypublikuje <strong>public</strong> Endpointy pro routy a podobně.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">openshift-install create install-config --dir ./install_dir --log-level debug
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># případně upravíme ~/install_dir/install-config.yaml</span><span style="color:#bbb">
-</span><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># příklad install-config.yaml</span><span style="color:#bbb">
-</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
-</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">baseDomain</span>:<span style="color:#bbb"> </span>csas.elostech.cz<span style="color:#bbb">
-</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">compute</span>:<span style="color:#bbb">
-</span><span style="color:#bbb"> </span>- <span style="color:#008000;font-weight:bold">hyperthreading</span>:<span style="color:#bbb"> </span>Enabled<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>worker<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">platform</span>:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">replicas</span>:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
-</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">controlPlane</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">hyperthreading</span>:<span style="color:#bbb"> </span>Enabled<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>master<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">platform</span>:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">replicas</span>:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
-</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">creationTimestamp</span>:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>poshi4<span style="color:#bbb">
-</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">networking</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">clusterNetwork</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">   </span>- <span style="color:#008000;font-weight:bold">cidr</span>:<span style="color:#bbb"> </span><span style="color:#666">10.128.0.0</span>/14<span style="color:#bbb">
-</span><span style="color:#bbb">     </span><span style="color:#008000;font-weight:bold">hostPrefix</span>:<span style="color:#bbb"> </span><span style="color:#666">23</span><span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">machineCIDR</span>:<span style="color:#bbb"> </span><span style="color:#666">10.2.0.0</span>/16<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">networkType</span>:<span style="color:#bbb"> </span>OpenShiftSDN<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">serviceNetwork</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">   </span>- <span style="color:#666">172.30.0.0</span>/16<span style="color:#bbb">
-</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">platform</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">azure</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">baseDomainResourceGroupName</span>:<span style="color:#bbb"> </span>ocp42-shared<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">region</span>:<span style="color:#bbb"> </span>westeurope<span style="color:#bbb">
-</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">publish</span>:<span style="color:#bbb"> </span>External<span style="color:#bbb">
-</span></code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">openshift-install create cluster --dir ./install_dir --log-level debug
- <span style="color:#080;font-style:italic"># openshift vytvoří svojí resource group v subskripci</span>
+<p><a href="https://github.com/openshift/installer/blob/master/docs/user/customization.md#platform-customization">link na custom properties</a><br>
+<a href="https://github.com/openshift/installer/blob/master/docs/user/azure/customization.md">link na azure platform properties</a></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># jednotlivé elementy použitelné pro install-config.yaml lze vypsat </span>
+openshift-install explain installconfig
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># necháme si vygenerovat konfigurační soubor který budeme dál upravovat</span>
+openshift-install create install-config --dir ./install_dir --log-level debug
+</code></pre></div><h3 id="použití-artifactory-jako-container-registry">Použití Artifactory jako container registry</h3>
+<p>Pro instalaci a používání OCP v privátní síti bude jako zdroj všech kontejnerů využita Artifactory. Všechny remote repository (vnější) budou whitelistovány přez ní a bude pro ně vytvořena konfigurace.<br>
+<a href="/openshift/artifactory_as_proxy_for_containerregistries/">link: artifactory_as_proxy_for_containerregistries obecně</a><br>
+<a href="/openshift/artifactory_as_proxy_for_containerregistries/#pou%C5%BEit%C3%AD-remote-repository-p%C5%99i-instalaci-ocp-quayio-repository">link: artifactory_as_proxy_for_containerregistries uprava install-config.yaml</a></p>
+<h3 id="instalační-soubor-install-configyaml">Instalační soubor INSTALL-CONFIG.YAML</h3>
+<p>následně upravíme vygenerovaný ~/install_dir/install-config.yaml, důležité části jsou s komentáři
 
-  INFO Waiting up to 30m0s <span style="color:#a2f;font-weight:bold">for</span> the cluster at https://api.DNS:6443 to initialize...
-  INFO Waiting up to 10m0s <span style="color:#a2f;font-weight:bold">for</span> the openshift-console route to be created...
-  INFO Install complete!
-</code></pre></div><h3 id="8-custom-private-instalace-ocp">8. Custom Private Instalace OCP</h3>
-<p>The following items are not required or created when you install a private cluster:</p>
-<ul>
-<li>A BaseDomainResourceGroup, since the cluster does not create public records</li>
-<li>Public IP addresses</li>
-<li>Public DNS records</li>
-<li>Public endpoints</li>
-</ul>
-<p><a href="https://github.com/openshift/installer/blob/master/docs/user/customization.md#platform-customization">custom properties</a><br>
-<a href="https://github.com/openshift/installer/blob/master/docs/user/azure/customization.md#existing-vnet">azure custom properties</a></p>
-<h4 id="create-azure-vnet-and-install-with-existing-vnet">Create Azure Vnet and Install with existing VNET</h4>
-<p>Je potřeba vytvořit Azure Vnet s dvěmi <strong>subnety</strong> (jednu pro master nody a jednu pro worker nody).
-<img src="img/vnet-definition.png" alt="virtual network definition">
-Zárověn je potřeba vytvořit dvě NSG(network security group) a přiřadit příslušným subnet. Hlavní důvod je ssh přístup na bootstrap VM, z kterého instalátor pracuje.<br>
-<em>Pozn: Při instalaci se NSG vytvoří automaticky v resource_group OCP objektů jen se nepřiřadí Subnetu, lze tedy použít i tu. Pokud se tak rozhodnete je potřeba to provést v průběhu instalace (provisioning objektů v Azure se dělá jako první).</em><br>
-Minimální nutné nastavení NSG odpovídá:</p>
-<p>Master nodes NSG
-<img src="img/masterNSG.png" alt="master NSG"></p>
-<p>Worker nodes NSG
-<img src="img/workerNSG.png" alt="worker NSG"></p>
-<p>yaml defince vnet(v samostatné RG)resouce_group:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># install-config.yaml snippet</span><span style="color:#bbb">
-</span><span style="color:#bbb">	</span>poshi_vnet_rg<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">vnet</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">	</span>poshi_vnet 10.2.0.0/16<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">subnet</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">	</span>poshi-worker-subnet 10.2.32.0/19<span style="color:#bbb">
-</span><span style="color:#bbb">	</span>poshi-master-subnet 10.2.0.0/19<span style="color:#bbb">
-</span></code></pre></div><h4 id="použití-lokální-container-repository">Použití lokální container repository</h4>
-<p>Počítá se s instalací použítím lokální container repository (Artifactory = artifactory.apps.poshi4.csas.elostech.cz) s nakonfigurovanou remote repository <strong>&ldquo;docker-quay&rdquo;</strong> pro
-<strong>&ldquo;quay.io/openshift-release-dev/ocp-release&rdquo;</strong> a <strong>&ldquo;quay.io/openshift-release-dev/ocp-v4.0-art-dev&rdquo;</strong>.
-Instalaci pak upravíme jako:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># install-config.yaml snippet</span><span style="color:#bbb">
-</span><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># nakonfigurane remote repository na artifactory </span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">imageContentSources</span>:<span style="color:#bbb">
-</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>- artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-release<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-release<span style="color:#bbb">
-</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>- artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
-</span></code></pre></div><p>Pull secret pro artifactory je potřeba přidat do install-config.yaml .pullSecret
-Dá se provést například tak že si z Redhatu stáhnu pull secret a obohatím ho pull secret pro Artifactory.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f">echo</span> -n <span style="color:#b44">&#39;usernametoartifactory:password&#39;</span>|base64 -w0
- <span style="color:#080;font-style:italic"># download pull secret from Redhat to pull-secret.json</span>
-cat pull-secret.json |jq <span style="color:#b44">&#39;.auths += {&#34;artifactory.apps.poshi4.csas.elostech.cz&#34;: \
-</span><span style="color:#b44">{&#34;auth&#34;: &#34;dXNlcjpxeFloSmcyczQxckpGQXVISk5pMg==&#34;,&#34;email&#34;: &#34;myemail&#34;}}&#39;</span>&gt;pull-secret2.json
- <span style="color:#080;font-style:italic"># add content of pull-secret2.json to install-config as element .pullSecret</span>
-</code></pre></div><p>Následné upgrade OCP clusteru se také budou provádět přez tuto repository. Na OCP clusteru se vytvoří objekt typu ImageContentSourcePolicy.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>operator.openshift.io/v1alpha1<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>ImageContentSourcePolicy<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>proxy<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">repositoryDigestMirrors</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span>- artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-release<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-release<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span>- artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
-</span></code></pre></div><h4 id="instalace">Instalace</h4>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">openshift-install create install-config --dir ./install_dir --log-level debug
-</code></pre></div><p>následně upravíme vygenerovaný ~/install_dir/install-config.yaml</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># install-config.yaml</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">baseDomain</span>:<span style="color:#bbb"> </span>csas.elostech.cz<span style="color:#bbb">
+
+
+
+
+  <br>
+  <em>[ src/install-config.yaml ]</em>
+  
+  
+  <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">baseDomain</span>:<span style="color:#bbb"> </span>azure.csint.cz<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">additionalTrustBundle</span>:<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
+</span><span style="color:#b44;font-style:italic">  # CSAS CA
+</span><span style="color:#b44;font-style:italic">  -----BEGIN CERTIFICATE-----
+</span><span style="color:#b44;font-style:italic">  # pem
+</span><span style="color:#b44;font-style:italic">  -----END CERTIFICATE-----</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">compute</span>:<span style="color:#bbb">
-</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">hyperthreading</span>:<span style="color:#bbb"> </span>Enabled<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">architecture</span>:<span style="color:#bbb"> </span>amd64<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">hyperthreading</span>:<span style="color:#bbb"> </span>Enabled<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>worker<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">platform</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">azure</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>Standard_D2S_v3<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>Standard_D4s_v3<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">osDisk</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#080;font-style:italic"># upravena velikost OS disku</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">diskSizeGB</span>:<span style="color:#bbb"> </span><span style="color:#666">256</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">replicas</span>:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">controlPlane</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">architecture</span>:<span style="color:#bbb"> </span>amd64<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">hyperthreading</span>:<span style="color:#bbb"> </span>Enabled<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>master<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">platform</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">azure</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>Standard_D2S_v3<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>Standard_D4s_v3<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">osDisk</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#080;font-style:italic"># upravena velikost OS disku</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">diskSizeGB</span>:<span style="color:#bbb"> </span><span style="color:#666">256</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">replicas</span>:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">creationTimestamp</span>:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>privoshi4<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>oaz-dev<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">proxy</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">httpProxy</span>:<span style="color:#bbb"> </span>http://10.88.233.244:3128<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">httpsProxy</span>:<span style="color:#bbb"> </span>http://10.88.233.244:3128<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">noProxy</span>:<span style="color:#bbb"> </span>.cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.csint.cz,10.128.0.0/14<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">networking</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">clusterNetwork</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">  </span>- <span style="color:#008000;font-weight:bold">cidr</span>:<span style="color:#bbb"> </span><span style="color:#666">10.128.0.0</span>/14<span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">hostPrefix</span>:<span style="color:#bbb"> </span><span style="color:#666">23</span><span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">machineCIDR</span>:<span style="color:#bbb"> </span><span style="color:#666">10.6.0.0</span>/16<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">machineNetwork</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># rozsah pridelene VNETY</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- <span style="color:#008000;font-weight:bold">cidr</span>:<span style="color:#bbb"> </span><span style="color:#666">10.88.232.0</span>/23<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">networkType</span>:<span style="color:#bbb"> </span>OpenShiftSDN<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">serviceNetwork</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">  </span>- <span style="color:#666">172.30.0.0</span>/16<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">platform</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">azure</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">region</span>:<span style="color:#bbb"> </span>westeurope<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">networkResourceGroupName</span>:<span style="color:#bbb"> </span>privoshi_vnet_rg<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">virtualNetwork</span>:<span style="color:#bbb"> </span>privoshi_vnet<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">controlPlaneSubnet</span>:<span style="color:#bbb"> </span>privoshi-master-subnet<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">computeSubnet</span>:<span style="color:#bbb"> </span>privoshi-worker-subnet<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">networkResourceGroupName</span>:<span style="color:#bbb"> </span>oaz-test-net-rg<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">virtualNetwork</span>:<span style="color:#bbb"> </span>oaz-test-vnet<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">controlPlaneSubnet</span>:<span style="color:#bbb"> </span>Master2<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">computeSubnet</span>:<span style="color:#bbb"> </span>App2 <span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># pouziti azure route table</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">outboundType</span>:<span style="color:#bbb"> </span>UserDefinedRouting<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">baseDomainResourceGroupName</span>:<span style="color:#bbb"> </span>openshift_az-dev-shared-rg<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># typ publikace external vs internal </span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">publish</span>:<span style="color:#bbb"> </span>Internal<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">pullSecret</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#39;{&#34;auths&#34;:{&#34;artifactory.csin.cz&#34;:{&#34;auth&#34;:&#34;b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==&#34;,&#34;email&#34;:&#34;myemail&#34;}}}&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">sshKey</span>:<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
+</span><span style="color:#b44;font-style:italic">  # ssh klic pro pristup na uzivatele core jednotlivych nodu
+</span><span style="color:#b44;font-style:italic">  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCt7DDUmaM1mMn9nW8L8iT6Ivh59k9Hq/QsljQV5iuKT9emRHCgbwoTBAlZUqq+ymyqlGut1ZWhH7hVZlCx0Aq5q232pspwJ5+pZ8HkfgU9RNSgvUrh0/jsZBZqpBIQ+gQKAWABVSbB0oMSUz+9bkiiFF/AyEWpmiY34U3BFNalckH1pEmA7xD0uzB+LO0J6jwsIYaBWgHZmrDhQKa/4wrt6Dy06ZQm2QfIKmTT7CV1g8v5Ftf+yG7hgHS7zm+Citlq/Pnzd5gggs42DnKCJICV/viGkRjJkX8XsFLCHsfAOBqw8hTRXMtBVBA2jMUT+q6wAbV5BiQWZdbk4/MZJqAVlQXYcczz9u4TBXP1bHlkj/r4gqwzakLIVZE4eEnb0kX0DuNnKy7wN5U2iyHkox0M6021vuDq9ARmbYqty/5VwgvFCt9YHNvxr0bP8Zz3bpEf8JrAnOGHjbPhnVh0ZGFO1EWMbgTT9DpbnHJfcK3AJaFBhyD8jtbJgsKOjcVqmYrJhhAKwW7vqu54zCit510svOu7rBUegRr4z+MgbTuXXspUcqWXSBjBiAmKptOpbWt0x15oj6M/wapc2EnjvCkSvo42iImX7rPD3F62AK8ByDsbBxU8yLTsjiv8TTJAGGE77ir22JG1Qg2gElg7c4lWkjJ4Srsh8Dl+Pjq5znoAWQ== bastion-oaz-dev</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">imageContentSources</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># odkaz na artifactory remote repo</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>- artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-release<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- artifactory.csin.cz/docker-quay/openshift-release-dev/ocp-release<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-release<span style="color:#bbb">
 </span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>- artifactory.apps.poshi4.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- artifactory.csin.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">sshKey</span>:<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
-</span><span style="color:#b44;font-style:italic">  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDiLcwh8VT57cIPCLJf5DMDkrPyHHJs
-</span><span style="color:#b44;font-style:italic">          l3Cvluw5AFPs5hs0MmbNKSs5XQjtZdQfMcBtdxkQ== user@machine</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">pullSecret</span>:<span style="color:#bbb"> </span>pull secret jsou vygenerovany automaticky + upravime pripadne dalsi jako pro artifactory ... <span style="color:#bbb">
-</span></code></pre></div><p>Spuštění instalace:</p>
+</span><span style="color:#bbb">
+</span></code></pre></div>
+
+
+</p>
+<h3 id="spuštění-instalace-a-případný-debug">Spuštění instalace a případný debug</h3>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># install </span>
 openshift-install create cluster --dir ./install_dir --log-level debug
  <span style="color:#080;font-style:italic"># openshift vytvoří svojí resource group v subskripci</span>
   INFO Waiting up to 30m0s <span style="color:#a2f;font-weight:bold">for</span> the cluster at https://api.DNS:6443 to initialize...
   INFO Waiting up to 10m0s <span style="color:#a2f;font-weight:bold">for</span> the openshift-console route to be created...
   INFO Install complete!
-</code></pre></div><h3 id="9-postinstalační-testy">9. Postinstalační testy</h3>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f">export</span> <span style="color:#b8860b">KUBECONFIG</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span><span style="color:#a2f">pwd</span><span style="color:#a2f;font-weight:bold">)</span>/install_dir/auth/kubeconfig
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># test</span>
+<span style="color:#a2f">export</span> <span style="color:#b8860b">KUBECONFIG</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span><span style="color:#a2f">pwd</span><span style="color:#a2f;font-weight:bold">)</span>/install_dir/auth/kubeconfig
 oc login --username<span style="color:#666">=</span>kubeadmin --password<span style="color:#666">=</span><span style="color:#b44">&#39;password&#39;</span>
 oc get clusterversion
 oc get nodes
 oc get clusteroperators
  <span style="color:#080;font-style:italic"># konfigurace a její uložení na FS, tento krok není nutný</span>
 oc adm must-gather
-</code></pre></div><h3 id="10-uninstall-proces">10. Uninstall proces</h3>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">openshift-install destroy cluster --dir ./install_dir --log-level debug
-</code></pre></div><p>Provision části které vytvořil OCP při instalaci budou smazány (týká se to jeho vlastní RG v Azure)</p>
-<h3 id="11-problémy-při-instalaci">11. Problémy při instalaci</h3>
-<p>Častý problém je že není možné se připojit na bootstrap VM přez port 22, potřeba nadefinovat v NSG.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic">#konkretni problemy</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># bootstrap server debug</span>
 openshift-install gather bootstrap --bootstrap 51.124.79.94 --master 51.124.94.42
 openshift-install gather bootstrap
-</code></pre></div></div>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># bootstrap journal logs</span>
+journalctl -b  -u release-image.service -u bootkube.service|grep -E <span style="color:#b44">&#34;E[[:digit:]]{4}&#34;</span>
+journalctl -b -f -u release-image.service -u bootkube.service
+ <span style="color:#080;font-style:italic"># grep all https://</span>
+<span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#a2f;font-weight:bold">$(</span>find . -name <span style="color:#b62;font-weight:bold">\*</span>.log<span style="color:#a2f;font-weight:bold">)</span>; <span style="color:#a2f;font-weight:bold">do</span> cat <span style="color:#b8860b">$i</span>|grep http; <span style="color:#a2f;font-weight:bold">done</span>|grep -Eo <span style="color:#b44">&#34;https:\/\/[[:graph:]]*&#34;</span>
+</code></pre></div><h3 id="uninstall-proces">Uninstall proces</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">openshift-install destroy cluster --dir ./install_dir --log-level debug
+</code></pre></div><p>Provision části které vytvořil OCP při instalaci budou smazány (týká se to jeho vlastní RG v Azure)</p>
+</div>
 		
 <div class="post__tags tags clearfix">
 	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
 	<ul class="tags__list">
-		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
-		<li class="tags__item"><a class="tags__link btn" href="/tags/azure/" rel="tag">Azure</a></li>
 		<li class="tags__item"><a class="tags__link btn" href="/tags/install/" rel="tag">Install</a></li>
 	</ul>
 </div>
@@ -401,6 +453,8 @@ openshift-install gather bootstrap
   
   
 </main>
+
+
 
 
 
@@ -468,10 +522,10 @@ openshift-install gather bootstrap
 
 <nav class="post-nav flex">
 	<div class="post-nav__item post-nav__item--prev">
-		<a class="post-nav__link" href="/openshift/dns/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">DNS deepDive OPC/Azure/OnPremise</p></a>
+		<a class="post-nav__link" href="/openshift/artifactory_as_proxy_for_containerregistries/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Konfigurace OCP pro použití Artifactory remote repository</p></a>
 	</div>
 	<div class="post-nav__item post-nav__item--next">
-		<a class="post-nav__link" href="/openshift/debug/debug-nodenotready/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Node NotReady, SchedulingDisabled</p></a>
+		<a class="post-nav__link" href="/openshift/install/nastaveni_proxy/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">OCP Konfigurace proxy</p></a>
 	</div>
 </nav>
 

@@ -6,6 +6,7 @@ description: "fluentD struggle"
 lead: "all your base are belong to us"
 categories:
   - "Openshift"
+  - "LOGGING"
 tags:
   - "OCP"
   - "LOGGING"

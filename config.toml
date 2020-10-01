@@ -1,4 +1,5 @@
 baseurl = "/"
+refLinksErrorLevel ="WARNING"
 title = "DIVIDED DOCUMENTATION"
 languageCode = "en-us"
 paginate = "20" # Number of posts per page
@@ -6,6 +7,7 @@ theme = "mainroad"
 disqusShortname = "" # Enable comments by entering your Disqus shortname
 googleAnalytics = "" # Enable Google Analytics by entering your tracking id
 summaryLength = 20 # nastaveni delky summary v indexu na 20 slov
+
 [Author] # Used in authorbox
   name = "Tomáš Dědič"
   bio = "VeryravenRetroroyalRoger"
@@ -21,10 +23,10 @@ summaryLength = 20 # nastaveni delky summary v indexu na 20 slov
   authorbox = true # Show authorbox at bottom of pages if true
   toc = false # Enable Table of Contents
   post_navigation = true # Show post navigation at bottom of pages if true
-  post_meta = ["date", "categories", "translations"] # Order of post meta information. Use ["none"] to turn off completely.
+  post_meta = ["date", "categories", "translations","tags"] # Order of post meta information. Use ["none"] to turn off completely.
   #postSections = ["post","data","tech"] # the section pages to show on home page and the "Recent articles" widget
-  postSections = ["openshift"] 
-  #dateformat = "2006-01-02" # change the format of dates
+  postSections = ["openshift","search"] 
+  dateformat = "2006-01-02" # change the format of dates
   #mathjax = true # Enable MathJax
   #mathjaxPath = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" # Specify MathJax path
   #mathjaxConfig = "TeX-AMS-MML_HTMLorMML" # Specify MathJax config
@@ -32,12 +34,12 @@ summaryLength = 20 # nastaveni delky summary v indexu na 20 slov
 
 [Params.sidebar]
   home = "left" # Configure layout for home page
-  list = "left"  # Configure layout for list pages
+  list = false  # Configure layout for list pages
   single = false # Configure layout for single pages
   # Enable widgets in given order
   # widgets = ["search", "recent", "categories", "taglist", "social", "languages"]
   # widgets = ["recent", "categories", "taglist"]
-  widgets = ["recent", "taglist"]
+  widgets = ["taglist", "recent"]
 
 [Params.widgets]
   recent_num = 15 # Set the number of articles in the "Recent articles" widget
@@ -56,7 +58,9 @@ summaryLength = 20 # nastaveni delky summary v indexu na 20 slov
   email = "example@example.com"
   google_plus = "profileid"
 
+
 [markup]
+defaultMarkdownHandler = "goldmark"
   [markup.highlight]
     codeFences = true
     guessSyntax = false
@@ -67,3 +71,11 @@ summaryLength = 20 # nastaveni delky summary v indexu na 20 slov
     noClasses = true
     style = "emacs"
     tabWidth = 4
+  [markup.blackFriday]
+    angledQuotes = true
+    extensionsmask = ["autolink"]
+    extensions = ["hardLineBreak"]
+  [markup.goldmark]
+     [markup.goldmark.extensions]
+      # disable autoliks for URL
+      linkify = false

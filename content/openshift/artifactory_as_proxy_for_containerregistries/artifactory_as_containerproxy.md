@@ -1,6 +1,6 @@
 Pro instalaci a používání OCP v privátní síti bude jako zdroj všech kontejnerů využita Artifactory. Všechny remote repository (vnější) budou whitelistovány přez ní a bude pro ně vytvořena konfigurace.
 
-## Artifactory fact
+## Artifactory facts
 [Artifactory link](https://artifactory.csas.elostech.cz/ui/login/) -- adresa se může do budoucna lišit udávám jen z důvodu reference
 
 repository: 
@@ -10,36 +10,27 @@ repository:
 Na artifactory je potřeba konfiguraci typu remote repository vytvořit. Zatím nejsou standartizovány názvy. Obrázek níže je informativního charakteru.
 {{< figure src="img/remote_repository_settings.png" caption="artifactory remote repository settings" >}}
 
-## Použití "proxy repository" při instalaci OCP (QUAY.IO repository)
-Upravíme konfigurační soubor install-config.yaml tak aby použil remote repository jako mirror a vytvořil tak CRD ImageContentSourcePolicy.  
+## Použití "remote repository" při instalaci OCP (QUAY.IO repository)
+Jediný dostupný "container registry" bude pro instalaci v privátní síti "artifactory container registry" proto z instalátoru **install-config.yaml** odstraníme všechny ostatní pull secrety a nahradíme ho pouze pull secretem artifactory. Provedeme konfigurace CRD ImageContentSourcePolicy tak aby místo repozitáře "quay.io" použil artifactory.
+
 **Trusted TLS cert must be used for docker registry, there is no option to use insecure container repo during install.**
 
-### CREATE PULL SECRET FILE for install-config.yaml
-Now we will create pull secret against Artifactory. Content of this file will be put to .pullSecret key in install-config.yaml
-
+### Vytvoření a test "remote repository pro QUAY.IO" na Artifactory 
+Quay.io vyžaduje autorizaci pro přihlášení, použijeme tedy identitu vygenerovanou v pull-secret.txt from [Redhat pull secret pull-secret.txt](https://cloud.redhat.com/openshift/install/azure/installer-provisioned)
 ```sh
- # pull secret is from redhat for quay.io repository usage
- # create auth
-echo -n 'usernametoartifactory:password'|base64 -w0
- # download pull secret file from redhat and add artifactory secret to it
-cat pull-secret.json |jq '.auths += {"artifactory.csas.elostech.cz": {"auth": "dXNxxxzQxckpGQXVISk5pMg==","email": "dedtom@gmail.com"}}' >pull-secret2.json
-```
-### Configure remote repository for install-config.yaml 
-In this case we will use **remote repository** configured on **Artifactory**
-
-```sh
+# repository for images
 oc adm release info --image-for=machine-os-content quay.io/openshift-release-dev/ocp-release@sha256:ea7ac3ad42169b39fce07e5e53403a028644810bee9a212e7456074894df40f3                                                                                                                     
  > quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:be4802b6fe6343053d9f5668acecd68dfb38c4be364a9a3c06e818d56ed61ad1
  # decode Redhat quay.io pull secret:
-cat pull-secret2.json|jq -r '.auths."quay.io".auth'|base64 -d
+cat pull-secret.txt|jq -r '.auths."quay.io".auth'|base64 -d
  > openshift-release-dev+dedtomrund93wu0v54cs60osj6x1sk5i:Z56AATkk2OIGKV9OJVTKP8T3G357329ECKAUX0LBRHIGUGJ4H3UGOLHSIJPNHK4N
  # it is a robot login
-docker login -u firstpart -p secondpart quay.io
- # test it
+docker login -u firstpart_decoded -p secondpart_decoded quay.io
+ # test quay.io pull
 podman pull quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:8a752dfed8c27a60d13f3dc578a1ea15efb2800041810204dd7b3bb79eedee04
 ```
 
-add this part to install-config.yaml
+do install-config.yaml přidáme konfiguraci pro repository mirror.
 
 ```yaml
  # artifactory.csas.elostech.cz/docker-quay is remote repository
@@ -55,7 +46,7 @@ imageContentSources:
 **On artifactory UI page go to Remote registry, enable Token Authentication and in Advanced tab--> Remote Authentication add
 username and password from**
 ```sh
- cat pull-secret2.json|jq -r '.auths."quay.io".auth'|base64 -d
+ cat pull-secret.txt|jq -r '.auths."quay.io".auth'|base64 -d
 ```
 
 {{< figure src="img/artifactory.png" caption="artifactory remote authentication settings" >}}
@@ -63,34 +54,21 @@ and test it
 ```sh
 docker pull artifactory.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev@sha256:8a752dfed8c27a60d13f3dc578a1ea15efb2800041810204dd7b3bb79eedee04
 ```
-install:
-copy install-config.yaml to ./install dir and run
+
+### CREATE Artifactory PULL SECRET FILE for install-config.yaml
+Vložíme **pullsecret pro Artifactory** do instalačního souboru **install-config.yaml** a nahradíme tak původní pullSecret.
+
 ```sh
-./openshift-install create cluster --log-level debug --dir ./install
+ # original pull secret is redhat for quay.io repository usage
+ # auth string
+export encode_pass=echo -n 'usernametoartifactory:password'|base64 -w0
+ # inplace change
+yq write -i install-config.yaml pullSecret $(jq -Rnc '.auths = {"artifactory.csas.elostech.cz": {"auth":env.encode_pass ","email": "dedtom@gmail.com"}}')
 ```
-### DEBUG/TEST bootstrap machine for configuration set
-*Only fact check.*
-```sh
- # use id_rsa  key used during installation 
-ssh core@bootSTRAPmachineIP
 
-cat /etc/containers/registries.conf
-[[registry]]
-location = "quay.io/openshift-release-dev/ocp-release"
-insecure = false
-mirror-by-digest-only = true
+## Prezentace imageContentSourcepolicy CRD na nodech
+imageContentSourcepolicy ---> Machineconfig ---> **/etc/containers/registries.conf** 
 
-[[registry.mirror]]
-location = "artifactory.csas.elostech.cz/docker-quay/ocp-release"
-insecure = false
-
-```
-+ **The first working mirror is used to supply the pulled image**
-+ **The main registry will only be used if no other mirror works**
-+ **From the system context, the Insecure flags are used as fallback**
-
-## Prezentace imageContentSourcepolicy na nodech
-Soubor **/etc/containers/registries.conf** plnen je  operatorem z CRD imageContentSourcepolicy(vezme vsechny NAME a conctatne je do jednoho souboru) jako Machineconfig
 ```sh
 oc get machineconfig|grep registries
  > 99-master-c8f3919a-ee7b-4c98-a1f7-96f7bdbb3747-registries   
@@ -106,14 +84,6 @@ apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
     machineconfiguration.openshift.io/role: master
-  ownerReferences:
-  - apiVersion: config.openshift.io/v1
-    kind: Image
-    name: cluster
-    uid: 1fec13ef-ba84-438a-bf81-399fc84938c5
-  resourceVersion: "32543687"
-  selfLink: /apis/machineconfiguration.openshift.io/v1/machineconfigs/99-master-d3244d0a-138d-443a-bb62-6a1bff43fd4e-registries
-  uid: f1d61040-b385-445d-b3cf-fdb5473ac9e3
 spec:
   config:
     ignition:
@@ -125,21 +95,17 @@ spec:
         filesystem: root
         mode: 420
         path: /etc/containers/registries.conf
-  fips: false
-  kernelArguments: null
-  kernelType: ""
-  osImageURL: ""
 ```
-O zapis  se  tedy stara coreOS ignition.  
+O zapis  se  tedy stara **coreOS ignition**.  
 
-## Obecné řešení použití proxy repository
-> pozn: konfigurace repozitářů bude řešena přez ArgoCD v rámci jeho inicializace.  
-
-**Problém je že imageContentSourcepolicy tedy vytvoří machineconfig a následně soubor registries.conf ale vždy obsahuje mirror-by-digest-only=true a taky nelze upravovat na přímo ostatní parametry. Mirror-by-digest-only se použije jen pro instalaci a upgrade kde se odkazujeme digestem.**  
+## Použití remote repository pro ostatní "image repository" (registry.redhat.io, docker.io ... )
+**Problém je že imageContentSourcepolicy tedy vytvoří Machineconfig a následně soubor registries.conf ale vždy obsahuje parametr mirror-by-digest-only=true** zároveň nelze upravovat na přímo ostatní parametry.  
+CRD imageContentSourcepolicy tak  jen pro instalaci a upgrade kde se odkazujeme digestem.
 ```sh
+ # example
 oc explain Imagecontentsourcepolicy --recursive
 ```
-Přez machineconfig vytvoříme  soubory v /etc/containers/registries.conf.d/ které budou obsahovat kustomizovanou konfiguraci pro jednotlivé registry.  
+Přez machineconfig vytvoříme  soubory v /etc/containers/registries.conf.d/ které budou obsahovat upravenou konfiguraci pro jednotlivé registry.  
 příklad konfigurace:
 
 ```yaml
@@ -181,14 +147,7 @@ a2VyIgoKW1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIuaW8iCiAg
     location = "artifactory.csas.elostech.cz:443/docker"
 ```
 
-*pozn: abychom mohli delat presmerovani potrebujeme dostat do souboru hodnoty*
-```sh
-[[registry]]
-prefix = "presmerovani_repozitare"
-location = "pozadovany_repozitar"
-```
-## Change proxy repository adress and pullsecrets on running cluster
-How to change a repository values on running cluster (adress of artifactory has changed).
+## Změna pull secret pro repository 
 Content of .pullSecret is stored in **MachineConfig** and as a secret in 
 ```sh
 oc get machineconfig 00-master -o yaml|grep artifactory -A4
@@ -196,9 +155,10 @@ oc get machineconfig 00-worker -o yaml|grep artifactory -A4
  # nebo si vsechny hodnoty muzeme vytahnout z renderconfigu
 ```
 Machineconfig odkazuje na soubor **/var/lib/kubelet/config.json**  ktery obsahuje pull secrety pro container registry. Neni potreba ho menit prez machineconfig ale pokud upravime
-**secret openshift-config/pull-secret** tak se jeho hodnoty propisi sem (neprisel jsem na to jak zjistit vazbu, zjisteno experimentalne) 
+**secret openshift-config/pull-secret** tak se jeho hodnoty propisi sem rime
 
 ```sh
+ # get all cluster-wide pull secrets
 oc get secret -n openshift-config pull-secret -o json |jq -r '.data[]'|base64 -d
  # a pridani hodnot pro novou artifactory repository
  echo -n 'username:password'|base64 -w0
@@ -207,7 +167,4 @@ oc get secret -n openshift-config pull-secret -o json |jq -r '.data[]'|base64 -d
  oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=pull-secret.json
  # dojde k postupnemu restartu vsech nodu
 ```
-Zbyva jeste upravit zaznam v machineconfigu pro **/etc/containers/registries.conf a /etc/containers/registries.conf.d/\***
-Tento soubor je castecne definovan z  **crd imageContentSourcepolicy** případně z custom **machineconfig**, po jejich úpravě se provede restart nodů. 
-
 **!HAPPY GUNNING!**

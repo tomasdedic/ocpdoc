@@ -1,0 +1,98 @@
+apiVersion: v1
+baseDomain: azure.csint.cz
+additionalTrustBundle: |
+  -----BEGIN CERTIFICATE-----
+  MIIG2zCCBMOgAwIBAgICAnowDQYJKoZIhvcNAQELBQAwVjELMAkGA1UEBhMCQ1ox
+  ITAfBgNVBAoMGMSMZXNrw6Egc3BvxZlpdGVsbmEgYS5zLjEUMBIGA1UECwwLU3By
+  w6F2YSBQS0kxDjAMBgNVBAMTBUNBSVIzMB4XDTE1MDUxMjA4MTkyMFoXDTMwMDUx
+  MjA4MTkyMFowVzELMAkGA1UEBhMCQ1oxITAfBgNVBAoMGMSMZXNrw6Egc3BvxZlp
+  dGVsbmEgYS5zLjEUMBIGA1UECwwLU3Byw6F2YSBQS0kxDzANBgNVBAMTBkNBSU1T
+  MjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALVu+8N7anAbg0r8kuBj
+  AVvNr88jp6ZUqAKybpMLUV6JoGvx+KlZ3on5GTeaDLXClqLj0liGmr+/kpOSUzcY
+  87YAycquv7+h5jzSIj0tPAMFpqfpRNAcLJP/o3cJk7c0jDv3Yz5j9a7l/OcBnX3E
+  ucdMZHlPgjcvUEs4iP3x3798wNeWpp2qhln584viLA3KHCBdDcEaj+LhOy5kQloK
+  F+76EZX6yqZw6jecdfVUMBmVVbU4aK5u4obYCI3gk5T6ssJuyRNi53cVEVq6eo2e
+  NrJaAE+JI4xWS/KUbi6HbuLS6R5BsGe6ad5/v18VXcQ/Ck9T9pfDeBqCVGFc7OLt
+  PbUCAwEAAaOCArAwggKsMDgGCCsGAQUFBwEBBCwwKjAoBggrBgEFBQcwAoYcaHR0
+  cDovL3d3dy5jc2FzLmN6L2NhaXIzLmNlcjAPBgNVHRMBAf8EBTADAQH/MHMGA1Ud
+  IARsMGowaAYLK4EalcnCbqtnAAMwWTA0BggrBgEFBQcCAjAoGiZTZWUgaHR0cDov
+  L3d3dy5jc2FzLmN6L2NwIGZvciBkZXRhaWxzLjAhBggrBgEFBQcCARYVaHR0cDov
+  L3d3dy5jc2FzLmN6L2NwMAsGA1UdDwQEAwIB/jB/BgNVHSMEeDB2gBT/u76ZRa5L
+  vrEBgA6d40v74zE5iqFapFgwVjELMAkGA1UEBhMCQ1oxITAfBgNVBAoMGMSMZXNr
+  w6Egc3BvxZlpdGVsbmEgYS5zLjEUMBIGA1UECwwLU3Byw6F2YSBQS0kxDjAMBgNV
+  BAMTBUNBSVIzggIBuzCCAUcGA1UdHwSCAT4wggE6MIHBoIG+oIG7hoG4bGRhcDov
+  Ly9jbiUzZENBSVIzLGNuJTNkQ0FJUjMsY24lM2RDRFAsY24lM2RQdWJsaWMlMjBL
+  ZXklMjBTZXJ2aWNlcyxjbiUzZFNlcnZpY2VzLGNuJTNkQ29uZmlndXJhdGlvbixk
+  YyUzZGNzaW4sZGMlM2Rjej9jZXJ0aWZpY2F0ZVJldm9jYXRpb25MaXN0P2Jhc2U/
+  KG9iamVjdENsYXNzPWNSTERpc3RyaWJ1dGlvblBvaW50KTAnoCWgI4YhaHR0cDov
+  L3BraXd3d2kxLmNzaW4uY3ovY2FpcjMuY3JsMCegJaAjhiFodHRwOi8vcGtpd3d3
+  aTIuY3Npbi5jei9jYWlyMy5jcmwwIqAgoB6GHGh0dHA6Ly93d3cuY3Nhcy5jei9j
+  YWlyMy5jcmwwEQYDVR0OBAoECEQwuD2iVdWXMA0GCSqGSIb3DQEBCwUAA4ICAQDJ
+  FIVGyS4qsdWa9/NIrafBZ0w+m68wynrKhP4cl0bkYVwlPhj9PcoJoWorw/Uw2Ot1
+  O09cgiV1zKP7UNjLHFEEiuQXw+Vs0OvqwajAEuCXuMshL0KjjS20HrJTadVrNR8M
+  O6udF9uq+vba8jCmRkANRmqRTR4KQwLmB2PesRleCranlZ1awZjZ2MC0M7F5raex
+  aFpZLwefoqLAYWSlgLugYXMpaTMkye6MmdgrJ7jQ5xqVxwd9OvZyaUjgqF2gt4Se
+  MSheRcZ6Bv1FzlY7qu/eOHXF9yplCFcqXKwL2uxcTxfVNgkyiISmAPvF00GnjyZR
+  IMiIK1t81PhdHWcZEFJVbF3aXrfnrx7h6uQukTHugTlBEtZ7R9BAiVg7WHi/j1X8
+  IQNK4yxjkQrW0RDTmcJnvgkyT7HUUV47V85q/zCfRxfJGd8rgIMIdIHhvuBK5tV9
+  2Pz2NDHa/Dki3NJo4QKbzKYL5x8Tmd3HrrUG2CsI7qGV7Wc12mg9L2L+E1VFJrBs
+  qSX8oxNcSIC5++lSDTgVJgV5rsYQlRlfJavD3K8/h9mk/FbIz/+5oebesSoZK9P8
+  BjR79YiRRz5CGVp9LmEB6ZZKjODr60a2uGOT7naO/Fny/YTsBPbxa3I6KSNeZuPd
+  WADt2TnedosJWFIqah60C7/YxKz2V/Qu8a/tHl7IFQ==
+  -----END CERTIFICATE-----
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  platform:
+    azure:
+      type: Standard_D4s_v3
+      osDisk:
+        diskSizeGB: 256
+  replicas: 3
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform:
+    azure:
+      type: Standard_D4s_v3
+      osDisk:
+        diskSizeGB: 256
+  replicas: 3
+metadata:
+  creationTimestamp: null
+  name: oaz-dev
+proxy:
+  httpProxy: http://10.88.233.244:3128
+  httpsProxy: http://10.88.233.244:3128
+  noProxy: .cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.csint.cz,10.128.0.0/14
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.88.232.0/23
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  azure:
+    region: westeurope
+    networkResourceGroupName: oaz-test-net-rg
+    virtualNetwork: oaz-test-vnet
+    controlPlaneSubnet: Master2
+    computeSubnet: App2 
+    outboundType: UserDefinedRouting
+    baseDomainResourceGroupName: openshift_az-dev-shared-rg
+publish: Internal
+pullSecret: '{"auths":{"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K3BldHJoYXRvbnNpdHNvbHV0aW9uc2N6MWxqNXk4aTNqMm1wbnNzenBjamZod25udnBzOjlOUE1EVVE1RzRJOVQ4SzlHS01YNDkyUEgyQ005RVRWTTcwMUtUSDhMTUFZTk1NWEZIREdUTUhLRkdYQkZCR1g=","email":"petr.haton@s-itsolutions.cz"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K3BldHJoYXRvbnNpdHNvbHV0aW9uc2N6MWxqNXk4aTNqMm1wbnNzenBjamZod25udnBzOjlOUE1EVVE1RzRJOVQ4SzlHS01YNDkyUEgyQ005RVRWTTcwMUtUSDhMTUFZTk1NWEZIREdUTUhLRkdYQkZCR1g=","email":"petr.haton@s-itsolutions.cz"},"registry.connect.redhat.com":{"auth":"ODA0MzQ1MHx1aGMtMUxqNXk4STNKMm1wblNTenBDSkZId05uVnBTOmV5SmhiR2NpT2lKU1V6VXhNaUo5LmV5SnpkV0lpT2lKaE1EVTBOemszWWpBNU1tUTBabVJoT0dSbU5XUmxOMkk1WldWbFlqRXlOQ0o5LlZjZW9hQnNYS29aeXR4NkRNSE1CLXV5WWRRU2ZRV2EwSDNHMVg4YU9hd2VSYnVmS0hCOHlFc2ZWQi1TMVJoSHc4U3RwRmRpQ3M2NGdiYUM4X0dmVG5FYjA2SlVqckhsYzRZeFhBa09LdGZXMkpWRlJZZTN5QnRXTnBqOGpMMHY1S3d2dnlGRGRzaXZkcE5PbU5ucjJieXRTQ2otU0RnMFhUS1FxOW5XUEI5VWh0UHQwUlFvVjFlZjN2YUloVzFTTjBuMndCQndHQklvZGRwTVVzRFRDTlA2ZEpzbFBBLUNKSmhQblFuTzRfM3UwSHVwOUdHUDRSV3RWdzdGSTBmTmNxZ1FVUTBleEwxNzA2aldVMExNcDhOSlpxZ0piR29rUXE3Uno5dVdYRlRNRHB1UUJOOXgzMTBGTnFqMmNKVE80NExtd0ptTWgtMGVVdDl0Sjd1dUF3LU5HeWFNeDJpRDQ2WXdUejZiRTFGWTZzV2xsbXRfSW90bHMzYThZV2xmaU9zWWlDZmg0REM4RmhsUThGSXdLbWlWN2Yyc20xRXRzV2ZTc1hDdWl3b3pCYUxIc2xJMnl1LTllRkFJRnhzOUxQelMzWWh3NWk1UjFCVFlvVGdEWXFSVE5SR015VW91aTRONUxLYUc5Q0FNMTgtNkYySU5SUktia3d0ODkycTVCTGtsVDF0MkJSQTJ4TW4tSWRXdDFzSzZvVEFxNk1hZlFKUlRFaDRiSlpNbV9pVUhQbUhGdUprQWhvZndzNTVvdkZTR1dFV3NlUm5qTmRhV2xMRU5QWWVoQkR0d2RVekdNYXNJNU93UzNPXzlIV0V5OW13RmU0LUJFRHVnX1FqV1JfTkF1a1Jvc1BoRmRsbUJMSjh5RVR6aFFNNFZGN3ZVblhCaHB6WmQ5VmJr","email":"petr.haton@s-itsolutions.cz"},"registry.redhat.io":{"auth":"ODA0MzQ1MHx1aGMtMUxqNXk4STNKMm1wblNTenBDSkZId05uVnBTOmV5SmhiR2NpT2lKU1V6VXhNaUo5LmV5SnpkV0lpT2lKaE1EVTBOemszWWpBNU1tUTBabVJoT0dSbU5XUmxOMkk1WldWbFlqRXlOQ0o5LlZjZW9hQnNYS29aeXR4NkRNSE1CLXV5WWRRU2ZRV2EwSDNHMVg4YU9hd2VSYnVmS0hCOHlFc2ZWQi1TMVJoSHc4U3RwRmRpQ3M2NGdiYUM4X0dmVG5FYjA2SlVqckhsYzRZeFhBa09LdGZXMkpWRlJZZTN5QnRXTnBqOGpMMHY1S3d2dnlGRGRzaXZkcE5PbU5ucjJieXRTQ2otU0RnMFhUS1FxOW5XUEI5VWh0UHQwUlFvVjFlZjN2YUloVzFTTjBuMndCQndHQklvZGRwTVVzRFRDTlA2ZEpzbFBBLUNKSmhQblFuTzRfM3UwSHVwOUdHUDRSV3RWdzdGSTBmTmNxZ1FVUTBleEwxNzA2aldVMExNcDhOSlpxZ0piR29rUXE3Uno5dVdYRlRNRHB1UUJOOXgzMTBGTnFqMmNKVE80NExtd0ptTWgtMGVVdDl0Sjd1dUF3LU5HeWFNeDJpRDQ2WXdUejZiRTFGWTZzV2xsbXRfSW90bHMzYThZV2xmaU9zWWlDZmg0REM4RmhsUThGSXdLbWlWN2Yyc20xRXRzV2ZTc1hDdWl3b3pCYUxIc2xJMnl1LTllRkFJRnhzOUxQelMzWWh3NWk1UjFCVFlvVGdEWXFSVE5SR015VW91aTRONUxLYUc5Q0FNMTgtNkYySU5SUktia3d0ODkycTVCTGtsVDF0MkJSQTJ4TW4tSWRXdDFzSzZvVEFxNk1hZlFKUlRFaDRiSlpNbV9pVUhQbUhGdUprQWhvZndzNTVvdkZTR1dFV3NlUm5qTmRhV2xMRU5QWWVoQkR0d2RVekdNYXNJNU93UzNPXzlIV0V5OW13RmU0LUJFRHVnX1FqV1JfTkF1a1Jvc1BoRmRsbUJMSjh5RVR6aFFNNFZGN3ZVblhCaHB6WmQ5VmJr","email":"petr.haton@s-itsolutions.cz"},"artifactory.csin.cz":{"auth":"b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==","email":"myemail"}}}'
+sshKey: |
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCt7DDUmaM1mMn9nW8L8iT6Ivh59k9Hq/QsljQV5iuKT9emRHCgbwoTBAlZUqq+ymyqlGut1ZWhH7hVZlCx0Aq5q232pspwJ5+pZ8HkfgU9RNSgvUrh0/jsZBZqpBIQ+gQKAWABVSbB0oMSUz+9bkiiFF/AyEWpmiY34U3BFNalckH1pEmA7xD0uzB+LO0J6jwsIYaBWgHZmrDhQKa/4wrt6Dy06ZQm2QfIKmTT7CV1g8v5Ftf+yG7hgHS7zm+Citlq/Pnzd5gggs42DnKCJICV/viGkRjJkX8XsFLCHsfAOBqw8hTRXMtBVBA2jMUT+q6wAbV5BiQWZdbk4/MZJqAVlQXYcczz9u4TBXP1bHlkj/r4gqwzakLIVZE4eEnb0kX0DuNnKy7wN5U2iyHkox0M6021vuDq9ARmbYqty/5VwgvFCt9YHNvxr0bP8Zz3bpEf8JrAnOGHjbPhnVh0ZGFO1EWMbgTT9DpbnHJfcK3AJaFBhyD8jtbJgsKOjcVqmYrJhhAKwW7vqu54zCit510svOu7rBUegRr4z+MgbTuXXspUcqWXSBjBiAmKptOpbWt0x15oj6M/wapc2EnjvCkSvo42iImX7rPD3F62AK8ByDsbBxU8yLTsjiv8TTJAGGE77ir22JG1Qg2gElg7c4lWkjJ4Srsh8Dl+Pjq5znoAWQ== bastion-oaz-dev
+imageContentSources:
+- mirrors:
+  - artifactory.csin.cz/docker-quay/openshift-release-dev/ocp-release
+  source: quay.io/openshift-release-dev/ocp-release
+- mirrors:
+  - artifactory.csin.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev
+  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev

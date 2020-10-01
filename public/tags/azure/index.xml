@@ -26,14 +26,5 @@ Jakým způsobem je možné provést párování mezi unikáním identifikátore
       <description>OCP v4 AzureFile PERSISTENT FILE STORAGE Our need is to use a reliable storage as default StorageClass(SC) for OCP. Main requirement is zone redundancy together with security and reasonable management, in ideal state maintanance free.</description>
     </item>
     
-    <item>
-      <title>OPENSHIFT AZURE INSTALL and CUSTOMIZE</title>
-      <link>//localhost:1112/openshift/install/instalaceazure/</link>
-      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/install/instalaceazure/</guid>
-      <description></description>
-    </item>
-    
   </channel>
 </rss>

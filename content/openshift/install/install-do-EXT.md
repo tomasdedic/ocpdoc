@@ -1,5 +1,5 @@
 ---
-title: "Debug private install with UDR "
+title: "Instalace OCP do EXT DC v privátním rozsahu "
 date:  2020-07-24
 author: Tomas Dedic
 description: "Install OCP disconnected with UserDefinedRouting and Proxy settings"

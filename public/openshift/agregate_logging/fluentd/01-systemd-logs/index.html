@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title> - DIVIDED DOCUMENTATION</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="" />
+<meta property="og:description" content="SYSTEMD Journal logs transport LOGS location journalctl may be used to query the contents of the systemd(1) journal as written by systemd-journald." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/openshift/agregate_logging/fluentd/01-systemd-logs/" />
+
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+		<div class="wrapper flex">
+			<div class="primary">
+			
+ 
+
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title"></h1>
+			
+		</header>
+		
+		<div class="content post__content clearfix">
+<h1 id="systemd-journal-logs-transport">SYSTEMD Journal logs transport</h1>
+<h2 id="logs-location">LOGS location</h2>
+<p>journalctl may be used to query the contents of the systemd(1) journal
+as written by systemd-journald.service(8)</p>
+<p>Configuration files are: <strong>/etc/systemd/journald.conf</strong><br>
+There the &ldquo;Storage=&rdquo; option controls whether to store journal data</p>
+<ul>
+<li><em>volatile</em>, journal log data will be stored only in memory, i.e. below the /run/log/journal hierarchy (which is created if needed).</li>
+<li><em>persistent</em>, data will be stored preferably on disk, i.e. below the /var/log/journal hierarchy (which is created if needed), with a fallback to /run/log/journal (which is created if needed), during early boot and if the disk is not writable.</li>
+<li><em>auto</em> is similar to &ldquo;persistent&rdquo; but the directory /var/log/journal is not created if needed, so that its existence controls where log data goes.</li>
+<li><em>none</em> turns off all storage, all log data received will be dropped.</li>
+</ul>
+<p>In case of Openshift node configuration is set to <strong>persistent</strong></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># all units in journal</span>
+journalctl --field _SYSTEMD_UNIT
+ <span style="color:#080;font-style:italic"># journals path</span>
+journalctl --field JOURNAL_PATH
+ <span style="color:#080;font-style:italic"># journal disk-usage </span>
+journalctl --disk-usage
+ <span style="color:#080;font-style:italic"># current journals</span>
+journalctl --field JOURNAL_NAME
+</code></pre></div><h2 id="event-structure">Event structure</h2>
+<p>Fluentd event consists of tag, time and record.</p>
+<ul>
+<li>tag: Where an event comes from. For message routing</li>
+<li>time: When an event happens. Nanosecond resolution</li>
+<li>record: Actual log content. JSON object</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">The input plugin has responsibility <span style="color:#a2f;font-weight:bold">for</span> generating Fluentd event from data sources. For example, in_tail generates events from text lines. If you have following line in apache logs:
+192.168.0.1 - - <span style="color:#666">[</span>28/Feb/2013:12:00:00 +0900<span style="color:#666">]</span> <span style="color:#b44">&#34;GET / HTTP/1.1&#34;</span> <span style="color:#666">200</span> <span style="color:#666">777</span>
+you got following event:
+tag: apache.access         <span style="color:#080;font-style:italic"># set by configuration</span>
+time: 1362020400.000000000 <span style="color:#080;font-style:italic"># 28/Feb/2013:12:00:00 +0900</span>
+record: <span style="color:#666">{</span><span style="color:#b44">&#34;user&#34;</span>:<span style="color:#b44">&#34;-&#34;</span>,<span style="color:#b44">&#34;method&#34;</span>:<span style="color:#b44">&#34;GET&#34;</span>,<span style="color:#b44">&#34;code&#34;</span>:200,<span style="color:#b44">&#34;size&#34;</span>:777,<span style="color:#b44">&#34;host&#34;</span>:<span style="color:#b44">&#34;192.168.0.1&#34;</span>,<span style="color:#b44">&#34;path&#34;</span>:<span style="color:#b44">&#34;/&#34;</span><span style="color:#666">}</span>
+</code></pre></div></div>
+		
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/openshift/debug/debug-openshiftapiserver/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title"></p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/openshift/uploading_container_image_to_ocp_registry/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Uploading local container images to OCP registry</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 DIVIDED DOCUMENTATION.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

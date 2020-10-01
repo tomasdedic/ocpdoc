@@ -1,9 +1,11 @@
 {{ define "main" }}
 <main class="main list" role="main">
-	{{- with .Title }}
+	{{- with . }}
 	<header class="main__header">
-		<h1 class="main__title">{{ . }}</h1>
+    <h1 class="main__title">{{ .Type }}: {{ .Title }}</h1>
 	</header>
+  <!-- display tags for list -->
+{{ partial "list_tags.html" . }}
 	{{- end }}
 	{{- with .Content }}
 	<div class="content main__content clearfix">

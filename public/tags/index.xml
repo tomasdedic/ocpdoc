@@ -6,7 +6,16 @@
     <description>Recent content in Tags on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 20 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 30 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Install</title>
+      <link>//localhost:1112/tags/install/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/install/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Artifactory</title>
       <link>//localhost:1112/tags/artifactory/</link>
@@ -17,29 +26,11 @@
     </item>
     
     <item>
-      <title>Containers</title>
-      <link>//localhost:1112/tags/containers/</link>
-      <pubDate>Sun, 20 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/tags/containers/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>ARO</title>
       <link>//localhost:1112/tags/aro/</link>
       <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>//localhost:1112/tags/aro/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Install</title>
-      <link>//localhost:1112/tags/install/</link>
-      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/tags/install/</guid>
       <description></description>
     </item>
     
