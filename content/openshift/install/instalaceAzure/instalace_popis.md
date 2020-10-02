@@ -88,7 +88,6 @@ Pro instalaci v privátní zóně by měla být veškerá komunikace mimo privá
 |.blob.core.windows.net    |
 |login.microsoftonline.com |
 |management.azure.com      |
-|168.63.129.168            |
 
 ## Konfigurace cluster-wide proxy
 Jako proxy bude použita:  
@@ -96,42 +95,7 @@ Jako proxy bude použita:
 httpProxy: http://ngproxy-test.csint.cz:8080
 httpsProxy: http://ngproxy-test.csint.cz:8080
 ```
-
-```yaml
-apiVersion: config.openshift.io/v1
-kind: Proxy
-metadata:
-  generation: 2
-  name: cluster
-spec:
-  httpProxy: http://adresa:port
-  httpsProxy: https://adresa:port
-  noProxy: 
-  trustedCA:
-    name: ""
-status:
-  httpProxy: http://adresa:port
-  httpsProxy: https://adresa:port
-  noProxy: .cluster.local,.svc,10.0.0.0/16,10.128.0.0/14,127.0.0.1,169.254.169.254,172.30.0.0/16,api-int.{cluster.dns.zone},
-           etcd-0.{cluster.dns.zone},etcd-1.{cluster.dns.zone},etcd-2.{cluster.dns.zone},localhost
-```
-Jako noProxy, tedy whitelisting by bylo vhodné uvést důvěryhodné zdroje které OCP vyžaduje ke svému běhu.  
-
-| ADRESS                           |    DESCRIPTION     |
-|--------------------------------  |:-------------------|
-|registry.redhat.io							   |		Provides core container images|
-|*.quay.io												   |		Provides core container images|
-|sso.redhat.com									   |		The https://cloud.redhat.com/openshift site uses authentication from|
-|cert-api.access.redhat.com			   |		Required for Telemetry|
-|api.access.redhat.com						   |		Required for Telemetry|
-|infogw.api.openshift.com				   |		Required for Telemetry|
-|management.azure.com						   |		Azure services and resources|
-|mirror.openshift.com			  		   |		Required to access mirrored installation content and images|
-|*.cloudfront.net					  		   |		Required by the Quay CDN to deliver the Quay.io images that the cluster requires|
-|*.apps.<cluster_name>.<base_domain>| Required to access the default cluster routes unless you set an ingress wildcard during installation|
-|api.openshift.com									 |	Required to check if updates are available for the cluster|
-|cloud.redhat.com/openshift				 |	Required for your cluster token|
-
+[link: konfigurace proxy](/openshift/install/nastaveni_proxy/)
 ##  Instalace typu "INTERNAL" do private zóny
 Rozdíl mezi intalací typu Internal a External je pouze v publikaci endpointů.
 
