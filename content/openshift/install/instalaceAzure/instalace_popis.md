@@ -90,15 +90,16 @@ Pro instalaci v privátní zóně by měla být veškerá komunikace mimo privá
 |management.azure.com      |
 
 ## Konfigurace cluster-wide proxy
+[link: KONFIGURACE PROXY](/openshift/install/nastaveni_proxy/)  
 Jako proxy bude použita:  
 ```sh
 httpProxy: http://ngproxy-test.csint.cz:8080
 httpsProxy: http://ngproxy-test.csint.cz:8080
 ```
-[link: konfigurace proxy](/openshift/install/nastaveni_proxy/)
 ##  Instalace typu "INTERNAL" do private zóny
 Rozdíl mezi intalací typu Internal a External je pouze v publikaci endpointů.
 
+### Instalační balíčky
 Stáhneme a rozbalíme balíky *openshift-client, openshift-install*.
 + [(stable installer)](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/)
 + [(dev preview installer)](https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/)  
@@ -119,8 +120,8 @@ openshift-install create install-config --dir ./install_dir --log-level debug
 
 ### Použití Artifactory jako container registry
 Pro instalaci a používání OCP v privátní síti bude jako zdroj všech kontejnerů využita Artifactory. Všechny remote repository (vnější) budou whitelistovány přez ní a bude pro ně vytvořena konfigurace.  
-[link: artifactory_as_proxy_for_containerregistries obecně](/openshift/artifactory_as_proxy_for_containerregistries/)  
-[link: artifactory_as_proxy_for_containerregistries uprava install-config.yaml](/openshift/artifactory_as_proxy_for_containerregistries/#použití-remote-repository-při-instalaci-ocp-quayio-repository)
+[link: ARTIFACTORY_AS_PROXY_FOR_CONTAINERREGISTRIES obecně](/openshift/artifactory_as_proxy_for_containerregistries/)  
+[link: ARTIFACTORY_AS_PROXY_FOR_CONTAINERREGISTRIES uprava install-config.yaml](/openshift/artifactory_as_proxy_for_containerregistries/#použití-remote-repository-při-instalaci-ocp-quayio-repository)
 
 
 ### Instalační soubor INSTALL-CONFIG.YAML

@@ -1,57 +1,29 @@
 ---
 title: OPENID AAD
-date: 2020-09-16
+date: 2020-10-06
 author: Tomas Dedic
-description: "OPENID AAD OPENSHIFT"
-lead: "non function custom claims"
-disable_comments: true # Optional, disable Disqus comments if true
-authorbox: true # Optional, enable authorbox for specific post
-toc: false # Optional, enable Table of Contents for specific post
-mathjax: false # Optional, enable MathJax for specific post
+description: ""
+lead: "napojení OCP na OPENID-> AAD, RBAC pro vytvořené uživatele, custom claims "
 categories:
   - "OpenShift"
 tags:
-  - "OCP"
   - "AAD"
-  - "Azure"
+  - "OAuth2/OIDC"
+toc: true
+autonumbering: true
 ---
 
-# OPENID AAD
-**OpenID Connect authorize proti AAD. Uživatel se autorizuje a je následně vytvořen v OCP.**  
+# OPENID AAD provider
+**OpenID Connect authorize proti AAD. Uživatel se autentizuje a je následně vytvořen v OCP.**  
 Jakým způsobem je možné provést párování mezi unikáním identifikátorem pro AAD a OCP.  
 Je možno v rámcí provisioningu dotáhnout "groupMembershipClaims" se seznamem skupin z AAD a jakým způsobem provést provisioning těchto skupin v rámci OCP.  
 
-[jwt token inspekce](https://www.tomaskubica.cz/post/2019/moderni-autentizace-overovani-interniho-uzivatele-s-openid-connect-a-aad/)
+[podbrobnější popis jwt token inspekce](https://www.tomaskubica.cz/post/2019/moderni-autentizace-overovani-interniho-uzivatele-s-openid-connect-a-aad/)
 
-## DEFINICE MS openid 
-[openid spec](https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/v2.0/.well-known/openid-configuration)
+## DEFINICE MS jwt openid scopes, claims 
+[MS openid specification](https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/v2.0/.well-known/openid-configuration)
 ```yaml
  # shortened 
-{
-  "token_endpoint": "https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/oauth2/v2.0/token",
-  "token_endpoint_auth_methods_supported": [
-    "client_secret_post",
-    "private_key_jwt",
-    "client_secret_basic"
-  ],
-  "jwks_uri": "https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/discovery/v2.0/keys",
-  "response_modes_supported": [
-    "query",
-    "fragment",
-    "form_post"
-  ],
-  "subject_types_supported": [
-    "pairwise"
-  ],
-  "id_token_signing_alg_values_supported": [
-    "RS256"
-  ],
-  "response_types_supported": [
-    "code",
-    "id_token",
-    "code id_token",
-    "id_token token"
-  ],
   "scopes_supported": [
     "openid",
     "profile",
@@ -78,96 +50,110 @@ Je možno v rámcí provisioningu dotáhnout "groupMembershipClaims" se seznamem
     "at_hash",
     "c_hash",
     "email"
-  ],
-}
+  ]
 ```
 
-### Openshift provider definition
-```yaml
----
-apiVersion: config.openshift.io/v1
-kind: OAuth
-metadata:
-  name: cluster
-spec:
-  identityProviders:
-  - name: AzureAD
-    mappingMethod: claim
-    type: OpenID
-    openID:
-      claims:
-      # base mapping
-        preferredUsername:
-        - upn
-        - preferred_username
-        email:
-        - email
-        name:
-        - name
-      clientID: c2d29042-792d-4b23-9bdf-9e341e465083
-      clientSecret:
-        name: aadidp-secret
-      extraAuthorizeParameters:
-        include_granted_scopes: "true"
-      extraScopes:
-      - email
-      - profile
-      - groups
-      - name
-      - upn
-      issuer: https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d
+## Openshift OpenID definition
+```sh
+oc get oauth cluster 
 ```
-### OC USERS
+
+```yaml
+identityProviders:
+    - mappingMethod: claim
+      name: AzureAD
+      openID:
+        claims:
+          email:
+            - email
+          name:
+            - name
+          preferredUsername:
+            - preferred_username
+            - email
+            - upn
+        clientID: f43b7310-c604-446f-aff4-a1b11b876018
+        clientSecret:
+          name: azure-aad
+        extraScopes:
+          - email
+          - profile
+          - groups
+          - name
+          - upn
+        issuer: 'https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d'
+      type: OpenID
+```
+```yaml
+# secret nadefinujeme jako
+
+apiVersion: v1
+data:
+  # base64 client secret z Azure
+  clientSecret: NmdfUmIuVzl3bTluaS1vb3hMclcuYXpNcDVYcTJnYUhkYwo=
+kind: Secret
+metadata:
+  name: azure-aad
+  namespace: openshift-config
+type: Opaque
+```
+## OCP USERS and IDENTITIES
 login over openshift console, login sucess, user provisioned 
 ```sh
 oc get identities
-oc get user user-12@mspassporttrask.onmicrosoft.com -o json
+oc get user 
 ```
 ```yaml
-{
-    "apiVersion": "user.openshift.io/v1",
-    "fullName": "user-12",
-    "groups": null,
-    "identities": [
-        "AzureAD:zyBX-mCiVnA05CSohv2W2ZIPbmA7N8sKojx6IQlkP2g"
-    ],
-    "kind": "User",
-    "metadata": {
-        "creationTimestamp": "2019-12-06T10:08:38Z",
-        "name": "user-12@mspassporttrask.onmicrosoft.com",
-        "resourceVersion": "14731567",
-        "selfLink": "/apis/user.openshift.io/v1/users/user-12%40mspassporttrask.onmicrosoft.com",
-        "uid": "e1011ef5-cac1-4b0b-8c18-b5a6da366d5f"
-    }
-}
+apiVersion: user.openshift.io/v1
+fullName: Dědič Tomáš
+identities:
+- AzureAD:88C5K0N11gtnE1dQpiLUb49jNqKzlzJ9h8ZyzWB6gc0
+kind: User
+metadata:
+  name: tdedic@trask.cz
+  uid: 76ba718b-4b5e-4685-bb7f-59c2e3bff979
 ```
-### AAD user
+```yaml
+apiVersion: user.openshift.io/v1
+extra:
+  email: tdedic@trask.cz
+  name: Dědič Tomáš
+  preferred_username: tdedic@trask.cz
+kind: Identity
+  name: AzureAD:88C5K0N11gtnE1dQpiLUb49jNqKzlzJ9h8ZyzWB6gc0
+providerName: AzureAD
+providerUserName: 88C5K0N11gtnE1dQpiLUb49jNqKzlzJ9h8ZyzWB6gc0
+user:
+  name: tdedic@trask.cz
+  uid: 76ba718b-4b5e-4685-bb7f-59c2e3bff979
+```
 
 ```sh
-az ad user list |jq -r '.[]|select(.userPrincipalName =="user-12@mspassporttrask.onmicrosoft.com")'
+# list user in AAD and try to find some similar fields
+az ad user list |jq -r '.[]|select(.userPrincipalName =="tdedic@trask.cz")'
 ```
 
-### JWT token
-obtain JWT token:
+## JWT token inspekce (obecné)
 **Azure console --> app registration --->redirect uri --> http://localhost**
 + client_id
-identifikátor naší aplikace, který vznikl při její registraci v AAD (označuje se tam jako Application ID)
+identifikátor naší aplikace
 + response_type
-jakou odpověď očekáváme, pro začátek s implicitním flow (doručení rovnou tokenu) tady dáme id_token
+jakou odpověď očekáváme, pro začátek s implicitním flow tady dáme id_token
 + redirect_url
-to bude kopírovat nastavení při registraci, tedy v našem případě http://localhost (v URL encode, protože znaky :// by prohlížeč zmátly)
+to bude kopírovat nastavení při registraci, tedy v našem případě http://localhost
 + response_mode
-říkáme, jakým způsobem chceme token v redirectu doručit. Genericky vzato jsou tu varianty from_post (výsledek vypadá jako při odeslání HTML formuláře, tedy je to POST na nějaký endpoint), query (odpověď přijde jako běžné parametry GETu za otazníkem) nebo fragment (informace přijdou za symbolem #, což se dostane do browseru, ale ne dál - typické pro single-page aplikace). Ne všechny možnosti jsou z různých (primárně bezpečnostních) důvodů k dispozici u všech typů přihlášení/autorizace. U implicitního flow v dnešním článku použijeme fragment.
+říkáme, jakým způsobem chceme token v redirectu doručit. Genericky vzato jsou tu varianty from_post (výsledek vypadá jako při odeslání HTML formuláře, tedy je to POST na nějaký endpoint), query (odpověď přijde jako běžné parametry GETu za otazníkem) nebo fragment (informace přijdou za symbolem #). U implicitního flow použijeme fragment.
 + scope
-tady říkáme u OAuth2 k čemu chceme získat práva, v našem případě jde o právo na přihlášení a dává se sem openid
+tady říkáme u OAuth2 k čemu chceme získat práva, v našem případě jde o právo na přihlášení=openid
 + state
-nějaké náhodné číslo, které se nám vrátí i v odpovědi a my zkontrolujeme, že je stejné (brání před některými útoky)
+nějaké náhodné číslo, které se nám vrátí i v odpovědi 
 + nonce
-opět nějaké náhodné číslo, které AAD vloží přímo do id_tokenu (a podepíše) a my si zkontrlujeme, že je stejné (bráníme se před replay útoky)
+opět nějaké náhodné číslo, které AAD vloží přímo do id_tokenu (a podepíše) 
 
-takže:
-
-[localhost-token](https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/oauth2/v2.0/authorize?client_id=5ecafeb2-5759-405b-9d73-2b28879e17a0&response_type=id_token&redirect_url=http%3A%2F%2Flocalhost&response_mode=fragment&scope=openid+profile+email+offline_access&state=12345&nonce=54321)
+```sh
+# localhost-token
+https://login.microsoftonline.com/b8e7deb2-24d2-45cd-aaa5-b7648f6eba3d/oauth2/v2.0/authorize?client_id=5ecafeb2-5759-405b-9d73-2b28879e17a0&response_type=id_token&redirect_url=http%3A%2F%2Flocalhost&response_mode=fragment&scope=openid+profile+email+offline_access&state=12345&nonce=54321
+```
 
 vrátí se nám 403 a zkopírujeme string za http://localhost/#id_token=\
 do [jwt.ms](https://jwt.ms)
@@ -199,7 +185,7 @@ token:
 }
 ```
 
-### Role a ClusterRole
+## Role a ClusterRole ve vazbě na vytvořené USER/IDENTITIES objekty
 ```yaml
  # pridam prava pro skupinu v tokenu
 

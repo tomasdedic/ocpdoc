@@ -49,6 +49,8 @@
     <li class="menu__item">
 		<a class="menu__link" href="/categories/logging" title="Logging">Logging</a>
     <li class="menu__item">
+		<a class="menu__link" href="/categories/ocp" title="Ocp">Ocp</a>
+    <li class="menu__item">
 		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
     </li>
   </ul>
@@ -94,30 +96,27 @@
           
           <nav id="TableOfContents">
   <ul>
-    <li><a href="#to-be-done-list">TO BE DONE LIST</a>
-      <ul>
-        <li><a href="#ipi-instalace-s-udr">IPI instalace s UDR</a></li>
-        <li><a href="#integrace-aad--a-ldap-group-sync">Integrace AAD  a LDAP group sync</a></li>
-        <li><a href="#ingres-více-routerů-route-sharding">Ingres více routerů, route sharding</a></li>
-        <li><a href="#egress">Egress</a></li>
-        <li><a href="#network-policynetnamespace-isolation">Network policy/netnamespace isolation</a></li>
-        <li><a href="#monitoring-stack">Monitoring stack</a></li>
-        <li><a href="#logging-stack">Logging stack</a></li>
-      </ul>
-    </li>
-    <li><a href="#vyřešené-části">VYŘEŠENÉ ČÁSTI</a></li>
+    <li><a href="#ipi-instalace-s-udr">IPI instalace s UDR</a></li>
+    <li><a href="#integrace-aad-a-ldap-group-sync">Integrace AAD a LDAP group sync</a></li>
+    <li><a href="#ingres-více-routerů-route-sharding">Ingres více routerů, route sharding</a></li>
+    <li><a href="#egress">Egress</a></li>
+    <li><a href="#network-policynetnamespace-isolation">Network policy/netnamespace isolation</a></li>
+    <li><a href="#monitoring-stack">Monitoring stack</a></li>
+    <li><a href="#logging-stack">Logging stack</a></li>
   </ul>
 </nav>
 	      </div>
         </div>
       
       <div class="post__item">
-        *file: project_status *
-      </div><h2 id="to-be-done-list">TO BE DONE LIST</h2>
-<h3 id="ipi-instalace-s-udr">IPI instalace s UDR</h3>
+        
+        *file: project_status.md *
+      </div><h2 id="ipi-instalace-s-udr">IPI instalace s UDR</h2>
 <p><strong>dokumenty:</strong></p>
 <ul>
-<li><a href="/openshift/instalaceazure/">/instalaceAzure/</a></li>
+<li><a href="/openshift/install/instalaceazure/">instalace OCP v prostředí Azure</a></li>
+<li><a href="/openshift/install/nastaveni_proxy/">konfigurace PROXY</a></li>
+<li><a href="/openshift/artifactory_as_proxy_for_containerregistries/">Artifactory jako container registry v izolovaném prostředí</a></li>
 </ul>
 <p><strong>řešené problémy:</strong></p>
 <blockquote>
@@ -132,31 +131,24 @@
 	      Valid Values: <span style="color:#b44">&#34;&#34;</span>,<span style="color:#b44">&#34;Loadbalancer&#34;</span>,<span style="color:#b44">&#34;UserDefinedRouting&#34;</span>
 	      OutboundType is a strategy <span style="color:#a2f;font-weight:bold">for</span> how egress from cluster is achieved. 
         When not specified default is <span style="color:#b44">&#34;Loadbalancer&#34;</span>.
-</code></pre></div><p>Tato možnost je validní pouze pro instalátory řady 4.6.x</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> <strong>Stabilita Openshift-api serveru</strong><br>
-Po předem nedefinované době zdroje poskytované openshift-api serverem jsou částečně nedostupné, objevují se chyby <strong>HTTP 503</strong> . Openshift-api server operátor je nevalidní</li>
+</code></pre></div><ul>
+<li><input checked="" disabled="" type="checkbox"> <a href="/openshift/debug/openshiftapiserver-tls/"><strong>Stabilita Openshift-api serveru</strong></a><br>
+Po předem nedefinované době zdroje poskytované openshift-api serverem jsou částečně nedostupné, objevují se chyby <strong>HTTP 503</strong> . Openshift-api server operátor je nevalidní<br>
+<strong>Problém se objevuje na instalacích řady 4.6.</strong></li>
 </ul>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># example</span>
-oc get clusteroperator
-  NAME                    VERSION                             AVAILABLE   PROGRESSING   DEGRADED   SINCE
-  authentication          4.6.0-0.nightly-2020-07-24-111750   True        False         True       5d19h
-  image-registry          4.6.0-0.nightly-2020-07-24-111750   True        False         True       6d20h
-  monitoring              4.6.0-0.nightly-2020-07-24-111750   False       True          True       35h
-  openshift-apiserver     4.6.0-0.nightly-2020-07-24-111750   False       False         False      18h
-</code></pre></div><p>Problém se objevuje na instalacích řady 4.6.</p>
-<h3 id="integrace-aad--a-ldap-group-sync">Integrace AAD  a LDAP group sync</h3>
+<h2 id="integrace-aad-a-ldap-group-sync">Integrace AAD a LDAP group sync</h2>
 <p>Test autentizace oproti AAD v testovacím prostředí, LDAP sync pro dotažení skupin z AD a definice rolí.</p>
 <ul>
 <li><input disabled="" type="checkbox"> přístup do Test AD</li>
 <li><input disabled="" type="checkbox"> testovací uživatelé v AAD</li>
+<li><input checked="" disabled="" type="checkbox"> <a href="/openshift/openid-provider/">OpenID connect oproti AAD v Sandbox prostředí</a></li>
 </ul>
-<h3 id="ingres-více-routerů-route-sharding">Ingres více routerů, route sharding</h3>
+<h2 id="ingres-více-routerů-route-sharding">Ingres více routerů, route sharding</h2>
 <ul>
 <li><input disabled="" type="checkbox"> route sharding + logika přidělování ingres controlerů jednotlivým namespacům (řešené labelem a vytvoření resource přez ArgoCD)</li>
 <li><input disabled="" type="checkbox"> test zda lze použít stejnou adresu pro ingres i egres</li>
 </ul>
-<h3 id="egress">Egress</h3>
+<h2 id="egress">Egress</h2>
 <p>premisa: <strong>Není možné použít jednu egress IP pro více namespaců.</strong><br>
 Egress z pohledu Azure VM není vyřešen. Na jednotlivých nódech se interface s požadovanou IP adresou vytvoří ale na Azure VM se nevytvoří secondaryIP adresa nad NIC a požadavky nejsou tedy routovány ven.<br>
 Ideální řešení by bylo dynamické přidělování Egress adres na jednotlivé nódy, v případě nedostupnosti nódu automatický failover na jiný nód, vyžadovalo by to však operátor který by byl schopen sledovat stavy systému jak z pohledu Azure tak z pohledu OCP a na základě vyhodnocení provést požadovanou akci. Operátor by tak měl velké množství stupňů volnosti a nejsem si jist zda jsme schopni zajistit v rozumném vývojovém čase kvalitní chování.</p>
@@ -182,14 +174,13 @@ Upravit operátor pro Azure, v tento okamžik podporuje pouze AWS. Operátor zpr
 Nadefinovat egress nody (minimálně dva) a přidělit jim egress adresy dle přidělených IP, každému namespacu pak přidělit dvě adresy.  Při této konfiguraci však přijdeme o půlku IP adres pro Egresy.</p>
 </li>
 </ul>
-<h3 id="network-policynetnamespace-isolation">Network policy/netnamespace isolation</h3>
+<h2 id="network-policynetnamespace-isolation">Network policy/netnamespace isolation</h2>
 <p>Zatím není nadefinováno jakým způsobem se k tomuto problému postavíme. Jako logický krok se jeví <strong>multitenant isolation</strong> - tedy v základu žádný workload namespace nevidí síťově jiný.</p>
-<h3 id="monitoring-stack">Monitoring stack</h3>
+<h2 id="monitoring-stack">Monitoring stack</h2>
 <p>via Elostech, dodávka by měla reflektovat nasazení pomocí ArgoCD.</p>
-<h3 id="logging-stack">Logging stack</h3>
+<h2 id="logging-stack">Logging stack</h2>
 <p>Validace změn v openshift-aggregate logging. Chybí dodefinovat přesné požadavky na formát a směrování logů z Openshiftu ven.
 Základní POC je hotov, logy jsou transformováný a směrovány do lokální instance ElasticSearch, část je směrována do Azure EventHubu pomocí FluentD kafka plugin</p>
-<h2 id="vyřešené-části">VYŘEŠENÉ ČÁSTI</h2>
 </div>
 		
 <div class="post__tags tags clearfix">
@@ -202,6 +193,10 @@ Základní POC je hotov, logy jsou transformováný a směrovány do lokální i
   
   
 </main>
+
+
+
+
 
 
 
@@ -274,7 +269,7 @@ Základní POC je hotov, logy jsou transformováný a směrovány do lokální i
 		<a class="post-nav__link" href="/openshift/debug/openshiftapiserver-tls/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">OPENSHIFT API-SERVER TLS handshake error</p></a>
 	</div>
 	<div class="post-nav__item post-nav__item--next">
-		<a class="post-nav__link" href="/openshift/openid-provider/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">OPENID AAD</p></a>
+		<a class="post-nav__link" href="/openshift/install/installaro/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">ARO install</p></a>
 	</div>
 </nav>
 

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Egress, Ingress description/configuration - DIVIDED DOCUMENTATION</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="Desc">
+	<meta name="generator" content="Hugo 0.75.0-DEV" />
+	<meta property="og:title" content="Egress, Ingress description/configuration" />
+<meta property="og:description" content="Desc" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1112/openshift/ingress-egress/" />
+<meta property="article:published_time" content="2020-10-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-10-07T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
+			</a>
+		</div>
+		
+    
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+  <ul class="menu__list">
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/logging" title="Logging">Logging</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/ocp" title="Ocp">Ocp</a>
+    <li class="menu__item">
+		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+    </li>
+  </ul>
+</nav>
+
+	</div>
+</header>
+
+    
+		<div class="wrapper flex">
+			<div class="primary">
+        
+			
+ 
+
+<main class="main" role="main">
+	<article class="post" autonumbering>
+		<header class="post__header">
+			<h1 class="post__title">Egress, Ingress description/configuration</h1>
+			<p class="post__lead">Ingress Egress definice a rozbor, in progress..</p>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-07T00:00:00">2020-10-07</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/networking" rel="category">NETWORKING</a>, <a class="meta__link" href="/tags/egress" rel="category">EGRESS</a>, <a class="meta__link" href="/tags/ingress" rel="category">INGRESS</a></span>
+</div>
+</div>
+		</header>
+		
+		<div class="content post__content clearfix">
+        <div class="post__toc toc">
+	      <div class="toc__title">Content</div>
+	      <div class="toc__menu">
+          
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#ocp-network-configuration">OCP Network configuration</a></li>
+    <li><a href="#egress">Egress</a>
+      <ul>
+        <li><a href="#define-egress">Define Egress</a></li>
+      </ul>
+    </li>
+    <li><a href="#ingress">Ingress</a>
+      <ul>
+        <li><a href="#ingress-controller">INGRESS Controller</a></li>
+      </ul>
+    </li>
+    <li><a href="#non-http-traffic-l4-tcpudp">NON-HTTP traffic L4 TCP/UDP</a>
+      <ul>
+        <li><a href="#use-azure-internal-loadbalancer">USE AZURE INTERNAL LOADBALANCER</a></li>
+        <li><a href="#use-ha-proxy">USE HA PROXY</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+	      </div>
+        </div>
+      
+      <div class="post__item">
+        
+        *file: Egress-Ingress.md *
+      </div><h1 id="egress-ingressroute-configuration-in-openshift-azure">Egress, Ingress,Route configuration in OPENShift Azure</h1>
+<p>How to use custom ingress controller, what resources are provisioned on Azure after creating new Ingress/Route, can one Egress handle more namespaces/projects &hellip;</p>
+<h2 id="ocp-network-configuration">OCP Network configuration</h2>
+<p>Cluster base network configuration</p>
+<p>primarysubnets:<br>
+master-subnet <strong>10.2.0.0/19</strong><br>
+worker-subnet <strong>10.2.32.0/19</strong></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># SoftwareNetworkDefinition config</span>
+oc get cm sdn-config -o yaml -n openshift-sdn
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># internal cluster networking</span>
+oc get network.config cluster -o yaml
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># hostsubnet</span>
+oc get hostsubnet
+
+  NAME                                    HOST                                    HOST IP     SUBNET          EGRESS CIDRS   EGRESS IPS
+  poshi4-8rlc7-master-0                   poshi4-8rlc7-master-0                   10.2.0.4    10.130.0.0/23
+  poshi4-8rlc7-master-1                   poshi4-8rlc7-master-1                   10.2.0.7    10.129.0.0/23
+  poshi4-8rlc7-master-2                   poshi4-8rlc7-master-2                   10.2.0.6    10.128.0.0/23
+  poshi4-8rlc7-worker-westeurope1-vqbc4   poshi4-8rlc7-worker-westeurope1-vqbc4   10.2.32.4   10.129.2.0/23
+  poshi4-8rlc7-worker-westeurope2-hfprt   poshi4-8rlc7-worker-westeurope2-hfprt   10.2.32.6   10.128.2.0/23
+  poshi4-8rlc7-worker-westeurope3-p6b8z   poshi4-8rlc7-worker-westeurope3-p6b8z   10.2.32.5   10.131.0.0/23
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic">#pods in namespace IP and hostIP addresses:</span>
+oc get pods -o json|jq -r <span style="color:#b44">&#39;.items[]|{podName:.metadata.name,podIP:.status.podIP,hostIP:.status.hostIP}&#39;</span>
+</code></pre></div><h2 id="egress">Egress</h2>
+<p>Egress IP addresses are implemented as additional IP addresses on the primary network interface of the node and must be in the same subnet as the node’s primary IP address.</p>
+<h3 id="define-egress">Define Egress</h3>
+<p>First we need to define a free pool of egress adresses for nodes.<br>
+<strong>Define Egress adresses for NODES:</strong></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># define egress CIDR on all worker nodes for Egress automatic allocations</span>
+oc patch hostsubnet poshi4-8rlc7-worker-westeurope3-p6b8z --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    <span style="color:#b44">&#39;{&#34;egressCIDRs&#34;: [&#34;10.2.32.0/24&#34;]}&#39;</span>
+oc patch hostsubnet poshi4-8rlc7-worker-westeurope1-vqbc4 --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    <span style="color:#b44">&#39;{&#34;egressCIDRs&#34;: [&#34;10.2.32.0/24&#34;]}&#39;</span>
+oc patch hostsubnet poshi4-8rlc7-worker-westeurope2-hfprt --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    <span style="color:#b44">&#39;{&#34;egressCIDRs&#34;: [&#34;10.2.32.0/24&#34;]}&#39;</span>
+  <span style="color:#080;font-style:italic"># to delete</span>
+oc patch hostsubnet poshi4-8rlc7-worker-westeurope3-p6b8z --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    <span style="color:#b44">&#39;{&#34;egressCIDRs&#34;: null}&#39;</span>
+
+ <span style="color:#080;font-style:italic"># single IP assigment</span>
+oc patch hostsubnet oshi43-f8vg4-worker-westeurope3-5rv87 --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  <span style="color:#b44">&#39;{ &#34;egressIPs&#34;: [&#34;10.3.32.7&#34;]}&#39;</span>
+</code></pre></div><p><strong>Assign egress adress to namespace:</strong></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># assign IP address for egress on namespace</span>
+oc patch netnamespace blaster --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    <span style="color:#b44">&#39;{&#34;egressIPs&#34;: [&#34;10.3.32.17&#34;]}&#39;</span>
+
+ <span style="color:#080;font-style:italic"># to delete</span>
+oc patch netnamespace blaster --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    <span style="color:#b44">&#39;{&#34;egressIPs&#34;: null}&#39;</span>
+oc patch netnamespace master --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    <span style="color:#b44">&#39;{&#34;egressIPs&#34;: null}&#39;</span>
+</code></pre></div><h4 id="egress-ip-decomposition-one-egress-adress-for-one-namespace">Egress IP decomposition, one egress adress for one namespace</h4>
+<p>for egress create/delete I wrote a small script <a href="./yaml/deployment/sourceIP_listener/addingress.fish">addingress.fish</a></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">./addingress add
+ NAME      NETID      EGRESS IPS
+ blaster   <span style="color:#666">13327141</span>   <span style="color:#666">[</span>10.2.32.10<span style="color:#666">]</span>
+ NODE                                   EGRESS IPS                  
+ poshi4-8rlc7-worker-westeurope3-p6b8z <span style="color:#666">[</span>10.2.32.10<span style="color:#666">]</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic">#login to node with defined Egress</span>
+oc debug node/poshi4-8rlc7-worker-westeurope3-p6b8z
+
+ip a
+ eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span style="color:#666">1500</span> qdisc mq state UP group default qlen <span style="color:#666">1000</span>
+  link/ether 00:0d:3a:ad:7a:a2 brd ff:ff:ff:ff:ff:ff
+  inet 10.2.32.5/19 brd 10.2.63.255 scope global noprefixroute eth0
+     valid_lft forever preferred_lft forever
+  inet 10.2.32.10/19 brd 10.2.63.255 scope global secondary eth0:eip
+     valid_lft forever preferred_lft forever
+ <span style="color:#080;font-style:italic">#egress ip is set as secondary adress for primary interface</span>
+
+ovs-ofctl -O OpenFlow13 dump-flows br0 <span style="color:#b8860b">table</span><span style="color:#666">=</span><span style="color:#666">100</span>
+  <span style="color:#b8860b">reg0</span><span style="color:#666">=</span>0xcb5b25 <span style="color:#b8860b">actions</span><span style="color:#666">=</span>set_field:c6:0b:ec:f2:c0:fe-&gt;eth_dst,set_field:0x1cb5b24-&gt;pkt_mark
+ <span style="color:#b8860b">req0</span><span style="color:#666">=</span>0xcb5b25 --&gt; to decimal <span style="color:#666">13327141</span> <span style="color:#666">(</span>NETID<span style="color:#666">)</span>
+
+iptables -t nat -S POSTROUTING
+  -P POSTROUTING ACCEPT
+  -A POSTROUTING -m comment --comment <span style="color:#b44">&#34;rules for masquerading OpenShift traffic&#34;</span> -j OPENSHIFT-MASQUERADE
+  -A POSTROUTING -m comment --comment <span style="color:#b44">&#34;kubernetes postrouting rules&#34;</span> -j KUBE-POSTROUTING
+
+iptables -t nat --list|grep -B <span style="color:#666">2</span> <span style="color:#b44">&#34;10.2.32.10&#34;</span>
+  target     prot opt <span style="color:#a2f">source</span>               destination
+  SNAT       all  --  10.128.0.0/14        anywhere             mark match 0x1cb5b24 to:10.2.32.10
+
+
+./addingress del
+</code></pre></div><h4 id="egress-ip-decomposition-with-one-egress-ip-for-two-different-namespaces">Egress IP decomposition with one Egress IP for two different Namespaces</h4>
+<p>IP for egress is removed from <strong>hostsubnet</strong> after I created one for second <strong>namespace</strong>.
+<strong>So the conclusion is that we cannot use ONE EGRESS IP for two namespaces</strong></p>
+<p>test:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># two namespaces: master,blaster</span>
+oc patch hostsubnet poshi4-8rlc7-worker-westeurope3-p6b8z --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    <span style="color:#b44">&#39;{&#34;egressCIDRs&#34;: [&#34;10.2.32.0/24&#34;]}&#39;</span>
+oc patch netnamespace blaster --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    <span style="color:#b44">&#39;{&#34;egressIPs&#34;: [&#34;10.2.32.10&#34;]}&#39;</span>
+oc get hostsubnets poshi4-8rlc7-worker-westeurope3-p6b8z -o json|jq -c <span style="color:#b44">&#39;.egressIPs&#39;</span>
+oc patch netnamespace master --type<span style="color:#666">=</span>merge -p <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    <span style="color:#b44">&#39;{&#34;egressIPs&#34;: [&#34;10.2.32.10&#34;]}&#39;</span>
+oc get hostsubnets poshi4-8rlc7-worker-westeurope3-p6b8z -o json|jq -c <span style="color:#b44">&#39;.egressIPs&#39;</span>
+ &gt;&gt; null
+ <span style="color:#080;font-style:italic"># node debug</span>
+oc debug node/poshi4-8rlc7-worker-westeurope3-p6b8z
+iptables -t nat --list|grep <span style="color:#b44">&#34;10.2.32.10&#34;</span>
+ &gt;&gt; empty
+</code></pre></div><h5 id="conclusion-and-workaround-to-enable-one-egress-ip-for-two-namespaces">Conclusion and workaround to enable one egress IP for two namespaces</h5>
+<ul>
+<li>pokud je automatické nastavování egressIP na uzlu (podle CIDR), tak odebere danou egressIP z uzlu</li>
+<li>odebere danou sekundární IP adresu ze síťového rozhraní na nodu</li>
+<li>zablokuje komunikaci z NS na úrovni OpevVSwitch (actions=drop)
+cookie=0x0, duration=236.786s, table=100, n_packets=0, n_bytes=0, priority=100,reg0=0xedb1c5 actions=drop</li>
+<li>smaže odpovídající SNAT</li>
+</ul>
+<p><strong>workaround:</strong></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># nastavení sekundární IP adresy</span>
+  ip a add 10.3.32.7/19 dev eth0 broadcast 10.3.63.255 label eth0:eip
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># nastavení SNAT</span>
+  iptables -t nat -I OPENSHIFT-MASQUERADE <span style="color:#666">1</span> -s 10.128.0.0/14 -m mark --mark 0xd9d8f0 -j SNAT --to-source 10.3.32.7
+  iptables -t nat -I OPENSHIFT-MASQUERADE <span style="color:#666">1</span> -s 10.128.0.0/14 -m mark --mark 0x1edb1c4 -j SNAT --to-source 10.3.32.7
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># tohle nastaveno taky, ale nemělo by být pro test důležité</span>
+  iptables -t filter -A OPENSHIFT-FIREWALL-ALLOW -d 10.3.32.7/32 -m conntrack --ctstate NEW -j REJECT --reject-with icmp-port-unreachable
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># zrušení drop pravidel (resp. všech pravidel pro dané netid v tabulce 100)</span>
+  ovs-ofctl -O OpenFlow13 del-flows br0 <span style="color:#b44">&#34;reg0=0xd9d8f0&#34;</span>
+  ovs-ofctl -O OpenFlow13 del-flows br0 <span style="color:#b44">&#34;reg0=0xedb1c5&#34;</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># nastavení označení paketů (pro průchod výše uvedeným SNAT pravidlem) - vzal jsem to dle výpisu, mnoho polí nejspíš není třeba nastavovat</span>
+  ovs-ofctl -O OpenFlow13 add-flow br0 <span style="color:#b44">&#34;cookie=0x0, duration=9.187s, table=100, n_packets=0, n_bytes=0, priority=100,ip,reg0=0xd9d8f0 actions=set_field:46:d1:e9:2d:fe:e8-&gt;eth_dst,set_field:0xd9d8f0-&gt;pkt_mark,goto_table:101&#34;</span>
+  ovs-ofctl -O OpenFlow13 add-flow br0 <span style="color:#b44">&#34;cookie=0x0, duration=52.431s, table=100, n_packets=0, n_bytes=0, priority=100,ip,reg0=0xedb1c5 actions=set_field:46:d1:e9:2d:fe:e8-&gt;eth_dst,set_field:0x1edb1c4-&gt;pkt_mark,goto_table:101&#34;</span>
+</code></pre></div><h4 id="azure-infrastructure-limitation">AZURE INFRAstructure limitation</h4>
+<ul>
+<li>common problem:
+Pokud nadefinuji Egress adresu vytvori se pouze na OCP nodu, nevytvori se na Azure VM a je nutne ji vytvořit ručně. Failover by se taky musel dělat ručně.</li>
+<li>public LB:
+When I set an Ingress for namespace, no workload will get out from Cluster. In case no Egress is defined I got sourceIP as a IP adress of LoadBalancer. <strong>Standard LoadBalacer</strong> with public IP has <strong>backend pool with Worker VM and their primary NIC adress</strong> and doing <strong>SNAT(implicitly, can be turned off)</strong>. When I create an Egress new IP is created and such a IP is not in backend pool.
+Test for egress defined with for UDR instead of loadbalancing (SNAT). Nejsem si jist zda bude nutne mit nadefinovanou adresu na azureVM pokud pouzijeme UserDefinedRouting.</li>
+</ul>
+<p>For public access with Egress NAT GATEWAY should be used, it is defined against <strong>subnet</strong> but in preview.</p>
+<h2 id="ingress">Ingress</h2>
+<ul>
+<li>If you have HTTP/HTTPS, use an Ingress Controller.</li>
+<li>If you have a TLS-encrypted protocol other than HTTPS. For example, for TLS with the SNI header, use an Ingress Controller.</li>
+<li>Otherwise, use a Load Balancer, an External IP, or a NodePort.</li>
+</ul>
+<h3 id="ingress-controller">INGRESS Controller</h3>
+<ul>
+<li>
+<ol>
+<li>each workload namespace should have own IPadress(and DNS record) for routes which will access only resources in this namespace.</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>each workload namespace namespace will have own ingress controller.</li>
+</ol>
+</li>
+</ul>
+<h4 id="ingress-controller-azure-infrastructure-facts">INGRESS Controller Azure Infrastructure facts</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># default ingress controller</span>
+oc get -n openshift-ingress-operator ingresscontrollers default -o yaml
+
+    endpointPublishingStrategy:
+        loadBalancer:
+              scope: External
+        type: LoadBalancerService
+
+oc get  infrastructure.config.openshift.io cluster -o yaml 
+  
+  apiServerInternalURI: https://api-int.oshi43.csas.elostech.cz:6443
+  apiServerURL: https://api.oshi43.csas.elostech.cz:6443
+  etcdDiscoveryDomain: oshi43.csas.elostech.cz
+  infrastructureName: oshi43-f8vg4
+  platform: Azure
+  platformStatus:
+    azure:
+      networkResourceGroupName: oshi_vnet_rg
+      resourceGroupName: oshi43-f8vg4-rg
+    type: Azure
+</code></pre></div><p><a href="https://github.com/kubernetes-sigs/cloud-provider-azure/blob/master/docs/cloud-provider-config.md">cloud-provider-azure:cloud-provider-config</a></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># config for Azure cloud </span>
+oc get configmap -n openshift-config cloud-provider-config -o yaml 
+</code></pre></div><h4 id="route-sharding">ROUTE SHARDING</h4>
+<p>In OCP, each route can have any number of labels in its metadata field. A router uses selectors (also known as a selection expression) to select a subset of routes from the entire pool of routes to serve. A selection expression can also involve labels on the route’s namespace. The selected routes form a router shard.</p>
+<h5 id="ingresscontroller-for-privatezone">IngressController for privateZone</h5>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic">#create internal ingresscontroller</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">items</span>:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>operator.openshift.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>IngressController<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>internal<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">namespace</span>:<span style="color:#bbb"> </span>openshift-ingress-operator<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">domain</span>:<span style="color:#bbb"> </span>test.oshi43.csas.elostech.cz <span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">endpointPublishingStrategy</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">loadBalancer</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">scope</span>:<span style="color:#bbb"> </span>Internal<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>LoadBalancerService<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">nodePlacement</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">nodeSelector</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">matchLabels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">node-role.kubernetes.io/worker</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">routeSelector</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">matchLabels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>internal<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span></code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic">#created service</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>oc get svc -n openshift-ingress router-internal<span style="color:#bbb">
+</span><span style="color:#bbb"></span>NAME              TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE<span style="color:#bbb">
+</span><span style="color:#bbb"></span>router-internal   LoadBalancer   172.30.42.50   10.3.32.9     80:31946/TCP,443:31190/TCP   37m<span style="color:#bbb">
+</span></code></pre></div><p>For defining external-IP, namespaceOperator will be used.
+<img src="img/loadbalancerrulecreated.png" alt="loadbalancing rule">
+<img src="img/Arecord-route.png" alt="A record "></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic">#create route that fullfill matchLabel</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>route.openshift.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Route<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">labels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">app</span>:<span style="color:#bbb"> </span>example<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>internal<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>...<span style="color:#bbb">
+</span></code></pre></div><p>Only route with type:internal label will be processed by internal IngressController
+<strong>By default, the default router have not routeSelector, and for this reason is exposed to both routes, also is exposed to the default.</strong></p>
+<h5 id="namespace-selector-in-route-sharding">Namespace selector in Route Sharding</h5>
+<p>Another selectors in the ingresscontrollers are the namespaceSelectors. This selectors, allow that only the routes exposed in that namespaces are served by the routers labeled with this.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic">#create internal ingresscontroller with namespaceSelector</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">items</span>:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>operator.openshift.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>IngressController<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>internal<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">namespace</span>:<span style="color:#bbb"> </span>openshift-ingress-operator<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">domain</span>:<span style="color:#bbb"> </span>test.oshi43.csas.elostech.cz <span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">endpointPublishingStrategy</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">loadBalancer</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">scope</span>:<span style="color:#bbb"> </span>Internal<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>LoadBalancerService<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">nodePlacement</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">nodeSelector</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">matchLabels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">node-role.kubernetes.io/worker</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">routeSelector</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#008000;font-weight:bold">matchLabels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">type</span>:<span style="color:#bbb"> </span>internal<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">namespaceSelector</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">matchLabels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">ingressname</span>:<span style="color:#bbb"> </span>test<span style="color:#bbb">
+</span></code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic">#label namespace</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>oc label ns test ingressname=test<span style="color:#bbb">
+</span></code></pre></div><p>Ingress controller internal will be now used by routes in NS test</p>
+<h2 id="non-http-traffic-l4-tcpudp">NON-HTTP traffic L4 TCP/UDP</h2>
+<h3 id="use-azure-internal-loadbalancer">USE AZURE INTERNAL LOADBALANCER</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic">#service declaration</span><span style="color:#bbb">
+</span><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># OCP will create azureLB [infrastructureName]-internal with respective rule </span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>[...]<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>my-service<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">annotations</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">service.beta.kubernetes.io/azure-load-balancer-internal</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;true&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>[...]<span style="color:#bbb">
+</span></code></pre></div><h3 id="use-ha-proxy">USE HA PROXY</h3>
+<p>!! Not supported by OCP right now!!! but with a little effort who knows
+<a href="https://github.com/jcmoraisjr/haproxy-ingress/blob/release-0.8/README.md#tcp-services-configmap">ha proxy tcp-services-configmap</a></p>
+</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/networking/" rel="tag">Networking</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/egress/" rel="tag">Egress</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/ingress/" rel="tag">Ingress</a></li>
+	</ul>
+</div>
+	</article>
+  
+  
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
+	</figure>
+	<div class="authorbox__header">
+		
+		<span class="authorbox__name">Tomáš Dědič</span>
+	</div>
+	
+	
+	
+	
+	
+</div>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/openshift/openid-provider/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">OPENID AAD</p></a>
+	</div>
+</nav>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 DIVIDED DOCUMENTATION.
+			
+		</div>
+	</div>
+</footer>
+
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

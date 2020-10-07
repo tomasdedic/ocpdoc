@@ -36,7 +36,8 @@
       {{ end}}
       {{- range $md_part := $md }}
       <div class="post__item">
-        *file: {{ trim $md_part.Name ".md" }} *
+        <!-- *file: {{ trim $md_part.Name ".md" }} * -->
+        *file: {{ $md_part.Name }} *
       </div>
 	      {{- $md_part.Content -}}
       {{- end -}}

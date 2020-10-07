@@ -6,14 +6,24 @@
     <description>Recent content in Openshifts on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/openshift/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/openshift/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OPENID AAD</title>
+      <link>//localhost:1112/openshift/openid-provider/</link>
+      <pubDate>Tue, 06 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/openid-provider/</guid>
+      <description>OPENID AAD provider OpenID Connect authorize proti AAD. Uživatel se autentizuje a je následně vytvořen v OCP.
+Jakým způsobem je možné provést párování mezi unikáním identifikátorem pro AAD a OCP.</description>
+    </item>
+    
     <item>
       <title>OCP Konfigurace proxy</title>
       <link>//localhost:1112/openshift/install/nastaveni_proxy/</link>
       <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>//localhost:1112/openshift/install/nastaveni_proxy/</guid>
-      <description>povolené adresy na PROXY (whitelist)     .api.openshift.com   cert-api.access.redhat.com   api.access.redhat.com   graph.</description>
+      <description>Konfigurace proxy pro instalaci OCP v izolovaném prostředí povolené adresy na PROXY (whitelist) --------------------------------------------- *.api.openshift.com #udates check  cert-api.access.redhat.com #telemetry  api.</description>
     </item>
     
     <item>
@@ -44,16 +54,6 @@
     </item>
     
     <item>
-      <title>OPENID AAD</title>
-      <link>//localhost:1112/openshift/openid-provider/</link>
-      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/openid-provider/</guid>
-      <description>OPENID AAD OpenID Connect authorize proti AAD. Uživatel se autorizuje a je následně vytvořen v OCP.
-Jakým způsobem je možné provést párování mezi unikáním identifikátorem pro AAD a OCP.</description>
-    </item>
-    
-    <item>
       <title>OPENSHIFT PROJECT STATUS a TODO LIST</title>
       <link>//localhost:1112/openshift/project_status/</link>
       <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
@@ -78,15 +78,6 @@ Jakým způsobem je možné provést párování mezi unikáním identifikátore
       
       <guid>//localhost:1112/openshift/debug/debug-monitoring-degraded/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>Instalace OCP do EXT DC v privátním rozsahu </title>
-      <link>//localhost:1112/openshift/install/install-do-ext/</link>
-      <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/install/install-do-ext/</guid>
-      <description>Instalace do extenze datacentra # remote tunnel pro proxy z proxy serveru na bastion node určený k instalaci # ssh spider@10.</description>
     </item>
     
     <item>

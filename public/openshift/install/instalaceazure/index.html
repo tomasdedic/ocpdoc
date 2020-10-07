@@ -49,6 +49,8 @@
     <li class="menu__item">
 		<a class="menu__link" href="/categories/logging" title="Logging">Logging</a>
     <li class="menu__item">
+		<a class="menu__link" href="/categories/ocp" title="Ocp">Ocp</a>
+    <li class="menu__item">
 		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
     </li>
   </ul>
@@ -107,6 +109,7 @@
     <li><a href="#konfigurace-cluster-wide-proxy">Konfigurace cluster-wide proxy</a></li>
     <li><a href="#instalace-typu-internal-do-private-zóny">Instalace typu &ldquo;INTERNAL&rdquo; do private zóny</a>
       <ul>
+        <li><a href="#instalační-balíčky">Instalační balíčky</a></li>
         <li><a href="#použití-artifactory-jako-container-registry">Použití Artifactory jako container registry</a></li>
         <li><a href="#instalační-soubor-install-configyaml">Instalační soubor INSTALL-CONFIG.YAML</a></li>
         <li><a href="#spuštění-instalace-a-případný-debug">Spuštění instalace a případný debug</a></li>
@@ -119,7 +122,8 @@
         </div>
       
       <div class="post__item">
-        *file: instalace_popis *
+        
+        *file: instalace_popis.md *
       </div><h1 id="popis-instalace-openshift-4x-stable-build-v-prostředí-azure">POPIS INSTALACE OPENSHIFT 4.x stable build v prostředí Azure</h1>
 <p>Popis instalace OpenShift ve verzi 4.x jako publish Internal tedy s definicí endpointů do private zóny.</p>
 <h2 id="přípravné-kroky">Přípravné kroky</h2>
@@ -227,92 +231,16 @@ Pro instalaci v privátní zóně by měla být veškerá komunikace mimo privá
 <tr>
 <td>management.azure.com</td>
 </tr>
-<tr>
-<td>168.63.129.168</td>
-</tr>
 </tbody>
 </table>
 <h2 id="konfigurace-cluster-wide-proxy">Konfigurace cluster-wide proxy</h2>
-<p>Jako proxy bude použita:</p>
+<p><a href="/openshift/install/nastaveni_proxy/">link: KONFIGURACE PROXY</a><br>
+Jako proxy bude použita:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">httpProxy: http://ngproxy-test.csint.cz:8080
 httpsProxy: http://ngproxy-test.csint.cz:8080
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>config.openshift.io/v1<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Proxy<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">generation</span>:<span style="color:#bbb"> </span><span style="color:#666">2</span><span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>cluster<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">httpProxy</span>:<span style="color:#bbb"> </span>http://adresa:port<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">httpsProxy</span>:<span style="color:#bbb"> </span>https://adresa:port<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">noProxy</span>:<span style="color:#bbb"> 
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">trustedCA</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">status</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">httpProxy</span>:<span style="color:#bbb"> </span>http://adresa:port<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">httpsProxy</span>:<span style="color:#bbb"> </span>https://adresa:port<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">noProxy</span>:<span style="color:#bbb"> </span>.cluster.local,.svc,10.0.0.0/16,10.128.0.0/14,127.0.0.1,169.254.169.254,172.30.0.0/16,api-int.{cluster.dns.zone},<span style="color:#bbb">
-</span><span style="color:#bbb">           </span>etcd-0.{cluster.dns.zone},etcd-1.{cluster.dns.zone},etcd-2.{cluster.dns.zone},localhost<span style="color:#bbb">
-</span></code></pre></div><p>Jako noProxy, tedy whitelisting by bylo vhodné uvést důvěryhodné zdroje které OCP vyžaduje ke svému běhu.</p>
-<table>
-<thead>
-<tr>
-<th>ADRESS</th>
-<th align="left">DESCRIPTION</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>registry.redhat.io</td>
-<td align="left">Provides core container images</td>
-</tr>
-<tr>
-<td>*.quay.io</td>
-<td align="left">Provides core container images</td>
-</tr>
-<tr>
-<td>sso.redhat.com</td>
-<td align="left">The https://cloud.redhat.com/openshift site uses authentication from</td>
-</tr>
-<tr>
-<td>cert-api.access.redhat.com</td>
-<td align="left">Required for Telemetry</td>
-</tr>
-<tr>
-<td>api.access.redhat.com</td>
-<td align="left">Required for Telemetry</td>
-</tr>
-<tr>
-<td>infogw.api.openshift.com</td>
-<td align="left">Required for Telemetry</td>
-</tr>
-<tr>
-<td>management.azure.com</td>
-<td align="left">Azure services and resources</td>
-</tr>
-<tr>
-<td>mirror.openshift.com</td>
-<td align="left">Required to access mirrored installation content and images</td>
-</tr>
-<tr>
-<td>*.cloudfront.net</td>
-<td align="left">Required by the Quay CDN to deliver the Quay.io images that the cluster requires</td>
-</tr>
-<tr>
-<td>*.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;</td>
-<td align="left">Required to access the default cluster routes unless you set an ingress wildcard during installation</td>
-</tr>
-<tr>
-<td>api.openshift.com</td>
-<td align="left">Required to check if updates are available for the cluster</td>
-</tr>
-<tr>
-<td>cloud.redhat.com/openshift</td>
-<td align="left">Required for your cluster token</td>
-</tr>
-</tbody>
-</table>
-<h2 id="instalace-typu-internal-do-private-zóny">Instalace typu &ldquo;INTERNAL&rdquo; do private zóny</h2>
+</code></pre></div><h2 id="instalace-typu-internal-do-private-zóny">Instalace typu &ldquo;INTERNAL&rdquo; do private zóny</h2>
 <p>Rozdíl mezi intalací typu Internal a External je pouze v publikaci endpointů.</p>
+<h3 id="instalační-balíčky">Instalační balíčky</h3>
 <p>Stáhneme a rozbalíme balíky <em>openshift-client, openshift-install</em>.</p>
 <ul>
 <li><a href="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/">(stable installer)</a></li>
@@ -327,8 +255,8 @@ openshift-install explain installconfig
 openshift-install create install-config --dir ./install_dir --log-level debug
 </code></pre></div><h3 id="použití-artifactory-jako-container-registry">Použití Artifactory jako container registry</h3>
 <p>Pro instalaci a používání OCP v privátní síti bude jako zdroj všech kontejnerů využita Artifactory. Všechny remote repository (vnější) budou whitelistovány přez ní a bude pro ně vytvořena konfigurace.<br>
-<a href="/openshift/artifactory_as_proxy_for_containerregistries/">link: artifactory_as_proxy_for_containerregistries obecně</a><br>
-<a href="/openshift/artifactory_as_proxy_for_containerregistries/#pou%C5%BEit%C3%AD-remote-repository-p%C5%99i-instalaci-ocp-quayio-repository">link: artifactory_as_proxy_for_containerregistries uprava install-config.yaml</a></p>
+<a href="/openshift/artifactory_as_proxy_for_containerregistries/">link: ARTIFACTORY_AS_PROXY_FOR_CONTAINERREGISTRIES obecně</a><br>
+<a href="/openshift/artifactory_as_proxy_for_containerregistries/#pou%C5%BEit%C3%AD-remote-repository-p%C5%99i-instalaci-ocp-quayio-repository">link: ARTIFACTORY_AS_PROXY_FOR_CONTAINERREGISTRIES uprava install-config.yaml</a></p>
 <h3 id="instalační-soubor-install-configyaml">Instalační soubor INSTALL-CONFIG.YAML</h3>
 <p>následně upravíme vygenerovaný ~/install_dir/install-config.yaml, důležité části jsou s komentáři
 
@@ -373,9 +301,10 @@ openshift-install create install-config --dir ./install_dir --log-level debug
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">creationTimestamp</span>:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>oaz-dev<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">proxy</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">httpProxy</span>:<span style="color:#bbb"> </span>http://10.88.233.244:3128<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">httpsProxy</span>:<span style="color:#bbb"> </span>http://10.88.233.244:3128<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">noProxy</span>:<span style="color:#bbb"> </span>.cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.csint.cz,10.128.0.0/14<span style="color:#bbb">
+</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">proxy</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">httpProxy</span>:<span style="color:#bbb"> </span>http://ngproxy-test.csint.cz:8080<span style="color:#bbb">
+</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">httpsProxy</span>:<span style="color:#bbb"> </span>http://ngproxy-test.csint.cz:8080<span style="color:#bbb">
+</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">noProxy</span>:<span style="color:#bbb"> </span>login.microsoftonline.com,management.azure.com,.blob.core.windows.net,.csint.cz<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">networking</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">clusterNetwork</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">  </span>- <span style="color:#008000;font-weight:bold">cidr</span>:<span style="color:#bbb"> </span><span style="color:#666">10.128.0.0</span>/14<span style="color:#bbb">
@@ -453,6 +382,10 @@ journalctl -b -f -u release-image.service -u bootkube.service
   
   
 </main>
+
+
+
+
 
 
 

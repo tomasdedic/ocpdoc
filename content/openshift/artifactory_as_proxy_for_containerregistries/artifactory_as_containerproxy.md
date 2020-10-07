@@ -1,7 +1,8 @@
 Pro instalaci a používání OCP v privátní síti bude jako zdroj všech kontejnerů využita Artifactory. Všechny remote repository (vnější) budou whitelistovány přez ní a bude pro ně vytvořena konfigurace.
 
 ## Artifactory facts
-[Artifactory link](https://artifactory.csas.elostech.cz/ui/login/) -- adresa se může do budoucna lišit udávám jen z důvodu reference
+[Artifactory SANDBOX link](https://artifactory.csas.elostech.cz) -- adresa se může do budoucna lišit udávám jen z důvodu reference  
+[Artifactory TEST tenant link](https://artifactory.csin.cz) -- adresa se může do budoucna lišit udávám jen z důvodu reference  
 
 repository: 
 + artifactory.csas.elostech.cz/docker-quay (remote repositoru directed to  **quay.io**)

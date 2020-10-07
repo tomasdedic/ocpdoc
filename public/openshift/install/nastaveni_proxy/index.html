@@ -6,10 +6,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>OCP Konfigurace proxy - DIVIDED DOCUMENTATION</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
-	<meta name="description" content="Desc">
+	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.75.0-DEV" />
 	<meta property="og:title" content="OCP Konfigurace proxy" />
-<meta property="og:description" content="Desc" />
+<meta property="og:description" content="Konfigurace proxy pro instalaci OCP v izolovaném prostředí povolené adresy na PROXY (whitelist) --------------------------------------------- *.api.openshift.com #udates check  cert-api.access.redhat.com #telemetry  api." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="//localhost:1112/openshift/install/nastaveni_proxy/" />
 <meta property="article:published_time" content="2020-09-30T00:00:00+00:00" />
@@ -88,72 +88,52 @@
 		</header>
 		
 		<div class="content post__content clearfix">
-<table>
-<thead>
-<tr>
-<th>povolené adresy na PROXY (whitelist)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>.api.openshift.com</td>
-</tr>
-<tr>
-<td>cert-api.access.redhat.com</td>
-</tr>
-<tr>
-<td>api.access.redhat.com</td>
-</tr>
-<tr>
-<td>graph.windows.net</td>
-</tr>
-<tr>
-<td>cloud.redhat.com</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>adresy NOPROXY</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>management.azure.com</td>
-</tr>
-<tr>
-<td>login.microsoftoline.com</td>
-</tr>
-<tr>
-<td>.blob.core.windows.net</td>
-</tr>
-<tr>
-<td>.csin.cz</td>
-</tr>
-<tr>
-<td>.csint.cz</td>
-</tr>
-<tr>
-<td>.cs.cz</td>
-</tr>
-<tr>
-<td>.cst.cz</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
+<h2 id="konfigurace-proxy-pro-instalaci-ocp-v-izolovaném-prostředí">Konfigurace proxy pro instalaci OCP v izolovaném prostředí</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">povolené adresy na PROXY <span style="color:#666">(</span>whitelist<span style="color:#666">)</span> 
+---------------------------------------------
+  *.api.openshift.com         <span style="color:#080;font-style:italic">#udates check                  </span>
+  cert-api.access.redhat.com  <span style="color:#080;font-style:italic">#telemetry          </span>
+  api.access.redhat.com       <span style="color:#080;font-style:italic">#telemetry               </span>
+  graph.windows.net           <span style="color:#080;font-style:italic">#cloud credentials                </span>
+  cloud.redhat.com            <span style="color:#080;font-style:italic">#redhat insights </span>
+  sso.redhat.com              <span style="color:#080;font-style:italic">#single sign on</span>
+
+
+ adresy NOPROXY           
+--------------------------
+ management.azure.com     
+ login.microsoftoline.com 
+ .blob.core.windows.net  <span style="color:#080;font-style:italic">#blob storage </span>
+ .csin.cz                 
+ .csint.cz                
+ .cs.cz                   
+ .cst.cz                  
+</code></pre></div><blockquote>
 <p>The Proxy object’s status.noProxy field is populated by default with the instance metadata endpoint (169.254.169.254) and with the values of the networking.machineCIDR, networking.clusterNetwork.cidr, and networking.serviceNetwork fields from your installation configuration.</p>
 </blockquote>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> adresy noProxy automaticky přidané admission-hook 
+------------------------------------------
+ .svc                                      
+ 10.128.0.0/14  <span style="color:#080;font-style:italic">#cluster network                           </span>
+ 10.4.0.0/16    <span style="color:#080;font-style:italic">#machine network                           </span>
+ 127.0.0.1                                 
+ 169.254.169.254 <span style="color:#080;font-style:italic">#Azure Instance Metadata service                           </span>
+ 172.30.0.0/16   <span style="color:#080;font-style:italic">#service network                          </span>
+ api-int.<span style="color:#666">[</span>cluster-name<span style="color:#666">]</span>.<span style="color:#666">[</span>cluster-domain<span style="color:#666">]</span>          
+ etcd-*.<span style="color:#666">[</span>cluster-name<span style="color:#666">]</span>.<span style="color:#666">[</span>cluster-domain<span style="color:#666">]</span>         
+ localhost                                 
+</code></pre></div><p>definice objektu proxy pro install-config.yaml</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">proxy</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">httpProxy</span>:<span style="color:#bbb"> </span>http://ngproxy-test.csint.cz:8080<span style="color:#bbb">
+</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">httpsProxy</span>:<span style="color:#bbb"> </span>http://ngproxy-test.csint.cz:8080<span style="color:#bbb">
+</span><span style="color:#bbb">   </span><span style="color:#008000;font-weight:bold">noProxy</span>:<span style="color:#bbb"> </span>login.microsoftonline.com,management.azure.com,.blob.core.windows.net,.csint.cz<span style="color:#bbb">
+</span></code></pre></div><p>vytvořené CRD proxy</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># install-config.yaml snippet</span>
 proxy:
   httpProxy: http://adresa:port
   httpsProxy: http://adresa:port
-  noProxy: login.microsoftonline.com, management.azure.com, .blob.core.windows.net, .csin.cz, .csint.cz, .cs.cz, cst.cz
-</code></pre></div><p>vytvořené CDR na openshiftu pak vypadá jako
-http://www.root.cz
-&ldquo;ahahaha&rdquo;</p>
-</div>
+  noProxy: login.microsoftonline.com, management.azure.com, .blob.core.windows.net,.csin.cz,.csint.cz,.cs.cz,cst.cz
+</code></pre></div></div>
 		
 <div class="post__tags tags clearfix">
 	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
@@ -165,8 +145,6 @@ http://www.root.cz
   
   
 </main>
-
-
 
 
 
@@ -235,6 +213,9 @@ http://www.root.cz
 <nav class="post-nav flex">
 	<div class="post-nav__item post-nav__item--prev">
 		<a class="post-nav__link" href="/openshift/install/instalaceazure/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">OPENSHIFT AZURE INSTALL and CUSTOMIZE</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/openshift/openid-provider/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">OPENID AAD</p></a>
 	</div>
 </nav>
 

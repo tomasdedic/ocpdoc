@@ -13,7 +13,7 @@
       <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>//localhost:1112/openshift/install/nastaveni_proxy/</guid>
-      <description>povolené adresy na PROXY (whitelist)     .api.openshift.com   cert-api.access.redhat.com   api.access.redhat.com   graph.</description>
+      <description>Konfigurace proxy pro instalaci OCP v izolovaném prostředí povolené adresy na PROXY (whitelist) --------------------------------------------- *.api.openshift.com #udates check  cert-api.access.redhat.com #telemetry  api.</description>
     </item>
     
     <item>
@@ -41,15 +41,6 @@
       
       <guid>//localhost:1112/openshift/install/installaro/</guid>
       <description>Proces instalace az provider register -n Microsoft.RedHatOpenShift --wait az account set --subscription 7504de90-f639-4328-a5b6-fde85e0a7fd9 az account show # je potreba pouzit az login na SP az login --service-principal --username 126501b0-ae03-4aad-aff2-19ced106b169 --password 05b154b3-afc3-42dd-bd53-746e6fa0d368 --tenant d2480fab-7029-4378-9e54-3b7a474eb327 export RESOURCEGROUP=&amp;quot;aro-test&amp;quot; export LOCATION=&amp;quot;westeurope&amp;quot; export CLUSTER=&amp;quot;arozinite&amp;quot; az group create --name $RESOURCEGROUP --location $LOCATION az network vnet create \ --resource-group $RESOURCEGROUP \ --name aro-vnet \ --address-prefixes 10.</description>
-    </item>
-    
-    <item>
-      <title>Instalace OCP do EXT DC v privátním rozsahu </title>
-      <link>//localhost:1112/openshift/install/install-do-ext/</link>
-      <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/install/install-do-ext/</guid>
-      <description>Instalace do extenze datacentra # remote tunnel pro proxy z proxy serveru na bastion node určený k instalaci # ssh spider@10.</description>
     </item>
     
   </channel>

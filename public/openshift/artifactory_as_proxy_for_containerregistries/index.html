@@ -49,6 +49,8 @@
     <li class="menu__item">
 		<a class="menu__link" href="/categories/logging" title="Logging">Logging</a>
     <li class="menu__item">
+		<a class="menu__link" href="/categories/ocp" title="Ocp">Ocp</a>
+    <li class="menu__item">
 		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
     </li>
   </ul>
@@ -110,10 +112,12 @@
         </div>
       
       <div class="post__item">
-        *file: artifactory_as_containerproxy *
+        
+        *file: artifactory_as_containerproxy.md *
       </div><p>Pro instalaci a používání OCP v privátní síti bude jako zdroj všech kontejnerů využita Artifactory. Všechny remote repository (vnější) budou whitelistovány přez ní a bude pro ně vytvořena konfigurace.</p>
 <h2 id="artifactory-facts">Artifactory facts</h2>
-<p><a href="https://artifactory.csas.elostech.cz/ui/login/">Artifactory link</a> &ndash; adresa se může do budoucna lišit udávám jen z důvodu reference</p>
+<p><a href="https://artifactory.csas.elostech.cz">Artifactory SANDBOX link</a> &ndash; adresa se může do budoucna lišit udávám jen z důvodu reference<br>
+<a href="https://artifactory.csin.cz">Artifactory TEST tenant link</a> &ndash; adresa se může do budoucna lišit udávám jen z důvodu reference</p>
 <p>repository:</p>
 <ul>
 <li>artifactory.csas.elostech.cz/docker-quay (remote repositoru directed to  <strong>quay.io</strong>)</li>
@@ -266,6 +270,10 @@ oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:
   
   
 </main>
+
+
+
+
 
 
 

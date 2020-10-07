@@ -14,12 +14,14 @@ tags:
 
 ```sh
 povolené adresy na PROXY (whitelist) 
--------------------------------------
-  .api.openshift.com #udates check                  
-  cert-api.access.redhat.com #telemetry          
-  api.access.redhat.com #telemetry               
-  graph.windows.net #cloud credentials                
-  cloud.redhat.com  #redhat insights                   
+---------------------------------------------
+  *.api.openshift.com         #udates check                  
+  cert-api.access.redhat.com  #telemetry          
+  api.access.redhat.com       #telemetry               
+  graph.windows.net           #cloud credentials                
+  cloud.redhat.com            #redhat insights 
+  sso.redhat.com              #single sign on
+
 
  adresy NOPROXY           
 --------------------------
@@ -33,7 +35,7 @@ povolené adresy na PROXY (whitelist)
 ```
 > The Proxy object’s status.noProxy field is populated by default with the instance metadata endpoint (169.254.169.254) and with the values of the networking.machineCIDR, networking.clusterNetwork.cidr, and networking.serviceNetwork fields from your installation configuration.
 ```sh
- adresy automaticky přidané admission-hook 
+ adresy noProxy automaticky přidané admission-hook 
 ------------------------------------------
  .svc                                      
  10.128.0.0/14  #cluster network                           

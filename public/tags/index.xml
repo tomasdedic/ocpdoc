@@ -6,7 +6,16 @@
     <description>Recent content in Tags on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AAD</title>
+      <link>//localhost:1112/tags/aad/</link>
+      <pubDate>Tue, 06 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/aad/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Install</title>
       <link>//localhost:1112/tags/install/</link>
@@ -35,27 +44,9 @@
     </item>
     
     <item>
-      <title>AAD</title>
-      <link>//localhost:1112/tags/aad/</link>
-      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/tags/aad/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Azure</title>
-      <link>//localhost:1112/tags/azure/</link>
-      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/tags/azure/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>OCP</title>
       <link>//localhost:1112/tags/ocp/</link>
-      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>//localhost:1112/tags/ocp/</guid>
       <description></description>
@@ -98,6 +89,15 @@
     </item>
     
     <item>
+      <title>Azure</title>
+      <link>//localhost:1112/tags/azure/</link>
+      <pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/azure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Storage</title>
       <link>//localhost:1112/tags/storage/</link>
       <pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate>
@@ -130,6 +130,15 @@
       <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
       
       <guid>//localhost:1112/tags/dns/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OAuth2/OIDC</title>
+      <link>//localhost:1112/tags/oauth2/oidc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/oauth2/oidc/</guid>
       <description></description>
     </item>
     

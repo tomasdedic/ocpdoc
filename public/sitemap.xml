@@ -3,14 +3,54 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>//localhost:1112/tags/egress/</loc>
+    <lastmod>2020-10-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/ingress-egress/</loc>
+    <lastmod>2020-10-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/ingress/</loc>
+    <lastmod>2020-10-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>//localhost:1112/</loc>
-    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>//localhost:1112/tags/aad/</loc>
+    <lastmod>2020-10-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>//localhost:1112/categories/</loc>
-    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/openid-provider/</loc>
+    <lastmod>2020-10-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/openshift/</loc>
+    <lastmod>2020-10-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/</loc>
+    <lastmod>2020-10-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/</loc>
+    <lastmod>2020-10-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -24,22 +64,7 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/categories/openshift/</loc>
-    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/openshift/install/instalaceazure/</loc>
-    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/</loc>
-    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/</loc>
     <lastmod>2020-09-30T00:00:00+00:00</lastmod>
   </url>
   
@@ -69,23 +94,8 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/tags/aad/</loc>
-    <lastmod>2020-09-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/azure/</loc>
-    <lastmod>2020-09-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/tags/ocp/</loc>
-    <lastmod>2020-09-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/openid-provider/</loc>
-    <lastmod>2020-09-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-08-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -106,11 +116,6 @@
   <url>
     <loc>//localhost:1112/openshift/debug/debug-monitoring-degraded/</loc>
     <lastmod>2020-07-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/install/install-do-ext/</loc>
-    <lastmod>2020-07-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -156,6 +161,11 @@
   <url>
     <loc>//localhost:1112/categories/logging/</loc>
     <lastmod>2020-06-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/azure/</loc>
+    <lastmod>2020-06-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -214,6 +224,21 @@
   </url>
   
   <url>
+    <loc>//localhost:1112/openshift/ingress-egress/egress-ingress/</loc>
+    <lastmod>2020-03-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/networking/</loc>
+    <lastmod>2020-03-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/ocp/</loc>
+    <lastmod>2020-03-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>//localhost:1112/openshift/uploading_container_image_to_ocp_registry/</loc>
     <lastmod>2020-02-01T00:00:00+00:00</lastmod>
   </url>
@@ -223,7 +248,15 @@
   </url>
   
   <url>
+    <loc>//localhost:1112/openshift/debug/openshiftapiserver-tls/podnetworkconnectivitychech/</loc>
+  </url>
+  
+  <url>
     <loc>//localhost:1112/search/</loc>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/oauth2/oidc/</loc>
   </url>
   
   <url>

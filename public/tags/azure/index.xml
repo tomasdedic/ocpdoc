@@ -6,17 +6,7 @@
     <description>Recent content in Azure on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 16 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/azure/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>OPENID AAD</title>
-      <link>//localhost:1112/openshift/openid-provider/</link>
-      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/openid-provider/</guid>
-      <description>OPENID AAD OpenID Connect authorize proti AAD. Uživatel se autorizuje a je následně vytvořen v OCP.
-Jakým způsobem je možné provést párování mezi unikáním identifikátorem pro AAD a OCP.</description>
-    </item>
-    
+    <lastBuildDate>Wed, 10 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/azure/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>OCP v4 AzureFile persistence file storage</title>
       <link>//localhost:1112/openshift/azurefile-persistencefilestorage/</link>
