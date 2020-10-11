@@ -7,7 +7,7 @@ lead: ""
 categories:
   - "OpenShift"
 tags:
-  - "OCP"
+  - "SNIPPETS"
 ---
 
 ```sh

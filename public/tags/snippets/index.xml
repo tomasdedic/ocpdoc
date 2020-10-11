@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Snippets on DIVIDED DOCUMENTATION</title>
+    <title>SNIPPETS on DIVIDED DOCUMENTATION</title>
     <link>//localhost:1112/tags/snippets/</link>
-    <description>Recent content in Snippets on DIVIDED DOCUMENTATION</description>
+    <description>Recent content in SNIPPETS on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 23 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/snippets/index.xml" rel="self" type="application/rss+xml" />
@@ -14,6 +14,25 @@
       
       <guid>//localhost:1112/openshift/snippets/</guid>
       <description></description>
+    </item>
+    
+    <item>
+      <title>Self signed cert for Ingress Nginx</title>
+      <link>//localhost:1112/openshift/selfsignedcert_foringress/</link>
+      <pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/selfsignedcert_foringress/</guid>
+      <description>Generate self signed TLS certificate for Ingress for use with Artifactory docker registry.
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.</description>
+    </item>
+    
+    <item>
+      <title>Uploading local container images to OCP registry</title>
+      <link>//localhost:1112/openshift/uploading_container_image_to_ocp_registry/</link>
+      <pubDate>Sat, 01 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/uploading_container_image_to_ocp_registry/</guid>
+      <description>#!/bin/bash  # Define constants set registry_namespace openshift-image-registry set registry_svc image-registry set LOCAL_PORT 5000 # Get port where the remote registry is on registry_port=$(oc get svc $registry_svc -n $registry_namespace -o jsonpath=&amp;#39;{.</description>
     </item>
     
   </channel>

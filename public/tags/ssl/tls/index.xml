@@ -7,6 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language><atom:link href="//localhost:1112/tags/ssl/tls/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Instalace a zprovozňení cert-manager DNS challenge</title>
+      <link>//localhost:1112/openshift/cert-manager-install/</link>
+      <pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/cert-manager-install/</guid>
+      <description>#install cert manager operator </description>
+    </item>
+    
+    <item>
       <title>Certbot DNS 01 and apply certs to OCP</title>
       <link>//localhost:1112/openshift/certbot-dns01-cert_add/</link>
       <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>

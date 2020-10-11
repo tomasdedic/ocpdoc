@@ -6,7 +6,25 @@
     <description>Recent content in Config on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/config/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/config/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Service principals ve vazbě na OCP</title>
+      <link>//localhost:1112/openshift/service-principal/</link>
+      <pubDate>Sun, 11 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/service-principal/</guid>
+      <description>Instalační SP az ad sp create-for-rbac --name service_principal_name#add rolesaz role assignment create --assignee &amp;#34;app id of service principal&amp;#34; --role Contributor --output noneaz role assignment create --assignee &amp;#34;app id of service principal&amp;#34; --role &amp;#34;User Access Administrator&amp;#34; --output none#The User Access Administrator role enables the user to grant other users access to Azure resources# service principal needs read write owned by app permisions Azure AD graphaz ad app permission add --id &amp;#34;app id of service principal&amp;#34; \-- api 00000002-0000-0000-c000-000000000000 \-- api-permissions 824c81eb0e3f8-4ee6-8f6d-de7f50d565b7-Rolevytvořené SP tak bude mít Roli:</description>
+    </item>
+    
+    <item>
+      <title>Disable TransparentHugePages přez Tuned operator </title>
+      <link>//localhost:1112/openshift/tuned/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/tuned/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>ARM resource limits for OCP</title>
       <link>//localhost:1112/openshift/arm-apiresources-deplated/</link>

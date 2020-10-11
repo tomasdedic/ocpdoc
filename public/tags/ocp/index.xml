@@ -98,14 +98,5 @@ Authentication and Authentication Operator # cluster operator oc get co # operat
       <description>After upgrade to version 4.3.3 two nodes (one master and one worker) are in state NotReady. Cluster seems to be ok, but I cannot ssh into affected nodes and cannot get some debug info.</description>
     </item>
     
-    <item>
-      <title>Uploading local container images to OCP registry</title>
-      <link>//localhost:1112/openshift/uploading_container_image_to_ocp_registry/</link>
-      <pubDate>Sat, 01 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/uploading_container_image_to_ocp_registry/</guid>
-      <description>#!/bin/bash  # Define constants set registry_namespace openshift-image-registry set registry_svc image-registry set LOCAL_PORT 5000 # Get port where the remote registry is on registry_port=$(oc get svc $registry_svc -n $registry_namespace -o jsonpath=&amp;#39;{.</description>
-    </item>
-    
   </channel>
 </rss>

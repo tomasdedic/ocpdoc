@@ -17,16 +17,6 @@
     </item>
     
     <item>
-      <title>Self signed cert for Ingress Nginx</title>
-      <link>//localhost:1112/openshift/selfsignedcert_foringress/</link>
-      <pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/selfsignedcert_foringress/</guid>
-      <description>Generate self signed TLS certificate for Ingress for use with Artifactory docker registry.
-openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.</description>
-    </item>
-    
-    <item>
       <title>ARM resource limits for OCP</title>
       <link>//localhost:1112/openshift/arm-apiresources-deplated/</link>
       <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>

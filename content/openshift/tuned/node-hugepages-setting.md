@@ -20,7 +20,7 @@ metadata:
   namespace: openshift-cluster-node-tuning-operator
 spec:
   profile:
-  - data: |
+  - data:|
       [main]
       summary=Disable Transparent hugepages at boot time
       # includujeme puvodni profil a jen ho rozsirime

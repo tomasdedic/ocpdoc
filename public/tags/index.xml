@@ -6,7 +6,52 @@
     <description>Recent content in Tags on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Config</title>
+      <link>//localhost:1112/tags/config/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/config/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>RBAC</title>
+      <link>//localhost:1112/tags/rbac/</link>
+      <pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/rbac/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Egress</title>
+      <link>//localhost:1112/tags/egress/</link>
+      <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/egress/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ingress</title>
+      <link>//localhost:1112/tags/ingress/</link>
+      <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/ingress/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Networking</title>
+      <link>//localhost:1112/tags/networking/</link>
+      <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/networking/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>AAD</title>
       <link>//localhost:1112/tags/aad/</link>
@@ -62,7 +107,7 @@
     </item>
     
     <item>
-      <title>Snippets</title>
+      <title>SNIPPETS</title>
       <link>//localhost:1112/tags/snippets/</link>
       <pubDate>Thu, 23 Jul 2020 00:00:00 +0000</pubDate>
       
@@ -103,24 +148,6 @@
       <pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>//localhost:1112/tags/storage/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ACR</title>
-      <link>//localhost:1112/tags/acr/</link>
-      <pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/tags/acr/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Config</title>
-      <link>//localhost:1112/tags/config/</link>
-      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/tags/config/</guid>
       <description></description>
     </item>
     

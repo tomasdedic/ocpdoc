@@ -5,9 +5,9 @@ author: Tomas Dedic
 description: "Desc"
 lead: "working"
 categories:
-  - "Azure"
+  - "Openshift"
 tags:
-  - "ACR"
+  - "SNIPPETS"
 ---
 Generate **self signed TLS certificate** for **Ingress** for use with **Artifactory docker registry**.
 ```sh

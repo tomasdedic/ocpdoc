@@ -12,7 +12,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="//localhost:1112/openshift/" />
-<meta property="og:updated_time" content="2020-10-06T00:00:00+00:00" />
+<meta property="og:updated_time" content="2020-10-09T00:00:00+00:00" />
 
 	
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -106,30 +106,18 @@
 
 
 
-    
-      
-      
-        
-      
-        
-    
-      
-      
-        
+
+
+
+
+
+
     
       
       
         
     
       
-      
-        
-      
-        
-    
-      
-      
-        
       
         
     
@@ -142,34 +130,10 @@
         
       
         
-    
-      
-      
-        
       
         
     
       
-      
-        
-      
-        
-    
-      
-      
-        
-      
-        
-    
-      
-      
-        
-      
-        
-    
-      
-      
-        
       
         
       
@@ -192,6 +156,12 @@
       
       
         
+      
+        
+    
+      
+      
+        
     
       
       
@@ -202,9 +172,56 @@
       
       
         
+      
+        
     
       
+      
+        
+      
+        
+    
+      
+      
+        
+      
+        
+    
+      
+      
+        
+      
+        
+    
+      
+      
+        
+      
+        
+      
+        
+    
+      
+      
+        
+    
+      
+      
+        
+    
+      
+      
+        
+      
+        
+    
+      
+      
+        
   
+
+
+
 
 
 
@@ -229,6 +246,12 @@
 <div class="post__tags tags clearfix">
 	<svg class="icon icon-tag" width="32" height="32" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
 	<ul class="tags__list">
+      <li class="tags__item"><a class="tags__link btn" href="/tags/config/" rel="tag">CONFIG</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/ssl/tls/" rel="tag">SSL/TLS</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/rbac/" rel="tag">RBAC</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/networking/" rel="tag">NETWORKING</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/egress/" rel="tag">EGRESS</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/ingress/" rel="tag">INGRESS</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/aad/" rel="tag">AAD</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/oauth2/oidc/" rel="tag">OAUTH2/OIDC</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/install/" rel="tag">INSTALL</a></li>
@@ -240,18 +263,139 @@
       <li class="tags__item"><a class="tags__link btn" href="/tags/operator/" rel="tag">OPERATOR</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/azure/" rel="tag">AZURE</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/storage/" rel="tag">STORAGE</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/acr/" rel="tag">ACR</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/config/" rel="tag">CONFIG</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/dns/" rel="tag">DNS</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/ssl/tls/" rel="tag">SSL/TLS</a></li>
 	</ul>
 </div>
 
   <article class="list__item post">
 	<header class="list__header">
 		<h3 class="list__title post__title ">
+			<a href="/openshift/tuned/" rel="bookmark">
+			Disable TransparentHugePages přez Tuned operator 
+			</a>
+		</h3>
+		<p class="list__lead post__lead">Disable TransparentHugePages pro worker nody jako boot parametr přez upravený profil Tuned operátoru</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-09T00:00:00">2020-10-09</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/config" rel="category">CONFIG</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/cert-manager-install/" rel="bookmark">
+			Instalace a zprovozňení cert-manager DNS challenge
+			</a>
+		</h3>
+		<p class="list__lead post__lead">Instalace a zprovozňení cert-manager pro automatickou obnovu certifikatu pro ingress DNS challenge</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-08T00:00:00">2020-10-08</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/ssl/tls" rel="category">SSL/TLS</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		SANDBOX
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/rbac/vytvoreni_zakladnich_skupin_a_uprava_upraveni/" rel="bookmark">
+			Základní definice RBAC, úprava postinstalačních oprávnění
+			</a>
+		</h3>
+		<p class="list__lead post__lead">Základní postinstalační RBAC model, úpravy defaultních oprávnění</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-08T00:00:00">2020-10-08</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/rbac" rel="category">RBAC</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		SANDBOX
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/ingress-egress/" rel="bookmark">
+			Egress, Ingress description/configuration
+			</a>
+		</h3>
+		<p class="list__lead post__lead">Ingress Egress definice a rozbor, in progress..</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-07T00:00:00">2020-10-07</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/networking" rel="category">NETWORKING</a>, <a class="meta__link" href="/tags/egress" rel="category">EGRESS</a>, <a class="meta__link" href="/tags/ingress" rel="category">INGRESS</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		Desc
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
 			<a href="/openshift/openid-provider/" rel="bookmark">
-			OPENID AAD
+			OPENID AAD SANDBOX
 			</a>
 		</h3>
 		<p class="list__lead post__lead">napojení OCP na OPENID-&gt; AAD, RBAC pro vytvořené uživatele, custom claims </p>
@@ -633,12 +777,12 @@
 
 <div class="meta__item-categories meta__item">
 	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/azure" rel="category">AZURE</a></span>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OPENSHIFT</a></span>
 </div>
 
 <div class="meta__item-categories meta__item">
 	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/acr" rel="category">ACR</a></span>
+	<span class="meta__text"><a class="meta__link" href="/tags/snippets" rel="category">SNIPPETS</a></span>
 </div>
 </div>
 	</header>
@@ -740,84 +884,13 @@
 	</div>
 	
 </article>
-<article class="list__item post">
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/openshift/certbot-dns01-cert_add/" rel="bookmark">
-			Certbot DNS 01 and apply certs to OCP
-			</a>
-		</h3>
-		<p class="list__lead post__lead">ACME cert bot</p>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2020-03-19T00:00:00">2020-03-19</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OPENSHIFT</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/config" rel="category">CONFIG</a>, <a class="meta__link" href="/tags/ssl/tls" rel="category">SSL/TLS</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		How to create wildchar letsencrypt cert for domain
-	</div>
-	
-</article>
-<article class="list__item post">
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/openshift/uploading_container_image_to_ocp_registry/" rel="bookmark">
-			Uploading local container images to OCP registry
-			</a>
-		</h3>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2020-02-01T00:00:00">2020-02-01</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/openshift" rel="category">OPENSHIFT</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/ocp" rel="category">OCP</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		Upload local container image to OCP registry
-	</div>
-	
-</article>
-<article class="list__item post">
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/openshift/debug/debug-openshiftapiserver/" rel="bookmark">
-			
-			</a>
-		</h3>
-		
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		
-	</div>
-	
-</article>
 
 </main>
+
+<div class="pagination">
+	<span class="pagination__item pagination__item--current">1/2</span>
+	<a class="pagination__item pagination__item--next btn" href="/openshift/page/2/">»</a>
+</div>
 
 
 			</div>

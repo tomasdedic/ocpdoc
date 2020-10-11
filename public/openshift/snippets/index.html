@@ -139,7 +139,8 @@
         </div>
       
       <div class="post__item">
-        *file: automaticImagePrunning *
+        
+        *file: automaticImagePrunning.md *
       </div><p>Prune images that are no longer required by the system due to age, status, or exceed limits as a <strong>cronjob</strong>.</p>
 <h3 id="enable-imagepruner-controller">Enable ImagePruner controller</h3>
 <p>Cron job to delete unused images</p>
@@ -155,7 +156,8 @@ spec:
   suspend: <span style="color:#a2f">false</span>
 </code></pre></div>
       <div class="post__item">
-        *file: globalPullSecret *
+        
+        *file: globalPullSecret.md *
       </div><h3 id="global-pull-secret">Global pull secret</h3>
 <p>Jak nadefinovat global pull secret</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get secret/pull-secret -n openshift-config -o json|jq -r <span style="color:#b44">&#39;.data[&#34;.dockerconfigjson&#34;]&#39;</span>|base64 -d
@@ -165,7 +167,8 @@ oc <span style="color:#a2f">set</span> data secret/pull-secret -n openshift-conf
  oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:#b44">&#39;.data[]&#39;</span>|base64 -d|jq <span style="color:#b44">&#39;.auths += {&#34;artifactory.csas.elostech.cz&#34;:{&#34;auth&#34;:&#34;b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==&#34;,&#34;email&#34;:&#34;dedtom@gmail.com&#34;}}&#39;</span> &gt;
 </code></pre></div>
       <div class="post__item">
-        *file: handyCLI *
+        
+        *file: handyCLI.md *
       </div><h3 id="list-machineconfig-version">list machineconfig version</h3>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get nodes -o json|jq -r <span style="color:#b44">&#39;.items[].metadata.annotations|{name:.[&#34;machine.openshift.io/machine&#34;],current:.[&#34;machineconfiguration.openshift.io/currentConfig&#34;],desired:.[&#34;machineconfiguration.openshift.io/desiredConfig&#34;],state:.[&#34;machineconfiguration.openshift.io/state&#34;]}&#39;</span>
 <span style="color:#080;font-style:italic"># s custom-columns</span>
@@ -208,6 +211,10 @@ openssl crl2pkcs7 -nocrl -certfile ca.crt | openssl pkcs7 -print_certs -text -no
       <span style="color:#a2f">printf</span> <span style="color:#b44">&#39;%s\t&#39;</span> <span style="color:#b8860b">$i</span>:;oc get secret -n kube-system azure-credentials -o json|jq -r <span style="color:#b44">&#34;.data.</span><span style="color:#b8860b">$i</span><span style="color:#b44">&#34;</span>|base64 -d;<span style="color:#a2f">printf</span> <span style="color:#b44">&#39;\n&#39;</span>
  <span style="color:#a2f;font-weight:bold">done</span> 
 
+ <span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#a2f;font-weight:bold">$(</span>oc get secret -n openshift-image-registry installer-cloud-credentials  -o json|jq -r <span style="color:#b44">&#39;.data |keys []&#39;</span><span style="color:#a2f;font-weight:bold">)</span>
+ <span style="color:#a2f;font-weight:bold">do</span>
+      <span style="color:#a2f">printf</span> <span style="color:#b44">&#39;%s\t&#39;</span> <span style="color:#b8860b">$i</span>:;oc get secret -n openshift-image-registry installer-cloud-credentials -o json|jq -r <span style="color:#b44">&#34;.data.</span><span style="color:#b8860b">$i</span><span style="color:#b44">&#34;</span>|base64 -d;<span style="color:#a2f">printf</span> <span style="color:#b44">&#39;\n&#39;</span>
+ <span style="color:#a2f;font-weight:bold">done</span> 
  <span style="color:#080;font-style:italic"># tyhle dva credentials by se meli rovnat</span>
  <span style="color:#080;font-style:italic"># a meli by se rovnat s </span>
   ~/.azure/osServicePrincipal.json
@@ -300,6 +307,14 @@ oc login --token<span style="color:#666">=(</span>cat token|base64 -d<span style
   
   
 </main>
+
+
+
+
+
+
+
+
 
 
 

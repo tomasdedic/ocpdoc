@@ -4,11 +4,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>OPENID AAD - DIVIDED DOCUMENTATION</title>
+  <title>OPENID AAD SANDBOX - DIVIDED DOCUMENTATION</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.75.0-DEV" />
-	<meta property="og:title" content="OPENID AAD" />
+	<meta property="og:title" content="OPENID AAD SANDBOX" />
 <meta property="og:description" content="OPENID AAD provider OpenID Connect authorize proti AAD. Uživatel se autentizuje a je následně vytvořen v OCP.
 Jakým způsobem je možné provést párování mezi unikáním identifikátorem pro AAD a OCP." />
 <meta property="og:type" content="article" />
@@ -50,8 +50,6 @@ Jakým způsobem je možné provést párování mezi unikáním identifikátore
     <li class="menu__item">
 		<a class="menu__link" href="/categories/logging" title="Logging">Logging</a>
     <li class="menu__item">
-		<a class="menu__link" href="/categories/ocp" title="Ocp">Ocp</a>
-    <li class="menu__item">
 		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
     </li>
   </ul>
@@ -70,7 +68,7 @@ Jakým způsobem je možné provést párování mezi unikáním identifikátore
 <main class="main" role="main">
 	<article class="post" autonumbering>
 		<header class="post__header">
-			<h1 class="post__title">OPENID AAD</h1>
+			<h1 class="post__title">OPENID AAD SANDBOX</h1>
 			<p class="post__lead">napojení OCP na OPENID-&gt; AAD, RBAC pro vytvořené uživatele, custom claims </p>
 			<div class="post__meta meta">
 <div class="meta__item-datetime meta__item">
@@ -251,22 +249,37 @@ do <a href="https://jwt.ms">jwt.ms</a></p>
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">&#34;ver&#34;: </span><span style="color:#b44">&#34;2.0&#34;</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span>}<span style="color:#bbb">
 </span></code></pre></div><h2 id="role-a-clusterrole-ve-vazbě-na-vytvořené-useridentities-objekty">Role a ClusterRole ve vazbě na vytvořené USER/IDENTITIES objekty</h2>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># pridam prava pro skupinu v tokenu</span><span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#00f;font-weight:bold">---</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>ClusterRoleBinding<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>rbac.authorization.k8s.io/v1<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">metadata</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>clusteradmin<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">subjects</span>:<span style="color:#bbb">
-</span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">apiGroup</span>:<span style="color:#bbb"> </span>rbac.authorization.k8s.io<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Group<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#34;111980ba-31f2-499d-b021-6d90b684ba54&#34;</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">roleRef</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>ClusterRole<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>cluster-admin<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">apiGroup</span>:<span style="color:#bbb"> </span>rbac.authorization.k8s.io<span style="color:#bbb">
-</span></code></pre></div><p>V JWT tokenu sice group mame ale v provisioningu do OCP se neprojeví a uživatel nemá práva přijatá z tokenu.<br>
+<p>Autenticated user budou defaultně přiřazena virtuální skupiny:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">system:authenticated  Automatically associated with all authenticated users.
+system:authenticated:oauth  Automatically associated with all users authenticated with an OAuth access token.
+system:unauthenticated Automatically associated with all unauthenticated users.
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># clusterrole prirazene skupine system:authenticated, system:unauthenticated, system:authenticated:oauth</span>
+oc get clusterrolebindings -o json |jq -r <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span><span style="color:#b44">&#39;.items[]| select(.subjects[].name| contains(&#34;system:authenticated&#34;)) |{roleRef_kind: .roleRef.kind, roleRef_name:.roleRef.name,subject_kind:.subjects[].kind,subject_name:.subjects[].name}&#39;</span>
+oc get clusterrolebindings -o json| jq -r <span style="color:#b44">&#39;.items[]| select(.subjects[].name| contains(&#34;system:authenticated&#34;)) | .metadata.name&#39;</span>
+</code></pre></div><p><strong>system:authenticated:oauth</strong> má ale právo vytvářet projekty a to bych rád odstranil</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get clusterrolebindings -o json| jq -rj <span style="color:#b44">&#39;.items[]| select(.subjects[].name| contains(&#34;system:authenticated&#34;)) | {clusterrole:.roleRef.name,clusterrolebinging:.metadata.name}&#39;</span>
+oc get clusterrolebindings -o json| jq -r <span style="color:#b44">&#39;.items[]| select(.subjects[].name| contains(&#34;system:authenticated&#34;)) | .roleRef.name&#39;</span>|xargs oc get clusterrole -o yaml
+
+
+
+<span style="color:#b44">```</span>yaml
+ <span style="color:#080;font-style:italic"># pridam prava pro skupinu v tokenu</span>
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: clusteradmin
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: <span style="color:#b44">&#34;111980ba-31f2-499d-b021-6d90b684ba54&#34;</span>
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+</code></pre></div><p>V JWT tokenu sice group mame ale v provisioningu do OCP se neprojeví a uživatel nemá práva přijatá z tokenu.<br>
 Práva získá až po manuálním přiřazení do skupiny.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#008000;font-weight:bold">apiVersion</span>:<span style="color:#bbb"> </span>user.openshift.io/v1<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>Group<span style="color:#bbb">
@@ -287,6 +300,8 @@ Práva získá až po manuálním přiřazení do skupiny.</p>
   
   
 </main>
+
+
 
 
 

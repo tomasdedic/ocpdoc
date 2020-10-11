@@ -1,14 +1,16 @@
 ---
-title: "Azure service principals ve vazbě na OCP"
-date: 2020-10-12 
+title: "Service principals ve vazbě na OCP"
+date: 2020-10-11
 author: Tomas Dedic
-description: "Desc"
-lead: "Jaké Service Principals a oprávnění Openshift vytváří "
+description: "uff"
+lead: "Jaké Service Principals a oprávnění Openshift vytváří"
 categories:
-  - "Openshift"
-tags:
   - "Azure"
+tags:
+  - "Config"
+autonumbering: true
 ---
+
 ## Instalační SP
 ```yaml
 az ad sp create-for-rbac --name service_principal_name
@@ -23,7 +25,7 @@ az ad app permission add --id "app id of service principal" \
 ```
 
 vytvořené SP tak bude mít Roli:  
-Application.ReadWrite.OwnedBy --	Manage apps that this app creates or owns	Allows the calling app to create other applications and service principals, and fully manage those applications and service principals (read, update, update application secrets and delete), without a signed-in user. It cannot update any applications that it is not an owner of. Does not allow management of consent grants or application assignments to users or groups.
+**Application.ReadWrite.OwnedBy** --	Manage apps that this app creates or owns	Allows the calling app to create other applications and service principals, and fully manage those applications and service principals (read, update, update application secrets and delete), without a signed-in user. It cannot update any applications that it is not an owner of. Does not allow management of consent grants or application assignments to users or groups.
 ```sh
 + User Access Administrator
   subscription
@@ -80,5 +82,4 @@ Zajímavé je že všechny vytvořená SP mají stejné přiřazené role.
 # {cluster_resource_group}-openshift-ingress-azure-{rand_suffix}
 nepodařilo se mi najít
 ```
-
 Je potřeba brát v úvahu že přez hlavní SP si OCP může vytořit další SP a na ně navázat potřebné aktivity.

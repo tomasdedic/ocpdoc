@@ -93,7 +93,8 @@
 		
 		<div class="content post__content clearfix">
       <div class="post__item">
-        *file: 01-intro-loggingArch *
+        
+        *file: 01-intro-loggingArch.md *
       </div><h1 id="ocp-logging-in-general">OCP Logging in general</h1>
 <p><strong>The cluster logging components are based upon Elasticsearch, Fluentd and Kibana.</strong></p>
 <ul>
@@ -106,7 +107,8 @@
 <p>The collector, Fluentd, is deployed to each node in the OpenShift Container Platform cluster. It collects all node and container logs and writes them to Elasticsearch (ES), Kibana to visualize.</p>
 
       <div class="post__item">
-        *file: 01-provision-resources *
+        
+        *file: 01-provision-resources.md *
       </div><h1 id="provision-resources-for-logging-stack-on-ocp">Provision resources for logging stack on OCP</h1>
 <p>Logging stack will be installed as an operator, for elasticsearch we will use dedicated node with propriate <strong>taint</strong>  to allow only schedule pods with defined <strong>toleration</strong> (part of logging stack).</p>
 <h2 id="create-custom-node-for-logging-purposes">Create custom node for logging purposes</h2>
@@ -479,7 +481,8 @@ oc <span style="color:#a2f">exec</span> -n openshift-logging pod/elasticsearch-c
 oc get replicaSet --selector <span style="color:#b8860b">component</span><span style="color:#666">=</span>elasticsearch -o name -n openshift-logging
 </code></pre></div>
       <div class="post__item">
-        *file: 02-fluendD-eventRouter *
+        
+        *file: 02-fluendD-eventRouter.md *
       </div><h1 id="eventrouter">EventRouter</h1>
 <p>Deployment which will periodically query <strong>events</strong> and store and process them over FluentD and store to ElasticSearch</p>
 <h2 id="events">Events</h2>
@@ -516,7 +519,8 @@ You can configure Fluentd to send a copy of its logs to an external log aggregat
 </blockquote>
 
       <div class="post__item">
-        *file: 02-fluentD-OpenshiftScope *
+        
+        *file: 02-fluentD-OpenshiftScope.md *
       </div><h1 id="fluentd">FluentD</h1>
 <p>Everything that a containerized application writes to stdout or stderr is streamed somewhere by the container engine – in Docker’s case,
 for example, to a logging driver. These logs are usually located in the /var/log/containers directory on your host.</p>
@@ -615,7 +619,8 @@ oc apply -f fluentd-cm.yaml
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#666">(</span>oc get pods -o name --selector <span style="color:#b8860b">component</span><span style="color:#666">=</span>fluentd<span style="color:#666">)</span>; oc delete <span style="color:#b8860b">$i</span>; end
 </code></pre></div>
       <div class="post__item">
-        *file: 03-elasticSearch *
+        
+        *file: 03-elasticSearch.md *
       </div><h2 id="elasticsearch">Elasticsearch</h2>
 <h3 id="elasticsearch-architecture">Elasticsearch architecture</h3>
 <p><strong>Cluster</strong>: Any non-trivial Elasticsearch deployment consists of multiple instances forming a cluster. Distributed consensus is used to keep track of master/replica relationships.<br>
@@ -666,6 +671,14 @@ curl -s -tlsv1.2 --insecure -H <span style="color:#b44">&#34;Authorization: Bear
   
   
 </main>
+
+
+
+
+
+
+
+
 
 
 

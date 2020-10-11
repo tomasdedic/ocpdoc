@@ -6,7 +6,35 @@
     <description>Recent content in Openshift on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/categories/openshift/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/categories/openshift/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Disable TransparentHugePages přez Tuned operator </title>
+      <link>//localhost:1112/openshift/tuned/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/tuned/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Instalace a zprovozňení cert-manager DNS challenge</title>
+      <link>//localhost:1112/openshift/cert-manager-install/</link>
+      <pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/cert-manager-install/</guid>
+      <description>#install cert manager operator </description>
+    </item>
+    
+    <item>
+      <title>Základní definice RBAC, úprava postinstalačních oprávnění</title>
+      <link>//localhost:1112/openshift/rbac/vytvoreni_zakladnich_skupin_a_uprava_upraveni/</link>
+      <pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/rbac/vytvoreni_zakladnich_skupin_a_uprava_upraveni/</guid>
+      <description>ÚPRAVY DEFAULT NASTAVENÍ pro AUTHENTICATED_USER Po přihlášení jsou uživateli automaticky přiřazeny tyto virtuální skupiny:
+system:authenticated Automatically associated with all authenticated users.</description>
+    </item>
+    
     <item>
       <title>Egress, Ingress description/configuration</title>
       <link>//localhost:1112/openshift/ingress-egress/</link>
@@ -17,7 +45,7 @@
     </item>
     
     <item>
-      <title>OPENID AAD</title>
+      <title>OPENID AAD SANDBOX</title>
       <link>//localhost:1112/openshift/openid-provider/</link>
       <pubDate>Tue, 06 Oct 2020 00:00:00 +0000</pubDate>
       
@@ -142,6 +170,16 @@ Authentication and Authentication Operator # cluster operator oc get co # operat
       
       <guid>//localhost:1112/openshift/agregate_logging/logging_notes/</guid>
       <description>Cluster logging components, provisioning and configuration.</description>
+    </item>
+    
+    <item>
+      <title>Self signed cert for Ingress Nginx</title>
+      <link>//localhost:1112/openshift/selfsignedcert_foringress/</link>
+      <pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/selfsignedcert_foringress/</guid>
+      <description>Generate self signed TLS certificate for Ingress for use with Artifactory docker registry.
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.</description>
     </item>
     
     <item>
