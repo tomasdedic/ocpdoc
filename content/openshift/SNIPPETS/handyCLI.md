@@ -52,6 +52,10 @@ openssl crl2pkcs7 -nocrl -certfile ca.crt | openssl pkcs7 -print_certs -text -no
       printf '%s\t' $i:;oc get secret -n kube-system azure-credentials -o json|jq -r ".data.$i"|base64 -d;printf '\n'
  done 
 
+ for i in $(oc get secret -n openshift-image-registry installer-cloud-credentials  -o json|jq -r '.data |keys []')
+ do
+      printf '%s\t' $i:;oc get secret -n openshift-image-registry installer-cloud-credentials -o json|jq -r ".data.$i"|base64 -d;printf '\n'
+ done 
  # tyhle dva credentials by se meli rovnat
  # a meli by se rovnat s 
   ~/.azure/osServicePrincipal.json
