@@ -10,7 +10,7 @@
     <item>
       <title>DNS deepDive OPC/Azure/OnPremise</title>
       <link>//localhost:1112/openshift/dns/</link>
-      <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>//localhost:1112/openshift/dns/</guid>
       <description>How can I use a custom DNS in our cluster without modify the actual cluster DNS on top of Azure? How can I forward custom DNS and use specific DNS in an On-Premise Datacenter?</description>
