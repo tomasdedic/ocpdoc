@@ -6,22 +6,22 @@
     <description>Recent content in Categories on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Azure</title>
-      <link>//localhost:1112/categories/azure/</link>
-      <pubDate>Sun, 11 Oct 2020 00:00:00 +0000</pubDate>
+      <title>Openshift</title>
+      <link>//localhost:1112/categories/openshift/</link>
+      <pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>//localhost:1112/categories/azure/</guid>
+      <guid>//localhost:1112/categories/openshift/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Openshift</title>
-      <link>//localhost:1112/categories/openshift/</link>
-      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      <title>Azure</title>
+      <link>//localhost:1112/categories/azure/</link>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>//localhost:1112/categories/openshift/</guid>
+      <guid>//localhost:1112/categories/azure/</guid>
       <description></description>
     </item>
     

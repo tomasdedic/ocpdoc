@@ -6,7 +6,25 @@
     <description>Recent content in Openshifts on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/openshift/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/openshift/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Azure - server side encryption/client side encryption </title>
+      <link>//localhost:1112/openshift/encryption_azure_summary/</link>
+      <pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/encryption_azure_summary/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DNS deepDive OPC/Azure/OnPremise</title>
+      <link>//localhost:1112/openshift/dns/</link>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/dns/</guid>
+      <description>How can I use a custom DNS in our cluster without modify the actual cluster DNS on top of Azure? How can I forward custom DNS and use specific DNS in an On-Premise Datacenter?</description>
+    </item>
+    
     <item>
       <title>Service principals ve vazbě na OCP</title>
       <link>//localhost:1112/openshift/service-principal/</link>
@@ -189,15 +207,6 @@ openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.</description>
       
       <guid>//localhost:1112/openshift/debug/debug-nodenotready/</guid>
       <description>After upgrade to version 4.3.3 two nodes (one master and one worker) are in state NotReady. Cluster seems to be ok, but I cannot ssh into affected nodes and cannot get some debug info.</description>
-    </item>
-    
-    <item>
-      <title>DNS deepDive OPC/Azure/OnPremise</title>
-      <link>//localhost:1112/openshift/dns/</link>
-      <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/dns/</guid>
-      <description>How can I use a custom DNS in our cluster without modify the actual cluster DNS on top of Azure? How can I forward custom DNS and use specific DNS in an On-Premise Datacenter?</description>
     </item>
     
     <item>

@@ -6,7 +6,16 @@
     <description>Recent content in Azure on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/categories/azure/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 14 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/categories/azure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DNS deepDive OPC/Azure/OnPremise</title>
+      <link>//localhost:1112/openshift/dns/</link>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/dns/</guid>
+      <description>How can I use a custom DNS in our cluster without modify the actual cluster DNS on top of Azure? How can I forward custom DNS and use specific DNS in an On-Premise Datacenter?</description>
+    </item>
+    
     <item>
       <title>Service principals ve vazbě na OCP</title>
       <link>//localhost:1112/openshift/service-principal/</link>
@@ -32,15 +41,6 @@
       
       <guid>//localhost:1112/openshift/arm-apiresources-deplated/</guid>
       <description>ARM limitations For each Azure subscription and tenant, Resource Manager allows up to 12,000 read requests per hour and 1,200 write requests per hour, for certain resources it can be smaller.</description>
-    </item>
-    
-    <item>
-      <title>DNS deepDive OPC/Azure/OnPremise</title>
-      <link>//localhost:1112/openshift/dns/</link>
-      <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/openshift/dns/</guid>
-      <description>How can I use a custom DNS in our cluster without modify the actual cluster DNS on top of Azure? How can I forward custom DNS and use specific DNS in an On-Premise Datacenter?</description>
     </item>
     
   </channel>

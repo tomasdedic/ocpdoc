@@ -6,7 +6,25 @@
     <description>Recent content on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Azure - server side encryption/client side encryption </title>
+      <link>//localhost:1112/openshift/encryption_azure_summary/</link>
+      <pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/openshift/encryption_azure_summary/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Faze</title>
+      <link>//localhost:1112/faze/install_myslenky/</link>
+      <pubDate>Mon, 19 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/faze/install_myslenky/</guid>
+      <description>Popiseme si logiku: Vsechny argo aplikace jsou jako helm template v artifactory, po stazeni jsou templatovany custom values a nasledne vsechny vyrendrovane manifesty jsou pushnute do gitu a pak aplikovany argem.</description>
+    </item>
+    
     <item>
       <title>DNS deepDive OPC/Azure/OnPremise</title>
       <link>//localhost:1112/openshift/dns/</link>

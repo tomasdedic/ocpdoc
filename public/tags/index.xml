@@ -6,7 +6,34 @@
     <description>Recent content in Tags on DIVIDED DOCUMENTATION</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="//localhost:1112/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Encryption</title>
+      <link>//localhost:1112/tags/encryption/</link>
+      <pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/encryption/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DNS</title>
+      <link>//localhost:1112/tags/dns/</link>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/dns/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NETWORKING</title>
+      <link>//localhost:1112/tags/networking/</link>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>//localhost:1112/tags/networking/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Config</title>
       <link>//localhost:1112/tags/config/</link>
@@ -40,15 +67,6 @@
       <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>//localhost:1112/tags/ingress/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Networking</title>
-      <link>//localhost:1112/tags/networking/</link>
-      <pubDate>Wed, 07 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/tags/networking/</guid>
       <description></description>
     </item>
     
@@ -148,15 +166,6 @@
       <pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>//localhost:1112/tags/storage/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>DNS</title>
-      <link>//localhost:1112/tags/dns/</link>
-      <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>//localhost:1112/tags/dns/</guid>
       <description></description>
     </item>
     
