@@ -22,8 +22,10 @@ RUN /hugo --minify
 #FROM nginx:1.19.2-alpine
 FROM nginxinc/nginx-unprivileged
 
-RUN 0 chown -R nginx:nginx /usr/share/nginx/hmml
+USER root
+RUN chown -R nginx:nginx /usr/share/nginx/hmml
 
+USER nginx
 WORKDIR /usr/share/nginx/html/
 
 # Clean the default public folder
