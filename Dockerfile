@@ -23,7 +23,7 @@ RUN /hugo --minify
 FROM nginxinc/nginx-unprivileged
 
 USER root
-RUN chown -R nginx:nginx /usr/share/nginx/hmml
+RUN chown -R nginx:nginx /usr/share/nginx/html
 
 USER nginx
 WORKDIR /usr/share/nginx/html/
