@@ -10,11 +10,13 @@ Po instalaci jsou vytvořené dva storage accounts. Jeden obsahuje **VM bootdiag
 
 - Změna storage accounts na Client-managed keys lze provést online. Zároveň storage accounts neobsahují v iniciální podobě žádná běhová data.
 
-- Automatický storage provisioning. Zatím jsem nezkoumal možnosti OCP pri vytoření nového Storage (StorageClass, CSI) a jejich automatické přiřazení k Encryption setu, nastavení Client-managed keys.
+- Automatický storage provisioning. Zatím jsem nezkoumal možnosti OCP pri vytoření nového Storage (StorageClass, CSI) a jejich kustomizaci tedy automatické přiřazení k Encryption setu, nastavení Client-managed keys...  
+  Mimo OCP lze ale použít vlastnosti Azure policy pouzitim [Modify Efectu](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/effects) a tim padem injektnout při vytváření nového objektu požadované nastavení
+
 
 - Azure DISK encryption (ADE dm-crypt) nelze v případě OS CoreOS použít jelikož **CoreOS není podporovaný OS**.
 
-- CoreOS TPM2 (trusted platform module) není podporovaný v Azure 
+- CoreOS TPM2 (trusted platform module) není podporovaný v Azure.   
   Default device mapper pro OSdisk z pohledu CoreOS
   ```sh
   dmsetup ls

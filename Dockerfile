@@ -19,7 +19,8 @@ WORKDIR /site
 RUN /hugo --minify 
 
 # stage 2
-FROM nginx:1.19.2-alpine
+#FROM nginx:1.19.2-alpine
+FROM nginxinc/nginx-unprivileged
 
 WORKDIR /usr/share/nginx/html/
 

@@ -98,12 +98,12 @@ jobs:
       #     package-name: hugogen
       - name: save image tag to YAML
         run: |
-          echo "image: ${{steps.prep.outputs.tags}}" >argo_repo/image_tags.yaml
+          echo "image: ${{steps.prep.outputs.tags}}" >image_tags.yaml
 
       - name: Merge Deployment file in ARGO repo with image_tags.yaml
         uses: tomasdedic/yq-action@1.2
         with:
-          file: argo_repo/yq_inline.sh
+          file: argo_repo/deploy/yq_inline.sh
 
       - name: commit changes to ARGO repo
         run: |
@@ -111,6 +111,6 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "generated ${{steps.prep.outputs.tags}}"
+          git commit -m "generated"
           git push
 

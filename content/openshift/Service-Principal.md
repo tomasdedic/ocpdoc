@@ -9,6 +9,7 @@ categories:
 tags:
   - "Config"
 autonumbering: true
+
 ---
 
 ## Instalační SP
@@ -83,3 +84,18 @@ Zajímavé je že všechny vytvořená SP mají stejné přiřazené role.
 nepodařilo se mi najít
 ```
 Je potřeba brát v úvahu že přez hlavní SP si OCP může vytořit další SP a na ně navázat potřebné aktivity.
+
+## Vyjadření RedHat k SP
+Below are the inline descriptions:  
+ 
+-  <cluster_name>-identity
+ 
+Is a managed identity created by the installer for attaching to all the VMs so that the kubelet and kube-controller-manager can communicate with azure APIs  
+ 
+- <cluster_name>-openshift-image-registry-azure-cgwrf
+ 
+- <cluster_name>-openshift-ingress-azure-hwdjj
+ 
+- <cluster_name>-openshift-machine-api-azure-vrvdd
+ 
+These are service principals (app registrations) for each operator in the cluster that needs to communicate with Azure APIs. These are created for the operators by virtue of CredentialRequests objects, realized by openshift-credential-operator.
