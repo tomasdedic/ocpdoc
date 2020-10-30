@@ -7,7 +7,7 @@
 {{- if not (eq (len .Site.Taxonomies.categories) 0) }}
 		{{- range $name,$items := .Site.Taxonomies.categories }}
     <li class="menu__item">
-		<a class="menu__link" href="{{ "categories/" | relLangURL }}{{ $name | urlize | lower }}" title="{{ $name | humanize }}">{{ $name | humanize }}</a>
+      <a class="menu__link" href="{{ "categories/" | relLangURL |  }}{{ $name | urlize | lower }}{{"/" | urlize }}" title="{{ $name | humanize }}">{{ $name | humanize }}</a>
     {{- end }}
     </li>
 {{- end }}
