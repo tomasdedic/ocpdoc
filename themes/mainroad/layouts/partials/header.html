@@ -1,12 +1,18 @@
 <header class="header">
+    {{ if ne .Kind "404" }}
+        {{ partial "script.html" . }}
+    {{ end }}
 	<div class="container">
-		<div class="logo">
+		<div class="wrapper flex">
 			<a class="logo__link" href="{{ "" | relLangURL }}" title="{{ .Site.Title }}" rel="home">
 				<div class="logo__title">{{ .Site.Title }}</div>
-				{{ with .Site.Params.subtitle }}<div class="logo__tagline">{{ . }}</div>{{ end }}
+				{{ with .Site.Params.subtitle }}<div class="logo__tagline">{{ . }}</div>{{ end }} 
 			</a>
-		</div>
+    <aside class="search--right">
+    {{ partial "components/search.html" (dict "$" .) }}
+    </aside>
+    </div>
 		<!-- {{ partial "menu.html" . }} -->
-    {{ partial "menu2.html" . }}
 	</div>
+		{{ partial "menu.html" . }}
 </header>

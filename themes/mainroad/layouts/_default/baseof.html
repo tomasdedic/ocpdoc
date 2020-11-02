@@ -24,17 +24,16 @@
 	{{- if not .Site.IsServer }}
 		{{ template "_internal/google_analytics_async.html" . }}
 	{{- end }}
-{{ partial "scripts.html" }}
 </head>
 <body class="body">
 	<div class="container container--outer">
+    <!-- {{ partial "utils/list_resources.html" . }} -->
 		{{ partial "header" . }}
     <!-- {{ if eq .Kind "term" }} --> 
 <!-- {{ partial "list_tags.html" . }} -->
     <!-- {{ end}} -->
 		<div class="wrapper flex">
 			<div class="primary">
-        <!-- {{ partial "search" . }} -->
 			{{ block "main" . }}
 				{{ with .Content }}
 				<div class="content main__content clearfix">

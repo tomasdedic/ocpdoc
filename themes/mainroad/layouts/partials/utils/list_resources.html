@@ -1,0 +1,10 @@
+{{- $array := slice "1" "5" "10" -}}
+{{- range $xxx := $array -}}
+    {{- $scratchResource := newScratch -}}
+		{{- $scratchResource.Set "resource" "" -}}
+    {{- $scratchResource.Add  "resource" $xxx }}
+    {{ $xxx }}
+    {{- $scratchResource.Get "resource" }}
+{{- end -}}
+
+

@@ -1,0 +1,17 @@
+{{- $ := index . "$" -}}
+<form id="search" class="search" role="search">
+    <label for="search-input">
+    </label>
+    <input type="search" id="search-input" class="search-input" placeholder="search..." />
+</form>
+
+
+
+
+<template id="search-result" hidden>
+    <article class="list__item post">
+      <h3 class="list__title post__title">: <a class="summary-title-link"></a></h3>
+        <summary class="summary"></summary>
+            <a class="read-more-link"></a>
+    </article>
+</template>

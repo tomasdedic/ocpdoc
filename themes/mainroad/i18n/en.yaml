@@ -78,3 +78,13 @@
 
 - id: 404_linktext
   translation: "main page"
+
+- id: searchResultsNone
+  translation:
+    other: "No results found for “{{ .Term }}”"
+
+- id: searchResultsTitle
+  translation:
+    one : "Found one result for “{{ .Term }}”"
+    other : "Found {{ .Count }} results for “{{ .Term }}”"
+

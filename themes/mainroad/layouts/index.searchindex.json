@@ -1,0 +1,18 @@
+[
+  {{- range $index, $page := .Site.RegularPages -}}
+    {{- if gt $index 0 -}} , {{- end -}}
+    {{- $scratchResource := newScratch -}}
+		{{- $scratchResource.Set "resource" "" -}}
+    {{- $resources := ($page.Resources.Match "*.md") -}}
+		{{- range $con := $resources }}
+			{{- $scratchResource.Add  "resource" $con.Content }}
+		{{- end -}}
+
+    {{- $entry := dict "uri" $page.RelPermalink "title" $page.Title -}}
+    {{- $entry = merge $entry (dict "content" ($page.Plain | htmlUnescape)) -}}
+    {{- $entry = merge $entry (dict "description" $page.Description) -}}
+    {{- $entry = merge $entry (dict "categories" $page.Params.categories) -}}
+    {{- $entry = merge $entry (dict "resources" ($scratchResource.Get "resource")) -}}
+    {{- $entry | jsonify -}}
+  {{- end -}}
+]

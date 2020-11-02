@@ -17,39 +17,55 @@
 	
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
-	<link rel="alternate" type="application/rss+xml" href="/tags/index.xml" title="DIVIDED DOCUMENTATION">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="/css/custom.css">
 	<link rel="shortcut icon" href="/favicon.ico">
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/lunr/lunr.js"></script>
-
-
 </head>
 <body class="body">
 	<div class="container container--outer">
 		<header class="header">
+    
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.js"></script>
+
+    
 	<div class="container">
 		<div class="logo">
 			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
 				<div class="logo__title">DIVIDED DOCUMENTATION</div>
 				<div class="logo__tagline">Tech howto, pancakes and syrup</div>
 			</a>
+
+</form>
 		</div>
+    <form id="search" class="search" role="search">
+    <label for="search-input">
+    </label>
+    <input type="search" id="search-input" class="search-input">
+</form>
+
+<template id="search-result" hidden>
+    <article class="content post">
+        <h2 class="post-title"><a class="summary-title-link"></a></h2>
+        <summary class="summary"></summary>
+        <div class="read-more-container">
+            <a class="read-more-link"> »</a>
+        </div>
+    </article>
+</template>
+
 		
-    
 <nav class="menu">
 	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
   <ul class="menu__list">
     <li class="menu__item">
-		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+      <a class="menu__link" href="/categories/azure/" title="Azure">Azure</a>
     <li class="menu__item">
-		<a class="menu__link" href="/categories/logging" title="Logging">Logging</a>
+      <a class="menu__link" href="/categories/logging/" title="Logging">Logging</a>
     <li class="menu__item">
-		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+      <a class="menu__link" href="/categories/openshift/" title="Openshift">Openshift</a>
     </li>
   </ul>
 </nav>
@@ -60,7 +76,6 @@
     
 		<div class="wrapper flex">
 			<div class="primary">
-        
 			
 <main class="main list" role="main">
 	<header class="main__header">

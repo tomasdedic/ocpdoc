@@ -1,0 +1,22 @@
+{{- $scripts := slice "js/main.js" -}}
+{{- $scripts = union $scripts (partial "components/lunr-search.html" .) -}}
+
+{{- $processedScripts := slice ("" | resources.FromString "dummy.js") -}}
+{{- range $scripts -}}
+    {{- if findRE `^https?:` . -}}
+        <script src="{{ . }}" defer></script>
+    {{- else -}}
+        {{- $path := printf "%s/%s" $.Lang (. | replaceRE `\.js$` "-rendered.js") -}}
+        {{- $processedScripts = union $processedScripts (slice (resources.Get . | resources.ExecuteAsTemplate $path $)) -}}
+    {{- end -}}
+{{- end -}}
+
+{{- $path := (strings.TrimPrefix "/" (printf `%s/js/meme.js` .Site.LanguagePrefix)) -}}
+
+{{- if .Site.Params.enableFingerprint -}}
+    {{- $script := $processedScripts | resources.Concat $path | resources.Minify | resources.Fingerprint -}}
+    <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}"></script>
+{{- else -}}
+    {{- $script := $processedScripts | resources.Concat $path | resources.Minify -}}
+    <script src="{{ $script.RelPermalink }}"></script>
+{{- end }}

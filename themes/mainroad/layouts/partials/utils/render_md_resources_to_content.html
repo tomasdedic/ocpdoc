@@ -1,0 +1,12 @@
+{{- $ := index . "$" -}}
+{{- $md := $.Resources.Match "*.md" -}}
+{{ printf "%#v" $md }}
+{{- if  $md -}}
+  {{- $obsah := $.Content -}}
+  {{- range $md }}
+	  {{- $obsah = union $obsah $md.Content -}}
+  {{- end -}}
+{{- else -}}
+  {- $content := $.Content -}}
+{{- end -}}
+{{- return "dadsa" -}}
