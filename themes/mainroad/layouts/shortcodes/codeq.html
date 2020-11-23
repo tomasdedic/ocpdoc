@@ -1,0 +1,27 @@
+{{/*
+Read a file with code and highlight content with <code>
+Myslenka je pridat git repo jako submodul z ktereho se budou nacitat zdrojove casti, git repo by tak nebylo
+soucasti kazde page ale bylo by jedno umisteno v adresari $HUGO_HOME/content/$git_repo coz odpovida ceste ve snippetu $git_repo/$file
+snippet codeq "code shortcode out of page scope" b
+{{< codeq file="${1:file}" lang="${2:yaml}" >}}
+endsnippet 
+*/}}
+
+
+{{ $sourcefile := .Get "file" }}
+{{ $serviceFile := printf "%s%s" "/" $sourcefile -}}
+{{ if (fileExists $serviceFile) }}
+  <p class="codecaption">
+  {{ (print "*[ " $serviceFile " ]*")| markdownify }}
+  </p>
+  {{ $file := readFile $serviceFile }}
+  {{ $lang := .Get "lang" }}
+  {{ (print "```" $lang "\n" $file "\n```") | markdownify }}
+{{ else }}
+  <p class="codecaption">
+  {{ (print "\n*Err [ " $sourcefile " ] not found*")| markdownify }}
+  </p>
+{{ end }}
+<!-- {{ print (.Page.File.Path) }} -->
+{{- print "" -}}
+<!-- {{ print (.Page.Dir) }} -->

@@ -337,6 +337,21 @@ figcaption h4 {
   left: 10px;
 }
 
+
+.codecaption {
+	font-size: 12px;
+	font-size: .75rem;
+	/* margin-top: 4px; */
+	/* margin-top: .25rem; */
+	color: #666;
+  position: relative;
+  left: 10px;
+}
+
+p.codecaption:before {
+ content: "File: ";
+}
+
 pre,
 code,
 kbd,
@@ -1398,8 +1413,10 @@ textarea {
 @keyframes spin {
   100% {
     transform: rotateY(360deg);
+    }
   }
-}
+
+
 
 
 

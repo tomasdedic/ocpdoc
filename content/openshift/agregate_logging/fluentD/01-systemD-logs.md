@@ -1,5 +1,5 @@
 # SYSTEMD Journal logs transport
-## LOGS location
+## LOGS location on NODES
 
 journalctl may be used to query the contents of the systemd(1) journal
 as written by systemd-journald.service(8)

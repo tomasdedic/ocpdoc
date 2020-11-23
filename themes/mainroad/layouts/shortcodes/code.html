@@ -4,13 +4,16 @@
 {{ $sourcefile := .Get "file" }}
 {{ $serviceFile := printf "%s%s" .Page.Dir $sourcefile -}}
 {{ if (fileExists $serviceFile) }}
-  <br>
-  {{ (print "*[ " $sourcefile " ]*")| markdownify }}
+  <p class="codecaption">
+  {{ (print "*[ " $serviceFile " ]*")| markdownify }}
+  </p>
   {{ $file := readFile $serviceFile }}
   {{ $lang := .Get "lang" }}
   {{ (print "```" $lang "\n" $file "\n```") | markdownify }}
 {{ else }}
-  {{ (print "\n*Err: File [ " $sourcefile " ] not found*")| markdownify }}
+  <p class="codecaption">
+  {{ (print "\n*Err [ " $serviceFile " ] not found*")| markdownify }}
+  </p>
 {{ end }}
 <!-- {{ print (.Page.File.Path) }} -->
 {{- print "" -}}

@@ -81,6 +81,7 @@
 		<div class="wrapper flex">
 			<div class="primary">
 			
+
  
 
 <main class="main" role="main">
@@ -151,6 +152,8 @@
         <li><a href="#security-context-constraints">security context constraints</a></li>
         <li><a href="#oc-env">oc env</a></li>
         <li><a href="#create-serviceaccount-get-token-and-login">create serviceaccount, get token and login</a></li>
+        <li><a href="#approve-all-pending-csr">approve all pending CSR</a></li>
+        <li><a href="#generate-secret-from-commandline">generate SECRET from commandline</a></li>
       </ul>
     </li>
   </ul>
@@ -314,7 +317,11 @@ oc get secret <span style="color:#666">(</span>oc get serviceaccount sadmin -o j
 oc login --token<span style="color:#666">=(</span>cat token|base64 -d<span style="color:#666">)</span>
 </code></pre></div><p>On a pod service account is stored in:<br>
 <strong>/run/secrets/kubernetes.io/serviceaccount/token</strong></p>
-</div>
+<h3 id="approve-all-pending-csr">approve all pending CSR</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get csr -o name | xargs oc adm certificate approve 
+</code></pre></div><h3 id="generate-secret-from-commandline">generate SECRET from commandline</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f">echo</span> -n <span style="color:#b44">&#34;This is a secret!&#34;</span> | kubectl create secret generic mysecret -n web --dry-run --from-file<span style="color:#666">=</span><span style="color:#b8860b">secret</span><span style="color:#666">=</span>/dev/stdin -o yaml &gt; secret.yaml
+</code></pre></div></div>
 		
 <div class="post__tags tags clearfix">
 	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
@@ -328,6 +335,18 @@ oc login --token<span style="color:#666">=(</span>cat token|base64 -d<span style
   
   
 </main>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

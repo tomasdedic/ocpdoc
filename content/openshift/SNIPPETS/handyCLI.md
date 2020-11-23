@@ -157,3 +157,15 @@ oc login --token=(cat token|base64 -d)
 ```
 On a pod service account is stored in:  
 **/run/secrets/kubernetes.io/serviceaccount/token**
+
+### approve all pending CSR
+```sh
+oc get csr -o name | xargs oc adm certificate approve 
+```
+
+### generate SECRET from commandline
+```sh
+echo -n "This is a secret!" | kubectl create secret generic mysecret -n web --dry-run --from-file=secret=/dev/stdin -o yaml > secret.yaml
+```
+
+
