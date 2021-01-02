@@ -41,6 +41,9 @@ oc get dns.config.openshift.io/cluster -o yaml
 + CoreDNS as DaemonSet
 
 ```sh
+oc get configmap/dns-default -n openshift-dns -o yaml
+```
+```sh
  # rsh to one of CoreDNS pod
 oc rsh -n openshift-dns dns-default-24fm8  bash
 

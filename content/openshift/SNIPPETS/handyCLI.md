@@ -167,5 +167,18 @@ oc get csr -o name | xargs oc adm certificate approve
 ```sh
 echo -n "This is a secret!" | kubectl create secret generic mysecret -n web --dry-run --from-file=secret=/dev/stdin -o yaml > secret.yaml
 ```
+### restart pods in deployment
+```sh
+kubectl rollout restart deploy/admission-control
+```
+### get all resources including CRD in namespace
+```sh
+kubectl api-resources --verbs=list --namespaced -o name \
+  | xargs -n 1 kubectl get --show-kind --ignore-not-found -l <label>=<value> -n <namespace>
 
+nebo
+All objects are stored in ETCD v3 the following way:
 
+/registry/<object_type>/<namespace>/<name>
+ETCDCTL_API=3 etcdctl --endpoints=<etcd_ip>:2379 get / --prefix --keys-only | grep -E "^/\w+/\w+/<namespace>/+"
+```

@@ -154,6 +154,8 @@
         <li><a href="#create-serviceaccount-get-token-and-login">create serviceaccount, get token and login</a></li>
         <li><a href="#approve-all-pending-csr">approve all pending CSR</a></li>
         <li><a href="#generate-secret-from-commandline">generate SECRET from commandline</a></li>
+        <li><a href="#restart-pods-in-deployment">restart pods in deployment</a></li>
+        <li><a href="#get-all-resources-including-crd-in-namespace">get all resources including CRD in namespace</a></li>
       </ul>
     </li>
   </ul>
@@ -321,6 +323,17 @@ oc login --token<span style="color:#666">=(</span>cat token|base64 -d<span style
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get csr -o name | xargs oc adm certificate approve 
 </code></pre></div><h3 id="generate-secret-from-commandline">generate SECRET from commandline</h3>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#a2f">echo</span> -n <span style="color:#b44">&#34;This is a secret!&#34;</span> | kubectl create secret generic mysecret -n web --dry-run --from-file<span style="color:#666">=</span><span style="color:#b8860b">secret</span><span style="color:#666">=</span>/dev/stdin -o yaml &gt; secret.yaml
+</code></pre></div><h3 id="restart-pods-in-deployment">restart pods in deployment</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">kubectl rollout restart deploy/admission-control
+</code></pre></div><h3 id="get-all-resources-including-crd-in-namespace">get all resources including CRD in namespace</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">kubectl api-resources --verbs<span style="color:#666">=</span>list --namespaced -o name <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  | xargs -n <span style="color:#666">1</span> kubectl get --show-kind --ignore-not-found -l &lt;label&gt;<span style="color:#666">=</span>&lt;value&gt; -n &lt;namespace&gt;
+
+nebo
+All objects are stored in ETCD v3 the following way:
+
+/registry/&lt;object_type&gt;/&lt;namespace&gt;/&lt;name&gt;
+<span style="color:#b8860b">ETCDCTL_API</span><span style="color:#666">=</span><span style="color:#666">3</span> etcdctl --endpoints<span style="color:#666">=</span>&lt;etcd_ip&gt;:2379 get / --prefix --keys-only | grep -E <span style="color:#b44">&#34;^/\w+/\w+/&lt;namespace&gt;/+&#34;</span>
 </code></pre></div></div>
 		
 <div class="post__tags tags clearfix">
@@ -335,6 +348,12 @@ oc login --token<span style="color:#666">=(</span>cat token|base64 -d<span style
   
   
 </main>
+
+
+
+
+
+
 
 
 
@@ -443,7 +462,7 @@ oc login --token<span style="color:#666">=(</span>cat token|base64 -d<span style
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2020 DIVIDED DOCUMENTATION.
+			&copy; 2021 DIVIDED DOCUMENTATION.
 			
 		</div>
 	</div>

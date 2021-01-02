@@ -3,6 +3,26 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>//localhost:1112/tags/cicd/</loc>
+    <lastmod>2021-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/gitops/</loc>
+    <lastmod>2021-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/cicd/</loc>
+    <lastmod>2021-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/agregate_logging/instalace_test_stack/</loc>
+    <lastmod>2020-11-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>//localhost:1112/</loc>
     <lastmod>2020-11-23T00:00:00+00:00</lastmod>
   </url>
@@ -63,12 +83,13 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/faze/new_machineconfigpool/</loc>
+    <loc>//localhost:1112/faze/</loc>
     <lastmod>2020-11-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
-    <loc>//localhost:1112/faze/</loc>
+    <loc>//localhost:1112/faze/new_machineconfigpool/</loc>
     <lastmod>2020-11-10T00:00:00+00:00</lastmod>
   </url>
   
@@ -310,6 +331,10 @@
   <url>
     <loc>//localhost:1112/openshift/uploading_container_image_to_ocp_registry/</loc>
     <lastmod>2020-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/cicd/01_scenar/</loc>
   </url>
   
   <url>

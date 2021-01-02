@@ -167,7 +167,8 @@ oc get dns.config.openshift.io/cluster -o yaml
 <li>Every Service is assigned a DNS name: svc-name.namespace-name.svc.cluster.local (SRV record)</li>
 <li>CoreDNS as DaemonSet</li>
 </ul>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># rsh to one of CoreDNS pod</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get configmap/dns-default -n openshift-dns -o yaml
+</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># rsh to one of CoreDNS pod</span>
 oc rsh -n openshift-dns dns-default-24fm8  bash
 
 cat /etc/coredns/Corefile 
@@ -358,6 +359,12 @@ to modify this setting to use custom DNS server:</p>
 
 
 
+
+
+
+
+
+
 <div class="authorbox clearfix">
 	<figure class="authorbox__avatar">
 		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
@@ -391,7 +398,7 @@ to modify this setting to use custom DNS server:</p>
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2020 DIVIDED DOCUMENTATION.
+			&copy; 2021 DIVIDED DOCUMENTATION.
 			
 		</div>
 	</div>

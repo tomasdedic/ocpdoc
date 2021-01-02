@@ -112,5 +112,8 @@ fluentD kafka output sample configuration:
   password "Endpoint=sb://fluentd-eventhub-oshi.servicebus.windows.net/;SharedAccessKeyName=ss;SharedAccessKey=zeWz+9rSS/yWGanjcKrXMA2mAVCO0hL+MULhNWXHfkk=;EntityPath=kafka_output"
   </store>
 ```
-
+```sh
+# run test fluentD
+podman run -p 8888:8888 -ti --name fluflu --hostname fluflu --rm -v /home/ts/git_repositories/work/openshift/oshi/logging/etc:/fluentd/etc -v /home/ts/git_repositories/work/openshift/oshi/logging/logs:/logs -v /home/ts/git_repositories/work/openshift/oshi/logging/systemd:/run/log/journal quay.io/dedtom/fluflu:latest fluentd -c /fluentd/etc/fluent.conf
+```
 

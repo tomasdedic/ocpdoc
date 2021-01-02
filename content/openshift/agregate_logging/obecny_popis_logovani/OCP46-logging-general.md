@@ -54,7 +54,9 @@ V podstatě jsou nepodporované jakékoliv zásahy do jednotlivých objektů kro
 
 ### FluentD
 + Logy kontejnerů (/var/log/containers/**)  
-  Přijímány jsou logy ve 2 formátech a ty jsou pak dále modifikovány a obohaceny metadaty 
+  Přijímány jsou logy ve 2 formátech a ty jsou pak dále modifikovány a obohaceny metadaty   
+
+  REGEXP format:
   ```sh
       # priklad kubelet pod logu:
       #2020-06-23T13:08:52.206419987+00:00 stderr F I0623 13:08:52.206374 1184379 proxier.go:368] userspace proxy : processing 0 service events
@@ -63,6 +65,7 @@ V podstatě jsou nepodporované jakékoliv zásahy do jednotlivých objektů kro
       format regexp
       expression /^(?<time>.+) (?<stream>stdout|stderr)( (?<logtag>.))? (?<log>.*)$/
   ```
+  JSON format:
   ```sh
       format json
   ```
@@ -71,7 +74,12 @@ V podstatě jsou nepodporované jakékoliv zásahy do jednotlivých objektů kro
   Není definovám a doporučen. Pokud bude tedy například field **log** obsahovat zprávu ve formátu JSON, nebude dále parsován. Dle mého názoru vychází z omezení pro ES dynamic mapping, kdy pro jeden index se doporučuje maximálně 1000 unikátních fieldů.
 
 + Multiline log  
-  Není definován, typicky stack trace JAVY bude propagován jako každý řádek samostatná event jelikož první část zprávy je definovaná kubeletem. Je nutné omezit tento typ logování.
+  Vazba na základě Partial (P) klíče tedy rozdělení logu na úrovni runtime 
+  ```sh
+  2016-10-06T00:17:09.669794202Z stdout P First line of log entry 2
+  2016-10-06T00:17:09.669794202Z stdout P Second line of the log entry 2
+  2016-10-06T00:17:10.113242941Z stderr F Last line of the log entry 2
+  ```
 
 + Dělení výstupních ES indexů  
   Výstup je směrován do 3 ES indexů **infra, app, audit**. Infra index obsahuje dokumenty z podů openshift-**, kubernetes-** a default. Audit index k8s-audit.log**, openshift-audit.log** a auditd na nodu. Infra index obsahuje zbytek.
