@@ -1,0 +1,8 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: group-sync-operator
+  namespace: {{ .Values.group_sync_operator_namespace }} 
+spec:
+  targetNamespaces:
+    - group-sync-operator

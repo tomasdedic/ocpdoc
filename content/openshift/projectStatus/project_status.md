@@ -9,17 +9,15 @@
 + [Artifactory jako container registry v izolovaném prostředí](/openshift/artifactory_as_proxy_for_containerregistries/)
 
 **tasks:**
-+ [ ] Reinstall clusteru oaz-dev na stabilní větev 4.6
-
++ [x] Reinstall clusteru oaz-dev na stabilní větev 4.6
 + [x] [**Stabilita Openshift-api serveru**](/openshift/debug/openshiftapiserver-tls/)  
-Po předem nedefinované době zdroje poskytované openshift-api serverem jsou částečně nedostupné, objevují se chyby **HTTP 503** . Openshift-api server operátor je nevalidní  
-**Problém se objevuje na instalacích řady 4.6.**
++ [x] Pretezovani kubeletu
 
 ## Integrace AAD a LDAP group sync 
 Test autentizace oproti AAD v testovacím prostředí, LDAP sync pro dotažení skupin z AD a definice rolí.
 + [x] [OpenID connect oproti AAD v Sandbox prostředí](/openshift/openid-provider/)
 + [x] [OpenID connect oproti TEST AAD CSAS] 
-+ [ ] LDAP sync
++ [x] [LDAP group sync - pouziti AAD group sync operator] 
 
 ## Ingres více routerů, route sharding
 
@@ -28,6 +26,7 @@ Test autentizace oproti AAD v testovacím prostředí, LDAP sync pro dotažení 
 
 ## Egress
 + [ ] [neni dořešeno přidělování adres na nódy jinak než manuálně při jejich vzniku](/openshift/ingress-egress/egress-problemy_s_pridelovanim_adres-azure/)
+The egress IP address implementation is not compatible with Amazon Web Services (AWS), Azure Cloud, or any other public cloud platform incompatible with the automatic layer 2 network manipulation required by the egress IP feature"
 
 ## Network policy/netnamespace isolation
 + network policy řeší CSAS project operator při zakládání namespace (projektu)

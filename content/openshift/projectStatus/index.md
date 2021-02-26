@@ -7,7 +7,7 @@ lead: "working"
 categories:
   - "Openshift"
 tags:
-  - "OCP"
+  - "Project"
 toc: true
 autonumbering: true
 ---

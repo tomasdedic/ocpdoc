@@ -1,0 +1,65 @@
+{{ define "main" }}
+
+<!-- Pro resources se hlavni soubor musi jmenovat index.md to se mi nelibi, proto je sice index.md vytvoren ale pouze s frontmatters a nasledne jsou naloadovany vsechny resourcy tedy i ostatni .md soubory v adresari (abecedne).
+  Pokud nechceme mit soubory mimo adresar jako single files je tam odskok ze kdyz stranka nema resources nacte primo ten soubor--> 
+<!-- {{ .File }} -->
+<main class="main" role="main">
+	<article class="post" {{- if .Param "autonumbering" }} autonumbering {{- end }}>
+		<header class="post__header">
+			<h1 class="post__title">{{ .Title }}</h1>
+			{{- with .Params.lead }}
+			<p class="post__lead">{{ . }}</p>
+			{{- end }}
+			{{ with partial "post_meta.html" . -}}
+			<div class="post__meta meta">{{ . }}</div>
+			{{- end }}
+		</header>
+		<!-- {{- if .Params.thumbnail }} -->
+		<!-- <figure class="post__thumbnail"> -->
+		<!-- 	<img src="{{ .Params.thumbnail | relURL }}" alt="{{ .Title }}"> -->
+		<!-- </figure> -->
+		<!-- {{- end }} -->
+    <!-- toc chceme i pro resources pages -->
+    {{- $toc_pro_vsechny := .Param "toc" }}
+		<div class="content post__content clearfix">
+     {{- $md := .Resources.Match "*.md" -}}
+     {{- if  $md -}}
+       {{- if $toc_pro_vsechny }}
+        <div class="post__toc toc">
+	      <div class="toc__title">{{ T "toc_title" }}</div>
+	      <div class="toc__menu">
+        {{- range $md_part := $md }}
+          <!-- {{- $xx:=$md_part.TableOfContents -}} -->
+          <!-- {{- print $xx -}} -->
+		      {{- $md_part.TableOfContents -}}
+        {{end}}
+	      </div>
+        </div>
+      {{ end}}
+      {{- range $md_part := $md }}
+      <div class="post__item">
+        <!-- *file: {{ trim $md_part.Name ".md" }} * -->
+        *file: {{ $md_part.Name }} *
+      </div>
+	      {{- $md_part.Content -}}
+      {{- end -}}
+     {{- else -}}
+      <!-- no *md resources to load -->
+		{{- partial "post_toc.html" . -}}
+      {{ .Content }}
+     {{- end -}}
+		</div>
+		{{ partial "post_tags.html" . }}
+	</article>
+  <!-- {{ .Resources.ByType "image" }} -->
+  <!-- {{ .Resources }} -->
+</main>
+
+<!-- {{ $recent := .Site.RegularPages }} -->
+<!-- 			{{- range  $recent }} -->
+<!--       {{ .File }} <br> -->
+<!-- 			{{- end }} -->
+<!-- {{ .Site.Params.postSections }} -->
+{{ partial "authorbox.html" . }}
+{{ partial "post_nav.html" . }}
+{{ end }}

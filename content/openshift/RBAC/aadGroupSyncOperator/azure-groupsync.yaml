@@ -1,0 +1,14 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: GroupSync
+metadata:
+  name: azure-groupsync
+  namespace: {{ .Values.group_sync_operator_namespace }} 
+spec:
+  schedule: "*/10 * * * *"
+  providers:
+  - name: azure
+    azure:
+      filter: "(startsWith(displayName, 'OCP_') or startsWith(mail, 'OCP_'))"
+      credentialsSecret:
+        name: azure-group-sync
+        namespace: group-sync-operator

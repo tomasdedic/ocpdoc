@@ -15,6 +15,7 @@ tags:
 ```sh
 povolené adresy na PROXY (whitelist) 
 ---------------------------------------------
+  api.openshift.com           #udates check                  
   *.api.openshift.com         #udates check                  
   cert-api.access.redhat.com  #telemetry          
   api.access.redhat.com       #telemetry               

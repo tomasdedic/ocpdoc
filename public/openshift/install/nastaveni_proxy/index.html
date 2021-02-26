@@ -9,7 +9,7 @@
 	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.75.0-DEV" />
 	<meta property="og:title" content="OCP Konfigurace proxy" />
-<meta property="og:description" content="Konfigurace proxy pro instalaci OCP v izolovaném prostředí povolené adresy na PROXY (whitelist) --------------------------------------------- *.api.openshift.com #udates check  cert-api.access.redhat.com #telemetry  api." />
+<meta property="og:description" content="Konfigurace proxy pro instalaci OCP v izolovaném prostředí povolené adresy na PROXY (whitelist) --------------------------------------------- api.openshift.com #udates check  *.api.openshift.com #udates check  cert-api." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="//localhost:1112/openshift/install/nastaveni_proxy/" />
 <meta property="article:published_time" content="2020-09-30T00:00:00+00:00" />
@@ -66,6 +66,8 @@
 	</button>
   <ul class="menu__list">
     <li class="menu__item">
+      <a class="menu__link" href="/categories/aks/" title="Aks">Aks</a>
+    <li class="menu__item">
       <a class="menu__link" href="/categories/azure/" title="Azure">Azure</a>
     <li class="menu__item">
       <a class="menu__link" href="/categories/logging/" title="Logging">Logging</a>
@@ -112,6 +114,7 @@
 <h2 id="konfigurace-proxy-pro-instalaci-ocp-v-izolovaném-prostředí">Konfigurace proxy pro instalaci OCP v izolovaném prostředí</h2>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">povolené adresy na PROXY <span style="color:#666">(</span>whitelist<span style="color:#666">)</span> 
 ---------------------------------------------
+  api.openshift.com           <span style="color:#080;font-style:italic">#udates check                  </span>
   *.api.openshift.com         <span style="color:#080;font-style:italic">#udates check                  </span>
   cert-api.access.redhat.com  <span style="color:#080;font-style:italic">#telemetry          </span>
   api.access.redhat.com       <span style="color:#080;font-style:italic">#telemetry               </span>
@@ -242,6 +245,16 @@ proxy:
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div class="authorbox clearfix">
 	<figure class="authorbox__avatar">
 		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
@@ -275,7 +288,7 @@ proxy:
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2020 DIVIDED DOCUMENTATION.
+			&copy; 2021 DIVIDED DOCUMENTATION.
 			
 		</div>
 	</div>

@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: secroute
+spec:
+  host: www.jdemedosveta.org
+  to:
+    kind: Service
+    name: secservice
+  tls:
+    termination: edge
+    key: |-
+      -----BEGIN PRIVATE KEY-----
+      [...]
+      -----END PRIVATE KEY-----
+    certificate: |-
+      -----BEGIN CERTIFICATE-----
+      [...]
+      -----END CERTIFICATE-----
+    caCertificate: |-
+      -----BEGIN CERTIFICATE-----
+      [...]
+      -----END CERTIFICATE-----

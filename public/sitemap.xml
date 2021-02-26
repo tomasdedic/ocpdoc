@@ -3,8 +3,93 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>//localhost:1112/tags/cicd/</loc>
-    <lastmod>2021-01-01T00:00:00+00:00</lastmod>
+    <loc>//localhost:1112/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/rbac/aadgroupsyncoperator/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/aks/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/argocd/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/faze/argocd_sops_plugin/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/deploy/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/faze/external_dns/external_dns/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/faze/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/openshift/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/rbac/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/aks/aks-connect-to-node/</loc>
+    <lastmod>2021-02-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/common/</loc>
+    <lastmod>2021-02-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/debug/</loc>
+    <lastmod>2021-01-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/debug/odpojeni-nodu-z-clusteru/</loc>
+    <lastmod>2021-01-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/aks/aks-argo/</loc>
+    <lastmod>2021-01-08T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -13,37 +98,12 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/cicd/</loc>
+    <loc>//localhost:1112/faze/cicd/</loc>
     <lastmod>2021-01-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/agregate_logging/instalace_test_stack/</loc>
-    <lastmod>2020-11-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/</loc>
-    <lastmod>2020-11-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/categories/</loc>
-    <lastmod>2020-11-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/tags/config/</loc>
-    <lastmod>2020-11-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/categories/openshift/</loc>
-    <lastmod>2020-11-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/</loc>
     <lastmod>2020-11-23T00:00:00+00:00</lastmod>
   </url>
   
@@ -53,12 +113,7 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/tags/</loc>
-    <lastmod>2020-11-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/agregate_logging/</loc>
+    <loc>//localhost:1112/openshift/agregatelogging/</loc>
     <lastmod>2020-11-22T00:00:00+00:00</lastmod>
   </url>
   
@@ -68,12 +123,12 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/agregate_logging/obecny_popis_logovani/</loc>
+    <loc>//localhost:1112/openshift/agregatelogging/obecny_popis_logovani/</loc>
     <lastmod>2020-11-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/agregate_logging/log/</loc>
+    <loc>//localhost:1112/openshift/agregatelogging/log/</loc>
     <lastmod>2020-11-15T00:00:00+00:00</lastmod>
   </url>
   
@@ -83,24 +138,8 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/faze/</loc>
+    <loc>//localhost:1112/openshift/createnewmachineconfigpool/</loc>
     <lastmod>2020-11-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/faze/new_machineconfigpool/</loc>
-    <lastmod>2020-11-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/efk/</loc>
-    <lastmod>2020-11-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/agregate_logging/operator_install/</loc>
-    <lastmod>2020-11-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -124,7 +163,7 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/encryption_azure_summary/</loc>
+    <loc>//localhost:1112/openshift/storageencryptionazure/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
   </url>
   
@@ -154,17 +193,12 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/tuned/</loc>
+    <loc>//localhost:1112/openshift/tunedoperator/</loc>
     <lastmod>2020-10-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/openshift/cert-manager-install/</loc>
-    <lastmod>2020-10-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/rbac/</loc>
     <lastmod>2020-10-08T00:00:00+00:00</lastmod>
   </url>
   
@@ -229,17 +263,17 @@
   </url>
   
   <url>
+    <loc>//localhost:1112/openshift/projectstatus/</loc>
+    <lastmod>2020-08-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/project/</loc>
+    <lastmod>2020-08-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>//localhost:1112/tags/ocp/</loc>
-    <lastmod>2020-08-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/project_status/</loc>
-    <lastmod>2020-08-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/debug/</loc>
     <lastmod>2020-08-03T00:00:00+00:00</lastmod>
   </url>
   
@@ -274,7 +308,7 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/agregate_logging/fluentd/</loc>
+    <loc>//localhost:1112/openshift/agregatelogging/fluentd/</loc>
     <lastmod>2020-06-19T00:00:00+00:00</lastmod>
   </url>
   
@@ -319,11 +353,6 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/debug/debug-nodenotready/</loc>
-    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/openshift/certbot-dns01-cert_add/</loc>
     <lastmod>2020-03-19T00:00:00+00:00</lastmod>
   </url>
@@ -331,10 +360,6 @@
   <url>
     <loc>//localhost:1112/openshift/uploading_container_image_to_ocp_registry/</loc>
     <lastmod>2020-02-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/cicd/scratch/01_scenar/</loc>
   </url>
   
   <url>

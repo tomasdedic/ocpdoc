@@ -1,0 +1,8 @@
+<!-- problem je ze to taha z hugo root takze nejdou projekt relevant cesty, napada me pridat tam jako promenou hugoroot a pak se odkazovat na ni -->
+<!-- zaroven je potreba udelat aby to nefailovalo kdyz se nepodari nacist ale jen to tam hodilo nejaky string -->
+<!-- root je v nasem pripade /home/ts/git_repositories/moje/maddiv/content -->
+{{ .Site.Title }}
+{{ $file := .Get "file" | readFile }}
+{{ $lang := .Get "language" }}
+{{ (print "```" $lang "\n" $file "\n```") | markdownify }}
+

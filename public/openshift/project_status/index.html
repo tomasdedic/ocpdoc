@@ -66,6 +66,8 @@
 	</button>
   <ul class="menu__list">
     <li class="menu__item">
+      <a class="menu__link" href="/categories/aks/" title="Aks">Aks</a>
+    <li class="menu__item">
       <a class="menu__link" href="/categories/azure/" title="Azure">Azure</a>
     <li class="menu__item">
       <a class="menu__link" href="/categories/logging/" title="Logging">Logging</a>
@@ -102,7 +104,7 @@
 
 <div class="meta__item-categories meta__item">
 	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/ocp/" rel="category">OCP</a></span>
+	<span class="meta__text"><a class="meta__link" href="/tags/project/" rel="category">PROJECT</a></span>
 </div>
 </div>
 		</header>
@@ -144,21 +146,16 @@
 </ul>
 <p><strong>tasks:</strong></p>
 <ul>
-<li>
-<p><input disabled="" type="checkbox"> Reinstall clusteru oaz-dev na stabilní větev 4.6</p>
-</li>
-<li>
-<p><input checked="" disabled="" type="checkbox"> <a href="/openshift/debug/openshiftapiserver-tls/"><strong>Stabilita Openshift-api serveru</strong></a><br>
-Po předem nedefinované době zdroje poskytované openshift-api serverem jsou částečně nedostupné, objevují se chyby <strong>HTTP 503</strong> . Openshift-api server operátor je nevalidní<br>
-<strong>Problém se objevuje na instalacích řady 4.6.</strong></p>
-</li>
+<li><input checked="" disabled="" type="checkbox"> Reinstall clusteru oaz-dev na stabilní větev 4.6</li>
+<li><input checked="" disabled="" type="checkbox"> <a href="/openshift/debug/openshiftapiserver-tls/"><strong>Stabilita Openshift-api serveru</strong></a></li>
+<li><input checked="" disabled="" type="checkbox"> Pretezovani kubeletu</li>
 </ul>
 <h2 id="integrace-aad-a-ldap-group-sync">Integrace AAD a LDAP group sync</h2>
 <p>Test autentizace oproti AAD v testovacím prostředí, LDAP sync pro dotažení skupin z AD a definice rolí.</p>
 <ul>
 <li><input checked="" disabled="" type="checkbox"> <a href="/openshift/openid-provider/">OpenID connect oproti AAD v Sandbox prostředí</a></li>
 <li><input checked="" disabled="" type="checkbox"> [OpenID connect oproti TEST AAD CSAS]</li>
-<li><input disabled="" type="checkbox"> LDAP sync</li>
+<li><input checked="" disabled="" type="checkbox"> [LDAP group sync - pouziti AAD group sync operator]</li>
 </ul>
 <h2 id="ingres-více-routerů-route-sharding">Ingres více routerů, route sharding</h2>
 <ul>
@@ -167,7 +164,8 @@ Po předem nedefinované době zdroje poskytované openshift-api serverem jsou �
 </ul>
 <h2 id="egress">Egress</h2>
 <ul>
-<li><input disabled="" type="checkbox"> <a href="/openshift/ingress-egress/egress-problemy_s_pridelovanim_adres-azure/">neni dořešeno přidělování adres na nódy jinak než manuálně při jejich vzniku</a></li>
+<li><input disabled="" type="checkbox"> <a href="/openshift/ingress-egress/egress-problemy_s_pridelovanim_adres-azure/">neni dořešeno přidělování adres na nódy jinak než manuálně při jejich vzniku</a>
+The egress IP address implementation is not compatible with Amazon Web Services (AWS), Azure Cloud, or any other public cloud platform incompatible with the automatic layer 2 network manipulation required by the egress IP feature&rdquo;</li>
 </ul>
 <h2 id="network-policynetnamespace-isolation">Network policy/netnamespace isolation</h2>
 <ul>
@@ -202,7 +200,7 @@ Základní POC je hotov, logy jsou transformováný a směrovány do lokální i
 <div class="post__tags tags clearfix">
 	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
 	<ul class="tags__list">
-		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/project/" rel="tag">Project</a></li>
 	</ul>
 </div>
 
@@ -210,6 +208,16 @@ Základní POC je hotov, logy jsou transformováný a směrovány do lokální i
   
   
 </main>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -320,7 +328,7 @@ Základní POC je hotov, logy jsou transformováný a směrovány do lokální i
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2020 DIVIDED DOCUMENTATION.
+			&copy; 2021 DIVIDED DOCUMENTATION.
 			
 		</div>
 	</div>
