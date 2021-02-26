@@ -105,7 +105,7 @@ jobs:
       - name: Change field image in deployment
         uses: tomasdedic/yq-action@1.4
         with:
-          command: yq e '.spec.template.spec.containers.[0].image="${{env.image_tag}}"' -i ${{env.gitops_repo}}/deployment.yaml
+          command: yq e '.spec.template.spec.containers.[0].image="${{env.image_tag}}"' -i ${{env.gitops_repo}}/deploy_aks/deployment.yaml -i ${{env.gitops_repo}}/deploy/deployment.yaml -i ${{env.gitops_repo}}/deploy_proxy/apps_v1_deployment_proxy.yaml
         env:
           image_tag: ${{ steps.prep.outputs.tags }}
       - name: Commit changes to ARGO repo
