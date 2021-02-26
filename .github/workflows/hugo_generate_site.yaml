@@ -103,10 +103,11 @@ jobs:
       #     echo "image: ${{steps.prep.outputs.tags}}" >gitops_repo/image_tags.yaml
 
       - name: Change field image in deployment
-        uses: tomasdedic/yq-action@1.3
+        uses: tomasdedic/yq-action@1.4
         with:
-          command: yq e '.spec.template.spec.containers.[0].image = "${{steps.prep.outputs.tags}}"' -i ${{env.gitops_repo}}/deployment.yaml
-
+          command: yq e '.spec.template.spec.containers.[0].image="${{env.image_tag}}"' -i ${{env.gitops_repo}}/deployment.yaml
+        env:
+          image_tag: ${{ steps.prep.outputs.tags }}
       - name: Commit changes to ARGO repo
         run: |
           cd ${{ env.gitops_repo }}
