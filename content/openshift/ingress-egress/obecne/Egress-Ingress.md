@@ -194,9 +194,9 @@ oc get -n openshift-ingress-operator ingresscontrollers default -o yaml
 
 oc get  infrastructure.config.openshift.io cluster -o yaml 
   
-  apiServerInternalURI: https://api-int.oshi43.csas.elostech.cz:6443
-  apiServerURL: https://api.oshi43.csas.elostech.cz:6443
-  etcdDiscoveryDomain: oshi43.csas.elostech.cz
+  apiServerInternalURI: https://api-int.oshi43.sudlice.org:6443
+  apiServerURL: https://api.oshi43.sudlice.org:6443
+  etcdDiscoveryDomain: oshi43.sudlice.org
   infrastructureName: oshi43-f8vg4
   platform: Azure
   platformStatus:
@@ -224,7 +224,7 @@ items:
     name: internal
     namespace: openshift-ingress-operator
   spec:
-    domain: test.oshi43.csas.elostech.cz 
+    domain: test.oshi43.sudlice.org 
     endpointPublishingStrategy:
       loadBalancer:
         scope: Internal
@@ -273,7 +273,7 @@ items:
     name: internal
     namespace: openshift-ingress-operator
   spec:
-    domain: test.oshi43.csas.elostech.cz 
+    domain: test.oshi43.sudlice.org 
     endpointPublishingStrategy:
       loadBalancer:
         scope: Internal

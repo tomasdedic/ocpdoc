@@ -25,12 +25,12 @@ set ns openshift-authentication-operator;oc logs -n "$ns" (oc get pods -n "$ns" 
 
   OAuthClientsDegraded: the server is currently unable to handle the request (get oauthclients.oauth.openshift.io openshift-browser-client)
   failed handling the route: the server is currently unable to handle the request (get routes.route.openshift.io oauth-openshift)
-  lookup oauth-openshift.apps.toshi44.csas.elostech.cz on 172.30.0.10:53: read udp 10.130.0.215:56716->172.30.0.10:53: i/o timeout
+  lookup oauth-openshift.apps.toshi44.sudlice.org on 172.30.0.10:53: read udp 10.130.0.215:56716->172.30.0.10:53: i/o timeout
   failed with: the server is currently unable to handle the request (post oauthclients.oauth.openshift.io)
 ```
 ```sh
 # curl na oauth endpoint vraci timeout pri kazdem x-tem pokusu
-curl -k https://oauth-openshift.apps.oaz-dev.azure.csint.cz/oauth/token/display
+curl -k https://oauth-openshift.apps.oaz-dev.azure.sudlice.cz/oauth/token/display
 ```
 ```sh
 oc get route -A|grep oauth
@@ -73,7 +73,7 @@ nedari se mi prijit na to co se etcd nelibi
 ```sh
 oc get events --all-namespaces -o json \
 |jq -r '.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}'\
-|jq -r 'select (.namespace |contains("csas")|not)'\
+|jq -r 'select (.namespace |contains("sudlice")|not)'\
 |jq -r 'select (.namespace | contains("authentication"))'
 ```
 ```json
@@ -92,7 +92,7 @@ oc get events --all-namespaces -o json \
 {
   "obj": "authentication-operator",
   "namespace": "openshift-authentication-operator",
-  "message": "Status for clusteroperator/authentication changed: Degraded message changed from \"\" to \"RouteHealthDegraded: failed to GET route: dial tcp: lookup oauth-openshift.apps.toshi44.csas.elostech.cz on 172.30.0.10:53: read udp 10.130.0.215:55146->172.30.0.10:53: i/o timeout\"",
+  "message": "Status for clusteroperator/authentication changed: Degraded message changed from \"\" to \"RouteHealthDegraded: failed to GET route: dial tcp: lookup oauth-openshift.apps.toshi44.sudlice.org on 172.30.0.10:53: read udp 10.130.0.215:55146->172.30.0.10:53: i/o timeout\"",
   "last": "2020-07-07T06:00:35Z"
 }
 ```

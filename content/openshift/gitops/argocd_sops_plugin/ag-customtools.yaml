@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    meta.helm.sh/release-name: argo
+    meta.helm.sh/release-namespace: default
+  labels:
+    app.kubernetes.io/component: repo-server
+    app.kubernetes.io/instance: argo
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: argocd-repo-server
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/version: v1.7.6
+    helm.sh/chart: argo-cd-2.11.0
+  name: argo-argocd-repo-server
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: argo
+      app.kubernetes.io/name: argocd-repo-server
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        aadpodidbinding: pod-identity
+        app.kubernetes.io/component: repo-server
+        app.kubernetes.io/instance: argo
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: argocd-repo-server
+        app.kubernetes.io/part-of: argocd
+        app.kubernetes.io/version: v1.7.6
+        helm.sh/chart: argo-cd-2.11.0
+    spec:
+      initContainers:
+      - name: download-tools
+        image: alpine:3.8
+        command: [sh, -c]
+        args:
+        - wget -qO sops https://github.com/mozilla/sops/releases/download/v3.6.1/sops-v3.6.1.linux &&
+          mv sops /custom-tools/ && chmod 777 /custom-tools/sops
+        volumeMounts:
+        - mountPath: /custom-tools
+          name: custom-tools
+      containers:
+      - command:
+        - uid_entrypoint.sh
+        - argocd-repo-server
+        - --redis
+        - argo-argocd-redis:6379
+        - --logformat
+        - text
+        - --loglevel
+        - info
+        image: argoproj/argocd:v1.7.6
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: AZURE_AUTH_METHOD
+            value: msi
+          - name: AZURE_CLIENT_ID
+            value: 1c179ad3-69b0-4d18-a5a4-98346b10acce
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8081
+          timeoutSeconds: 1
+        name: repo-server
+        ports:
+        - containerPort: 8081
+          name: repo-server
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8081
+          timeoutSeconds: 1
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /app/config/ssh
+          name: ssh-known-hosts
+        - mountPath: /usr/local/bin/sops
+          name: custom-tools
+          subPath: sops
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: argocd-ssh-known-hosts-cm
+        name: ssh-known-hosts
+      - name: custom-tools
+        emptyDir: {}

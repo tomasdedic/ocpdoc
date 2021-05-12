@@ -1,0 +1,12 @@
+# channel=oc get packagemanifest cluster-logging -n openshift-marketplace -o jsonpath='{.status.defaultChannel}'
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: cluster-logging
+  namespace: openshift-logging
+spec:
+  channel: "4.4" 
+  name: cluster-logging
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace

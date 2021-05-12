@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: testsub
+spec:
+  selector:
+    matchLabels:
+      app: testsub
+  replicas: 3
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: testsub
+    spec:
+      containers:
+      - name: testsub
+        image: busybox:latest
+        command: ["/bin/sh", "-c", "--"]
+        args: ["while true; do sleep 30;done;"]
+        volumeMounts:
+        - name: "data"
+          mountPath: /opt/nifi/data
+          subPath: data
+        - name: "data"
+          mountPath: /opt/nifi/nifi-current/auth-conf/
+          subPath: "auth-conf/bujaka"
+        - name: "data"
+          mountPath: /opt/nifi/flowfile_repository
+          subPath: "flowfile_repository"
+        - name: "data"
+          mountPath: /opt/nifi/content_repository
+          subPath: "content_repository"
+        - name: "data"
+          mountPath: /opt/nifi/provenance_repository
+          subPath: "provenance_repository"
+        - name: "data"
+          mountPath: /opt/nifi/nifi-current/logs
+          subPath: "logs"
+        - name: "data"
+          mountPath: /all
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      selector:
+        matchLabels:
+          app: testsub
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "nfs"
+      resources:
+        requests:
+          storage: 5G

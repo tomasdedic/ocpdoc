@@ -110,13 +110,13 @@ raw log
   "logger": "klog",
   "msg": "Server rejected event ObjectMeta:v1.ObjectMeta{Name:\"ahoj-svete.16477d1d3ee12d4d\",, Reason:\"ProjectEnvironmentsUpdated\",
         FirstTimestamp:v1.Time{Time:time.Time{wall:0xbfe430eb2c4e754d, ext:61997781084, 'events \"ahoj-svete.16477d1d3ee12d4d\"
-        is forbidden: User \"system:serviceaccount:csas-project-operator:csas-project-operator-manager\" 
+        is forbidden: User \"system:serviceaccount:sudlice-project-operator:sudlice-project-operator-manager\" 
         cannot patch resource \"events\" in API group \"\" in the namespace \"default\"' (will not retry!)"
 }
 ```
 log na uložen na nodu /var/log/containers/**
 ```sh
-2020-11-23T22:42:52.352608403+00:00 stdout F {"level":"info","ts":1605441700.8959095,"logger":"klog","msg":"Server rejected event ObjectMeta:v1.ObjectMeta{Name:\"ahoj-svete.16477d1d3ee12d4d\",, Reason:\"ProjectEnvironmentsUpdated\", FirstTimestamp:v1.Time{Time:time.Time{wall:0xbfe430eb2c4e754d, ext:61997781084, 'events \"ahoj-svete.16477d1d3ee12d4d\" is forbidden: User \"system:serviceaccount:csas-project-operator:csas-project-operator-manager\" cannot patch resource \"events\" in API group \"\" in the namespace \"default\"' (will not retry!)"}
+2020-11-23T22:42:52.352608403+00:00 stdout F {"level":"info","ts":1605441700.8959095,"logger":"klog","msg":"Server rejected event ObjectMeta:v1.ObjectMeta{Name:\"ahoj-svete.16477d1d3ee12d4d\",, Reason:\"ProjectEnvironmentsUpdated\", FirstTimestamp:v1.Time{Time:time.Time{wall:0xbfe430eb2c4e754d, ext:61997781084, 'events \"ahoj-svete.16477d1d3ee12d4d\" is forbidden: User \"system:serviceaccount:sudlice-project-operator:sudlice-project-operator-manager\" cannot patch resource \"events\" in API group \"\" in the namespace \"default\"' (will not retry!)"}
 ```
 log po pruchodu fluentD a uložen v ES
 {{< figure src="img/parsed_json_log.png" caption="json log v ES" >}}

@@ -11,6 +11,7 @@ tags:
   - "OPERATOR"
 ---
 
+
 How can I use the Operators in my Openshift4 cluster? And how are updated and managed by the Operator Lifecycle Manager? What is the components of their architecture?
 
 Let’s dig in!

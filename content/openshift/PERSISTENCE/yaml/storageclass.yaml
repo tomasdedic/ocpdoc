@@ -1,0 +1,6 @@
+# dummy storage class, NFS store must be created manualy
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-manualprovisioning
+provisioner: nfsAzurefile

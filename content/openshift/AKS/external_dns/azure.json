@@ -1,0 +1,6 @@
+{
+  "tenantId": "67b7de17-01a8-410a-a645-3eacd61c1111",
+  "subscriptionId": "483903a0-100e-4f65-a396-dbdc643d7692",
+  "resourceGroup": "shared",
+  "useManagedIdentityExtension": true
+}

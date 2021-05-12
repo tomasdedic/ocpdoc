@@ -73,6 +73,8 @@
       <a class="menu__link" href="/categories/logging/" title="Logging">Logging</a>
     <li class="menu__item">
       <a class="menu__link" href="/categories/openshift/" title="Openshift">Openshift</a>
+    <li class="menu__item">
+      <a class="menu__link" href="/categories/tooling/" title="Tooling">Tooling</a>
     </li>
   </ul>
 </nav>
@@ -352,7 +354,7 @@ openshift-install create install-config --dir ./install_dir --log-level debug
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">pullSecret</span>:<span style="color:#bbb"> </span><span style="color:#b44">&#39;{&#34;auths&#34;:{&#34;artifactory.csin.cz&#34;:{&#34;auth&#34;:&#34;b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==&#34;,&#34;email&#34;:&#34;myemail&#34;}}}&#39;</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">sshKey</span>:<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
 </span><span style="color:#b44;font-style:italic">  # ssh klic pro pristup na uzivatele core jednotlivych nodu
-</span><span style="color:#b44;font-style:italic">  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCt7DDUmaM1mMn9nW8L8iT6Ivh59k9Hq/QsljQV5iuKT9emRHCgbwoTBAlZUqq+ymyqlGut1ZWhH7hVZlCx0Aq5q232pspwJ5+pZ8HkfgU9RNSgvUrh0/jsZBZqpBIQ+gQKAWABVSbB0oMSUz+9bkiiFF/AyEWpmiY34U3BFNalckH1pEmA7xD0uzB+LO0J6jwsIYaBWgHZmrDhQKa/4wrt6Dy06ZQm2QfIKmTT7CV1g8v5Ftf+yG7hgHS7zm+Citlq/Pnzd5gggs42DnKCJICV/viGkRjJkX8XsFLCHsfAOBqw8hTRXMtBVBA2jMUT+q6wAbV5BiQWZdbk4/MZJqAVlQXYcczz9u4TBXP1bHlkj/r4gqwzakLIVZE4eEnb0kX0DuNnKy7wN5U2iyHkox0M6021vuDq9ARmbYqty/5VwgvFCt9YHNvxr0bP8Zz3bpEf8JrAnOGHjbPhnVh0ZGFO1EWMbgTT9DpbnHJfcK3AJaFBhyD8jtbJgsKOjcVqmYrJhhAKwW7vqu54zCit510svOu7rBUegRr4z+MgbTuXXspUcqWXSBjBiAmKptOpbWt0x15oj6M/wapc2EnjvCkSvo42iImX7rPD3F62AK8ByDsbBxU8yLTsjiv8TTJAGGE77ir22JG1Qg2gElg7c4lWkjJ4Srsh8Dl+Pjq5znoAWQ== bastion-oaz-dev</span><span style="color:#bbb">
+</span><span style="color:#b44;font-style:italic">  ssh-rsa AAAAB3NzaC1ymRHCgbwoTBAlZUqq+ymyqlGut1ZWhH7hVZlCx0Aq5q232pspwJ5+pZ8HkfgU9RNSgvUrh0/jsZBZqpBIQ+gQKAWABVSbB0oMSUz+9bkiiFF/AyEWpmiY34U3BFNalckH1pEmA7xD0uzB+LO0J6jwsIYaBWgHZmrDhQKa/4wrt6Dy06ZQm2QfIKmTT7CV1g8v5Ftf+yG7hgHS7zm+Citlq/Pnzd5gggs42DnKCJICV/viGkRjJkX8XsFLCHsfAOBqw8hTRXMtBVBA2jMUT+q6wAbV5BiQWZdbk4/MZJqAVlQXYcczz9u4TBXP1bHlkj/r4gqwzakLIVZE4eEnb0kX0DuNnKy7wN5U2iyHkox0M6021vuDq9ARmbYqty/5VwgvFCt9YHNvxr0bP8Zz3bpEf8JrAnOGHjbPhnVh0ZGFO1EWMbgTT9DpbnHJfcK3AJaFBhyD8jtbJgsKOjcVqmYrJhhAKwW7vqu54zCit510svOu7rBUegRr4z+MgbTuXXspUcqWXSBjBiAmKptOpbWt0x15oj6M/wapc2EnjvCkSvo42iImX7rPD3F62AK8ByDsbBxU8yLTsjiv8TTJAGGE77ir22JG1Qg2gElg7c4lWkjJ4Srsh8Dl+Pjq5znoAWQ== bastion-oaz-dev</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">imageContentSources</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># odkaz na artifactory remote repo</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
@@ -405,6 +407,24 @@ journalctl -b -f -u release-image.service -u bootkube.service
   
   
 </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

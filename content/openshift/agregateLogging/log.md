@@ -10,11 +10,13 @@ tags:
   - "Snippets"
 ---
 
+#### Operator unmanaged/managed state
 ```sh
 oc patch Elasticsearch elasticsearch --type merge --patch '{"spec": {"managementState": "Unmanaged"}}'
 oc patch ClusterLogging instance --type merge --patch '{"spec": {"managementState": "Unmanaged"}}'
 
-
+oc get ClusterLogging instance -o jsonpath='{.items[*]}{"state: "}{.spec.managementState}{"\n"}'
+oc get Elasticsearch elasticsearch -o jsonpath='{.items[*]}{"state: "}{.spec.managementState}{"\n"}'
 ```
 #### Exposing Elasticsearch as a route
 ```yaml

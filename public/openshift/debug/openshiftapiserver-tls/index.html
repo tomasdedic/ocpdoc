@@ -70,6 +70,8 @@
     <li class="menu__item">
       <a class="menu__link" href="/categories/azure/" title="Azure">Azure</a>
     <li class="menu__item">
+      <a class="menu__link" href="/categories/linux/" title="Linux">Linux</a>
+    <li class="menu__item">
       <a class="menu__link" href="/categories/logging/" title="Logging">Logging</a>
     <li class="menu__item">
       <a class="menu__link" href="/categories/openshift/" title="Openshift">Openshift</a>
@@ -124,7 +126,7 @@ Jelikož je problém objevuje jen na 1/3 podů, cluster je částečně funkčn�
   spec:
     httpProxy: http://10.88.233.244:3128
     httpsProxy: http://10.88.233.244:3128
-    noProxy: .cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.csint.cz,10.128.0.0/14
+    noProxy: .cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.sudlice.cz,etcd-0.oaz-dev.azure.sudlice.cz,etcd-1.oaz-dev.azure.sudlice.cz,etcd-2.oaz-dev.azure.sudlice.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.sudlice.cz,10.128.0.0/14
 </code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get clusteroperator
   NAME                                       VERSION                             AVAILABLE   PROGRESSING   DEGRADED   SINCE
   authentication                             4.6.0-0.nightly-2020-07-24-111750   True        False         True       5d19h
@@ -383,6 +385,22 @@ oc delete -n openshift-kube-apiserver podnetworkconnectivitycheck --all
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="authorbox clearfix">
 	<figure class="authorbox__avatar">
 		<img alt="Tomáš Dědič avatar" src="/img/avatar.png" class="avatar" height="30" width="30">
@@ -404,7 +422,7 @@ oc delete -n openshift-kube-apiserver podnetworkconnectivitycheck --all
 		<a class="post-nav__link" href="/openshift/debug/debug-monitoring-degraded/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Monitoring operator degraded </p></a>
 	</div>
 	<div class="post-nav__item post-nav__item--next">
-		<a class="post-nav__link" href="/openshift/projectstatus/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">OPENSHIFT PROJECT STATUS a TODO LIST</p></a>
+		<a class="post-nav__link" href="/openshift/artifactory_as_proxy_for_containerregistries/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Konfigurace OCP pro použití Artifactory remote repository</p></a>
 	</div>
 </nav>
 

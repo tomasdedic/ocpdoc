@@ -10,7 +10,7 @@ oc get proxy.config cluster -o yaml
   spec:
     httpProxy: http://10.88.233.244:3128
     httpsProxy: http://10.88.233.244:3128
-    noProxy: .cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.csint.cz,10.128.0.0/14
+    noProxy: .cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.sudlice.cz,etcd-0.oaz-dev.azure.sudlice.cz,etcd-1.oaz-dev.azure.sudlice.cz,etcd-2.oaz-dev.azure.sudlice.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.sudlice.cz,10.128.0.0/14
 ```
 ```sh
 oc get clusteroperator

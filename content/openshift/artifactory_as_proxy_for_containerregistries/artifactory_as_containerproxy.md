@@ -1,12 +1,12 @@
 Pro instalaci a používání OCP v privátní síti bude jako zdroj všech kontejnerů využita Artifactory. Všechny remote repository (vnější) budou whitelistovány přez ní a bude pro ně vytvořena konfigurace.
 
 ## Artifactory facts
-[Artifactory SANDBOX link](https://artifactory.csas.elostech.cz) -- adresa se může do budoucna lišit udávám jen z důvodu reference  
-[Artifactory TEST tenant link](https://artifactory.csin.cz) -- adresa se může do budoucna lišit udávám jen z důvodu reference  
+[Artifactory SANDBOX link](https://artifactory.sudlice.org) -- adresa se může do budoucna lišit udávám jen z důvodu reference  
+[Artifactory TEST tenant link](https://artifactory.sudlice.cz) -- adresa se může do budoucna lišit udávám jen z důvodu reference  
 
 repository: 
-+ artifactory.csas.elostech.cz/docker-quay (remote repositoru directed to  **quay.io**)
-+ artifactory.csas.elostech.cz/docker-quay-local (local repository for mirroring)
++ artifactory.sudlice.org/docker-quay (remote repositoru directed to  **quay.io**)
++ artifactory.sudlice.org/docker-quay-local (local repository for mirroring)
 
 Na artifactory je potřeba konfiguraci typu remote repository vytvořit. Zatím nejsou standartizovány názvy. Obrázek níže je informativního charakteru.
 {{< figure src="img/remote_repository_settings.png" caption="artifactory remote repository settings" >}}
@@ -34,13 +34,13 @@ podman pull quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:8a752dfed8c27a
 do install-config.yaml přidáme konfiguraci pro repository mirror.
 
 ```yaml
- # artifactory.csas.elostech.cz/docker-quay is remote repository
+ # artifactory.sudlice.org/docker-quay is remote repository
 imageContentSources:
 - mirrors:
-  - artifactory.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-release
+  - artifactory.sudlice.org/docker-quay/openshift-release-dev/ocp-release
   source: quay.io/openshift-release-dev/ocp-release
 - mirrors:
-  - artifactory.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev
+  - artifactory.sudlice.org/docker-quay/openshift-release-dev/ocp-v4.0-art-dev
   source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
 ```
 
@@ -53,7 +53,7 @@ username and password from**
 {{< figure src="img/artifactory.png" caption="artifactory remote authentication settings" >}}
 and test it
 ```sh
-docker pull artifactory.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev@sha256:8a752dfed8c27a60d13f3dc578a1ea15efb2800041810204dd7b3bb79eedee04
+docker pull artifactory.sudlice.org/docker-quay/openshift-release-dev/ocp-v4.0-art-dev@sha256:8a752dfed8c27a60d13f3dc578a1ea15efb2800041810204dd7b3bb79eedee04
 ```
 
 ### CREATE Artifactory PULL SECRET FILE for install-config.yaml
@@ -64,7 +64,7 @@ Vložíme **pullsecret pro Artifactory** do instalačního souboru **install-con
  # auth string
 export encode_pass=echo -n 'usernametoartifactory:password'|base64 -w0
  # inplace change
-yq write -i install-config.yaml pullSecret $(jq -Rnc '.auths = {"artifactory.csas.elostech.cz": {"auth":env.encode_pass ","email": "dedtom@gmail.com"}}')
+yq write -i install-config.yaml pullSecret $(jq -Rnc '.auths = {"artifactory.sudlice.org": {"auth":env.encode_pass ","email": "dedtom@gmail.com"}}')
 ```
 
 ## Prezentace imageContentSourcepolicy CRD na nodech
@@ -92,7 +92,7 @@ spec:
     storage:
       files:
       - contents:
-          source: data:text/plain,unqualified-search-registries%20%3D%20%5B%22registry.access.redhat.com%22%2C%20%22docker.io%22%5D%0A%0A%5B%5Bregistry%5D%5D%0A%20%20prefix%20%3D%20%22%22%0A%20%20location%20%3D%20%22quay.io%2Fopenshift-release-dev%2Focp-release%22%0A%20%20mirror-by-digest-only%20%3D%20true%0A%0A%20%20%5B%5Bregistry.mirror%5D%5D%0A%20%20%20%20location%20%3D%20%22artifactory.csas.elostech.cz%2Fdocker-quay%2Fopenshift-release-dev%2Focp-release%22%0A%0A%5B%5Bregistry%5D%5D%0A%20%20prefix%20%3D%20%22%22%0A%20%20location%20%3D%20%22quay.io%2Fopenshift-release-dev%2Focp-v4.0-art-dev%22%0A%20%20mirror-by-digest-only%20%3D%20true%0A%0A%20%20%5B%5Bregistry.mirror%5D%5D%0A%20%20%20%20location%20%3D%20%22artifactory.csas.elostech.cz%2Fdocker-quay%2Fopenshift-release-dev%2Focp-v4.0-art-dev%22%0A
+          source: data:text/plain,unqualified-search-registries%20%3D%20%5B%22registry.access.redhat.com%22%2C%20%22docker.io%22%5D%0A%0A%5B%5Bregistry%5D%5D%0A%20%20prefix%20%3D%20%22%22%0A%20%20location%20%3D%20%22quay.io%2Fopenshift-release-dev%2Focp-release%22%0A%20%20mirror-by-digest-only%20%3D%20true%0A%0A%20%20%5B%5Bregistry.mirror%5D%5D%0A%20%20%20%20location%20%3D%20%22artifactory.sudlice.org%2Fdocker-quay%2Fopenshift-release-dev%2Focp-release%22%0A%0A%5B%5Bregistry%5D%5D%0A%20%20prefix%20%3D%20%22%22%0A%20%20location%20%3D%20%22quay.io%2Fopenshift-release-dev%2Focp-v4.0-art-dev%22%0A%20%20mirror-by-digest-only%20%3D%20true%0A%0A%20%20%5B%5Bregistry.mirror%5D%5D%0A%20%20%20%20location%20%3D%20%22artifactory.sudlice.org%2Fdocker-quay%2Fopenshift-release-dev%2Focp-v4.0-art-dev%22%0A
         filesystem: root
         mode: 420
         path: /etc/containers/registries.conf
@@ -114,7 +114,7 @@ apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
   labels:
     machineconfiguration.openshift.io/role: worker
-  name: 99-csas-mirror-registry
+  name: 99-sudlice-mirror-registry
 spec:
   config:
     ignition:
@@ -125,7 +125,7 @@ spec:
           source: data:text/plain;charset=utf-8;base64,W1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIucGtnLmdpdGh1Yi5jb20iCiAgbWlycm9yLWJ5LWRpZ2VzdC1vbmx5ID0gZmFsc2UKCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAiYXJ0aWZhY3RvcnkuY3Nhcy5lbG9zdGVjaC5jejo0NDMvZG9j
 a2VyIgoKW1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIuaW8iCiAgbWlycm9yLWJ5LWRpZ2VzdC1vbmx5ID0gZmFsc2UKCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAiYXJ0aWZhY3RvcnkuY3Nhcy5lbG9zdGVjaC5jejo0NDMvZG9ja2VyIgo=
         filesystem: root
-        path: /etc/containers/registries.conf.d/csas-mirror-registry.conf
+        path: /etc/containers/registries.conf.d/sudlice-mirror-registry.conf
 ```
 příklad konfigurace, remote repository musí být na artifactory nakonfigurovány:
 ```sh
@@ -137,7 +137,7 @@ a2VyIgoKW1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIuaW8iCiAg
   mirror-by-digest-only = false
 
   [[registry.mirror]]
-    location = "artifactory.csas.elostech.cz:443/docker"
+    location = "artifactory.sudlice.org:443/docker"
 
 [[registry]]
   prefix = ""
@@ -145,7 +145,7 @@ a2VyIgoKW1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIuaW8iCiAg
   mirror-by-digest-only = false
 
   [[registry.mirror]]
-    location = "artifactory.csas.elostech.cz:443/docker"
+    location = "artifactory.sudlice.org:443/docker"
 ```
 
 ## Změna pull secret pro repository 
@@ -164,7 +164,7 @@ oc get secret -n openshift-config pull-secret -o json |jq -r '.data[]'|base64 -d
  # a pridani hodnot pro novou artifactory repository
  echo -n 'username:password'|base64 -w0
  # pridani nove hodnoty do stavajicich pull-secretu
- oc get secret -n openshift-config pull-secret -o json |jq -r '.data[]'|base64 -d|jq '.auths += {"artifactory.csas.elostech.cz":{"auth":"b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==","email":"dedtom@gmail.com"}}' >pull-secret.json
+ oc get secret -n openshift-config pull-secret -o json |jq -r '.data[]'|base64 -d|jq '.auths += {"artifactory.sudlice.org":{"auth":"b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==","email":"dedtom@gmail.com"}}' >pull-secret.json
  oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=pull-secret.json
  # dojde k postupnemu restartu vsech nodu
 ```

@@ -28,6 +28,7 @@ oc get clusterrolebindings -o json| jq -r '.items[]| select(.subjects[].name| co
 ```sh
 oc get clusterrolebindings -o json| jq -rj '.items[]| select(.subjects[].name| contains("system:authenticated")) | {clusterrole:.roleRef.name,clusterrolebinging:.metadata.name}'
 oc get clusterrolebindings -o json| jq -r '.items[]| select(.subjects[].name| contains("system:authenticated")) | .roleRef.name'|xargs oc get clusterrole -o yaml
+oc get clusterrolebindings -o json| jq -r '.items[]| select(.subjects[].name| contains("system:authenticated:oauth")) | .roleRef.name'|xargs oc get clusterrole -o yaml
 ```
 upravíme tedy CRB **self-provisioners**  
 a CRB **console-extension-reader**

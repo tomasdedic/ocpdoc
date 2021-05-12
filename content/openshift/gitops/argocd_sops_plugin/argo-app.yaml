@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sops
+  namespace: default
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: .
+    plugin:
+      name: sops
+    env:
+      - name: RECURSE
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.source.directory.recurse
+    repoURL: https://github.com/tomasdedic/sops.git
+

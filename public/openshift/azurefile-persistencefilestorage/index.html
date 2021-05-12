@@ -104,13 +104,30 @@
 
 <div class="meta__item-categories meta__item">
 	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/ocp/" rel="category">OCP</a>, <a class="meta__link" href="/tags/azure/" rel="category">AZURE</a>, <a class="meta__link" href="/tags/storage/" rel="category">STORAGE</a></span>
+	<span class="meta__text"><a class="meta__link" href="/tags/storage/" rel="category">STORAGE</a></span>
 </div>
 </div>
 		</header>
 		
     
 		<div class="content post__content clearfix">
+<div class="post__toc toc">
+	<div class="toc__title">Content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#azure-disks-default">AZURE DISKS (default)</a></li>
+    <li><a href="#azure-files">AZURE FILES</a>
+      <ul>
+        <li><a href="#azurefiles-configuration-for-ocp">AZUREFILES configuration for OCP</a></li>
+        <li><a href="#yaml-files">YAML files</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+	</div>
+</div>
+
 <h1 id="ocp-v4-azurefile-persistent-file-storage">OCP v4 AzureFile PERSISTENT FILE STORAGE</h1>
 <p>Our need is to use a reliable storage as default StorageClass(SC) for OCP. Main requirement is <strong>zone redundancy</strong> together with <strong>security</strong> and <strong>reasonable management</strong>, in ideal state <strong>maintanance free</strong>.</p>
 <p>zone redundancy is defined like:</p>
@@ -223,8 +240,6 @@ Blob storage is supported az StorageClass in this time.</p>
 <div class="post__tags tags clearfix">
 	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
 	<ul class="tags__list">
-		<li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
-		<li class="tags__item"><a class="tags__link btn" href="/tags/azure/" rel="tag">Azure</a></li>
 		<li class="tags__item"><a class="tags__link btn" href="/tags/storage/" rel="tag">Storage</a></li>
 	</ul>
 </div>
@@ -233,6 +248,8 @@ Blob storage is supported az StorageClass in this time.</p>
   
   
 </main>
+
+
 
 
 

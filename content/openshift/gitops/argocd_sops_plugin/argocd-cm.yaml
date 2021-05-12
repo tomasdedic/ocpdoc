@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: argo
+    meta.helm.sh/release-namespace: default
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/instance: argo
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+    helm.sh/chart: argo-cd-2.11.0
+  name: argocd-cm
+  namespace: default
+data:
+  application.instanceLabelKey: argocd.argoproj.io/instance
+  url: https://argocd.example.com
+  configManagementPlugins: |
+    - name: sops
+      generate:                          # Optional command to initialize application source directory
+        command: ["/bin/sh"]
+        args:
+          - -c
+          - |
+            /bin/bash << 'EOF'
+            for filename in $(find . -name \*yaml.enc)
+            do
+            if  (sops -d --output-type yaml --input-type yaml ${filename})
+            then
+              sops -d --output-type yaml --input-type yaml $filename
+            fi
+            done
+
+            EOF

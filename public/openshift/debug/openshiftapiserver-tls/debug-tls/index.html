@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html class="no-js" lang="en-us">
 <head><script src="/livereload.js?port=1112&mindelay=10&v=2" data-no-instant defer></script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title> - MADDIV</title>
+  <title> - DIVIDED DOCUMENTATION</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.75.0-DEV" />
@@ -25,35 +24,67 @@
 </head>
 <body class="body">
 	<div class="container container--outer">
-		<header class="header">
-	<div class="container">
-		<div class="logo">
-			<a class="logo__link" href="/" title="MADDIV" rel="home">
-				<div class="logo__title">MADDIV</div>
-				<div class="logo__tagline">Tech howto and pancakes, 51% motherfucker, 49% son of a bitch</div>
-			</a>
-		</div>
-		
     
+		<header class="header">
+    
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.8/lunr.min.js" defer></script><script src="/js/meme.min.js"></script>
+
+    
+	<div class="container">
+		<div class="wrapper flex">
+			<a class="logo__link" href="/" title="DIVIDED DOCUMENTATION" rel="home">
+				<div class="logo__title">DIVIDED DOCUMENTATION</div>
+				<div class="logo__tagline">Tech howto, pancakes and syrup</div> 
+			</a>
+    <aside class="search--right">
+    <form id="search" class="search" role="search">
+    <label for="search-input">
+    </label>
+    <input type="search" id="search-input" class="search-input" placeholder="search..." />
+</form>
+
+
+
+
+<template id="search-result" hidden>
+    <article class="list__item post">
+      <h3 class="list__title post__title">: <a class="summary-title-link"></a></h3>
+        <summary class="summary"></summary>
+            <a class="read-more-link"></a>
+    </article>
+</template>
+
+    </aside>
+    </div>
+		
+	</div>
+		
 <nav class="menu">
 	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
   <ul class="menu__list">
     <li class="menu__item">
-		<a class="menu__link" href="/categories/azure" title="Azure">Azure</a>
+      <a class="menu__link" href="/categories/aks/" title="Aks">Aks</a>
     <li class="menu__item">
-		<a class="menu__link" href="/categories/openshift" title="Openshift">Openshift</a>
+      <a class="menu__link" href="/categories/azure/" title="Azure">Azure</a>
+    <li class="menu__item">
+      <a class="menu__link" href="/categories/linux/" title="Linux">Linux</a>
+    <li class="menu__item">
+      <a class="menu__link" href="/categories/logging/" title="Logging">Logging</a>
+    <li class="menu__item">
+      <a class="menu__link" href="/categories/openshift/" title="Openshift">Openshift</a>
     </li>
   </ul>
 </nav>
 
-	</div>
 </header>
 
+    
 		<div class="wrapper flex">
 			<div class="primary">
 			
+
  
 
 <main class="main" role="main">
@@ -63,6 +94,7 @@
 			
 		</header>
 		
+    
 		<div class="content post__content clearfix">
 <p><strong>Původce: Objevily se problémy s přihlašováním. Všechny api-resources poskytovane openshift-api jsou částečně nedostupné.</strong>
 Jelikož je problém objevuje jen na 1/3 podů, cluster je částečně funkční.Přihlašování dělám přez token jednoho z podů openshift-apiserver &ndash;&gt; /run/secrets/kubernetes.io/serviceaccount/token</p>
@@ -74,7 +106,7 @@ Jelikož je problém objevuje jen na 1/3 podů, cluster je částečně funkčn�
   spec:
     httpProxy: http://10.88.233.244:3128
     httpsProxy: http://10.88.233.244:3128
-    noProxy: .cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.csint.cz,etcd-0.oaz-dev.azure.csint.cz,etcd-1.oaz-dev.azure.csint.cz,etcd-2.oaz-dev.azure.csint.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.csint.cz,10.128.0.0/14
+    noProxy: .cluster.local,.svc,127.0.0.1,172.30.0.0/16,api-int.oaz-dev.azure.sudlice.cz,etcd-0.oaz-dev.azure.sudlice.cz,etcd-1.oaz-dev.azure.sudlice.cz,etcd-2.oaz-dev.azure.sudlice.cz,localhost,10.88.233.192/28,10.88.233.32/27,.oaz-dev.azure.sudlice.cz,10.128.0.0/14
 </code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get clusteroperator
   NAME                                       VERSION                             AVAILABLE   PROGRESSING   DEGRADED   SINCE
   authentication                             4.6.0-0.nightly-2020-07-24-111750   True        False         True       5d19h
@@ -229,10 +261,45 @@ https://10.130.0.55:8443/apis
 curl: <span style="color:#666">(</span>28<span style="color:#666">)</span> Operation timed out after <span style="color:#666">10001</span> milliseconds with <span style="color:#666">0</span> out of <span style="color:#666">0</span> bytes received
 </code></pre></div></div>
 		
+
 	</article>
   
   
 </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -330,10 +397,10 @@ curl: <span style="color:#666">(</span>28<span style="color:#666">)</span> Opera
 
 <nav class="post-nav flex">
 	<div class="post-nav__item post-nav__item--prev">
-		<a class="post-nav__link" href="/openshift/dns/dns-deepdive/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title"></p></a>
+		<a class="post-nav__link" href="/openshift/dns/dnsdeepdive/dns-deepdive/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title"></p></a>
 	</div>
 	<div class="post-nav__item post-nav__item--next">
-		<a class="post-nav__link" href="/openshift/debug/openshiftapiserver-tls/debug-routing/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title"></p></a>
+		<a class="post-nav__link" href="/openshift/debug/debug-openshiftapiserver/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title"></p></a>
 	</div>
 </nav>
 
@@ -345,7 +412,7 @@ curl: <span style="color:#666">(</span>28<span style="color:#666">)</span> Opera
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2020 MADDIV.
+			&copy; 2021 DIVIDED DOCUMENTATION.
 			
 		</div>
 	</div>

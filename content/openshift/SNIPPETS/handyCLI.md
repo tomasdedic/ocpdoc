@@ -70,8 +70,8 @@ set ns openshift-dns; for i in (oc get pods -n "$ns" -o name ); oc delete -n "$n
 
 # events filtering
 oc get events --all-namespaces -o json|jq -r '.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}'
- # with not contain csas string
-oc get events --all-namespaces -o json|jq -r '.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}'|jq -r 'select (.namespace |contains("csas")|not)'
+ # with not contain sudlice string
+oc get events --all-namespaces -o json|jq -r '.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}'|jq -r 'select (.namespace |contains("sudlice")|not)'
 ```
 ### ETCD related
 #### oc get logs for ETCD
@@ -181,4 +181,10 @@ All objects are stored in ETCD v3 the following way:
 
 /registry/<object_type>/<namespace>/<name>
 ETCDCTL_API=3 etcdctl --endpoints=<etcd_ip>:2379 get / --prefix --keys-only | grep -E "^/\w+/\w+/<namespace>/+"
+```
+
+### get infra RG and network RG
+```sh
+oc get infrastructure cluster -o jsonpath='{.status.platformStatus.azure}'
+  {"networkResourceGroupName":"oshi_vnet_rg","resourceGroupName":"oshi43-f7fsr-rg"}%
 ```

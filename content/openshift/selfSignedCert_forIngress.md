@@ -17,7 +17,7 @@ kubectl create secret tls art-tls --cert=domain.crt  --key=domain.key
 ingress:
   tls:
     - secretName: art-tls
-      hosts: ["artifactory.csas.elostech.cz"]
+      hosts: ["artifactory.sudlice.org"]
   annotations:
     kubernetes.io/ingress.class: "nginx"
 ```
@@ -32,11 +32,11 @@ sudo update-ca-certificates
  #will not work for bootstrap
 cat /etc/docker/daemon.json
 	{
-	  "insecure-registries" : ["artifactory.apps.poshi4.csas.elostech.cz"]
+	  "insecure-registries" : ["artifactory.apps.poshi4.sudlice.org"]
 		}
 sudo systemctl restart docker.service
 ```
 
 ```sh
  # test
-docker login -u user -p "qxYhJg2s41rJFAuHJNi2" artifactory.apps.poshi4.csas.elostech.cz
+docker login -u user -p "qxYhJg2s41rJFAuHJNi2" artifactory.apps.poshi4.sudlice.org

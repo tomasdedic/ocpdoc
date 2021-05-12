@@ -70,6 +70,8 @@
     <li class="menu__item">
       <a class="menu__link" href="/categories/azure/" title="Azure">Azure</a>
     <li class="menu__item">
+      <a class="menu__link" href="/categories/linux/" title="Linux">Linux</a>
+    <li class="menu__item">
       <a class="menu__link" href="/categories/logging/" title="Logging">Logging</a>
     <li class="menu__item">
       <a class="menu__link" href="/categories/openshift/" title="Openshift">Openshift</a>
@@ -137,12 +139,12 @@
         *file: artifactory_as_containerproxy.md *
       </div><p>Pro instalaci a používání OCP v privátní síti bude jako zdroj všech kontejnerů využita Artifactory. Všechny remote repository (vnější) budou whitelistovány přez ní a bude pro ně vytvořena konfigurace.</p>
 <h2 id="artifactory-facts">Artifactory facts</h2>
-<p><a href="https://artifactory.csas.elostech.cz">Artifactory SANDBOX link</a> &ndash; adresa se může do budoucna lišit udávám jen z důvodu reference<br>
-<a href="https://artifactory.csin.cz">Artifactory TEST tenant link</a> &ndash; adresa se může do budoucna lišit udávám jen z důvodu reference</p>
+<p><a href="https://artifactory.sudlice.org">Artifactory SANDBOX link</a> &ndash; adresa se může do budoucna lišit udávám jen z důvodu reference<br>
+<a href="https://artifactory.sudlice.cz">Artifactory TEST tenant link</a> &ndash; adresa se může do budoucna lišit udávám jen z důvodu reference</p>
 <p>repository:</p>
 <ul>
-<li>artifactory.csas.elostech.cz/docker-quay (remote repositoru directed to  <strong>quay.io</strong>)</li>
-<li>artifactory.csas.elostech.cz/docker-quay-local (local repository for mirroring)</li>
+<li>artifactory.sudlice.org/docker-quay (remote repositoru directed to  <strong>quay.io</strong>)</li>
+<li>artifactory.sudlice.org/docker-quay-local (local repository for mirroring)</li>
 </ul>
 <p>Na artifactory je potřeba konfiguraci typu remote repository vytvořit. Zatím nejsou standartizovány názvy. Obrázek níže je informativního charakteru.
 <figure>
@@ -168,13 +170,13 @@ docker login -u firstpart_decoded -p secondpart_decoded quay.io
  <span style="color:#080;font-style:italic"># test quay.io pull</span>
 podman pull quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:8a752dfed8c27a60d13f3dc578a1ea15efb2800041810204dd7b3bb79eedee04
 </code></pre></div><p>do install-config.yaml přidáme konfiguraci pro repository mirror.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># artifactory.csas.elostech.cz/docker-quay is remote repository</span><span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># artifactory.sudlice.org/docker-quay is remote repository</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">imageContentSources</span>:<span style="color:#bbb">
 </span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>- artifactory.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-release<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- artifactory.sudlice.org/docker-quay/openshift-release-dev/ocp-release<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-release<span style="color:#bbb">
 </span><span style="color:#bbb"></span>- <span style="color:#008000;font-weight:bold">mirrors</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span>- artifactory.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- artifactory.sudlice.org/docker-quay/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>quay.io/openshift-release-dev/ocp-v4.0-art-dev<span style="color:#bbb">
 </span></code></pre></div><p><strong>On artifactory UI page go to Remote registry, enable Token Authentication and in Advanced tab&ndash;&gt; Remote Authentication add
 username and password from</strong></p>
@@ -187,14 +189,14 @@ username and password from</strong></p>
 </figure>
 
 and test it</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker pull artifactory.csas.elostech.cz/docker-quay/openshift-release-dev/ocp-v4.0-art-dev@sha256:8a752dfed8c27a60d13f3dc578a1ea15efb2800041810204dd7b3bb79eedee04
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker pull artifactory.sudlice.org/docker-quay/openshift-release-dev/ocp-v4.0-art-dev@sha256:8a752dfed8c27a60d13f3dc578a1ea15efb2800041810204dd7b3bb79eedee04
 </code></pre></div><h3 id="create-artifactory-pull-secret-file-for-install-configyaml">CREATE Artifactory PULL SECRET FILE for install-config.yaml</h3>
 <p>Vložíme <strong>pullsecret pro Artifactory</strong> do instalačního souboru <strong>install-config.yaml</strong> a nahradíme tak původní pullSecret.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># original pull secret is redhat for quay.io repository usage</span>
  <span style="color:#080;font-style:italic"># auth string</span>
 <span style="color:#a2f">export</span> <span style="color:#b8860b">encode_pass</span><span style="color:#666">=</span><span style="color:#a2f">echo</span> -n <span style="color:#b44">&#39;usernametoartifactory:password&#39;</span>|base64 -w0
  <span style="color:#080;font-style:italic"># inplace change</span>
-yq write -i install-config.yaml pullSecret <span style="color:#a2f;font-weight:bold">$(</span>jq -Rnc <span style="color:#b44">&#39;.auths = {&#34;artifactory.csas.elostech.cz&#34;: {&#34;auth&#34;:env.encode_pass &#34;,&#34;email&#34;: &#34;dedtom@gmail.com&#34;}}&#39;</span><span style="color:#a2f;font-weight:bold">)</span>
+yq write -i install-config.yaml pullSecret <span style="color:#a2f;font-weight:bold">$(</span>jq -Rnc <span style="color:#b44">&#39;.auths = {&#34;artifactory.sudlice.org&#34;: {&#34;auth&#34;:env.encode_pass &#34;,&#34;email&#34;: &#34;dedtom@gmail.com&#34;}}&#39;</span><span style="color:#a2f;font-weight:bold">)</span>
 </code></pre></div><h2 id="prezentace-imagecontentsourcepolicy-crd-na-nodech">Prezentace imageContentSourcepolicy CRD na nodech</h2>
 <p>imageContentSourcepolicy &mdash;&gt; Machineconfig &mdash;&gt; <strong>/etc/containers/registries.conf</strong></p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get machineconfig|grep registries
@@ -216,7 +218,7 @@ spec:
     storage:
       files:
       - contents:
-          source: data:text/plain,unqualified-search-registries%20%3D%20%5B%22registry.access.redhat.com%22%2C%20%22docker.io%22%5D%0A%0A%5B%5Bregistry%5D%5D%0A%20%20prefix%20%3D%20%22%22%0A%20%20location%20%3D%20%22quay.io%2Fopenshift-release-dev%2Focp-release%22%0A%20%20mirror-by-digest-only%20%3D%20true%0A%0A%20%20%5B%5Bregistry.mirror%5D%5D%0A%20%20%20%20location%20%3D%20%22artifactory.csas.elostech.cz%2Fdocker-quay%2Fopenshift-release-dev%2Focp-release%22%0A%0A%5B%5Bregistry%5D%5D%0A%20%20prefix%20%3D%20%22%22%0A%20%20location%20%3D%20%22quay.io%2Fopenshift-release-dev%2Focp-v4.0-art-dev%22%0A%20%20mirror-by-digest-only%20%3D%20true%0A%0A%20%20%5B%5Bregistry.mirror%5D%5D%0A%20%20%20%20location%20%3D%20%22artifactory.csas.elostech.cz%2Fdocker-quay%2Fopenshift-release-dev%2Focp-v4.0-art-dev%22%0A
+          source: data:text/plain,unqualified-search-registries%20%3D%20%5B%22registry.access.redhat.com%22%2C%20%22docker.io%22%5D%0A%0A%5B%5Bregistry%5D%5D%0A%20%20prefix%20%3D%20%22%22%0A%20%20location%20%3D%20%22quay.io%2Fopenshift-release-dev%2Focp-release%22%0A%20%20mirror-by-digest-only%20%3D%20true%0A%0A%20%20%5B%5Bregistry.mirror%5D%5D%0A%20%20%20%20location%20%3D%20%22artifactory.sudlice.org%2Fdocker-quay%2Fopenshift-release-dev%2Focp-release%22%0A%0A%5B%5Bregistry%5D%5D%0A%20%20prefix%20%3D%20%22%22%0A%20%20location%20%3D%20%22quay.io%2Fopenshift-release-dev%2Focp-v4.0-art-dev%22%0A%20%20mirror-by-digest-only%20%3D%20true%0A%0A%20%20%5B%5Bregistry.mirror%5D%5D%0A%20%20%20%20location%20%3D%20%22artifactory.sudlice.org%2Fdocker-quay%2Fopenshift-release-dev%2Focp-v4.0-art-dev%22%0A
         filesystem: root
         mode: <span style="color:#666">420</span>
         path: /etc/containers/registries.conf
@@ -232,7 +234,7 @@ příklad konfigurace:</p>
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">kind</span>:<span style="color:#bbb"> </span>MachineConfig<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">labels</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">machineconfiguration.openshift.io/role</span>:<span style="color:#bbb"> </span>worker<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#666">99</span>-csas-mirror-registry<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#666">99</span>-sudlice-mirror-registry<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#008000;font-weight:bold">spec</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#008000;font-weight:bold">config</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#008000;font-weight:bold">ignition</span>:<span style="color:#bbb">
@@ -243,7 +245,7 @@ příklad konfigurace:</p>
 </span><span style="color:#bbb">          </span><span style="color:#008000;font-weight:bold">source</span>:<span style="color:#bbb"> </span>data:text/plain;charset=utf-8;base64,W1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIucGtnLmdpdGh1Yi5jb20iCiAgbWlycm9yLWJ5LWRpZ2VzdC1vbmx5ID0gZmFsc2UKCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAiYXJ0aWZhY3RvcnkuY3Nhcy5lbG9zdGVjaC5jejo0NDMvZG9j<span style="color:#bbb">
 </span><span style="color:#bbb"></span>a2VyIgoKW1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIuaW8iCiAgbWlycm9yLWJ5LWRpZ2VzdC1vbmx5ID0gZmFsc2UKCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAiYXJ0aWZhY3RvcnkuY3Nhcy5lbG9zdGVjaC5jejo0NDMvZG9ja2VyIgo=<span style="color:#bbb">
 </span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">filesystem</span>:<span style="color:#bbb"> </span>root<span style="color:#bbb">
-</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">path</span>:<span style="color:#bbb"> </span>/etc/containers/registries.conf.d/csas-mirror-registry.conf<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#008000;font-weight:bold">path</span>:<span style="color:#bbb"> </span>/etc/containers/registries.conf.d/sudlice-mirror-registry.conf<span style="color:#bbb">
 </span></code></pre></div><p>příklad konfigurace, remote repository musí být na artifactory nakonfigurovány:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#a2f">echo</span> <span style="color:#b44">&#39;W1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIucGtnLmdpdGh1Yi5jb20iCiAgbWlycm9yLWJ5LWRpZ2VzdC1vbmx5ID0gZmFsc2UKCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAiYXJ0aWZhY3RvcnkuY3Nhcy5lbG9zdGVjaC5jejo0NDMvZG9j
 </span><span style="color:#b44">a2VyIgoKW1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJkb2NrZXIuaW8iCiAgbWlycm9yLWJ5LWRpZ2VzdC1vbmx5ID0gZmFsc2UKCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAiYXJ0aWZhY3RvcnkuY3Nhcy5lbG9zdGVjaC5jejo0NDMvZG9ja2VyIgo=&#39;</span>|base64 -d
@@ -253,7 +255,7 @@ příklad konfigurace:</p>
   mirror-by-digest-only <span style="color:#666">=</span> <span style="color:#a2f">false</span>
 
   <span style="color:#666">[[</span>registry.mirror<span style="color:#666">]]</span>
-    <span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;artifactory.csas.elostech.cz:443/docker&#34;</span>
+    <span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;artifactory.sudlice.org:443/docker&#34;</span>
 
 <span style="color:#666">[[</span>registry<span style="color:#666">]]</span>
   <span style="color:#b8860b">prefix</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;&#34;</span>
@@ -261,7 +263,7 @@ příklad konfigurace:</p>
   mirror-by-digest-only <span style="color:#666">=</span> <span style="color:#a2f">false</span>
 
   <span style="color:#666">[[</span>registry.mirror<span style="color:#666">]]</span>
-    <span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;artifactory.csas.elostech.cz:443/docker&#34;</span>
+    <span style="color:#b8860b">location</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;artifactory.sudlice.org:443/docker&#34;</span>
 </code></pre></div><h2 id="změna-pull-secret-pro-repository">Změna pull secret pro repository</h2>
 <p>Content of .pullSecret is stored in <strong>MachineConfig</strong> and as a secret in</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get machineconfig 00-master -o yaml|grep artifactory -A4
@@ -274,7 +276,7 @@ oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:
  <span style="color:#080;font-style:italic"># a pridani hodnot pro novou artifactory repository</span>
  <span style="color:#a2f">echo</span> -n <span style="color:#b44">&#39;username:password&#39;</span>|base64 -w0
  <span style="color:#080;font-style:italic"># pridani nove hodnoty do stavajicich pull-secretu</span>
- oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:#b44">&#39;.data[]&#39;</span>|base64 -d|jq <span style="color:#b44">&#39;.auths += {&#34;artifactory.csas.elostech.cz&#34;:{&#34;auth&#34;:&#34;b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==&#34;,&#34;email&#34;:&#34;dedtom@gmail.com&#34;}}&#39;</span> &gt;pull-secret.json
+ oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:#b44">&#39;.data[]&#39;</span>|base64 -d|jq <span style="color:#b44">&#39;.auths += {&#34;artifactory.sudlice.org&#34;:{&#34;auth&#34;:&#34;b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==&#34;,&#34;email&#34;:&#34;dedtom@gmail.com&#34;}}&#39;</span> &gt;pull-secret.json
  oc <span style="color:#a2f">set</span> data secret/pull-secret -n openshift-config --from-file<span style="color:#666">=</span>.dockerconfigjson<span style="color:#666">=</span>pull-secret.json
  <span style="color:#080;font-style:italic"># dojde k postupnemu restartu vsech nodu</span>
 </code></pre></div><p><strong>!HAPPY GUNNING!</strong></p>
@@ -292,6 +294,22 @@ oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:
   
   
 </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -395,10 +413,10 @@ oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:
 
 <nav class="post-nav flex">
 	<div class="post-nav__item post-nav__item--prev">
-		<a class="post-nav__link" href="/openshift/install/installaro/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">ARO install</p></a>
+		<a class="post-nav__link" href="/openshift/debug/openshiftapiserver-tls/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">OPENSHIFT API-SERVER TLS handshake error</p></a>
 	</div>
 	<div class="post-nav__item post-nav__item--next">
-		<a class="post-nav__link" href="/openshift/install/instalaceazure/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">OPENSHIFT AZURE INSTALL and CUSTOMIZE</p></a>
+		<a class="post-nav__link" href="/openshift/rbac/openid-provider/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">OPENID AAD SANDBOX</p></a>
 	</div>
 </nav>
 

@@ -70,6 +70,8 @@
     <li class="menu__item">
       <a class="menu__link" href="/categories/azure/" title="Azure">Azure</a>
     <li class="menu__item">
+      <a class="menu__link" href="/categories/linux/" title="Linux">Linux</a>
+    <li class="menu__item">
       <a class="menu__link" href="/categories/logging/" title="Logging">Logging</a>
     <li class="menu__item">
       <a class="menu__link" href="/categories/openshift/" title="Openshift">Openshift</a>
@@ -158,6 +160,7 @@
         <li><a href="#generate-secret-from-commandline">generate SECRET from commandline</a></li>
         <li><a href="#restart-pods-in-deployment">restart pods in deployment</a></li>
         <li><a href="#get-all-resources-including-crd-in-namespace">get all resources including CRD in namespace</a></li>
+        <li><a href="#get-infra-rg-and-network-rg">get infra RG and network RG</a></li>
       </ul>
     </li>
   </ul>
@@ -191,7 +194,7 @@ spec:
  <span style="color:#080;font-style:italic"># change global pull secret</span>
 oc <span style="color:#a2f">set</span> data secret/pull-secret -n openshift-config --from-file<span style="color:#666">=</span>.dockerconfigjson<span style="color:#666">=</span>&lt;pull-secret-location&gt; 
  <span style="color:#080;font-style:italic"># add new pull secret to secrets</span>
- oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:#b44">&#39;.data[]&#39;</span>|base64 -d|jq <span style="color:#b44">&#39;.auths += {&#34;artifactory.csas.elostech.cz&#34;:{&#34;auth&#34;:&#34;b2NwOlRyZTVaaXpxbEdKT1NZdzhCUVZ5ZGFXbjk0eVZNZg==&#34;,&#34;email&#34;:&#34;dedtom@gmail.com&#34;}}&#39;</span> &gt;
+ oc get secret -n openshift-config pull-secret -o json |jq -r <span style="color:#b44">&#39;.data[]&#39;</span>|base64 -d|jq <span style="color:#b44">&#39;.auths += {&#34;artifactory.elostech.cz&#34;:{&#34;auth&#34;:&#34;b2NwOlRyZTVaaXpFXbjk0eVZNZg==&#34;,&#34;email&#34;:&#34;dedtom@gmail.com&#34;}}&#39;</span> &gt;
 </code></pre></div>
       <div class="post__item">
         
@@ -253,8 +256,8 @@ oc logs -n openshift-cloud-credential-operator deploy/cloud-credential-operator
 
 <span style="color:#080;font-style:italic"># events filtering</span>
 oc get events --all-namespaces -o json|jq -r <span style="color:#b44">&#39;.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}&#39;</span>
- <span style="color:#080;font-style:italic"># with not contain csas string</span>
-oc get events --all-namespaces -o json|jq -r <span style="color:#b44">&#39;.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}&#39;</span>|jq -r <span style="color:#b44">&#39;select (.namespace |contains(&#34;csas&#34;)|not)&#39;</span>
+ <span style="color:#080;font-style:italic"># with not contain sudlice string</span>
+oc get events --all-namespaces -o json|jq -r <span style="color:#b44">&#39;.items[]|{obj: .involvedObject.name,namespace: .involvedObject.namespace,message: .message,last: .lastTimestamp}&#39;</span>|jq -r <span style="color:#b44">&#39;select (.namespace |contains(&#34;sudlice&#34;)|not)&#39;</span>
 </code></pre></div><h3 id="etcd-related">ETCD related</h3>
 <h4 id="oc-get-logs-for-etcd">oc get logs for ETCD</h4>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># zsh specific, nepouziva \n na worldsplit takze bud setopt setopt SH_WORD_SPLIT</span>
@@ -336,6 +339,9 @@ All objects are stored in ETCD v3 the following way:
 
 /registry/&lt;object_type&gt;/&lt;namespace&gt;/&lt;name&gt;
 <span style="color:#b8860b">ETCDCTL_API</span><span style="color:#666">=</span><span style="color:#666">3</span> etcdctl --endpoints<span style="color:#666">=</span>&lt;etcd_ip&gt;:2379 get / --prefix --keys-only | grep -E <span style="color:#b44">&#34;^/\w+/\w+/&lt;namespace&gt;/+&#34;</span>
+</code></pre></div><h3 id="get-infra-rg-and-network-rg">get infra RG and network RG</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get infrastructure cluster -o <span style="color:#b8860b">jsonpath</span><span style="color:#666">=</span><span style="color:#b44">&#39;{.status.platformStatus.azure}&#39;</span>
+  <span style="color:#666">{</span><span style="color:#b44">&#34;networkResourceGroupName&#34;</span>:<span style="color:#b44">&#34;oshi_vnet_rg&#34;</span>,<span style="color:#b44">&#34;resourceGroupName&#34;</span>:<span style="color:#b44">&#34;oshi43-f7fsr-rg&#34;</span><span style="color:#666">}</span>%
 </code></pre></div></div>
 		
 <div class="post__tags tags clearfix">
@@ -350,6 +356,22 @@ All objects are stored in ETCD v3 the following way:
   
   
 </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

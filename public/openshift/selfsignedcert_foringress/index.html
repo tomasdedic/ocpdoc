@@ -70,6 +70,8 @@
     <li class="menu__item">
       <a class="menu__link" href="/categories/azure/" title="Azure">Azure</a>
     <li class="menu__item">
+      <a class="menu__link" href="/categories/linux/" title="Linux">Linux</a>
+    <li class="menu__item">
       <a class="menu__link" href="/categories/logging/" title="Logging">Logging</a>
     <li class="menu__item">
       <a class="menu__link" href="/categories/openshift/" title="Openshift">Openshift</a>
@@ -118,7 +120,7 @@ kubectl create secret tls art-tls --cert<span style="color:#666">=</span>domain.
 ingress:
   tls:
     - secretName: art-tls
-      hosts: <span style="color:#666">[</span><span style="color:#b44">&#34;artifactory.csas.elostech.cz&#34;</span><span style="color:#666">]</span>
+      hosts: <span style="color:#666">[</span><span style="color:#b44">&#34;artifactory.sudlice.org&#34;</span><span style="color:#666">]</span>
   annotations:
     kubernetes.io/ingress.class: <span style="color:#b44">&#34;nginx&#34;</span>
 </code></pre></div><p>Add certificate to local trust:</p>
@@ -131,11 +133,11 @@ sudo update-ca-certificates
  <span style="color:#080;font-style:italic">#will not work for bootstrap</span>
 cat /etc/docker/daemon.json
 	<span style="color:#666">{</span>
-	  <span style="color:#b44">&#34;insecure-registries&#34;</span> : <span style="color:#666">[</span><span style="color:#b44">&#34;artifactory.apps.poshi4.csas.elostech.cz&#34;</span><span style="color:#666">]</span>
+	  <span style="color:#b44">&#34;insecure-registries&#34;</span> : <span style="color:#666">[</span><span style="color:#b44">&#34;artifactory.apps.poshi4.sudlice.org&#34;</span><span style="color:#666">]</span>
 		<span style="color:#666">}</span>
 sudo systemctl restart docker.service
 </code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"> <span style="color:#080;font-style:italic"># test</span>
-docker login -u user -p <span style="color:#b44">&#34;qxYhJg2s41rJFAuHJNi2&#34;</span> artifactory.apps.poshi4.csas.elostech.cz
+docker login -u user -p <span style="color:#b44">&#34;qxYhJg2s41rJFAuHJNi2&#34;</span> artifactory.apps.poshi4.sudlice.org
 </code></pre></div></div>
 		
 <div class="post__tags tags clearfix">
@@ -149,6 +151,22 @@ docker login -u user -p <span style="color:#b44">&#34;qxYhJg2s41rJFAuHJNi2&#34;<
   
   
 </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -252,10 +270,10 @@ docker login -u user -p <span style="color:#b44">&#34;qxYhJg2s41rJFAuHJNi2&#34;<
 
 <nav class="post-nav flex">
 	<div class="post-nav__item post-nav__item--prev">
-		<a class="post-nav__link" href="/openshift/arm-apiresources-deplated/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">ARM resource limits for OCP</p></a>
+		<a class="post-nav__link" href="/openshift/config/arm-apiresources-deplated/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">ARM resource limits for OCP</p></a>
 	</div>
 	<div class="post-nav__item post-nav__item--next">
-		<a class="post-nav__link" href="/openshift/azurefile-persistencefilestorage/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">OCP v4 AzureFile persistence file storage</p></a>
+		<a class="post-nav__link" href="/openshift/persistence/azurefile-persistencefilestorage/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">OCP v4 AzureFile persistence file storage</p></a>
 	</div>
 </nav>
 
