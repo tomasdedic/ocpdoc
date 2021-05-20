@@ -13,6 +13,8 @@ spec:
   nfs:
     path: //xxxnfsxxx/nfs-testsub001
     server: xxxnfsxxx.file.core.windows.net
+    mountOptions:
+      - nolock
   persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
@@ -30,6 +32,8 @@ spec:
   nfs:
     path: //xxxnfsxxx/nfs-testsub002
     server: xxxnfsxxx.file.core.windows.net
+    mountOptions:
+      - nolock
   persistentVolumeReclaimPolicy: Delete 
 ---
 apiVersion: v1
@@ -47,4 +51,6 @@ spec:
   nfs:
     path: //xxxnfsxxx/nfs-testsub003
     server: xxxnfsxxx.file.core.windows.net
+    mountOptions:
+      - nolock
   persistentVolumeReclaimPolicy: Delete

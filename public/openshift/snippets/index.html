@@ -141,6 +141,7 @@
   <ul>
     <li>
       <ul>
+        <li><a href="#local-helm-repository">local Helm repository</a></li>
         <li><a href="#list-machineconfig-version">list machineconfig version</a></li>
         <li><a href="#grep-and-keep-first-line-header">grep and keep first line (header)</a></li>
         <li><a href="#fast-cluster-operator-grep">fast cluster operator grep</a></li>
@@ -199,7 +200,15 @@ oc <span style="color:#a2f">set</span> data secret/pull-secret -n openshift-conf
       <div class="post__item">
         
         *file: handyCLI.md *
-      </div><h3 id="list-machineconfig-version">list machineconfig version</h3>
+      </div><h3 id="local-helm-repository">local Helm repository</h3>
+<p>Pro ladění helm chartů je připravena možnost renderování nepublikovaných vývojových verzí helm chartů z lokálního disku. Prerekvizitou je následující postup.</p>
+<p>Příprava helm chartu probíhá standardním způsobem, jen lokálně (nikoliv v rámci CI pipeline). V adresáři s helm chartem (jedním či více) je potřeba vytvořit helm index pomocí příkazu <code>helm repo index &lt;DIR&gt;</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">helm repo index <span style="color:#b8860b">$DIR</span>
+<span style="color:#080;font-style:italic">#V adresáři v helm charty a indexem $DIR  je potřeba spustit HTTP server na portu $PORT - např. `cd &lt;DIR&gt;; python -m SimpleHTTPServer &lt;PORT&gt;`</span>
+<span style="color:#a2f">cd</span> <span style="color:#b8860b">$DIR</span>; python -m SimpleHTTPServer <span style="color:#b8860b">$PORT</span>
+<span style="color:#080;font-style:italic">#Vytvořené Helm repository je nakonec potřeba nastavit:</span>
+helm repo add &lt;REPONAME&gt; http://localhost:<span style="color:#b8860b">$PORT</span>
+</code></pre></div><h3 id="list-machineconfig-version">list machineconfig version</h3>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">oc get nodes -o json|jq -r <span style="color:#b44">&#39;.items[].metadata.annotations|{name:.[&#34;machine.openshift.io/machine&#34;],current:.[&#34;machineconfiguration.openshift.io/currentConfig&#34;],desired:.[&#34;machineconfiguration.openshift.io/desiredConfig&#34;],state:.[&#34;machineconfiguration.openshift.io/state&#34;]}&#39;</span>
 <span style="color:#080;font-style:italic"># s custom-columns</span>
 oc get nodes -o custom-columns<span style="color:#666">=</span><span style="color:#b44">&#39;NAME:metadata.name,CURRENT:metadata.annotations.machineconfiguration\.openshift\.io/currentConfig,DESIRED:metadata.annotations.machineconfiguration\.openshift\.io/desiredConfig,STATE:metadata.annotations.machineconfiguration\.openshift\.io/state&#39;</span>
@@ -356,6 +365,8 @@ All objects are stored in ETCD v3 the following way:
   
   
 </main>
+
+
 
 
 

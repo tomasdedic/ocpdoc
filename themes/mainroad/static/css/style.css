@@ -374,9 +374,9 @@ code {
 pre {
 	display: block;
 	padding: 0;
-	padding: 1.25rem;
+	padding: 1rem;
 	margin-bottom: 20px;
-	margin-bottom: 1.25rem;
+	margin-bottom: 1rem;
 	overflow: auto;
 	color: #000;
 }
@@ -387,6 +387,7 @@ pre code {
 	white-space: inherit;
 	background: inherit;
 	border: 0;
+  font-size: 90%;
 }
 
 kbd {

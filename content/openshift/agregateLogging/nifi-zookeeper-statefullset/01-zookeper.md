@@ -1,10 +1,14 @@
-# Instalace **nifi clusteru** do private OCP
+# Openshift **Nifi cluster** installation
+Our process is build on helm chart and heavily modified later:
 + [cetic/helm-nifi repo](https://github.com/cetic/helm-nifi)
-**Helm chart obsahuje 3 subcharty, budeme se s tim muset nejak vypořádat.**
-
+**Helm consists of 3 subcharts, may be a little tricky to settle.**
+---
++ zookeeper
++ nifi-registry
++ nifi-toolkit - for PKI
 
 ## BASE install
-Začneme zhurta
+Fast forward --->
 ```sh
 helm repo add cetic https://cetic.github.io/helm-charts/
 helm search repo nifi
@@ -14,7 +18,7 @@ helm install cetic/nifi
 # [provider restricted: .spec.securityContext.fsGroup: Invalid value: []int64{1001}:
 # 1001 is not an allowed group spec.containers[0].securityContext.runAsUser: Invalid value: 1001: must be in the ranges: [1000690000, 1000699999]]
 
-# jasne nas namespace ma automaticky prideleny uid-range,  samozrejme SA dafault default pro deploy neumi beh v jinych UID
+# ach openshift, namespace get uid range dynamically , and service account default cannot run at others uids then defined for namespace
 oc get ns nifi -o=jsonpath='{.metadata.annotations}'|jq
 {
   "openshift.io/description": "",
@@ -26,28 +30,64 @@ oc get ns nifi -o=jsonpath='{.metadata.annotations}'|jq
 }
 
 ```
-Odinstalujeme tedy helmchart
+Remove helmchart
 ```sh
 # uninstall helm chart
 helm delete nifi
 oc delete pvc -l app.kubernetes.io/instance=nifi
 ```
-ok potrebujeme securityContext runAsAny jelikoz pod si vynucuje usera, zatim nezkoumam zda se  da upravit **deployment** na defaultni chovani Openshiftu tedy ze kontejner dokáže běžet pod libovolným UID
-a koukam helm chart mi nabizi option pro scc
-
+Ok we need a scc RunAsAny something like this:
+[Short scc overview](/openshift/openshift-scc/)
+```yaml
+apiVersion: security.openshift.io/v1
+metadata:
+  annotations:
+    kubernetes.io/description: nifi-scc provides all features of the restricted SCC but
+      allows users to run with any UID and any GID.
+  name: nifi-scc
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: false
+allowedCapabilities: null
+defaultAddCapabilities: null
+fsGroup:
+  type: RunAsAny
+groups: []
+priority: 10
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+- MKNOD
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: RunAsAny
+users:
+- system:serviceaccount:nifi:default #define user
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- projected
+- secret
+```
 ```sh
-# nifi-scc provides all features of the restricted SCC but allows users to run with any UID and any GID.
-helm install nifi cetic/nifi \
-  --set  openshift.scc.enabled=true
-
-# ok vytvorilo se scc a bylo přiřazno uživateli
+# ok, create scc for user default
 oc get scc nifi-scc -o=jsonpath='{.users}'
 > ["system:serviceaccount:nifi:default"]%
 
-# ok checkneme pod jakym UID a fsGroup nam to bezi
+# check the pods for  UID and fsGroup
 oc get pod -o jsonpath='{range .items[*]}{@.metadata.name}{" runAsUser: "}{@.spec.containers[*].securityContext.runAsUser}{" fsGroup: "}{@.spec.securityContext.fsGroup}{" seLinuxOptions: "}{@.spec.securityContext.seLinuxOptions.level}{"\n"}{end}'
+# security context can be defined in pod scope or container scope
+oc get pod -o jsonpath='{range .items[*]}{@.metadata.name}{" runAsUser: "}{@.spec.containers[*].securityContext.runAsUser}{@.spec.securityContext.runAsUser}{" fsGroup: "}{@.spec.securityContext.fsGroup}{" seLinuxOptions: "}{@.spec.securityContext.seLinuxOptions.level}{"\n"}{end}'
 
-# v deploy sme se posunuli trochu dal ale porad mame nejake chyby
+# move on, but we still have a problems, now during image pulling
 oc get pods
 
 NAME               READY   STATUS                  RESTARTS   AGE
@@ -56,7 +96,7 @@ nifi-zookeeper-1   0/1     ImagePullBackOff        0          25m
 nifi-zookeeper-2   0/1     ImagePullBackOff        0          25m
 
 oc describe pods nifi-zookeeper-0|grep Failed
-# ok mame problem s proxynou ke ktere jsou presmerovany vsechny image registry, k tomu se dostaneme 
+# ok it seems that our public repository is not whitelisted in containter registry (only one we can use)
 Failed    kubelet   Failed to pull image "docker.io/bitnami/zookeeper:3.6.2-debian-10-r37": rpc error: code = Unknown desc =
                     (Mirrors also failed: [artifactory.sudlice.cz:443/docker-io/bitnami/zookeeper:3.6.2-debian-10-r37:
                     Error reading manifest 3.6.2-debian-10-r37 in artifactory.sudlice.cz:443/docker-io/bitnami/zookeeper:
@@ -66,22 +106,14 @@ Failed    kubelet   Error: ErrImagePull
 Failed    kubelet   Error: ImagePullBackOff
 ```
 ### Mirror registry/local repository
-Jdeme se vypořádat s problémem pro mirror registry resp proxy, tohle je problem whitelistingu kdy vsechny pull requesty jsou smerovany na mirror v Artifactory  
-kde jsou povolene jen nekteré [whitelisting nastavení na Artifactory](https://cnfl.sudlice.cz/display/ARTIFACTORY/Artifactory+-+Remote+List).  
-
-[Pro zatím použijeme lokální registry](/openshift/uploading_container_image_to_ocp_registry/) a pak kdyžtak zažádáme o přidání repozitářů do whitelistu.
+As a workaroud we will use Openshift internal Container Registry:
+[local container registry](/openshift/uploading_container_image_to_ocp_registry/) a pak kdyžtak zažádáme o přidání repozitářů do whitelistu.
 
 ## SC pro stateFullSet Zookeper
-Ještě koukám výtvořili se PV, jelikož jsme nespecifikoval žádnou SC tak přez SC default což je v našem případě azure-disk
-```sh
-oc get sc
-
-NAME                        PROVISIONER                RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
-managed-premium (default)   kubernetes.io/azure-disk   Delete          WaitForFirstConsumer   true                   84d
-```
-to nechceme jelikož:
+For storage class, managed-premium SC will be used on AzureDisks.
+but:
 > AzureDisks cannot be created with other redundancy then LRS. Pods with PVC are strained to stay only in oneZone as nodeAffinity. VM provided in Azure has limited numbers of datadisks used as PV.
-Resp postavíme se k tomu tak že **zookeeper** necháme na AzureDisk s tím že každou instanci  a tedy i PV(replica 3) rozběhneme v jedné zóně.
+For making it as ha as possible, we will spread topology between all three availibility zones:
 ```sh
 oc get nodes -L failure-domain.beta.kubernetes.io/zone|grep worker|awk '{print $1" "$3" "$6}'
 
@@ -90,7 +122,7 @@ oaz-dev-trkn8-worker-westeurope2-vg8lc worker westeurope-2
 oaz-dev-trkn8-worker-westeurope3-wmqpz worker westeurope-3
 ```
 ```yaml
-# miluju tuhle ficurku 1.19 kubernetes
+# this feature available for 1.19 kubernetes
       topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: "failure-domain.beta.kubernetes.io/zone"
@@ -98,8 +130,25 @@ oaz-dev-trkn8-worker-westeurope3-wmqpz worker westeurope-3
         labelSelector:
             app.kubernetes.io/name: zookeeper
 ```
+## Zookeeper STS rolling update
+Zookeeper chart use an old version of Zookeeper. Rollout for win. Change image in helm chart. Render and apply.
 
+**Rolling update** will be used as **default** for STS
+```sh
+oc rollout status statefulset/nifi-zookeeper
+statefulset rolling update complete 3 pods at revision nifi-zookeeper-64675fdd78...
+```
+```sh
+#for change-cause annotation we can set annotation
+#add it to helmchart
+oc annotate statefulsets.apps/nifi-zookeeper kubernetes.io/change-cause="zookeeper:3.7.0-debian-10-r40"
+```
 
+## NIFI registry STS
++ Implementation of a Flow Registry for storing and managing versioned flows
++ Integration with NiFi to allow storing, retrieving, and upgrading versioned flows from a Flow Registry
+  
+Simple sts running with replicaset 1, no additional needs.
 
 
 

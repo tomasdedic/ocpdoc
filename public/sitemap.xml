@@ -4,26 +4,61 @@
   
   <url>
     <loc>//localhost:1112/</loc>
-    <lastmod>2021-04-20T00:00:00+00:00</lastmod>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/agregatelogging/</loc>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/categories/</loc>
-    <lastmod>2021-04-20T00:00:00+00:00</lastmod>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/persistence/nfsazurefile-k8s/</loc>
-    <lastmod>2021-04-20T00:00:00+00:00</lastmod>
+    <loc>//localhost:1112/tags/deploy/</loc>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/agregatelogging/nifi-zookeeper-statefullset/</loc>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/logging/</loc>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/logging/</loc>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/categories/openshift/</loc>
-    <lastmod>2021-04-20T00:00:00+00:00</lastmod>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/openshift-scc/</loc>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/openshift/</loc>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/</loc>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/persistence/nfsazurefile-k8s/</loc>
     <lastmod>2021-04-20T00:00:00+00:00</lastmod>
   </url>
   
@@ -33,27 +68,12 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/tags/</loc>
-    <lastmod>2021-04-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/agregatelogging/</loc>
-    <lastmod>2021-04-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/tags/config/</loc>
     <lastmod>2021-04-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/openshift/agregatelogging/eventrouter/</loc>
-    <lastmod>2021-04-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/categories/logging/</loc>
     <lastmod>2021-04-16T00:00:00+00:00</lastmod>
   </url>
   
@@ -125,16 +145,6 @@
   <url>
     <loc>//localhost:1112/openshift/config/changevmtype/</loc>
     <lastmod>2021-03-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/deploy/</loc>
-    <lastmod>2021-03-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/agregatelogging/nifi-zookeeper-statefullset/</loc>
-    <lastmod>2021-03-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -374,11 +384,6 @@
   
   <url>
     <loc>//localhost:1112/openshift/agregatelogging/fluentd/</loc>
-    <lastmod>2020-06-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/logging/</loc>
     <lastmod>2020-06-19T00:00:00+00:00</lastmod>
   </url>
   
