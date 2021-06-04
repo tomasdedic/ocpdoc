@@ -22,17 +22,8 @@ journalctl --disk-usage
  # current journals
 journalctl --field JOURNAL_NAME
 ```
-## Event structure
-Fluentd event consists of tag, time and record.
-+ tag: Where an event comes from. For message routing
-+ time: When an event happens. Nanosecond resolution
-+ record: Actual log content. JSON object
-
 ```sh
-The input plugin has responsibility for generating Fluentd event from data sources. For example, in_tail generates events from text lines. If you have following line in apache logs:
-192.168.0.1 - - [28/Feb/2013:12:00:00 +0900] "GET / HTTP/1.1" 200 777
-you got following event:
-tag: apache.access         # set by configuration
-time: 1362020400.000000000 # 28/Feb/2013:12:00:00 +0900
-record: {"user":"-","method":"GET","code":200,"size":777,"host":"192.168.0.1","path":"/"}
+journalctl -o json-pretty --no-pager
 ```
+
+

@@ -3,12 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>//localhost:1112/</loc>
-    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
+    <loc>//localhost:1112/openshift/agregatelogging/</loc>
+    <lastmod>2021-06-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/agregatelogging/</loc>
+    <loc>//localhost:1112/openshift/agregatelogging/fluentd/</loc>
+    <lastmod>2021-06-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/eventhub/</loc>
+    <lastmod>2021-05-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/agregatelogging/log_snipets/</loc>
+    <lastmod>2021-05-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/</loc>
     <lastmod>2021-05-13T00:00:00+00:00</lastmod>
   </url>
   
@@ -238,11 +253,6 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/agregatelogging/log/</loc>
-    <lastmod>2020-11-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/openshift/createnewmachineconfigpool/</loc>
     <lastmod>2020-11-10T00:00:00+00:00</lastmod>
   </url>
@@ -380,11 +390,6 @@
   <url>
     <loc>//localhost:1112/openshift/debug/debug-oauth/</loc>
     <lastmod>2020-07-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/agregatelogging/fluentd/</loc>
-    <lastmod>2020-06-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
