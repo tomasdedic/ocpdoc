@@ -71,7 +71,7 @@ nsenter -t 1720096 -m ls -la
 ```
 
 ## Deploy with userNamespace annotation
-** Not working in Openshift 4.7**  
+**Not working in Openshift 4.7**  
 I checked RFE [0] [1] status and can see feature is completed in 4.8 and will be coming up with this version. We are expecting 4.8 to be released in Mid July.  
 
 

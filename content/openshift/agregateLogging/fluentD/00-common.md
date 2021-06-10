@@ -13,7 +13,7 @@ time: 1362020400.000000000 # 28/Feb/2013:12:00:00 +0900
 record: {"user":"-","method":"GET","code":200,"size":777,"host":"192.168.0.1","path":"/"}
 ```
 
-## tags vs filestystem
+## FluentD Tags vs filesystem location
 ```sh
 #kubelet create a symlink to log
 /var/log/containers/eventrouter-5dc5c565cd-dw7tj_openshift-logging_kube-eventrouter-ae666e925d23df257f2360c6bcadc1257a0913b2d98f377d9919085a71812bcf.log -> /var/log/pods/openshift-logging_eventrouter-5dc5c565cd-dw7tj_bf80aa43-5359-48fc-a4f1-9921569a4c43/kube-eventrouter/0.log

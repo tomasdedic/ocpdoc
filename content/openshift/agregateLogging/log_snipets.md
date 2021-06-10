@@ -6,9 +6,11 @@ description: "Desc"
 lead: "working"
 categories:
   - "Logging"
+  - "Openshift"
 tags:
   - "Snippets"
 thumbnail: "img/lognip.jpg"
+toc: true
 ---
 
 #### Operator unmanaged/managed state
