@@ -188,6 +188,7 @@ spec:
     - name: public-routes
       hostname: ocr.apps.oaz-dev.ocp4.azure.sudlice.cz
 </code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">podman tag docker.io/bitnami/zookeeper:3.6.2-debian-10-r37 ocr.apps.oaz-dev.ocp4.azure.sudlice.cz/nifi/zookeeper:3.6.2-debian-10-r37
+podman login -u <span style="color:#a2f;font-weight:bold">$(</span>oc whoami<span style="color:#a2f;font-weight:bold">)</span> -p <span style="color:#a2f;font-weight:bold">$(</span>oc whoami -t<span style="color:#a2f;font-weight:bold">)</span> ocr.apps.oaz-dev.ocp4.azure.sudlice.cz
 podman push ocr.apps.oaz-dev.ocp4.azure.sudlice.cz/nifi/zookeeper:3.6.2-debian-10-r37
 </code></pre></div><p><strong>pozor pro image v deploymentu je potreba se odkazovat takto nebo upravit secret default-dockercfg, nebo pridat pull secret</strong></p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># dockercfg pro servisni ucet default ktery bude delat deploy obsahuje pouze tyto tri registry</span>
@@ -217,6 +218,8 @@ yq <span style="color:#a2f">eval</span> .data.<span style="color:#b62;font-weigh
   
   
 </main>
+
+
 
 
 

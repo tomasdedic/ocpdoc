@@ -89,6 +89,7 @@ spec:
 ```
 ```sh
 podman tag docker.io/bitnami/zookeeper:3.6.2-debian-10-r37 ocr.apps.oaz-dev.ocp4.azure.sudlice.cz/nifi/zookeeper:3.6.2-debian-10-r37
+podman login -u $(oc whoami) -p $(oc whoami -t) ocr.apps.oaz-dev.ocp4.azure.sudlice.cz
 podman push ocr.apps.oaz-dev.ocp4.azure.sudlice.cz/nifi/zookeeper:3.6.2-debian-10-r37
 ```
 **pozor pro image v deploymentu je potreba se odkazovat takto nebo upravit secret default-dockercfg, nebo pridat pull secret**
