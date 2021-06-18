@@ -7,6 +7,9 @@ Our process is build on helm chart and heavily modified later:
 + nifi-registry
 + nifi-toolkit - for PKI
 
+## GIT REPOSITORY
+
+[APACHE NIFI GITHUB REPOSITORY](https://github.com/tomasdedic/apache-nifi.git)
 ## BASE install
 Fast forward --->
 ```sh
@@ -144,11 +147,7 @@ statefulset rolling update complete 3 pods at revision nifi-zookeeper-64675fdd78
 oc annotate statefulsets.apps/nifi-zookeeper kubernetes.io/change-cause="zookeeper:3.7.0-debian-10-r40"
 ```
 
-## NIFI registry STS
-+ Implementation of a Flow Registry for storing and managing versioned flows
-+ Integration with NiFi to allow storing, retrieving, and upgrading versioned flows from a Flow Registry
-  
-Simple sts running with replicaset 1, no additional needs.
+
 
 
 

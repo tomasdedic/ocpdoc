@@ -60,7 +60,7 @@ fluentD to dále zpracuje line by line a nikdy nedojde ke spojení logů, v kiba
 {{< figure src="kibana-multiline.png" caption="kibana-multiline-javastack" >}}
 
 ### SOLUTION for FluentD 
-Všechny eventy z source "/var/log/containers/**" tagovány jako "kubernetes.**" budou filtrovány na multiline regexp match (timestamp -2021-06-10 12:09:05.176) proti fieldu **log** a následně concatovány.  
+Všechny eventy z source "/var/log/containers/\*\*" tagovány jako "kubernetes.\*\*" budou filtrovány na multiline regexp match (timestamp -2021-06-10 12:09:05.176) proti fieldu **log** a následně concatovány.  
 Problém je s matchováním konce eventu pokud nepřijde další log, proto je nastaven flush_interval na 1
 >The number of seconds after which the last received event log will be flushed. If specified 0, wait for next line forever.
 Zároveň jak není schopen určit konec tak po překročení flushing intervalu přehodí zprávu do erroru, ale mi ten error vezmeme a přesměrujeme na standartní label.

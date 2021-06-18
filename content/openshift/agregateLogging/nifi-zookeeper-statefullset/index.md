@@ -11,6 +11,7 @@ tags:
   - "Deploy"
   - "Logging"
 toc: true
+autonumbering: true
 thumbnail: "img/nifi-sts.jpg"
 ---
 
