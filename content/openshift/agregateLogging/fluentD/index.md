@@ -1,6 +1,6 @@
 ---
 title: "FluentD configuration"
-date: 2021-06-01
+date: 2021-06-21
 author: Tomas Dedic
 description: "fluentD struggle"
 lead: "all your base are belong to us"
