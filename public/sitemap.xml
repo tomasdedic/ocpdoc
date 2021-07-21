@@ -4,11 +4,36 @@
   
   <url>
     <loc>//localhost:1112/</loc>
-    <lastmod>2021-07-01T00:00:00+00:00</lastmod>
+    <lastmod>2021-07-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/categories/</loc>
+    <lastmod>2021-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/cesta-bojovnika/</loc>
+    <lastmod>2021-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/wotw/</loc>
+    <lastmod>2021-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/wotw/3-networking/</loc>
+    <lastmod>2021-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/gracefull-pod-termination/</loc>
+    <lastmod>2021-07-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/ocp/</loc>
     <lastmod>2021-07-01T00:00:00+00:00</lastmod>
   </url>
   
@@ -383,11 +408,6 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/tags/ocp/</loc>
-    <lastmod>2020-08-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/openshift/debug/openshiftapiserver-tls/</loc>
     <lastmod>2020-08-03T00:00:00+00:00</lastmod>
   </url>
@@ -449,10 +469,6 @@
   
   <url>
     <loc>//localhost:1112/openshift/debug/debug-openshiftapiserver/</loc>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/openshift-release/release4-8/</loc>
   </url>
   
   <url>
