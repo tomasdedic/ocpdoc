@@ -1,11 +1,11 @@
 ---
-title: "Základy síťování v kubernetes"
+title: "Základy síťování v kubernetes [WOTW-3]"
 date: 2021-07-21 
 author: Tomas Dedic
 description: "Desc"
 lead: "workshop"
 categories:
-  - "Cesta bojovnika"
+  - "wotw"
 ---
 ## KUBERNETES NETWORKING
 Dneska se podíváme na základy síťování v kubernetes. Zběžně to proběhneme, bude asi více potřeba se ve volném čase zaměřit na studijní materiály

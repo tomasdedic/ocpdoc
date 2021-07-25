@@ -59,7 +59,7 @@ spec:
 ➤ oc get ns blaster -o jsonpath='{ .metadata.annotations}{"\n"}'
 {"openshift.io/description":"","openshift.io/display-name":"","openshift.io/requester":"tdedic","openshift.io/sa.scc.mcs":"s0:c28,c22","openshift.io/sa.scc.supplemental-groups":"1000800000/10000","openshift.io/sa.scc.uid-range":"1000800000/10000"}
 # on FS process is running as
-➤ sh-4.4# cat /proc/1499053/status|grep -e Pid -e Uid -e Gid
+➤ sh-4.4# cat /proc/1499053/status|grep -e Pid -e Uid -e Gid -e Tgid
 Pid:    1499053
 PPid:   1499042
 Tgid:   1720096
@@ -80,6 +80,7 @@ Uživatel který vytváří kontejner potřebuje SCC anyuid
 ➤ oc adm policy add-scc-to-user anyuid desmond
 ```
 ```yaml
+➤ oc --as desmond apply -f deploybusybox-userns.yaml
 ➤ cat deploybusybox-userns.yaml
 apiVersion: v1
 kind: Pod
@@ -103,3 +104,14 @@ spec:
 ```
 > net.ipv4.ping_group_range and user namespaces 
 > The net.ipv4.ping_group_range sysctl defines the range of group IDs that are allowed to send ICMP Echo packets. Setting it to the full gid range allows ping to be used in rootless containers, without setuid or the CAP_NET_ADMIN and CAP_NET_RAW capabilities.
+```sh
+➤ crictl inspect b1d599757328c|jq .info.pid
+➤ cat /proc/75526/uid_map
+         0          0 429496729
+# no mapping
+ ➤ lsns -t user
+        NS TYPE  NPROCS PID USER COMMAND
+4026531837 user     211   1 root /usr/lib/systemd/systemd --switched-root --system --deserialize 17
+# no processes in user namespace
+➤ cat /etc/crio/crio.conf|grep allow_userns_annotation
+```
