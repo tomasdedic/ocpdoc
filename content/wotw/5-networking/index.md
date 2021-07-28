@@ -142,7 +142,10 @@ spec:
 možná jsme to měli vzít dřív ale nějak sem nevěděl kam to zařadit  
 [https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/)  
 
-## DU
-Nefunguje z nejakeho duvodu rewrite-target. Skuste přijít na to proč, případně nainstalujte jiný ingress kontroler než traefik (třeba NGINX) a testněte  
-zda rewrite-target funguje zde.
+## DOMÁCÍ PRÁCE
+Na Traefiku v k3d nefunguje z nejakeho duvodu **rewrite-target** annotace.  
+Vytořte tedy libovolnou aplikaci (klidně statickou html stránku) a skuste k ní nakonfigurovat přístup přez Ingress.
+Skuste přijít na to proč anotace nefunguje (já to nevím), případně nainstalujte jiný ingress kontroler než traefik (třeba NGINX) a testněte zda rewrite-target funguje zde.
+
+
 {{< figure src="img/rewritetarget-ingress.png" caption="rewrite-target" >}}
