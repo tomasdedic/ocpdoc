@@ -9,4 +9,5 @@ categories:
   - "Azure"
 tags:
   - "STATE"
+thumbnail: "img/pvc.jpg"
 ---

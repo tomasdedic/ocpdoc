@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>//localhost:1112/wotw/5-networking/</loc>
+    <lastmod>2021-07-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>//localhost:1112/tags/backup/</loc>
     <lastmod>2021-07-23T00:00:00+00:00</lastmod>
   </url>
