@@ -81,15 +81,20 @@ audit.var.log.kube-apiserver.audit.log
 audit.var.log.openshift-apierver.audit.log
 audit.var.log/oauth-apiserver.audit.log
 ```
-for tag filtering we will keep audit logs at verbs: **create,update,patch** for metadata and payload
+for tag filtering we will keep audit logs at verbs: **create,update,patch,get,delete** for metadata and payload
+for all users with user@domain
 ```bash
-      <filter audit.var.log.openshift-apiserver.** audit.var.log.kube-apiserver.**>
+      <filter audit.var.log.openshift-apiserver.** audit.var.log.kube-apiserver.** audit.var.log.oauth-apiserver.**>
+      # <filter audit.**>
          @type grep
-         <regexp>
-           key verb
-           pattern /create|update|patch/
-         </regexp>
+          <regexp>
+            key verb
+            pattern /create|update|patch|delete|get/
+          </regexp>
+          <regexp>
+             key user
+             pattern /.+@.+/
+          </regexp>
        </filter>
 ```
-for oauth-apiserver we will preserve all audit logs
 

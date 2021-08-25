@@ -1,7 +1,8 @@
 
 Iptables is a widely used firewall tool that interfaces with the kernel’s netfilter packet filtering framework  
 Take a look!
-### hooks
+[https://www.karlrupp.net/en/computer/nat_tutorial](https://www.karlrupp.net/en/computer/nat_tutorial)
+## HOOKS
 The following hooks represent various well-defined points in the networking stack:
 
 + **NF_IP_PRE_ROUTING:** This hook will be triggered by any incoming traffic very soon after entering the network stack. This hook is processed before any routing decisions have been made regarding where to send the packet.
@@ -10,7 +11,7 @@ The following hooks represent various well-defined points in the networking stac
 + **NF_IP_LOCAL_OUT:** This hook is triggered by any locally created outbound traffic as soon it hits the network stack.
 + **NF_IP_POST_ROUTING:** This hook is triggered by any outgoing or forwarded traffic after routing has taken place and just before being put out on the wire.
 
-### chains 
+##  CHAINS
 built-in chains
 + **PREROUTING:** Triggered by the NF_IP_PRE_ROUTING hook.
 + **INPUT:** Triggered by the NF_IP_LOCAL_IN hook.
@@ -18,7 +19,7 @@ built-in chains
 + **OUTPUT:** Triggered by the NF_IP_LOCAL_OUT hook.
 + **POSTROUTING:** Triggered by the NF_IP_POST_ROUTING hook.
 
-### tables
+## TABLES
 + **The Filter Table**
 The filter table is one of the most widely used tables in iptables. The filter table is used to make decisions about whether to let a packet continue to its intended destination or to deny its request. In firewall parlance, this is known as “filtering” packets. This table provides the bulk of functionality that people think of when discussing firewalls.
 
@@ -192,4 +193,5 @@ iptables -t nat -A POSTROUTING -o wlan1 -j SNAT --to $ip
 ```sh
 iptables -t nat -L -n -v
 ```
-
+## Kubernetes netfiler FLOW
+{{< figure src="img/kubernetes-flow.png" caption="caption" >}}

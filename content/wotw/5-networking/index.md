@@ -149,3 +149,103 @@ Skuste přijít na to proč anotace nefunguje (já to nevím), případně nains
 
 
 {{< figure src="img/rewritetarget-ingress.png" caption="rewrite-target" >}}
+
+### ŘEŠENÍ
+
+```sh
+#nainstaluju cisty cluster
+k3d cluster create deadless -a 2
+kb create namespace app
+kb config set-context --current --namespace app
+kb create deployment nginxapp --image=nginx 
+kb create service clusterip nginxapp --tcp=80:80 
+# /usr/share/nginx/html/index.html na nginx containeru upravim 
+kb exec nginxapp-74c8bd997c-4brpg -- bash -c "echo Hello NgINXapp >  /usr/share/nginx/html/index.html"
+
+```
+```yaml
+#create ingress resource
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginxapp
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false"
+    traefik.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: nginxapp.k3d.local
+    http:
+      paths:
+      - path: /absent
+        pathType: Prefix
+        backend:
+          service:
+            name: nginxapp
+            port:
+              number: 80
+# tato definice nam rika, pokud prijde nekdo na host  http://nginxapp.k3d.local/absent nasmeruj ho na servisu nginxapp a vsechno co je za
+# / smaz (rewrite-target)
+```
+```sh
+# jenze to nefunguje
+curl http://nginxapp.k3d.local/absent
+<html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.21.1</center>
+</body>
+</html>
+
+#koukneme na logy
+kb logs nginxapp-74c8bd997c-4brpg
+2021/08/03 14:04:00 [error] 33#33: *1 open() "/usr/share/nginx/html/absent" failed (2: No such file or directory), client: 10.42.1.2, server: localhost, request: "GET /absent HTTP/1.1", host: "nginxapp.k3d.local"
+# ok porad to smeruje na /absent
+```
+Nechtelo se mi uplne patrat kde je problem v traeffiku ktery by jako ingress controller mel tenhle problem resit a misto toho pouzijeme jako controller NGINX
+```sh
+# install nginx controleru 
+kubectl create namespace ingress-external
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm install  nginx-ingress-external ingress-nginx/ingress-nginx -n ingress-external --set controller.ingressClass=nginx-external --set --enable-ssl-passthrough=true
+```
+```sh
+kb get pods -n ingress-external
+kb describe pod -n ingress-external svclb-nginx-ingress-external-ingress-nginx-controller-4pqlq
+#neni mozne mit soubeh dvou podu na stejnem portu (80,443) - klipper
+#ok smazeme traefik lb service
+kb delete svc -n kube-system traefik
+# a vytvorime novy ingress controller s pouzitou ingress class
+```
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginxapp
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx-external"
+spec:
+  rules:
+  - host: nginxapp.k3d.local
+    http:
+      paths:
+      - path: /absent
+        pathType: Prefix
+        backend:
+          service:
+            name: nginxapp
+            port:
+              number: 80
+```
+```sh
+#test
+curl http://nginxapp.k3d.local/absent
+Hello NgINXapp
+```
+Na Nginx ingress controleru je taky krasne videt injektnuti CR Ing do konfigurace
+```sh
+kb exec -n ingress-external nginx-ingress-external-ingress-nginx-controller-5976cfbfff4shrl -- bash -c "cat /etc/nginx/nginx.conf"
+```

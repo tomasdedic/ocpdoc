@@ -115,3 +115,17 @@ spec:
 # no processes in user namespace
 ➤ cat /etc/crio/crio.conf|grep allow_userns_annotation
 ```
+
+## NEW runtimeClass to enable
+```yaml
+annotations:
+    openshift.io/scc: restricted
+    io.kubernetes.cri-o.userns-mode: "auto:size=65536;map-to-root=true"
+
+cri-o file:
+   [cri-o.runtime.runtimes.userns]
+   runtime_path = "/usr/bin/runc"
+   allowed_annotations = ["io.kubernetes.cri-o.userns-mode"]
+Selec the runtime class in pod:
+    runtimeClassName: userns
+```

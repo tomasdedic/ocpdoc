@@ -9,4 +9,6 @@ categories:
 tags:
   - "Networking"
   - "Tooling"
+toc: true
+autonumbering: true
 ---
