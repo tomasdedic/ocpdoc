@@ -447,7 +447,7 @@ nfs-bash-86f8d6494-zj8wh        k3d-deadless-agent-0
 
 {{< figure src="8ea21.jpg" >}}
 
-### 4.StatefulSet
+## 4.StatefulSet
 Do teď jsme řešili jen deployment a ten jak se zdá není pro state plně vhodný, existuje spousta případů kdy je jeho použití v pořádku ale také existuje spousta případů kdy není.  
 Pro druhou možnost Kubernetes nabízí specialní objekt **StatefullSet (STS)**.
   
@@ -567,3 +567,17 @@ For a client to connect to all pods, it needs to figure out the the IP of each i
 Luckily, Kubernetes allows clients to discover pod IPs through DNS lookups. Usually, when you perform a DNS lookup for a service, the DNS server returns a single IP — the service’s cluster IP. But if you tell Kubernetes you don’t need a cluster IP for your service (you do this by setting the clusterIP field to None in the service specification ), the DNS server will return the pod IPs instead of the single service IP. Instead of returning a single DNS A record, the DNS server will return multiple A records for the service, each pointing to the IP of an individual pod backing the service at that moment. Clients can therefore do a simple DNS A record lookup and get the IPs of all the pods that are part of the service. The client can then use that information to connect to one, many, or all of them.  
 
 Setting the clusterIP field in a service spec to None makes the service headless, as Kubernetes won’t assign it a cluster IP through which clients could connect to the pods backing it.  
+
+## Addon
+[raft protokol ETCD](http://thesecretlivesofdata.com/raft/#overview)
+
+## DOMCV
+{{< figure src="gojohnygo.jpg" caption="go_johny_go" >}}
+1. vytvořte cluster s 3 worker nody  
+2. vytvořte default storage class pro libovolný provider (hostpath,nfs ...)  
+3. vytvořte redis cluster jako STS s 6 pody. Pody budou "rovnoměrně" rozdistribuovanými mezi "worker nody" (tzn každý nód bude mít 2 pody) [REDIS CLUSTER](https://rancher.com/blog/2019/deploying-redis-cluster/)  
+   Každý pod bude mít svůj vlastní PV a použije nadefinovanou SC.  
+4. prověřte readiness a liveness proby pro jednotlivé pody, pokud nejsou nadefinujte je  
+5. zpřístupněte databázi z venku (tzn přihlásíte se na ní ze svého lokálního hostu přez CLI)   
+6. zjistěte jaký pod je leader  
+4. smažte jeden worker nod clusteru a prověřte co se stalo s jednotlivými replikami redisu  
