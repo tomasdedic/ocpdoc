@@ -6,6 +6,8 @@ description: "Desc"
 lead: "workshop"
 categories:
   - "wotw"
+toc: true
+autonumbering: true
 ---
 **V dnešním dílu našeho oblíbeného seriálu se podíváme na CI/CD ve vazbě na Kubernetes. Takovou pipeline si ukážeme a trochu vysvětlíme**  
 Takže co vlastně budeme stavět, postavíme si aplikaci na které běží tenhle blog.
@@ -199,7 +201,7 @@ nasadí upravené manifesty.
 {{< figure src="argo.png" caption="argo" >}}
 
 
-## PŘEHLED pástrojů
+## PŘEHLED nástrojů
 
 **CI-CD nástroje**
 
