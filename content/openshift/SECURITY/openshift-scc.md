@@ -7,7 +7,8 @@ lead: "busy"
 categories:
   - "Openshift"
 tags:
-  - "Deploy"
+  - "deploy"
+  - "security"
 ---
 
 By default pods use the Restricted SCC. The pod's SCC is determined by the User/ServiceAccount and/or Group. Then, you also have to consider that a SA may or may not be bound to a Role, which can set a list of available SCCs.

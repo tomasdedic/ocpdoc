@@ -8,6 +8,7 @@ categories:
   - "Openshift"
 tags:
   - "Config"
+  - "Security"
 thumbnail: "img/usernamespaces.jpg"
 ---
 ### REF
@@ -128,4 +129,27 @@ cri-o file:
    allowed_annotations = ["io.kubernetes.cri-o.userns-mode"]
 Selec the runtime class in pod:
     runtimeClassName: userns
+```
+```yaml
+# machineconfig cri-o configuration
+#[cri-o.runtime.runtimes.userns]
+#  runtime_path = "/usr/bin/runc"
+#  allowed_annotations = ["io.kubernetes.cri-o.userns-mode"]
+
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: 50-usernamespaces
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+      - path: /etc/crio/crio.conf.d/99-crio-userns.conf
+        overwrite: true
+        contents:
+          source: data:text/plain;charset=utf-8;base64,W2NyaS1vLnJ1bnRpbWUucnVudGltZXMudXNlcm5zXQogIHJ1bnRpbWVfcGF0aCA9ICIvdXNyL2Jpbi9ydW5jIgogIGFsbG93ZWRfYW5ub3RhdGlvbnMgPSBbImlvLmt1YmVybmV0ZXMuY3JpLW8udXNlcm5zLW1vZGUiXQo=
 ```

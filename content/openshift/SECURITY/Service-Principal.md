@@ -8,6 +8,7 @@ categories:
   - "Azure"
 tags:
   - "Config"
+  - "Security"
 autonumbering: true
 
 ---
