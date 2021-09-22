@@ -13,9 +13,16 @@ Our process is build on helm chart and heavily modified later:
 ## BASE install
 Fast forward --->
 ```sh
-helm repo add cetic https://cetic.github.io/helm-charts/
-helm search repo nifi
-helm install cetic/nifi
+
+git clone
+#check render
+helm template nifi . -f values-oaz-dev.yaml -n nifi --output-dir render --debug
+
+#install
+helm install nifi . -n monolog-nifi -f values-oaz-dev.yaml --create-namespace
+
+# to upgrade
+helm upgrade nifi . -n monolog-nifi -f values-oaz-dev.yaml
 
 # unable to validate against any security context constraint:
 # [provider restricted: .spec.securityContext.fsGroup: Invalid value: []int64{1001}:
