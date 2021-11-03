@@ -15,7 +15,7 @@ autonumbering: true
 {{< figure src="komunikacniflow.png" caption="takhle nejak by to melo vypadat" >}}
 
 
-## NIFI REGISTRY
+## NIFI REGISTRY app deploy
 Budeme kontejnerizovat aplikaci nifi-registry [https://nifi.apache.org/registry.html](https://nifi.apache.org/registry.html), z pohledu businessu nemá vlastně žádnou funkcionalitu a je to jen podprojekt aplikace NIFI.  
 Z našeho pohledu je to celkem zajímavé a to proto že poběží jako StatefullSet s vazbou na selfSigned CA a automatickým generováním klientských certifikátů.  
   
@@ -48,20 +48,23 @@ firefox https://127.0.0.1:18443/nifi-registry
 Není tudíž možné se k ní připojit z internetu napřímo a autentizovat uživatele kterému jsme nedali certifikát.
 
 
-## Igress
+## INgress a CertManager
 Pro ingress upravte helm chart tak aby obsahoval vazbu na váš ingressController, TLS certifikáty na objektu Ingresu vytořte přez CERT-MANAGER.  
 Všechno jsme již probírali, případné howto je zde [AKS ingress,cert-manager](/openshift/aks/external_dns/external_dns/).  
+  
 **je potřeba si uvědomit že budeme navazovat spojení --->INGRESS (terminace TLS) ---->reencrypt selfigned CA certem kvuli trustu ---> nifiregistryENDPOINT**  
 [INGRESS REENCRYPT to BACKEND](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#backend-protocol)  
   
-Upravte tedy HELMCHART tak aby renderoval ingress routu, která bude reencryptovat certifikátem CA.  
+Upravte tedy HELMCHART tak aby renderoval ingress routu, která bude reencryptovat a věřit našemu certifikátu vydanému selfSigned CA.  
 
 Certifikát pro CA je předgenerovaný a používá jméno **nifi-ca** jako DN, buď pro deployment přez HELM použijte toto jméno a nebo si ho přegenerujte
 [CA generování](https://github.com/tomasdedic/nifiregistry-WOTW/blob/main/charts/ca/cacert/README.md)
 
 ## OAUTH2/OIDC
-Povídání o [OAUTH2/OIDC](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc) 
+Povídání o [OAUTH2/OIDC obecně](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc)  
+
 Česky je to popsané třeba zde [OIDC AAD](https://www.tomaskubica.cz/post/2019/moderni-autentizace-overovani-interniho-uzivatele-s-openid-connect-a-aad/).  
+  
 !!!CallBack ve vašem případě bude: **https://vas-ingress-host/nifi-api/access/oidc/callback**   
 a konfigurace je opět zatažena do HELMCHARTU **jen je potřeba to nakonfigurovat na AAD a dát správné údaje.**
 ```sh
