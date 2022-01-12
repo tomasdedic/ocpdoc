@@ -178,3 +178,48 @@ Events:
 ```
 
 **as tested, Controller will be able to delete PV and underlaying AzureDisk (in case reclaimPolicy is Delete)**
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: null
+  labels:
+    app: bababa
+  name: bababa
+  namespace: blaster
+spec:
+  podManagementPolicy: Parallel
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bababa
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: bababa
+    spec:
+      containers:
+      - image: busybox:1.32.0
+        name: busybox
+        command: ["sh", "-c", "sleep 10000"]
+        resources: {}
+        volumeMounts:
+        - mountPath: /pv
+          name: bababa
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      name: bababa
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 50Gi
+      storageClassName: managed-premium
+      volumeMode: Filesystem
+```
