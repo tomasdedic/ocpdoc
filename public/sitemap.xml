@@ -1,1 +1,568 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"><url><loc>/</loc><lastmod>2022-03-01T00:00:00+00:00</lastmod></url><url><loc>/openshift/security/userns-build/</loc><lastmod>2022-03-01T00:00:00+00:00</lastmod></url><url><loc>/categories/</loc><lastmod>2022-03-01T00:00:00+00:00</lastmod></url><url><loc>/tags/deploy/</loc><lastmod>2022-03-01T00:00:00+00:00</lastmod></url><url><loc>/categories/openshift/</loc><lastmod>2022-03-01T00:00:00+00:00</lastmod></url><url><loc>/openshift/</loc><lastmod>2022-03-01T00:00:00+00:00</lastmod></url><url><loc>/tags/security/</loc><lastmod>2022-03-01T00:00:00+00:00</lastmod></url><url><loc>/tags/</loc><lastmod>2022-03-01T00:00:00+00:00</lastmod></url><url><loc>/tags/config/</loc><lastmod>2022-02-17T00:00:00+00:00</lastmod></url><url><loc>/openshift/security/usernamespacescri-owithopenshift/</loc><lastmod>2022-02-17T00:00:00+00:00</lastmod></url><url><loc>/tags/aks/</loc><lastmod>2022-01-31T00:00:00+00:00</lastmod></url><url><loc>/categories/aks/</loc><lastmod>2022-01-31T00:00:00+00:00</lastmod></url><url><loc>/openshift/aks/aks_query/</loc><lastmod>2022-01-31T00:00:00+00:00</lastmod></url><url><loc>/openshift/aks/perconamongodb/</loc><lastmod>2022-01-24T00:00:00+00:00</lastmod></url><url><loc>/tags/state/</loc><lastmod>2022-01-24T00:00:00+00:00</lastmod></url><url><loc>/openshift/config/clusterupdateupgrade/</loc><lastmod>2022-01-17T00:00:00+00:00</lastmod></url><url><loc>/tags/argocd/</loc><lastmod>2021-11-22T00:00:00+00:00</lastmod></url><url><loc>/openshift/gitops/appwithclusterwideresources/</loc><lastmod>2021-11-22T00:00:00+00:00</lastmod></url><url><loc>/wotw/11-deployment-nifiregistry-oidc/</loc><lastmod>2021-10-03T00:00:00+00:00</lastmod></url><url><loc>/categories/wotw/</loc><lastmod>2021-10-03T00:00:00+00:00</lastmod></url><url><loc>/wotw/</loc><lastmod>2021-10-03T00:00:00+00:00</lastmod></url><url><loc>/wotw/10-cicd/</loc><lastmod>2021-09-14T00:00:00+00:00</lastmod></url><url><loc>/openshift/security/compliance_operator/</loc><lastmod>2021-09-12T00:00:00+00:00</lastmod></url><url><loc>/openshift/config/dexserver-as-identity-provider/</loc><lastmod>2021-08-31T00:00:00+00:00</lastmod></url><url><loc>/wotw/6-state/</loc><lastmod>2021-08-18T00:00:00+00:00</lastmod></url><url><loc>/wotw/5-networking/</loc><lastmod>2021-07-28T00:00:00+00:00</lastmod></url><url><loc>/categories/azure/</loc><lastmod>2021-07-22T00:00:00+00:00</lastmod></url><url><loc>/openshift/config/pv-movebetweenclusters/</loc><lastmod>2021-07-22T00:00:00+00:00</lastmod></url><url><loc>/wotw/3-networking/</loc><lastmod>2021-07-21T00:00:00+00:00</lastmod></url><url><loc>/openshift/gracefull-pod-termination/</loc><lastmod>2021-07-01T00:00:00+00:00</lastmod></url><url><loc>/tags/ocp/</loc><lastmod>2021-07-01T00:00:00+00:00</lastmod></url><url><loc>/openshift/openshift-release/</loc><lastmod>2021-07-01T00:00:00+00:00</lastmod></url><url><loc>/tags/release/</loc><lastmod>2021-07-01T00:00:00+00:00</lastmod></url><url><loc>/openshift/agregatelogging/</loc><lastmod>2021-06-21T00:00:00+00:00</lastmod></url><url><loc>/tags/fluentd/</loc><lastmod>2021-06-21T00:00:00+00:00</lastmod></url><url><loc>/openshift/agregatelogging/fluentd/</loc><lastmod>2021-06-21T00:00:00+00:00</lastmod></url><url><loc>/tags/logging/</loc><lastmod>2021-06-21T00:00:00+00:00</lastmod></url><url><loc>/categories/logging/</loc><lastmod>2021-06-21T00:00:00+00:00</lastmod></url><url><loc>/tags/prometheus/</loc><lastmod>2021-06-17T00:00:00+00:00</lastmod></url><url><loc>/openshift/monitoring/prometheus_promql_queries/</loc><lastmod>2021-06-17T00:00:00+00:00</lastmod></url><url><loc>/openshift/agregatelogging/log_snipets/</loc><lastmod>2021-05-25T00:00:00+00:00</lastmod></url><url><loc>/tags/snippets/</loc><lastmod>2021-05-25T00:00:00+00:00</lastmod></url><url><loc>/openshift/agregatelogging/nifi-zookeeper-statefullset/</loc><lastmod>2021-05-13T00:00:00+00:00</lastmod></url><url><loc>/openshift/security/openshift-scc/</loc><lastmod>2021-05-13T00:00:00+00:00</lastmod></url><url><loc>/openshift/persistence/nfsazurefile-k8s/</loc><lastmod>2021-04-20T00:00:00+00:00</lastmod></url><url><loc>/openshift/agregatelogging/eventrouter/</loc><lastmod>2021-04-16T00:00:00+00:00</lastmod></url><url><loc>/categories/linux/</loc><lastmod>2021-04-15T00:00:00+00:00</lastmod></url><url><loc>/openshift/linux/nvim-lsp/</loc><lastmod>2021-04-15T00:00:00+00:00</lastmod></url><url><loc>/tags/vim/</loc><lastmod>2021-04-15T00:00:00+00:00</lastmod></url><url><loc>/tags/chaos/</loc><lastmod>2021-04-14T00:00:00+00:00</lastmod></url><url><loc>/openshift/load_tests/zatezove_testy/</loc><lastmod>2021-04-14T00:00:00+00:00</lastmod></url><url><loc>/openshift/aks/aks-policy-builtin/</loc><lastmod>2021-03-18T00:00:00+00:00</lastmod></url><url><loc>/tags/policy/</loc><lastmod>2021-03-18T00:00:00+00:00</lastmod></url><url><loc>/tags/etcd/</loc><lastmod>2021-03-15T00:00:00+00:00</lastmod></url><url><loc>/openshift/config/etcd_backend_encrypt_backup/</loc><lastmod>2021-03-15T00:00:00+00:00</lastmod></url><url><loc>/tags/egress/</loc><lastmod>2021-03-14T00:00:00+00:00</lastmod></url><url><loc>/openshift/ingress-egress/egress-ipam-operator/</loc><lastmod>2021-03-14T00:00:00+00:00</lastmod></url><url><loc>/openshift/config/changevmtype/</loc><lastmod>2021-03-09T00:00:00+00:00</lastmod></url><url><loc>/openshift/linux/iptables/</loc><lastmod>2021-03-01T00:00:00+00:00</lastmod></url><url><loc>/tags/networking/</loc><lastmod>2021-03-01T00:00:00+00:00</lastmod></url><url><loc>/tags/tooling/</loc><lastmod>2021-03-01T00:00:00+00:00</lastmod></url><url><loc>/openshift/rbac/aadgroupsyncoperator/</loc><lastmod>2021-02-24T00:00:00+00:00</lastmod></url><url><loc>/openshift/gitops/argocd_sops_plugin/</loc><lastmod>2021-02-24T00:00:00+00:00</lastmod></url><url><loc>/openshift/aks/external_dns/external_dns/</loc><lastmod>2021-02-24T00:00:00+00:00</lastmod></url><url><loc>/tags/rbac/</loc><lastmod>2021-02-24T00:00:00+00:00</lastmod></url><url><loc>/openshift/aks/aks-connect-to-node/</loc><lastmod>2021-02-21T00:00:00+00:00</lastmod></url><url><loc>/tags/common/</loc><lastmod>2021-02-21T00:00:00+00:00</lastmod></url><url><loc>/tags/debug/</loc><lastmod>2021-01-18T00:00:00+00:00</lastmod></url><url><loc>/openshift/debug/odpojeni-nodu-z-clusteru/</loc><lastmod>2021-01-18T00:00:00+00:00</lastmod></url><url><loc>/openshift/aks/aks-argo/</loc><lastmod>2021-01-08T00:00:00+00:00</lastmod></url><url><loc>/faze/</loc><lastmod>2021-01-01T00:00:00+00:00</lastmod></url><url><loc>/tags/gitops/</loc><lastmod>2021-01-01T00:00:00+00:00</lastmod></url><url><loc>/faze/cicd/</loc><lastmod>2021-01-01T00:00:00+00:00</lastmod></url><url><loc>/openshift/standalone-kubelet-fc31/</loc><lastmod>2020-11-23T00:00:00+00:00</lastmod></url><url><loc>/openshift/agregatelogging/obecny_popis_logovani/</loc><lastmod>2020-11-22T00:00:00+00:00</lastmod></url><url><loc>/openshift/createnewmachineconfigpool/</loc><lastmod>2020-11-10T00:00:00+00:00</lastmod></url><url><loc>/openshift/ingress-egress/egress-problemy_s_pridelovanim_adres-azure/</loc><lastmod>2020-11-04T00:00:00+00:00</lastmod></url><url><loc>/openshift/storageencryptionazure/</loc><lastmod>2020-10-22T00:00:00+00:00</lastmod></url><url><loc>/tags/encryption/</loc><lastmod>2020-10-22T00:00:00+00:00</lastmod></url><url><loc>/faze/install_myslenky/</loc><lastmod>2020-10-19T00:00:00+00:00</lastmod></url><url><loc>/tags/dns/</loc><lastmod>2020-10-14T00:00:00+00:00</lastmod></url><url><loc>/openshift/dns/dnsdeepdive/</loc><lastmod>2020-10-14T00:00:00+00:00</lastmod></url><url><loc>/openshift/security/service-principal/</loc><lastmod>2020-10-11T00:00:00+00:00</lastmod></url><url><loc>/openshift/tunedoperator/</loc><lastmod>2020-10-09T00:00:00+00:00</lastmod></url><url><loc>/openshift/config/cert-manager-install/</loc><lastmod>2020-10-08T00:00:00+00:00</lastmod></url><url><loc>/openshift/rbac/vytvoreni_zakladnich_skupin_a_uprava_upraveni/</loc><lastmod>2020-10-08T00:00:00+00:00</lastmod></url><url><loc>/openshift/ingress-egress/obecne/</loc><lastmod>2020-10-07T00:00:00+00:00</lastmod></url><url><loc>/tags/ingress/</loc><lastmod>2020-10-07T00:00:00+00:00</lastmod></url><url><loc>/openshift/rbac/openid-provider/</loc><lastmod>2020-10-06T00:00:00+00:00</lastmod></url><url><loc>/tags/install/</loc><lastmod>2020-09-30T00:00:00+00:00</lastmod></url><url><loc>/private/install/nastaveni_proxy/</loc><lastmod>2020-09-30T00:00:00+00:00</lastmod></url><url><loc>/private/install/instalaceazure/</loc><lastmod>2020-09-30T00:00:00+00:00</lastmod></url><url><loc>/private/</loc><lastmod>2020-09-30T00:00:00+00:00</lastmod></url><url><loc>/tags/artifactory/</loc><lastmod>2020-09-20T00:00:00+00:00</lastmod></url><url><loc>/openshift/artifactory_as_proxy_for_containerregistries/</loc><lastmod>2020-09-20T00:00:00+00:00</lastmod></url><url><loc>/openshift/debug/openshiftapiserver-tls/</loc><lastmod>2020-08-03T00:00:00+00:00</lastmod></url><url><loc>/openshift/debug/debug-monitoring-degraded/</loc><lastmod>2020-07-28T00:00:00+00:00</lastmod></url><url><loc>/openshift/snippets/</loc><lastmod>2020-07-23T00:00:00+00:00</lastmod></url><url><loc>/tags/operator/</loc><lastmod>2020-07-08T00:00:00+00:00</lastmod></url><url><loc>/openshift/operatorlifecyclemanager/</loc><lastmod>2020-07-08T00:00:00+00:00</lastmod></url><url><loc>/openshift/debug/debug-oauth/</loc><lastmod>2020-07-06T00:00:00+00:00</lastmod></url><url><loc>/openshift/persistence/azurefile-persistencefilestorage/</loc><lastmod>2020-06-10T00:00:00+00:00</lastmod></url><url><loc>/openshift/agregatelogging/components_of_logging/</loc><lastmod>2020-06-08T00:00:00+00:00</lastmod></url><url><loc>/openshift/selfsignedcert_foringress/</loc><lastmod>2020-06-02T00:00:00+00:00</lastmod></url><url><loc>/openshift/config/arm-apiresources-deplated/</loc><lastmod>2020-05-31T00:00:00+00:00</lastmod></url><url><loc>/openshift/config/certbot-dns01-cert_add/</loc><lastmod>2020-03-19T00:00:00+00:00</lastmod></url><url><loc>/openshift/uploading_container_image_to_ocp_registry/</loc><lastmod>2020-02-01T00:00:00+00:00</lastmod></url><url><loc>/faze/install-clusteru-oazlab1/</loc></url><url><loc>/openshift/debug/debug-openshiftapiserver/</loc></url><url><loc>/private/nifi-deploy-lab1/</loc></url><url><loc>/search/</loc></url><url><loc>/tags/oauth/oidc/</loc></url><url><loc>/tags/oauth2/oidc/</loc></url><url><loc>/tags/ssl/tls/</loc></url></urlset>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/security/userns-build/</loc>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/deploy/</loc>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/openshift/</loc>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/</loc>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/security/</loc>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/config/</loc>
+    <lastmod>2022-02-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/security/usernamespacescri-owithopenshift/</loc>
+    <lastmod>2022-02-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/aks/</loc>
+    <lastmod>2022-01-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/aks/</loc>
+    <lastmod>2022-01-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/aks/aks_query/</loc>
+    <lastmod>2022-01-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/aks/perconamongodb/</loc>
+    <lastmod>2022-01-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/state/</loc>
+    <lastmod>2022-01-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/config/clusterupdateupgrade/</loc>
+    <lastmod>2022-01-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/argocd/</loc>
+    <lastmod>2021-11-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/gitops/appwithclusterwideresources/</loc>
+    <lastmod>2021-11-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/wotw/11-deployment-nifiregistry-oidc/</loc>
+    <lastmod>2021-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/wotw/</loc>
+    <lastmod>2021-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/wotw/</loc>
+    <lastmod>2021-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/wotw/10-cicd/</loc>
+    <lastmod>2021-09-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/security/compliance_operator/</loc>
+    <lastmod>2021-09-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/config/dexserver-as-identity-provider/</loc>
+    <lastmod>2021-08-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/wotw/6-state/</loc>
+    <lastmod>2021-08-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/wotw/5-networking/</loc>
+    <lastmod>2021-07-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/azure/</loc>
+    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/config/pv-movebetweenclusters/</loc>
+    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/wotw/3-networking/</loc>
+    <lastmod>2021-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/gracefull-pod-termination/</loc>
+    <lastmod>2021-07-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/ocp/</loc>
+    <lastmod>2021-07-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/openshift-release/</loc>
+    <lastmod>2021-07-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/release/</loc>
+    <lastmod>2021-07-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/agregatelogging/</loc>
+    <lastmod>2021-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/fluentd/</loc>
+    <lastmod>2021-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/agregatelogging/fluentd/</loc>
+    <lastmod>2021-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/logging/</loc>
+    <lastmod>2021-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/logging/</loc>
+    <lastmod>2021-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/prometheus/</loc>
+    <lastmod>2021-06-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/monitoring/prometheus_promql_queries/</loc>
+    <lastmod>2021-06-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/agregatelogging/log_snipets/</loc>
+    <lastmod>2021-05-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/snippets/</loc>
+    <lastmod>2021-05-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/agregatelogging/nifi-zookeeper-statefullset/</loc>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/security/openshift-scc/</loc>
+    <lastmod>2021-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/persistence/nfsazurefile-k8s/</loc>
+    <lastmod>2021-04-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/agregatelogging/eventrouter/</loc>
+    <lastmod>2021-04-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/linux/</loc>
+    <lastmod>2021-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/linux/nvim-lsp/</loc>
+    <lastmod>2021-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/vim/</loc>
+    <lastmod>2021-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/chaos/</loc>
+    <lastmod>2021-04-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/load_tests/zatezove_testy/</loc>
+    <lastmod>2021-04-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/aks/aks-policy-builtin/</loc>
+    <lastmod>2021-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/policy/</loc>
+    <lastmod>2021-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/etcd/</loc>
+    <lastmod>2021-03-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/config/etcd_backend_encrypt_backup/</loc>
+    <lastmod>2021-03-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/egress/</loc>
+    <lastmod>2021-03-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/ingress-egress/egress-ipam-operator/</loc>
+    <lastmod>2021-03-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/config/changevmtype/</loc>
+    <lastmod>2021-03-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/linux/iptables/</loc>
+    <lastmod>2021-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/networking/</loc>
+    <lastmod>2021-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/tooling/</loc>
+    <lastmod>2021-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/rbac/aadgroupsyncoperator/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/gitops/argocd_sops_plugin/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/aks/external_dns/external_dns/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/rbac/</loc>
+    <lastmod>2021-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/aks/aks-connect-to-node/</loc>
+    <lastmod>2021-02-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/common/</loc>
+    <lastmod>2021-02-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/debug/</loc>
+    <lastmod>2021-01-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/debug/odpojeni-nodu-z-clusteru/</loc>
+    <lastmod>2021-01-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/aks/aks-argo/</loc>
+    <lastmod>2021-01-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/faze/</loc>
+    <lastmod>2021-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/gitops/</loc>
+    <lastmod>2021-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/faze/cicd/</loc>
+    <lastmod>2021-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/standalone-kubelet-fc31/</loc>
+    <lastmod>2020-11-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/agregatelogging/obecny_popis_logovani/</loc>
+    <lastmod>2020-11-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/createnewmachineconfigpool/</loc>
+    <lastmod>2020-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/ingress-egress/egress-problemy_s_pridelovanim_adres-azure/</loc>
+    <lastmod>2020-11-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/storageencryptionazure/</loc>
+    <lastmod>2020-10-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/encryption/</loc>
+    <lastmod>2020-10-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/faze/install_myslenky/</loc>
+    <lastmod>2020-10-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/dns/</loc>
+    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/dns/dnsdeepdive/</loc>
+    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/security/service-principal/</loc>
+    <lastmod>2020-10-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/tunedoperator/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/config/cert-manager-install/</loc>
+    <lastmod>2020-10-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/rbac/vytvoreni_zakladnich_skupin_a_uprava_upraveni/</loc>
+    <lastmod>2020-10-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/ingress-egress/obecne/</loc>
+    <lastmod>2020-10-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/ingress/</loc>
+    <lastmod>2020-10-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/rbac/openid-provider/</loc>
+    <lastmod>2020-10-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/install/</loc>
+    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/private/install/nastaveni_proxy/</loc>
+    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/private/install/instalaceazure/</loc>
+    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/private/</loc>
+    <lastmod>2020-09-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/artifactory/</loc>
+    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/artifactory_as_proxy_for_containerregistries/</loc>
+    <lastmod>2020-09-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/debug/openshiftapiserver-tls/</loc>
+    <lastmod>2020-08-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/debug/debug-monitoring-degraded/</loc>
+    <lastmod>2020-07-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/snippets/</loc>
+    <lastmod>2020-07-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/operator/</loc>
+    <lastmod>2020-07-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/operatorlifecyclemanager/</loc>
+    <lastmod>2020-07-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/debug/debug-oauth/</loc>
+    <lastmod>2020-07-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/persistence/azurefile-persistencefilestorage/</loc>
+    <lastmod>2020-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/agregatelogging/components_of_logging/</loc>
+    <lastmod>2020-06-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/selfsignedcert_foringress/</loc>
+    <lastmod>2020-06-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/config/arm-apiresources-deplated/</loc>
+    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/config/certbot-dns01-cert_add/</loc>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/openshift/uploading_container_image_to_ocp_registry/</loc>
+    <lastmod>2020-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/faze/install-clusteru-oazlab1/</loc>
+  </url>
+  
+  <url>
+    <loc>/openshift/debug/debug-openshiftapiserver/</loc>
+  </url>
+  
+  <url>
+    <loc>/private/nifi-deploy-lab1/</loc>
+  </url>
+  
+  <url>
+    <loc>/search/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/oauth/oidc/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/oauth2/oidc/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/ssl/tls/</loc>
+  </url>
+  
+</urlset>
