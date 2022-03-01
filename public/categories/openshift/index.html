@@ -12,7 +12,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="//localhost:1112/categories/openshift/" />
-<meta property="og:updated_time" content="2021-07-22T00:00:00+00:00" />
+<meta property="og:updated_time" content="2021-09-12T00:00:00+00:00" />
 
 	
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -162,6 +162,8 @@
 
 
 
+
+
     
       
       
@@ -172,16 +174,6 @@
       
       
         
-    
-      
-      
-        
-    
-      
-      
-        
-    
-      
       
         
     
@@ -208,14 +200,6 @@
       
       
         
-      
-        
-    
-      
-      
-        
-      
-        
     
       
       
@@ -240,6 +224,28 @@
         
     
       
+      
+        
+      
+        
+    
+      
+      
+        
+      
+        
+    
+      
+      
+        
+    
+      
+      
+        
+    
+      
+      
+        
       
         
     
@@ -277,13 +283,13 @@
 
 
 
-
-
 <div class="post__tags tags clearfix">
 	<svg class="icon icon-tag" width="32" height="32" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
 	<ul class="tags__list">
-      <li class="tags__item"><a class="tags__link btn" href="/tags/config/" rel="tag">CONFIG</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/deploy/" rel="tag">DEPLOY</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/security/" rel="tag">SECURITY</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/config/" rel="tag">CONFIG</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/argocd/" rel="tag">ARGOCD</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/oauth/oidc/" rel="tag">OAUTH/OIDC</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/state/" rel="tag">STATE</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
@@ -292,18 +298,148 @@
       <li class="tags__item"><a class="tags__link btn" href="/tags/logging/" rel="tag">LOGGING</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/prometheus/" rel="tag">PROMETHEUS</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/snippets/" rel="tag">SNIPPETS</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/deploy/" rel="tag">DEPLOY</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/chaos/" rel="tag">CHAOS</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/etcd/" rel="tag">ETCD</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/egress/" rel="tag">EGRESS</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/rbac/" rel="tag">RBAC</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/argocd/" rel="tag">ARGOCD</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/debug/" rel="tag">DEBUG</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/gitops/" rel="tag">GITOPS</a></li>
 	</ul>
 </div>
 
   <article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/security/userns-build/" rel="bookmark">
+			Build in linux namespace
+			</a>
+		</h3>
+		<p class="list__lead post__lead">working</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2022-03-01T00:00:00">2022-03-01</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/deploy/" rel="category">DEPLOY</a>, <a class="meta__link" href="/tags/security/" rel="category">SECURITY</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		Desc
+	</div>
+	
+</article>
+<article class="list__item post">
+	<figure class="list__thumbnail">
+		<a href="//localhost:1112/openshift/security/usernamespacescri-owithopenshift/">
+			<img src="/img/usernamespaces.jpg" alt="User Namespaces with Openshift using CRIO" />
+		</a>
+	</figure>
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/security/usernamespacescri-owithopenshift/" rel="bookmark">
+			User Namespaces with Openshift using CRIO
+			</a>
+		</h3>
+		<p class="list__lead post__lead">run baby run, outrun my gun</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2022-02-17T00:00:00">2022-02-17</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/config/" rel="category">CONFIG</a>, <a class="meta__link" href="/tags/security/" rel="category">SECURITY</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		Test user namespaces (root inside user namespace, standart user outside) in Openshift with Cri-O 1.20 - OCP 4.10
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/config/clusterupdateupgrade/" rel="bookmark">
+			Cluster Update Upgrade under the hood
+			</a>
+		</h3>
+		<p class="list__lead post__lead">working</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2022-01-17T00:00:00">2022-01-17</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/config/" rel="category">CONFIG</a>, <a class="meta__link" href="/tags/deploy/" rel="category">DEPLOY</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		Desc
+	</div>
+	
+</article>
+<article class="list__item post">
+	<figure class="list__thumbnail">
+		<a href="//localhost:1112/openshift/gitops/appwithclusterwideresources/">
+			<img src="/img/argocwr.jpg" alt="ArgoCD app deploy with clusterWide resources request" />
+		</a>
+	</figure>
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/gitops/appwithclusterwideresources/" rel="bookmark">
+			ArgoCD app deploy with clusterWide resources request
+			</a>
+		</h3>
+		<p class="list__lead post__lead">working</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2021-11-22T00:00:00">2021-11-22</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/argocd/" rel="category">ARGOCD</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		Deploy an application with clusterWide resources into application/sys argo with only one GIT repo
+	</div>
+	
+</article>
+<article class="list__item post">
 	<figure class="list__thumbnail">
 		<a href="//localhost:1112/openshift/security/compliance_operator/">
 			<img src="/img/compliance.jpg" alt="Compliance operator analysis" />
@@ -546,42 +682,6 @@
 	<div class="content list__excerpt post__content clearfix">
     
 		Prometheus usefull queries and failing forward with PromQL
-	</div>
-	
-</article>
-<article class="list__item post">
-	<figure class="list__thumbnail">
-		<a href="//localhost:1112/openshift/security/usernamespacescri-owithopenshift/">
-			<img src="/img/usernamespaces.jpg" alt="User Namespaces with Openshift using CRIO" />
-		</a>
-	</figure>
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/openshift/security/usernamespacescri-owithopenshift/" rel="bookmark">
-			User Namespaces with Openshift using CRIO
-			</a>
-		</h3>
-		<p class="list__lead post__lead">run baby run, outrun my gun</p>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2021-06-10T00:00:00">2021-06-10</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/config/" rel="category">CONFIG</a>, <a class="meta__link" href="/tags/security/" rel="category">SECURITY</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		Test user namespaces (root inside user namespace, standart user outside) in Openshift with Cri-O 1.20
 	</div>
 	
 </article>
@@ -876,104 +976,6 @@
 	</div>
 	
 </article>
-<article class="list__item post">
-	<figure class="list__thumbnail">
-		<a href="//localhost:1112/openshift/gitops/argocd_sops_plugin/">
-			<img src="/img/121367915_10157770255117399_360219505287172470_o.jpg" alt="Customizing ArgoCD for SOPS usage" />
-		</a>
-	</figure>
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/openshift/gitops/argocd_sops_plugin/" rel="bookmark">
-			Customizing ArgoCD for SOPS usage
-			</a>
-		</h3>
-		<p class="list__lead post__lead">Nasazeni SOPS pro GITOPS pouziti a auto decrypting prez Azure KV. Využití ManagedIdentity a AAD pod identity pro přístup k KV</p>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2021-02-24T00:00:00">2021-02-24</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/argocd/" rel="category">ARGOCD</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		Nosná myšlenka automatický decrypting secretů přez Mozilla SOPS v workflow GITOPS tedy s využitím ArgoCD. Pro storage klíčů použít Azure KV a přístup k němu řídit přez Managed Identitu zacílenou na deployment ArgoCD tedy použitím AAD pod identity.
-	</div>
-	
-</article>
-<article class="list__item post">
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/openshift/debug/odpojeni-nodu-z-clusteru/" rel="bookmark">
-			Node not ready CSR problem
-			</a>
-		</h3>
-		<p class="list__lead post__lead">working</p>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2021-01-18T00:00:00">2021-01-18</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/debug/" rel="category">DEBUG</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		Desc
-	</div>
-	
-</article>
-<article class="list__item post">
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/faze/cicd/" rel="bookmark">
-			GITOPS scénář
-			</a>
-		</h3>
-		<p class="list__lead post__lead">gitops scenar a srovnani myslenek</p>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2021-01-01T00:00:00">2021-01-01</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/gitops/" rel="category">GITOPS</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		Desc
-	</div>
-	
-</article>
 
 </main>
 
@@ -992,7 +994,7 @@
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2021 DIVIDED DOCUMENTATION.
+			&copy; 2022 DIVIDED DOCUMENTATION.
 			
 		</div>
 	</div>

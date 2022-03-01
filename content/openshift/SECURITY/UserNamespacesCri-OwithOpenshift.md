@@ -1,8 +1,8 @@
 ---
 title: "User Namespaces with Openshift using CRIO"
-date: 2021-06-10 
+date: 2022-02-17
 author: Tomas Dedic
-description: "Test user namespaces (root inside user namespace, standart user outside) in Openshift with Cri-O 1.20"
+description: "Test user namespaces (root inside user namespace, standart user outside) in Openshift with Cri-O 1.20 - OCP 4.10"
 lead: "run baby run, outrun my gun"
 categories:
   - "Openshift"

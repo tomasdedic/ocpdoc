@@ -3,12 +3,97 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>//localhost:1112/openshift/security/userns-build/</loc>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/security/usernamespacescri-owithopenshift/</loc>
+    <lastmod>2022-02-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/aks/</loc>
+    <lastmod>2022-01-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/aks/aks_query/</loc>
+    <lastmod>2022-01-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/aks/perconamongodb/</loc>
+    <lastmod>2022-01-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/config/clusterupdateupgrade/</loc>
+    <lastmod>2022-01-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/gitops/appwithclusterwideresources/</loc>
+    <lastmod>2021-11-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/</loc>
+    <lastmod>2021-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/</loc>
+    <lastmod>2021-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/wotw/11-deployment-nifiregistry-oidc/</loc>
+    <lastmod>2021-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/wotw/</loc>
+    <lastmod>2021-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/wotw/</loc>
+    <lastmod>2021-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>//localhost:1112/wotw/10-cicd/</loc>
     <lastmod>2021-09-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/openshift/security/compliance_operator/</loc>
+    <lastmod>2021-09-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/config/</loc>
+    <lastmod>2021-09-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/openshift/</loc>
+    <lastmod>2021-09-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/</loc>
+    <lastmod>2021-09-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/security/</loc>
+    <lastmod>2021-09-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/</loc>
     <lastmod>2021-09-12T00:00:00+00:00</lastmod>
   </url>
   
@@ -20,26 +105,6 @@
   <url>
     <loc>//localhost:1112/wotw/6-state/</loc>
     <lastmod>2021-08-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/</loc>
-    <lastmod>2021-07-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/categories/</loc>
-    <lastmod>2021-07-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/categories/wotw/</loc>
-    <lastmod>2021-07-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/wotw/</loc>
-    <lastmod>2021-07-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -58,27 +123,7 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/tags/ocp/</loc>
-    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/categories/openshift/</loc>
-    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/</loc>
-    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/tags/state/</loc>
-    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/</loc>
     <lastmod>2021-07-22T00:00:00+00:00</lastmod>
   </url>
   
@@ -89,6 +134,11 @@
   
   <url>
     <loc>//localhost:1112/openshift/gracefull-pod-termination/</loc>
+    <lastmod>2021-07-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/ocp/</loc>
     <lastmod>2021-07-01T00:00:00+00:00</lastmod>
   </url>
   
@@ -135,16 +185,6 @@
   <url>
     <loc>//localhost:1112/openshift/monitoring/prometheus_promql_queries/</loc>
     <lastmod>2021-06-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/config/</loc>
-    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/security/usernamespacescri-owithopenshift/</loc>
-    <lastmod>2021-06-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -373,11 +413,6 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/tags/security/</loc>
-    <lastmod>2020-10-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/openshift/security/service-principal/</loc>
     <lastmod>2020-10-11T00:00:00+00:00</lastmod>
   </url>
@@ -507,7 +542,19 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/config/dexserver-as-identity-provider/dexserver-as-identity-provider/</loc>
+    <loc>//localhost:1112/openshift/aks/perconamongodb/01-overview/</loc>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/aks/perconamongodb/02-aksdeploy/</loc>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/aks/perconamongodb/03-operatortasks/</loc>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/aks/perconamongodb/04-backuprecovery/</loc>
   </url>
   
   <url>
@@ -515,7 +562,7 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/security/compliance_operator/02-walkthrough/</loc>
+    <loc>//localhost:1112/private/nifi-deploy-lab1/</loc>
   </url>
   
   <url>

@@ -85,7 +85,14 @@ Zajímavé je že všechny vytvořená SP mají stejné přiřazené role.
 nepodařilo se mi najít
 ```
 Je potřeba brát v úvahu že přez hlavní SP si OCP může vytořit další SP a na ně navázat potřebné aktivity.
+## Change client_secrets
+```sh
+oc patch secret -n openshift-machine-api azure-cloud-credentials -p '{"data":{"azure_client_secret":"X3J2N1F+YnJGVEE0UGt5R2RVWkZaQVR0dlQzNWFEdVdCNU1KVAo="}}'
+oc patch secret -n  kube-system azure-credentials -p '{"data":{"azure_client_secret":"X3J2N1F+YnJGVEE0UGt5R2RVWkZaQVR0dlQzNWFEdVdCNU1KVAo="}}'
+oc patch secret -n openshift-image-registry  installer-cloud-credentials -p '{"data":{"azure_client_secret":"X3J2N1F+YnJGVEE0UGt5R2RVWkZaQVR0dlQzNWFEdVdCNU1KVAo="}}'
 
+
+```
 ## Vyjadření RedHat k SP
 Below are the inline descriptions:  
  

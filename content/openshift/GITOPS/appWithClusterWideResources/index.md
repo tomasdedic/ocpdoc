@@ -44,9 +44,9 @@ clusterWideResources jsou součástí template spolu s Argoapp definicemi a je
 potřeba je nasadit s vyššími privilegii tedy přez ArgoSYS.
 
 ```sh
-➤ helm template nifi helmcharts/ --output-dir argo_release --namespace csas-monolog-nifi \ 
+➤ helm template nifi helmcharts/ --output-dir argo_release --namespace csas-monolog-nifi \
   -f values-lab1-dex.yaml
-# struktura z pohledu rootu vypada naslednovne  
+# struktura z pohledu rootu vypada naslednovne
 ➤ tree -L 2 .
 .
 ├── argo_release
@@ -87,10 +87,10 @@ render app looks like this:
 ## SYS ARGO
 
 working in argocd sys repository
->> bootstrap a render  neumi v tento okamzik odkaz na systemovy zdroj v jinem
->> GITU, uplne se mi ten process nechce prepisovat a tak se smirim s tim pouzit
->> jako zdroj "plain" a tedy CRW objekty nahrat do dedikovaneho adresare uvnitr sys
->> ARGA
+> bootstrap a render  neumi v tento okamzik odkaz na systemovy zdroj v jinem
+> GITU, uplne se mi ten process nechce prepisovat a tak se smirim s tim pouzit
+> jako zdroj "plain" a tedy CRW objekty nahrat do dedikovaneho adresare uvnitr
+> ARGOCD SYS
 
 ```sh
 #copy rendered CWR files to ./resources/csas-monolg-nifi
@@ -110,7 +110,7 @@ CLUSTER_WIDE_RESOURCES_APP:
             prune: false
             selfHeal: false
 
-#rerun render 
+#rerun render
 ./script/render_resources.sh
 
 #file resources/bootstrap/csas-monolog-nifi.yaml se vytvoří
@@ -139,13 +139,13 @@ spec:
     syncOptions:
       - CreateNamespace=true
 
-# push 
+# push
 git push
 
 ```
 
-Opomenu li CWR resourcy přímo pro aplikaci je potřeba provést konfiguraci AppArgoCD
-tedy nadefinoavat **AppProject** CR a **Application** CR (zde použijeme exclude
+Opomenu li CWR resourcy přímo pro aplikaci je potřeba provést konfiguraci ARGOCD
+APP tedy nadefinovat Kind: **AppProject** CR a **Application** CR (zde použijeme exclude
 trik na clusterWideResources subdir čímž můžeme zůstat v jednom repozitáři)
 
 ```yaml
@@ -275,4 +275,4 @@ users:
 ## APP ARGOCD
 
 V aplikačním ArgoCD je vytvořena příslušná aplikace a je možné ji spravovat se
-standartními právy pro AppArgoCD, přičemž CWR jsou umístěny v SysArgoCD
+standartními právy pro ARGOCD APP, přičemž CWR jsou umístěny v ARGOCD SYS.
