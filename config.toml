@@ -1,4 +1,4 @@
-baseurl = "/"
+baseurl = "/ocpdoc"
 refLinksErrorLevel ="WARNING"
 title = "DIVIDED DOCUMENTATION"
 languageCode = "en-us"
