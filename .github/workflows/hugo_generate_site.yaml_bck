@@ -1,13 +1,16 @@
-name: generate_hugo_site
+name: generate_hugo_siteenv
 
 on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-18.04
+    env:
+      gitops_repo: gitops_repo
     steps:
       - name: Prepare
         id: prep
@@ -89,28 +92,29 @@ jobs:
         with:
           repository: tomasdedic/ocpdocCD
           token: ${{ secrets.PERSONAL_TOKEN }} # `GitHub_PAT` is a secret that contains your PAT
-          path: argo_repo
+          path: ${{ env.gitops_repo }}
 
       # - name: Delete oldest package
       #   if: ${{ steps.build_and_publish.conclusion == 'success'}}
       #   uses: actions/delete-package-versions@v1
       #   with:
       #     package-name: hugogen
-      - name: save image tag to YAML
-        run: |
-          echo "image: ${{steps.prep.outputs.tags}}" >image_tags.yaml
+      # - name: save image tag to YAML
+      #   run: |
+      #     echo "image: ${{steps.prep.outputs.tags}}" >gitops_repo/image_tags.yaml
 
-      - name: Merge Deployment file in ARGO repo with image_tags.yaml
-        uses: tomasdedic/yq-action@1.2
+      - name: Change field image in deployment
+        uses: tomasdedic/yq-action@1.4
         with:
-          file: argo_repo/deploy/yq_inline.sh
-
-      - name: commit changes to ARGO repo
+          command: yq e '.spec.template.spec.containers.[0].image="${{env.image_tag}}"' -i ${{env.gitops_repo}}/deploy_aks/deployment.yaml && yq e '.spec.template.spec.containers.[0].image="${{env.image_tag}}"' -i ${{env.gitops_repo}}/deploy/deployment.yaml && yq e '.spec.template.spec.containers.[0].image="${{env.image_tag}}"' -i ${{env.gitops_repo}}/deploy_proxy/apps_v1_deployment_proxy.yaml
+        env:
+          image_tag: ${{ steps.prep.outputs.tags }}
+      - name: Commit changes to ARGO repo
         run: |
-          cd argo_repo
+          cd ${{ env.gitops_repo }}
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "generated"
+          git commit -m "generated ${{steps.prep.outputs.tags}}"
           git push
 
