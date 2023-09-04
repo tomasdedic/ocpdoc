@@ -4,7 +4,7 @@
   "description": "Responsive, simple, clean and content-focused Hugo theme based on the MH Magazine lite WordPress theme",
   "license": "GPL-2.0",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^1.5.0",
     "hugo-lunr": "0.0.4"
   },
   "devDependencies": {
