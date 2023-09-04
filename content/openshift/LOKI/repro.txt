@@ -1,0 +1,54 @@
+# 1. dostat nějaká data do LOKI instance
+
+```bash
+#port forward for common services
+
+ssh -fNTML 8443:10.88.56.16:6443 -L 9999:10.88.88.27:6443 -L 9001:10.88.88.46:9001 -L 3000:10.88.88.46:3000 ocp_bastion_private
+ssh -TO exit ocp_bastion_private
+# 1. testcluster forward
+# 2. labcluster forward
+
+stahnout kubeconfig a insecure jelikoz pojedeme proti 127.0.0.1
+
+oc config set-cluster api-lab1-ocp4-vs-csint-cz:6443 --insecure-skip-tls-verify=true
+
+```
+
+LOKI Pujdeme cestou simpleScalable configuration s rozdělením na reader/writer a
+prez **Docker compose** 
+
+```bash
+docker ps --format "table {{.Names}}\t\t{{.Image}}\t\t{{.Ports}}"
+
+
+```
+
+```yaml
+ClusterLogForwarder
+
+apiVersion: logging.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  outputs:
+  - name: loki-external
+    type: loki
+    url: http://10.88.88.46:3100
+  pipelines:
+  - inputRefs:
+    - application
+    - infrastructure
+    - audit
+    name: logs
+    outputRefs:
+    - loki-external
+
+Grafana is running as container so connect to subnet of loki
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' loki-loki-1
+
+```
+
+
+

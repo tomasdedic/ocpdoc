@@ -1,0 +1,63 @@
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_server_max_recv_msg_size: 8388608
+
+common:
+  path_prefix: /loki
+  storage:
+#    filesystem:
+#      chunks_directory: /loki/chunks
+#      rules_directory: /loki/rules
+    s3:
+      s3forcepathstyle: true
+      region: "dc1"
+      bucketnames: "loki"
+      endpoint: "minio:9000"
+      access_key_id: "loki"
+      secret_access_key: "XacKxpaF8VwDUqPmwWuw08kdHAMaIv9t"
+      insecure: true 
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
+
+
+schema_config:
+  configs:
+    - from: 2020-12-06
+      store: boltdb-shipper
+      #object_store: filesystem
+      object_store: s3
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /loki/index
+    cache_location: /loki/index_cache
+    shared_store: s3
+
+ruler:
+  alertmanager_url: http://localhost:9093
+
+ingestor:
+  chunk_idle_period: 1h #any chunk not recieving new logs in this time will be flushed
+  max_chunk_age: 1h #chunks older then this time will be flushed
+
+
+limits_config:
+  ingestion_rate_mb: 10
+  ingestion_burst_size_mb: 12
+  enforce_metric_name: false
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
+
+compactor:
+#  working_directory: /data/compactor
+  shared_store: s3
+  compaction_interval: 5m

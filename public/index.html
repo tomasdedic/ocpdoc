@@ -12,7 +12,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="//localhost:1112/" />
-<meta property="og:updated_time" content="2021-10-03T00:00:00+00:00" />
+<meta property="og:updated_time" content="2023-09-01T00:00:00+00:00" />
 
 	
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -75,6 +75,8 @@
     <li class="menu__item">
       <a class="menu__link" href="/categories/openshift/" title="Openshift">Openshift</a>
     <li class="menu__item">
+      <a class="menu__link" href="/categories/testing/" title="Testing">Testing</a>
+    <li class="menu__item">
       <a class="menu__link" href="/categories/wotw/" title="Wotw">Wotw</a>
     </li>
   </ul>
@@ -116,13 +118,15 @@
 <div class="widget-taglist widget">
 	<h4 class="widget__title">Tags</h4>
 	<div class="widget__content">
-		<a class="widget-taglist__link widget__link btn" href="/tags/aks/" title="Aks">Aks (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/acme/" title="Acme">Acme (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/aks/" title="Aks">Aks (2)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/argocd/" title="Argocd">Argocd (3)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/artifactory/" title="Artifactory">Artifactory (1)</a>
-		<a class="widget-taglist__link widget__link btn" href="/tags/chaos/" title="Chaos">Chaos (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/certmanager/" title="Certmanager">Certmanager (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/chaos/" title="Chaos">Chaos (2)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/common/" title="Common">Common (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/config/" title="Config">Config (11)</a>
-		<a class="widget-taglist__link widget__link btn" href="/tags/debug/" title="Debug">Debug (4)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/debug/" title="Debug">Debug (5)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/deploy/" title="Deploy">Deploy (5)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/dns/" title="Dns">Dns (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/egress/" title="Egress">Egress (3)</a>
@@ -132,20 +136,25 @@
 		<a class="widget-taglist__link widget__link btn" href="/tags/gitops/" title="Gitops">Gitops (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/ingress/" title="Ingress">Ingress (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/install/" title="Install">Install (3)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/kraken/" title="Kraken">Kraken (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/logging/" title="Logging">Logging (2)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/loki/" title="Loki">Loki (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/networking/" title="Networking">Networking (4)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/oauth/oidc/" title="Oauth/oidc">Oauth/oidc (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/oauth2/oidc/" title="Oauth2/oidc">Oauth2/oidc (1)</a>
-		<a class="widget-taglist__link widget__link btn" href="/tags/ocp/" title="Ocp">Ocp (6)</a>
-		<a class="widget-taglist__link widget__link btn" href="/tags/operator/" title="Operator">Operator (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/ocp/" title="Ocp">Ocp (10)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/operator/" title="Operator">Operator (2)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/policy/" title="Policy">Policy (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/prometheus/" title="Prometheus">Prometheus (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/rbac/" title="Rbac">Rbac (3)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/redis/" title="Redis">Redis (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/release/" title="Release">Release (1)</a>
-		<a class="widget-taglist__link widget__link btn" href="/tags/security/" title="Security">Security (5)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/sealedsecrets/" title="Sealedsecrets">Sealedsecrets (1)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/security/" title="Security">Security (6)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/snippets/" title="Snippets">Snippets (5)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/ssl/tls/" title="Ssl/tls">Ssl/tls (2)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/state/" title="State">State (5)</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/test/" title="Test">Test (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/tooling/" title="Tooling">Tooling (1)</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/vim/" title="Vim">Vim (1)</a>
 	</div>
@@ -156,35 +165,35 @@
 	<div class="widget__content">
 		<ul class="widget__list">
 			
+      <li class="widget__item"><a class="widget__link" href="/openshift/sharedresources/">Shared Resources - configMaps/secrets sharing</a> <time class="recent__date"> [2023-09-01] </time></li>
+			
+      <li class="widget__item"><a class="widget__link" href="/openshift/debug/containerstatusunknown-evicted/">Evicted Pods/ContainerStatusUnknown </a> <time class="recent__date"> [2023-08-07] </time></li>
+			
+      <li class="widget__item"><a class="widget__link" href="/openshift/workflow/postupy/">Chaos Testing</a> <time class="recent__date"> [2023-06-27] </time></li>
+			
+      <li class="widget__item"><a class="widget__link" href="/openshift/sealedsecrets/">SealedSecrets</a> <time class="recent__date"> [2023-06-22] </time></li>
+			
+      <li class="widget__item"><a class="widget__link" href="/openshift/workflow/oboard/">Onboarding na co si dat pozor</a> <time class="recent__date"> [2023-06-09] </time></li>
+			
+      <li class="widget__item"><a class="widget__link" href="/openshift/image_security/">Image Security</a> <time class="recent__date"> [2023-04-09] </time></li>
+			
+      <li class="widget__item"><a class="widget__link" href="/openshift/createnewmachineconfigpool/">Machine Config Pool, NodeLabels, TaintAndTolerations</a> <time class="recent__date"> [2023-03-01] </time></li>
+			
+      <li class="widget__item"><a class="widget__link" href="/openshift/loki/">Loki multitenant on Infrastructure Openshift cluster</a> <time class="recent__date"> [2023-02-17] </time></li>
+			
+      <li class="widget__item"><a class="widget__link" href="/openshift/kms_acme/">KMS ACME certmanager integration</a> <time class="recent__date"> [2022-09-09] </time></li>
+			
+      <li class="widget__item"><a class="widget__link" href="/openshift/redis/">Redis struggle</a> <time class="recent__date"> [2022-06-23] </time></li>
+			
       <li class="widget__item"><a class="widget__link" href="/openshift/security/userns-build/">Build in linux namespace</a> <time class="recent__date"> [2022-03-01] </time></li>
 			
       <li class="widget__item"><a class="widget__link" href="/openshift/security/usernamespacescri-owithopenshift/">User Namespaces with Openshift using CRIO</a> <time class="recent__date"> [2022-02-17] </time></li>
 			
       <li class="widget__item"><a class="widget__link" href="/openshift/aks/aks_query/">AKS query</a> <time class="recent__date"> [2022-01-31] </time></li>
 			
-      <li class="widget__item"><a class="widget__link" href="/openshift/aks/perconamongodb/">Percona MongoDB Operator</a> <time class="recent__date"> [2022-01-24] </time></li>
-			
       <li class="widget__item"><a class="widget__link" href="/openshift/aks/perconamongooperator/">Percona MongoDB Operator</a> <time class="recent__date"> [2022-01-24] </time></li>
 			
       <li class="widget__item"><a class="widget__link" href="/openshift/config/clusterupdateupgrade/">Cluster Update Upgrade under the hood</a> <time class="recent__date"> [2022-01-17] </time></li>
-			
-      <li class="widget__item"><a class="widget__link" href="/openshift/gitops/appwithclusterwideresources/">ArgoCD app deploy with clusterWide resources request</a> <time class="recent__date"> [2021-11-22] </time></li>
-			
-      <li class="widget__item"><a class="widget__link" href="/wotw/11-deployment-nifiregistry-oidc/">Nifi Registry,OIDC [WOTW-11]</a> <time class="recent__date"> [2021-10-03] </time></li>
-			
-      <li class="widget__item"><a class="widget__link" href="/wotw/10-cicd/">CI/CD [WOTW-10]</a> <time class="recent__date"> [2021-09-14] </time></li>
-			
-      <li class="widget__item"><a class="widget__link" href="/openshift/security/compliance_operator/">Compliance operator analysis</a> <time class="recent__date"> [2021-09-12] </time></li>
-			
-      <li class="widget__item"><a class="widget__link" href="/openshift/config/dexserver-as-identity-provider/">Dex Server as OIDC provider</a> <time class="recent__date"> [2021-08-31] </time></li>
-			
-      <li class="widget__item"><a class="widget__link" href="/wotw/6-state/">State/Persistence - Volumes/PV/PVC/SC/STS</a> <time class="recent__date"> [2021-08-18] </time></li>
-			
-      <li class="widget__item"><a class="widget__link" href="/wotw/5-networking/">Základy síťování v kubernetesII - LB,Ingress,DNS [WOTW-5]</a> <time class="recent__date"> [2021-07-28] </time></li>
-			
-      <li class="widget__item"><a class="widget__link" href="/openshift/config/pv-movebetweenclusters/">Move AzureDisk to new cluster, with STS in mind and keep PV the same</a> <time class="recent__date"> [2021-07-22] </time></li>
-			
-      <li class="widget__item"><a class="widget__link" href="/wotw/3-networking/">Základy síťování v kubernetes [WOTW-3]</a> <time class="recent__date"> [2021-07-21] </time></li>
 		</ul>
 	</div>
 </div>
@@ -196,7 +205,7 @@
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2022 DIVIDED DOCUMENTATION.
+			&copy; 2023 DIVIDED DOCUMENTATION.
 			
 		</div>
 	</div>

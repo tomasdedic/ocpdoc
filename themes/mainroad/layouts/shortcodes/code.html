@@ -2,7 +2,7 @@
 <!-- readFile bere project_root coz je adresar content/ pokud chceme pouzit soubor definovany relevantne k $Page tak je potreba trochu upravit -->
 
 {{ $sourcefile := .Get "file" }}
-{{ $serviceFile := printf "%s%s" .Page.Dir $sourcefile -}}
+{{ $serviceFile := printf "%s%s" .Page.File.Dir $sourcefile -}}
 {{ if (fileExists $serviceFile) }}
   <p class="codecaption">
   {{ (print "*[ " $serviceFile " ]*")| markdownify }}
@@ -17,4 +17,4 @@
 {{ end }}
 <!-- {{ print (.Page.File.Path) }} -->
 {{- print "" -}}
-<!-- {{ print (.Page.Dir) }} -->
+<!-- {{ print (.Page.File.Dir) }} -->

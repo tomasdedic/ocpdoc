@@ -1,0 +1,147 @@
+---
+version: '3.1'
+
+networks:
+  monitoring:
+    external: true
+
+services:
+  # https://thanos.io/tip/components/query-frontend.md/
+  thanos-query-frontend:
+    image: quay.io/thanos/thanos:v0.26.0
+    networks:
+      - monitoring
+    command:
+      - 'query-frontend'
+      - '--http-address=0.0.0.0:10901'
+      - '--query-frontend.downstream-url=http://thanos-querier:10902'
+    ports:
+      - 10901:10901
+    depends_on:
+      - thanos-querier
+    restart: always
+
+  # https://thanos.io/tip/components/query.md/
+  thanos-querier:
+    image: quay.io/thanos/thanos:v0.26.0
+    networks:
+      - monitoring
+    command:
+      - 'query'
+      - '--grpc-address=0.0.0.0:10091'
+      - '--http-address=0.0.0.0:10902'
+      # DEDUPLIKACE LABELU ABY JSME JE NEMELI VICEKRAT
+      - '--query.replica-label=prometheus_replica'
+      - '--query.replica-label=replica'
+      - '--store=thanos-receive:10901'
+      - '--store=thanos-store-gateway:10091'
+      - '--store=thanos-ruler:10091'
+    ports:
+      - 10902:10902
+    restart: always
+
+  thanos-store-gateway:
+    image: quay.io/thanos/thanos:v0.26.0
+    networks:
+      - monitoring
+    volumes:
+      - ./thanos/:/etc/thanos/
+    command:
+      - 'store'
+      - '--grpc-address=0.0.0.0:10091'
+      - '--http-address=0.0.0.0:10902'
+      - '--data-dir=/tmp/thanos/store'
+      - '--objstore.config-file=/etc/thanos/bucket_config.yaml'
+    depends_on:
+      - minio
+    restart: always
+
+  thanos-compactor:
+    image: quay.io/thanos/thanos:v0.26.0
+    networks:
+      - monitoring
+    volumes:
+      - ./thanos/:/etc/thanos/
+    command:
+      - 'compact'
+      - '--log.level=debug'
+      - '--data-dir=/data'
+      - '--objstore.config-file=/etc/thanos/bucket_config.yaml'
+      - '--wait'
+    depends_on:
+      - minio
+    restart: always
+
+  thanos-ruler:
+    image: quay.io/thanos/thanos:v0.26.0
+    networks:
+      - monitoring
+    volumes:
+      - ./thanos/:/etc/thanos/
+    command:
+      - 'rule'
+      - '--grpc-address=0.0.0.0:10091'
+      - '--http-address=0.0.0.0:10902'
+      - '--log.level=debug'
+      - '--data-dir=/data'
+      - '--eval-interval=15s'
+      - '--rule-file=/etc/thanos/*.rules.yaml'
+      - '--alertmanagers.url=http://alertmanager:9093'
+      - '--query=thanos-querier:10902'
+      - '--objstore.config-file=/etc/thanos/bucket_config.yaml'
+      - "--label=ruler_cluster=\"vegas\""
+      - "--label=ruler_replica=\"r1\""
+    ports:
+      - 10903:10902
+    depends_on:
+      - minio
+      - thanos-querier
+    restart: always
+
+  thanos-bucket-web:
+    image: quay.io/thanos/thanos:v0.26.0
+    networks:
+      - monitoring
+    volumes:
+      - ./thanos/:/etc/thanos/
+    command:
+      - 'tools'
+      - 'bucket'
+      - 'web'
+      - '--http-address=0.0.0.0:10902'
+      - '--log.level=debug'
+      - '--objstore.config-file=/etc/thanos/bucket_config.yaml'
+      - '--refresh=5m'
+      - '--timeout=2m'
+      - '--label=replica'
+    ports:
+      - 10904:10902
+    depends_on:
+      - minio
+    restart: always
+
+  thanos-receive:
+    image: quay.io/thanos/thanos:v0.26.0
+    networks:
+      - monitoring
+    volumes:
+      - ./thanos/:/etc/thanos/
+    command:
+      - 'receive'
+      - '--log.level=debug'
+      - '--grpc-address=0.0.0.0:10901'
+      - '--http-address=0.0.0.0:10902'
+      - '--remote-write.address=0.0.0.0:19291'
+      - '--objstore.config-file=/etc/thanos/bucket_config.yaml'
+      - '--tsdb.path=/var/thanos/receive'
+      - '--receive.replication-factor=1'
+      - '--label=receive_replica="0"'
+      - '--label=receive_server="ipocpbas01.vs.csin.cz"'
+      - '--receive.local-endpoint=127.0.0.1:10901'
+      - '--receive.hashrings-file=/etc/thanos/hashrings.json'
+    ports:
+      - 10905:10901
+      - 19291:19291
+    depends_on:
+      - minio
+    restart: always

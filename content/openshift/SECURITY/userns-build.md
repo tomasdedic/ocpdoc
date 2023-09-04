@@ -13,7 +13,7 @@ tags:
 
 # Použití pro userNS v GITHUB actions runners
 
-## SCC pro runner
+## premisa SCC pro runner
 + pokud chceme aby mohl fungovat **podman run** tzn v případě multistage buildu
   je potřeba pro SA nakonfigurovat **scc privileged**
 + pokud nepotřebujeme **podman run** stačí **scc anyuid**
@@ -59,4 +59,7 @@ containers:165536:65536
 containers:200000:16000000
 
 ```
-
+## PRIVILEGED SCC
+> Privileged allows access to all privileged and host features and the ability to run as any user, any group, any fsGroup, and with any SELinux context.
+> WARNING: this is the most relaxed SCC and should be used only for cluster administration
+Podivame se jake skutecne capabilities jsme ziskali
