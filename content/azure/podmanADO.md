@@ -32,7 +32,7 @@ I have made a lits of requirements we have for the solution
 + docker API compatibility
 
 ## 2. Flow
-{{< figure src="podman_graph.png" caption="podman policy flow" >}}
+{{< figure src="/img/podman/podman_graph.png" caption="podman policy flow" >}}
 
 ## 3. Solutions with ADO runner perspective
 ### 3.1. customize ADO agent runner to run podman
