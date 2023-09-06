@@ -5,9 +5,10 @@ author: Tomas Dedic
 description: "short walkthrough"
 lead: ""
 categories:
-  - "AKS"
+  - "AZURE"
 tags:
   - "POLICY"
+  - "AKS"
 ---
 Je potřeba si zhodnotit zda chceme tyto politiky nasadit na všechny namespaces v AKS a nebo některé vynechat.  
 Defaultně se vynechávají **kube-system a gatekeeper-system**.

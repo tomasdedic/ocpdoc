@@ -5,9 +5,9 @@ author: Tomas Dedic
 description: "Desc"
 lead: "working"
 categories:
-  - "AKS"
+  - "AZURE"
 tags:
-  - "COMMON"
+  - "AKS"
 ---
 Jak nastavit ssh public key v AZURE pro VMSS a pod pro pripojeni z privatniho rozsahu.
 ```sh

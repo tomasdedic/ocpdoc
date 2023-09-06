@@ -7,7 +7,7 @@ lead: ""
 categories:
   - "Openshift"
 tags:
-  - "CONFIG"
+  - "Azure"
 thumbnail: "img/changevmtitle.jpg"
 ---
 **Chceme změnit VM type na D8as_v4/D4as_v4.**
