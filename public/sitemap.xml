@@ -4,42 +4,102 @@
   
   <url>
     <loc>//localhost:1112/</loc>
-    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/aks/</loc>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/azure/aksappgateway/</loc>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/azure/</loc>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/azure/</loc>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/categories/</loc>
-    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1112/tags/ocp/</loc>
-    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+    <loc>//localhost:1112/openshift/kindwithmetallb/</loc>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1112/categories/openshift/</loc>
-    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+    <loc>//localhost:1112/categories/kubernetes/</loc>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/metallb/</loc>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/openshift/</loc>
-    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/operator/</loc>
-    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/sharedresources/</loc>
-    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/tags/</loc>
-    <lastmod>2023-09-01T00:00:00+00:00</lastmod>
+    <lastmod>2023-09-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/monitoring/grafanaoperator-customdashboard/</loc>
+    <lastmod>2023-09-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/monitoring/</loc>
+    <lastmod>2023-09-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/openshift/</loc>
+    <lastmod>2023-09-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/categories/azure/</loc>
+    <lastmod>2023-09-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/azuredevops/</loc>
+    <lastmod>2023-09-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/podman/</loc>
+    <lastmod>2023-09-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/azure/podmanado/</loc>
+    <lastmod>2023-09-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/monitoring/thanos-loki-monitoring/</loc>
+    <lastmod>2023-09-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/openshift/monitoring/monitoring_in_general/</loc>
+    <lastmod>2023-09-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -49,6 +109,11 @@
   
   <url>
     <loc>//localhost:1112/openshift/debug/containerstatusunknown-evicted/</loc>
+    <lastmod>2023-08-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//localhost:1112/tags/ocp/</loc>
     <lastmod>2023-08-07T00:00:00+00:00</lastmod>
   </url>
   
@@ -78,27 +143,12 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/tags/sealedsecrets/</loc>
-    <lastmod>2023-06-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/sealedsecrets/</loc>
-    <lastmod>2023-06-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/openshift/workflow/oboard/</loc>
     <lastmod>2023-06-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>//localhost:1112/tags/aks/</loc>
-    <lastmod>2023-04-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/categories/aks/</loc>
     <lastmod>2023-04-09T00:00:00+00:00</lastmod>
   </url>
   
@@ -138,21 +188,6 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/tags/acme/</loc>
-    <lastmod>2022-09-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/certmanager/</loc>
-    <lastmod>2022-09-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/kms_acme/</loc>
-    <lastmod>2022-09-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/tags/redis/</loc>
     <lastmod>2022-06-23T00:00:00+00:00</lastmod>
   </url>
@@ -183,12 +218,7 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/aks/aks_query/</loc>
-    <lastmod>2022-01-31T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/aks/perconamongooperator/</loc>
+    <loc>//localhost:1112/azure/perconamongooperator/</loc>
     <lastmod>2022-01-24T00:00:00+00:00</lastmod>
   </url>
   
@@ -248,11 +278,6 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/categories/azure/</loc>
-    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/openshift/config/pv-movebetweenclusters/</loc>
     <lastmod>2021-07-22T00:00:00+00:00</lastmod>
   </url>
@@ -298,11 +323,6 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/tags/prometheus/</loc>
-    <lastmod>2021-06-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/openshift/monitoring/prometheus_promql_queries/</loc>
     <lastmod>2021-06-17T00:00:00+00:00</lastmod>
   </url>
@@ -338,27 +358,12 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/categories/linux/</loc>
-    <lastmod>2021-04-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/linux/nvim-lsp/</loc>
-    <lastmod>2021-04-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/vim/</loc>
-    <lastmod>2021-04-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//localhost:1112/openshift/load_tests/zatezove_testy/</loc>
     <lastmod>2021-04-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/aks/aks-policy-builtin/</loc>
+    <loc>//localhost:1112/azure/aks-policy-builtin/</loc>
     <lastmod>2021-03-18T00:00:00+00:00</lastmod>
   </url>
   
@@ -398,6 +403,11 @@
   </url>
   
   <url>
+    <loc>//localhost:1112/categories/linux/</loc>
+    <lastmod>2021-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>//localhost:1112/tags/networking/</loc>
     <lastmod>2021-03-01T00:00:00+00:00</lastmod>
   </url>
@@ -418,7 +428,7 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/aks/external_dns/external_dns/</loc>
+    <loc>//localhost:1112/azure/external_dns/external_dns/</loc>
     <lastmod>2021-02-24T00:00:00+00:00</lastmod>
   </url>
   
@@ -428,12 +438,7 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/aks/aks-connect-to-node/</loc>
-    <lastmod>2021-02-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/tags/common/</loc>
+    <loc>//localhost:1112/azure/aks-connect-to-node/</loc>
     <lastmod>2021-02-21T00:00:00+00:00</lastmod>
   </url>
   
@@ -443,7 +448,7 @@
   </url>
   
   <url>
-    <loc>//localhost:1112/openshift/aks/aks-argo/</loc>
+    <loc>//localhost:1112/azure/aks-argo/</loc>
     <lastmod>2021-01-08T00:00:00+00:00</lastmod>
   </url>
   
@@ -583,6 +588,11 @@
   </url>
   
   <url>
+    <loc>//localhost:1112/tags/operator/</loc>
+    <lastmod>2020-07-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>//localhost:1112/openshift/operatorlifecyclemanager/</loc>
     <lastmod>2020-07-08T00:00:00+00:00</lastmod>
   </url>
@@ -628,10 +638,6 @@
   
   <url>
     <loc>//localhost:1112/openshift/debug/debug-openshiftapiserver/</loc>
-  </url>
-  
-  <url>
-    <loc>//localhost:1112/openshift/monitoring/monitoring_openshift/</loc>
   </url>
   
   <url>

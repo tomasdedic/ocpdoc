@@ -12,7 +12,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="//localhost:1112/openshift/" />
-<meta property="og:updated_time" content="2023-09-01T00:00:00+00:00" />
+<meta property="og:updated_time" content="2023-09-13T00:00:00+00:00" />
 
 	
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -68,6 +68,8 @@
       <a class="menu__link" href="/categories/aks/" title="Aks">Aks</a>
     <li class="menu__item">
       <a class="menu__link" href="/categories/azure/" title="Azure">Azure</a>
+    <li class="menu__item">
+      <a class="menu__link" href="/categories/kubernetes/" title="Kubernetes">Kubernetes</a>
     <li class="menu__item">
       <a class="menu__link" href="/categories/linux/" title="Linux">Linux</a>
     <li class="menu__item">
@@ -176,8 +178,6 @@
 
 
 
-
-
     
       
       
@@ -186,18 +186,6 @@
       
       
         
-    
-      
-      
-        
-      
-        
-    
-      
-      
-        
-    
-      
       
         
     
@@ -248,8 +236,6 @@
       
       
         
-    
-      
       
         
     
@@ -264,6 +250,28 @@
         
     
       
+      
+        
+      
+        
+    
+      
+      
+        
+    
+      
+      
+        
+    
+      
+      
+        
+    
+      
+      
+        
+      
+        
       
         
   
@@ -301,80 +309,41 @@
 
 
 
-
-
 <div class="post__tags tags clearfix">
 	<svg class="icon icon-tag" width="32" height="32" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
 	<ul class="tags__list">
+      <li class="tags__item"><a class="tags__link btn" href="/tags/metallb/" rel="tag">METALLB</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/monitoring/" rel="tag">MONITORING</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/ocp/" rel="tag">OCP</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/operator/" rel="tag">OPERATOR</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/debug/" rel="tag">DEBUG</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/chaos/" rel="tag">CHAOS</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/test/" rel="tag">TEST</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/kraken/" rel="tag">KRAKEN</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/sealedsecrets/" rel="tag">SEALEDSECRETS</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/security/" rel="tag">SECURITY</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/aks/" rel="tag">AKS</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/config/" rel="tag">CONFIG</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/loki/" rel="tag">LOKI</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/certmanager/" rel="tag">CERTMANAGER</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/acme/" rel="tag">ACME</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/redis/" rel="tag">REDIS</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/state/" rel="tag">STATE</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/deploy/" rel="tag">DEPLOY</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/argocd/" rel="tag">ARGOCD</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/oauth/oidc/" rel="tag">OAUTH/OIDC</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/release/" rel="tag">RELEASE</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/prometheus/" rel="tag">PROMETHEUS</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/vim/" rel="tag">VIM</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/policy/" rel="tag">POLICY</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/snippets/" rel="tag">SNIPPETS</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/etcd/" rel="tag">ETCD</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/egress/" rel="tag">EGRESS</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/azure/" rel="tag">AZURE</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/networking/" rel="tag">NETWORKING</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/tooling/" rel="tag">TOOLING</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/rbac/" rel="tag">RBAC</a></li>
-      <li class="tags__item"><a class="tags__link btn" href="/tags/common/" rel="tag">COMMON</a></li>
       <li class="tags__item"><a class="tags__link btn" href="/tags/encryption/" rel="tag">ENCRYPTION</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/dns/" rel="tag">DNS</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/ssl/tls/" rel="tag">SSL/TLS</a></li>
+      <li class="tags__item"><a class="tags__link btn" href="/tags/ingress/" rel="tag">INGRESS</a></li>
 	</ul>
 </div>
 
   <article class="list__item post">
-	<figure class="list__thumbnail">
-		<a href="//localhost:1112/openshift/openshift-release/">
-			<img src="/img/hand.jpg" alt="Openshift releases " />
-		</a>
-	</figure>
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/openshift/openshift-release/" rel="bookmark">
-			Openshift releases 
-			</a>
-		</h3>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2021-07-01T00:00:00">2021-07-01</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/release/" rel="category">RELEASE</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		Openshift releases news
-	</div>
-	
-</article>
-<article class="list__item post">
 	<figure class="list__thumbnail">
 		<a href="//localhost:1112/openshift/monitoring/prometheus_promql_queries/">
 			<img src="/img/prometheus.jpg" alt="Prometheus PromQL" />
@@ -400,7 +369,7 @@
 
 <div class="meta__item-categories meta__item">
 	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/prometheus/" rel="category">PROMETHEUS</a></span>
+	<span class="meta__text"><a class="meta__link" href="/tags/monitoring/" rel="category">MONITORING</a></span>
 </div>
 </div>
 	</header>
@@ -475,37 +444,6 @@
 <article class="list__item post">
 	<header class="list__header">
 		<h3 class="list__title post__title ">
-			<a href="/openshift/linux/nvim-lsp/" rel="bookmark">
-			Neovim LSP
-			</a>
-		</h3>
-		<p class="list__lead post__lead">working</p>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2021-04-15T00:00:00">2021-04-15</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/linux/" rel="category">LINUX</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/vim/" rel="category">VIM</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		Running neovim LSP plugin and ecosystem around
-	</div>
-	
-</article>
-<article class="list__item post">
-	<header class="list__header">
-		<h3 class="list__title post__title ">
 			<a href="/openshift/load_tests/zatezove_testy/" rel="bookmark">
 			Zátěžové testy
 			</a>
@@ -531,36 +469,6 @@
 	<div class="content list__excerpt post__content clearfix">
     
 		Desc
-	</div>
-	
-</article>
-<article class="list__item post">
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/openshift/aks/aks-policy-builtin/" rel="bookmark">
-			AKS builtin policy
-			</a>
-		</h3>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2021-03-18T00:00:00">2021-03-18</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/aks/" rel="category">AKS</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/policy/" rel="category">POLICY</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		short walkthrough
 	</div>
 	
 </article>
@@ -649,7 +557,7 @@
 
 <div class="meta__item-categories meta__item">
 	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/config/" rel="category">CONFIG</a></span>
+	<span class="meta__text"><a class="meta__link" href="/tags/azure/" rel="category">AZURE</a></span>
 </div>
 </div>
 	</header>
@@ -760,68 +668,6 @@
 <article class="list__item post">
 	<header class="list__header">
 		<h3 class="list__title post__title ">
-			<a href="/openshift/aks/external_dns/external_dns/" rel="bookmark">
-			External DNS, aad-pod-identity, cert-manager, nginx and enable ArgoCD to use ingress passthrough
-			</a>
-		</h3>
-		<p class="list__lead post__lead">working</p>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2021-02-24T00:00:00">2021-02-24</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/aks/" rel="category">AKS</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/deploy/" rel="category">DEPLOY</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		Desc
-	</div>
-	
-</article>
-<article class="list__item post">
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/openshift/aks/aks-connect-to-node/" rel="bookmark">
-			AKS pripojeni prez SSH k nodu v VMSS(scale set)
-			</a>
-		</h3>
-		<p class="list__lead post__lead">working</p>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2021-02-21T00:00:00">2021-02-21</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/aks/" rel="category">AKS</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/common/" rel="category">COMMON</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		Desc
-	</div>
-	
-</article>
-<article class="list__item post">
-	<header class="list__header">
-		<h3 class="list__title post__title ">
 			<a href="/openshift/debug/odpojeni-nodu-z-clusteru/" rel="bookmark">
 			Node not ready CSR problem
 			</a>
@@ -841,37 +687,6 @@
 <div class="meta__item-categories meta__item">
 	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
 	<span class="meta__text"><a class="meta__link" href="/tags/debug/" rel="category">DEBUG</a></span>
-</div>
-</div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-    
-		Desc
-	</div>
-	
-</article>
-<article class="list__item post">
-	<header class="list__header">
-		<h3 class="list__title post__title ">
-			<a href="/openshift/aks/aks-argo/" rel="bookmark">
-			Instalace arga na AKS a infrastruktura pro demo
-			</a>
-		</h3>
-		<p class="list__lead post__lead">working</p>
-		<div class="list__meta meta">
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2021-01-08T00:00:00">2021-01-08</time>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/aks/" rel="category">AKS</a></span>
-</div>
-
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/tags/argocd/" rel="category">ARGOCD</a></span>
 </div>
 </div>
 	</header>
@@ -972,12 +787,197 @@
 	</div>
 	
 </article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/dns/dnsdeepdive/" rel="bookmark">
+			DNS deepDive OPC/Azure/OnPremise
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-14T00:00:00">2020-10-14</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/azure/" rel="category">AZURE</a>, <a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/dns/" rel="category">DNS</a>, <a class="meta__link" href="/tags/networking/" rel="category">NETWORKING</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		How can I use a custom DNS in our cluster without modify the actual cluster DNS on top of Azure? How can I forward custom DNS and use specific DNS in an On-Premise Datacenter?
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/security/service-principal/" rel="bookmark">
+			Service principals ve vazbě na OCP
+			</a>
+		</h3>
+		<p class="list__lead post__lead">Jaké Service Principals a oprávnění Openshift vytváří</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-11T00:00:00">2020-10-11</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/azure/" rel="category">AZURE</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/config/" rel="category">CONFIG</a>, <a class="meta__link" href="/tags/security/" rel="category">SECURITY</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		uff
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/tunedoperator/" rel="bookmark">
+			Disable TransparentHugePages přez Tuned operator 
+			</a>
+		</h3>
+		<p class="list__lead post__lead">Disable TransparentHugePages pro worker nody jako boot parametr přez upravený profil Tuned operátoru</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-09T00:00:00">2020-10-09</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/config/" rel="category">CONFIG</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/config/cert-manager-install/" rel="bookmark">
+			Instalace a zprovozňení cert-manager DNS challenge
+			</a>
+		</h3>
+		<p class="list__lead post__lead">Instalace a zprovozňení cert-manager pro automatickou obnovu certifikatu pro ingress DNS challenge</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-08T00:00:00">2020-10-08</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/ssl/tls/" rel="category">SSL/TLS</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		SANDBOX
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/rbac/vytvoreni_zakladnich_skupin_a_uprava_upraveni/" rel="bookmark">
+			Základní definice RBAC, úprava postinstalačních oprávnění
+			</a>
+		</h3>
+		<p class="list__lead post__lead">Základní postinstalační RBAC model, úpravy defaultních oprávnění</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-08T00:00:00">2020-10-08</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/rbac/" rel="category">RBAC</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		SANDBOX
+	</div>
+	
+</article>
+<article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/openshift/ingress-egress/obecne/" rel="bookmark">
+			Egress, Ingress description/configuration
+			</a>
+		</h3>
+		<p class="list__lead post__lead">Ingress Egress definice a rozbor, in progress..</p>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-07T00:00:00">2020-10-07</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/openshift/" rel="category">OPENSHIFT</a></span>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/tags/networking/" rel="category">NETWORKING</a>, <a class="meta__link" href="/tags/egress/" rel="category">EGRESS</a>, <a class="meta__link" href="/tags/ingress/" rel="category">INGRESS</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+    
+		Desc
+	</div>
+	
+</article>
 
 </main>
 
 <div class="pagination">
 	<a class="pagination__item pagination__item--prev btn" href="/openshift/">«</a>
-	<span class="pagination__item pagination__item--current">2/4</span>
+	<span class="pagination__item pagination__item--current">2/3</span>
 	<a class="pagination__item pagination__item--next btn" href="/openshift/page/3/">»</a>
 </div>
 

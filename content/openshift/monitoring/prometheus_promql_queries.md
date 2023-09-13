@@ -7,7 +7,7 @@ lead: "more to come"
 categories:
   - "Openshift"
 tags:
-  - "Prometheus"
+  - "Monitoring"
 toc: true
 thumbnail: "img/prometheus.jpg"
 ---
