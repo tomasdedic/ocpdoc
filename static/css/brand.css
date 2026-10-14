@@ -1,21 +1,24 @@
-/* Salon brand on top of Bootstrap 5.3. Only variables and spacing, no layout fights. */
+/* Palette F: bright orange #c96a15 with dark button labels (white on it would
+   be 3.78, below the 4.5 minimum), darker orange #a94d18 for links.
+   Salon brand on top of Bootstrap 5.3. Only variables and spacing, no layout fights. */
 :root {
   --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --bs-body-bg: #fdfbf7;
-  --bs-body-color: #2f3330;
-  --bs-emphasis-color: #23413a;
-  --brand: #2f6b57;
-  --brand-hover: #265846;
-  --brand-emphasis: #23413a;
-  --bs-link-color: #2f6b57;
-  --bs-link-hover-color: #265846;
-  --bs-link-color-rgb: 47, 107, 87;
-  --bs-link-hover-color-rgb: 38, 88, 70;
-  --bs-secondary-color: #4f5751;
-  --bs-secondary-color-rgb: 79, 87, 81;
-  --bs-tertiary-bg: #f4efe6;
-  --bs-tertiary-bg-rgb: 244, 239, 230;   /* bg-body-tertiary reads the -rgb triple, not the color */
-  --bs-border-color: #e3dccd;
+  --bs-body-bg: #fffdfa;
+  --bs-body-color: #2b2422;
+  --bs-emphasis-color: #2b2422;
+  --brand: #c96a15;
+  --brand-hover: #a95810;
+  --brand-emphasis: #2b2422;
+  --bs-link-color: #a94d18;
+  --bs-link-hover-color: #8f4114;
+  --bs-link-color-rgb: 169, 77, 24;
+  --bs-link-hover-color-rgb: 143, 65, 20;
+  --bs-secondary-color: #5e5551;
+  --bs-secondary-color-rgb: 94, 85, 81;
+  --bs-tertiary-bg: #fbf3e9;
+  --bs-tertiary-bg-rgb: 251, 243, 233;   /* bg-body-tertiary reads the -rgb triple, not the color */
+  --bs-border-color: #eadfd2;
+  --bs-border-color-translucent: rgba(122, 84, 42, 0.22);   /* .card reads this one */
   --bs-border-radius: 0.5rem;
   scroll-behavior: smooth;
 }
@@ -30,13 +33,13 @@ h1, h2, h3, .display-5 {
 .btn-brand {
   --bs-btn-bg: var(--brand);
   --bs-btn-border-color: var(--brand);
-  --bs-btn-color: #fff;
+  --bs-btn-color: #1f1a18;
   --bs-btn-hover-bg: var(--brand-hover);
   --bs-btn-hover-border-color: var(--brand-hover);
-  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-color: #1f1a18;
   --bs-btn-active-bg: var(--brand-hover);
   --bs-btn-active-border-color: var(--brand-hover);
-  --bs-btn-active-color: #fff;
+  --bs-btn-active-color: #1f1a18;
 }
 
 /* Short pages still push the footer to the bottom of the window. */
@@ -47,7 +50,7 @@ footer { flex-shrink: 0; }
 /* Anchor links must clear the sticky navbar. */
 section[id] { scroll-margin-top: 4.5rem; }
 
-.hero { background: linear-gradient(180deg, #f2ece1 0%, var(--bs-body-bg) 100%); }
+.hero { background: linear-gradient(180deg, #fbe6cf 0%, var(--bs-body-bg) 100%); }
 
 /* Markdown sections: the .md file owns the words, this owns the rhythm. */
 .prose { max-width: 46rem; }
@@ -103,9 +106,9 @@ section[id] { scroll-margin-top: 4.5rem; }
 
 /* Bootstrap scopes accordion variables to .accordion, so they do not work on :root. */
 .accordion {
-  --bs-accordion-active-bg: #f1e9db;
+  --bs-accordion-active-bg: #fbe6cf;
   --bs-accordion-active-color: #23413a;
-  --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2323413a' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%232b2422' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
   --bs-accordion-btn-focus-box-shadow: none;
 }
 .accordion-button:not(.collapsed) { box-shadow: none; }
