@@ -42,7 +42,7 @@ inside the same markdown file, so nothing has to be kept in sync in a second pla
 ```markdown
 {{< cards >}}
 
-{{< card title="Deep tissue" time="60 min" price="250 zl" sub="Strong pressure for chronic tension." >}}
+{{< card title="Deep tissue" time="60 min" price="250 CZK" sub="Strong pressure for chronic tension." >}}
 
 Slow, firm work on deep muscle layers and fascia.
 This paragraph is the body of the card.
