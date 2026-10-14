@@ -14,6 +14,7 @@
   --bs-secondary-color: #4f5751;
   --bs-secondary-color-rgb: 79, 87, 81;
   --bs-tertiary-bg: #f4efe6;
+  --bs-tertiary-bg-rgb: 244, 239, 230;   /* bg-body-tertiary reads the -rgb triple, not the color */
   --bs-border-color: #e3dccd;
   --bs-border-radius: 0.5rem;
   scroll-behavior: smooth;
@@ -83,6 +84,7 @@ section[id] { scroll-margin-top: 4.5rem; }
 
 /* A bullet list inside a card becomes label and value rows: the bold part is the
    value, set on the right. That is how the opening hours are written. */
+.card-body > :last-child { margin-bottom: 0; }
 .card ul { list-style: none; padding: 0; margin: 0 0 0.9rem; }
 .card li {
   display: flex;
