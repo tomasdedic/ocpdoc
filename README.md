@@ -26,7 +26,7 @@ standard). Built by CI with Hugo 0.168.0 extended.
 | Parking, payment, how calls are answered, next to the address | `content/contact.md` |
 | FAQ page | `content/faq.md` |
 | Privacy page | `content/privacy.md` |
-| Phone, e-mail, address, map links, social links, menu | `hugo.toml` |
+| The address card, header phone button, hero buttons, footer links, menu | `hugo.toml` |
 
 `content/strip.md`, `content/services.md`, `content/hours.md` and `content/contact.md`
 have `headless = true`
@@ -99,8 +99,9 @@ Three steps, no YAML:
    the page, take the embed `src` URL from Mapy.com or Google Maps and put it in
    `params.mapEmbed`. An embedded map loads code from someone else, so say so on the
    privacy page.
-5. Contact details in `hugo.toml` are shown in the header, the hero, the contact section
-   and the footer. Edit them once, they are right everywhere.
+5. Contact details in `hugo.toml` are shown in the header button, the hero buttons, the
+   address card and the footer. Edit them once, they are right everywhere. The phone is
+   deliberately shown once per section, not twice.
 
 ## Design
 

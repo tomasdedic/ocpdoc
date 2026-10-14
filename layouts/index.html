@@ -55,8 +55,6 @@
             <div class="card-body prose">
               <h3 class="card-title">{{ .Title }}</h3>
               {{ .Content }}
-              {{ with site.Params.phoneHref }}<p class="mb-0 mt-3"><a href="{{ . | safeURL }}">Call {{ site.Params.phone }}</a></p>{{ end }}
-              {{ with site.Params.mapsUrl }}<p class="mb-0"><a href="{{ . }}">Get directions</a></p>{{ end }}
             </div>
           </div>
         </div>
@@ -68,23 +66,26 @@
   {{ with site.GetPage "/contact" }}
   <section id="contact" class="py-5 bg-body-tertiary border-top">
     <div class="container">
-      <div class="row gx-4 gy-4 gy-lg-5">
-        <div class="col-lg-6">
-          <h2 class="text-brand-emphasis">Contact</h2>
-          <address class="mt-3 mb-0">
-            {{ with site.Params.address }}<p class="mb-1">{{ . }}</p>{{ end }}
-            {{ with site.Params.phoneHref }}<p class="mb-1"><a href="{{ . | safeURL }}">{{ site.Params.phone }}</a></p>{{ end }}
-            {{ with site.Params.email }}<p class="mb-1"><a href="mailto:{{ . }}">{{ . }}</a></p>{{ end }}
-            {{ with site.Params.mapsUrl }}<p class="mb-0"><a href="{{ . }}">Get directions</a></p>{{ end }}
-          </address>
-          {{ with site.Params.mapEmbed }}
-          <div class="ratio ratio-4x3 mt-4"><iframe src="{{ . }}" title="Map" loading="lazy"
-            style="border:0" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>
-          {{ end }}
-        </div>
-        <div class="col-lg-6">
-          <h3>{{ .Title }}</h3>
+      <div class="row gx-4 gy-4 align-items-start">
+        <div class="col-lg-7">
+          <h2 class="text-brand-emphasis">{{ .Title }}</h2>
           <div class="prose">{{ .Content }}</div>
+        </div>
+        <div class="col-lg-5">
+          <div class="card">
+            <div class="card-body">
+              <address class="mb-0">
+                {{ with site.Params.address }}<p class="mb-1">{{ . }}</p>{{ end }}
+                {{ with site.Params.phoneHref }}<p class="mb-1"><a href="{{ . | safeURL }}">{{ site.Params.phone }}</a></p>{{ end }}
+                {{ with site.Params.email }}<p class="mb-1"><a href="mailto:{{ . }}">{{ . }}</a></p>{{ end }}
+                {{ with site.Params.mapsUrl }}<p class="mb-0"><a href="{{ . }}">Get directions</a></p>{{ end }}
+              </address>
+              {{ with site.Params.mapEmbed }}
+              <div class="ratio ratio-4x3 mt-3"><iframe src="{{ . }}" title="Map" loading="lazy"
+                style="border:0" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+              {{ end }}
+            </div>
+          </div>
         </div>
       </div>
     </div>

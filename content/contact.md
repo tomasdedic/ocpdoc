@@ -1,5 +1,5 @@
 +++
-title = "Getting here"
+title = "Contact"
 headless = true
 +++
 
