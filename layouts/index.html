@@ -7,8 +7,8 @@
           <h1 class="display-5 fw-semibold text-brand-emphasis">{{ .Title }}</h1>
           {{ with .Params.lead }}<p class="lead mt-3">{{ . }}</p>{{ end }}
           <div class="d-flex flex-wrap gap-2 mt-4">
-            {{ with site.Params.phoneHref }}<a class="btn btn-brand btn-lg" href="{{ . | safeURL }}">Call {{ site.Params.phone }}</a>{{ end }}
-            {{ with site.Params.email }}<a class="btn btn-outline-secondary btn-lg" href="mailto:{{ . }}">Write an e-mail</a>{{ end }}
+            {{ with site.Params.phoneHref }}<a class="btn btn-brand btn-lg" href="{{ . | safeURL }}">{{ i18n "call" }} {{ site.Params.phone }}</a>{{ end }}
+            {{ with site.Params.email }}<a class="btn btn-outline-secondary btn-lg" href="mailto:{{ . }}">{{ i18n "writeEmail" }}</a>{{ end }}
           </div>
         </div>
         {{ with .Params.image }}
@@ -35,8 +35,8 @@
       {{ with .Params.intro }}<p class="text-secondary">{{ . }}</p>{{ end }}
       {{ .Content }}
       {{ with site.Params.phoneHref }}
-      <p class="mt-4 mb-0"><a class="btn btn-brand" href="{{ . | safeURL }}">Call {{ site.Params.phone }}</a>
-        <span class="text-secondary small ms-2">to book a time</span></p>
+      <p class="mt-4 mb-0"><a class="btn btn-brand" href="{{ . | safeURL }}">{{ i18n "call" }} {{ site.Params.phone }}</a>
+        <span class="text-secondary small ms-2">{{ i18n "toBookTime" }}</span></p>
       {{ end }}
     </div>
   </section>
@@ -46,7 +46,7 @@
     <div class="container">
       <div class="row gx-4 gy-4 align-items-start">
         <div class="col-lg-7">
-          <h2 class="text-brand-emphasis">The studio</h2>
+          <h2 class="text-brand-emphasis">{{ .Params.about | default "The studio" }}</h2>
           <div class="prose">{{ .Content }}</div>
         </div>
         {{ with site.GetPage "/hours" }}
@@ -78,7 +78,7 @@
                 {{ with site.Params.address }}<p class="mb-1">{{ . }}</p>{{ end }}
                 {{ with site.Params.phoneHref }}<p class="mb-1"><a href="{{ . | safeURL }}">{{ site.Params.phone }}</a></p>{{ end }}
                 {{ with site.Params.email }}<p class="mb-1"><a href="mailto:{{ . }}">{{ . }}</a></p>{{ end }}
-                {{ with site.Params.mapsUrl }}<p class="mb-0"><a href="{{ . }}">Get directions</a></p>{{ end }}
+                {{ with site.Params.mapsUrl }}<p class="mb-0"><a href="{{ . }}">{{ i18n "getDirections" }}</a></p>{{ end }}
               </address>
               {{ with site.Params.mapEmbed }}
               <div class="ratio ratio-4x3 mt-3"><iframe src="{{ . }}" title="Map" loading="lazy"

@@ -6,6 +6,8 @@
     <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} - {{ site.Title }}{{ end }}</title>
     <meta name="description" content="{{ .Description | default site.Params.description }}">
     <link rel="canonical" href="{{ .Permalink }}">
+    {{ range .Translations }}<link rel="alternate" hreflang="{{ .Language.Locale }}" href="{{ .Permalink }}">
+    {{ end }}<link rel="alternate" hreflang="x-default" href="{{ site.Home.Permalink }}">
     <link rel="icon" type="image/svg+xml" href="{{ "img/favicon.svg" | relURL }}">
     <link rel="stylesheet" href="{{ "css/bootstrap.min.css" | relURL }}">
     <link rel="stylesheet" href="{{ "css/brand.css" | relURL }}">

@@ -1,13 +1,12 @@
 baseURL = "https://www.sudlice.org/"   # the Pages workflow overrides this with the real site URL
-locale = "en"
-title = "Studio M - Massage Salon"
+defaultContentLanguage = "en"
 timeZone = "Europe/Prague"
 enableRobotsTXT = true
 
-# Only contact facts live here. Every word visitors read is in content/*.md
+# Shared facts only. Words visitors read live in content/*.md (EN) and content/*.cs.md (CZ).
+# The few fixed interface labels live in i18n/en.toml and i18n/cs.toml.
 [params]
   brand = "Studio M"
-  description = "Massage salon in Prague. Swedish, deep tissue, lymphatic drainage and hot stone massage. Call or write to set a time."
   address = "Vodickova 415/2, 110 00 Praha 1"
   phone = "+420 601 123 456"
   phoneHref = "tel:+420601123456"
@@ -18,19 +17,50 @@ enableRobotsTXT = true
   facebook = "https://www.facebook.com/"
   instagram = "https://www.instagram.com/"
 
-[menu]
-  [[menu.main]]
-    name = "Services"
-    url = "#services"
+[languages]
+  [languages.en]
+    locale = "en"
+    label = "EN"
+    title = "Studio M - Massage Salon"
     weight = 1
-  [[menu.main]]
-    name = "About"
-    url = "#about"
+
+    [languages.en.params]
+      description = "Massage salon in Prague. Swedish, deep tissue, lymphatic drainage and hot stone massage. Call or write to set a time."
+
+    [[languages.en.menu.main]]
+      name = "Services"
+      url = "#services"
+      weight = 1
+    [[languages.en.menu.main]]
+      name = "About"
+      url = "#about"
+      weight = 2
+    [[languages.en.menu.main]]
+      name = "Contact"
+      url = "#contact"
+      weight = 4
+
+  [languages.cs]
+    locale = "cs"
+    label = "CS"
+    title = "Studio M - Masážní studio"
     weight = 2
-  [[menu.main]]
-    name = "Contact"
-    url = "#contact"
-    weight = 4
+
+    [languages.cs.params]
+      description = "Masážní studio v Praze. Švédská masáž, hluboká tkáňová masáž, lymphodrenáž a masáž horkými kameny. Zavolejte nebo napište a domluvíme termín."
+
+    [[languages.cs.menu.main]]
+      name = "Služby"
+      url = "#services"
+      weight = 1
+    [[languages.cs.menu.main]]
+      name = "O studiu"
+      url = "#about"
+      weight = 2
+    [[languages.cs.menu.main]]
+      name = "Kontakt"
+      url = "#contact"
+      weight = 4
 
 [taxonomies]
 

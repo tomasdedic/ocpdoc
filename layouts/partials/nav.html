@@ -1,14 +1,20 @@
 <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary border-bottom">
   <div class="container">
-    <a class="navbar-brand fw-semibold" href="{{ "/" | relURL }}">{{ site.Params.brand | default site.Title }}</a>
+    <a class="navbar-brand fw-semibold" href="{{ "/" | relLangURL }}">{{ site.Params.brand | default site.Title }}</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainnav"
-            aria-controls="mainnav" aria-expanded="false" aria-label="Menu">
+            aria-controls="mainnav" aria-expanded="false" aria-label="{{ i18n "menu" }}">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="mainnav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {{ range site.Menus.main }}
-          <li class="nav-item"><a class="nav-link" href="{{ .URL | relURL }}">{{ .Name }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
+        {{ end }}
+      </ul>
+      <ul class="navbar-nav flex-row align-items-center gap-1 me-lg-2">
+        <li class="nav-item"><span class="nav-link px-1 text-secondary" aria-current="true">{{ site.Language.Label }}</span></li>
+        {{ range .Translations }}
+        <li class="nav-item"><a class="nav-link px-1 fw-semibold" hreflang="{{ .Language.Locale }}" href="{{ .RelPermalink }}">{{ .Language.Label }}</a></li>
         {{ end }}
       </ul>
       {{ with site.Params.phoneHref }}
@@ -23,13 +29,14 @@
   document.querySelectorAll('#mainnav a').forEach(function (link) {
     link.addEventListener('click', function (event) {
       var menu = document.getElementById('mainnav');
-      var hash = link.getAttribute('href');
-      if (!menu.classList.contains('show') || !hash || hash.charAt(0) !== '#') { return; }
-      var target = document.querySelector(hash);
+      // The browser resolves the href for us, so this matches /cs/#contact on /cs/ and
+      // ignores tel:, mailto: and the pages of the other language.
+      if (!menu.classList.contains('show') || !link.hash || link.pathname !== location.pathname) { return; }
+      var target = document.querySelector(link.hash);
       if (!target) { return; }
       event.preventDefault();
       menu.addEventListener('hidden.bs.collapse', function () {
-        history.replaceState(null, '', hash);
+        history.replaceState(null, '', link.hash);
         target.scrollIntoView();
       }, { once: true });
       bootstrap.Collapse.getOrCreateInstance(menu).hide();

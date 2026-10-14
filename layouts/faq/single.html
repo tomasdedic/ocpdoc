@@ -3,7 +3,7 @@
   <div class="container">
     <h1 class="text-brand-emphasis">{{ .Title }}</h1>
     {{ .Content }}
-    <p class="mt-5"><a href="{{ "/" | relURL }}">Back to the top page</a></p>
+    <p class="mt-5"><a href="{{ "/" | relLangURL }}">{{ i18n "backHome" }}</a></p>
   </div>
 </section>
 {{ end }}

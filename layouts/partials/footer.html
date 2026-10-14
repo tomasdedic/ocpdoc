@@ -7,14 +7,13 @@
       </div>
       <div class="col-lg-4">
         <ul class="list-unstyled small mb-0">
-          {{ range site.Menus.main }}<li class="mb-1"><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>{{ end }}
+          {{ range site.Menus.main }}<li class="mb-1"><a href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>{{ end }}
         </ul>
       </div>
       <div class="col-lg-4">
         <ul class="list-unstyled small mb-0">
           {{ with site.Params.facebook }}<li class="mb-1"><a href="{{ . }}">Facebook</a></li>{{ end }}
           {{ with site.Params.instagram }}<li class="mb-1"><a href="{{ . }}">Instagram</a></li>{{ end }}
-          {{ with site.GetPage "/privacy" }}<li class="mb-1"><a href="{{ .RelPermalink }}">Privacy policy</a></li>{{ end }}
         </ul>
       </div>
     </div>

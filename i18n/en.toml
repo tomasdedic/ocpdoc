@@ -1,0 +1,6 @@
+call = "Call"
+writeEmail = "Write an e-mail"
+toBookTime = "to book a time"
+getDirections = "Get directions"
+backHome = "Back to the top page"
+menu = "Menu"

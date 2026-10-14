@@ -1,43 +1,59 @@
-# Massage salon page - Hugo + Bootstrap 5
+# Massage salon page - Hugo + Bootstrap 5, EN and CZ
 
-Static site. No theme, no npm build, no YAML: every word visitors read is a markdown
-file in `content/`, and Bootstrap 5.3.8 is copied into `static/`.
+Static site in two languages. No theme, no npm build, no YAML: the words are markdown
+files, Bootstrap 5.3.8 is copied into `static/`, and the interface labels are two small
+translation files.
 
 Published by GitHub Pages through `.github/workflows/deploy.yaml`.
 
 ## Run and build
 
 ```bash
-hugo server          # http://localhost:1313
+hugo server          # http://localhost:1313  (Czech: http://localhost:1313/cs/)
 hugo --gc --minify   # writes the site to public/
 ```
 
-Needs Hugo 0.156 or newer (the templates use `hugo` accessors and TOML front matter is
-standard). Built by CI with Hugo 0.168.0 extended.
+Needs Hugo 0.156 or newer. CI builds with Hugo 0.168.0 extended.
+
+## Two languages
+
+| | English | Czech |
+|---|---|---|
+| Address | `/` | `/cs/` |
+| Content files | `content/name.md` | `content/name.cs.md` |
+| Interface words | `i18n/en.toml` | `i18n/cs.toml` |
+| Menu and site name | `[languages.en]` in `hugo.toml` | `[languages.cs]` in `hugo.toml` |
+
+English is the default (`defaultContentLanguage = "en"`), so it lives at the root and Czech
+under `/cs/`. A page appears in a language only if that language's file exists: delete
+`content/hours.cs.md` and the hours card is gone from the Czech page only. The header switcher
+(EN / CS) hides itself when a page has no translation, so keep both files of a pair if the
+page is linked from the menu.
 
 ## Where the text lives
 
-| What you see on the site | File |
-|---|---|
-| Headline and lead at the top, "The studio" text | `content/_index.md` |
-| Three short reasons under the hero | `content/strip.md` |
-| "Services and prices", one block per treatment | `content/services.md` |
-| Opening hours, one line per day range, in the card next to "The studio" | `content/hours.md` |
-| Parking, payment, how calls are answered, next to the address | `content/contact.md` |
-| FAQ page | `content/faq.md` |
-| Privacy page | `content/privacy.md` |
-| The address card, header phone button, hero buttons, footer links, menu | `hugo.toml` |
+| What you see on the site | English | Czech |
+|---|---|---|
+| Hero heading, lead, "O studiu / The studio" text | `content/_index.md` | `content/_index.cs.md` |
+| Three short reasons under the hero | `content/strip.md` | `content/strip.cs.md` |
+| Services and prices, one block per treatment | `content/services.md` | `content/services.cs.md` |
+| Opening hours, in the card next to the studio text | `content/hours.md` | `content/hours.cs.md` |
+| Parking, payment, how calls are answered | `content/contact.md` | `content/contact.cs.md` |
+| FAQ page | `content/faq.md` | `content/faq.cs.md` |
+| Phone, e-mail, address, map link, social, menu, site name | `hugo.toml` (`[params]` and `[languages]`) | |
+| Call, Write an e-mail, Get directions, back link | `i18n/en.toml` | `i18n/cs.toml` |
 
-`content/strip.md`, `content/services.md`, `content/hours.md` and `content/contact.md`
-have `headless = true`
-in their front matter. They are parts of the top page and get no URL of their own.
+`content/strip.*`, `content/services.*`, `content/hours.*` and `content/contact.*` have
+`headless = true` in their front matter: they are parts of the top page and get no URL of
+their own.
 
 ## How to write the content
 
-Plain markdown, TOML front matter between two lines of `+++`. Most of it is ordinary
-prose: paragraphs and bullet lists. Two things need a little structure because they are
-laid out as boxes, not as text: a service and a FAQ question. They use shortcodes, written
-inside the same markdown file, so nothing has to be kept in sync in a second place.
+Plain markdown, TOML front matter between two lines of `+++`. Most of it is ordinary prose:
+paragraphs and bullet lists. Four things use a little structure because they are laid out as
+boxes, not as text.
+
+A service card:
 
 ```markdown
 {{< cards >}}
@@ -51,6 +67,8 @@ This paragraph is the body of the card.
 
 {{< /cards >}}
 ```
+
+A FAQ item:
 
 ```markdown
 {{< folds >}}
@@ -67,49 +85,59 @@ Rules worth knowing:
 
 - Keep one empty line between a shortcode line and its text, otherwise markdown swallows
   the paragraph.
-- `title`, `time`, `price` and `sub` are the four card labels. `sub` is optional.
-- The strip under the hero is a normal bullet list, one bullet per box, and the bold words
-  at the start of a bullet become its title.
-- Opening hours are a bullet list too, one line per day range, with the hours in bold:
-  `- Mon - Fri **09:00 - 20:00**`. Inside a card, bold becomes the right-aligned value. `layouts/shortcodes/` holds all four shortcode
-  files, each of them between 3 and 12 lines.
+- `title`, `time`, `price` and `sub` are the four card labels, `sub` is optional. Czech
+  prices use `Kč`, English ones `CZK`.
+- The strip under the hero is a normal bullet list, one bullet per column, and the bold
+  words at the start of a bullet become its title.
+- Opening hours are a bullet list too: `- Mon - Fri **09:00 - 20:00**`. Inside a card, bold
+  becomes the right aligned value.
 - `content/faq.md` has `type = "faq"`, which is why it uses `layouts/faq/single.html`
-  (full width accordion) instead of `layouts/_default/single.html` (the narrow reading
-  column the privacy page uses).
+  (full width accordion). `layouts/_default/single.html` is the fallback for any new page:
+  a narrow reading column, no template work needed.
 - The thin rules, the hours rows, the card look and the accordion colors come from
   `static/css/brand.css`, not from the text.
 
 ## Add a section to the top page
 
-Three steps, no YAML:
-
-1. New `content/mine.md` with `title` and `headless = true` in the front matter, then the text.
-2. In `layouts/index.html`, copy one block such as the `{{ with site.GetPage "/contact" }}`
-   section, change `/contact` to `/mine` and `id="contact"` to `id="mine"`.
-3. In `hugo.toml`, add a `[menu.main]` entry with `url = "#mine"` and a `weight` that sets
-   its place in the header. `weight` only orders the menu; the order on the page is the
-   order of the blocks in `layouts/index.html`.
+1. New `content/mine.md` and `content/mine.cs.md`, both with `title` and `headless = true`
+   in the front matter, then the text.
+2. In `layouts/index.html`, copy one block such as the `{{ with site.GetPage "/hours" }}`
+   section, change `/hours` to `/mine` and the `id` to match.
+3. In `hugo.toml`, add a `[[languages.en.menu.main]]` and a `[[languages.cs.menu.main]]`
+   entry with `url = "#mine"` and a `weight` that sets its place in the header. `weight`
+   only orders the menu; the order on the page is the order of the blocks in
+   `layouts/index.html`.
 
 ## Before launch, check these
 
-1. `baseURL` in `hugo.toml` - the Pages workflow replaces it with the real site URL anyway.
-2. Photos - replace `static/img/hero.svg` with a real photo (`hero.jpg`, about 900x640 px)
-   and set `image = "img/hero.jpg"` in `content/_index.md`.
-3. Czech text - set `locale = "cs"` in `hugo.toml`, translate the markdown files and put
-   Czech diacritics back into the address, for example `Vodickova` -> `Vodičkova`.
-4. Map - the "Get directions" link points at Mapy.com (`params.mapsUrl`). To show a map on
-   the page, take the embed `src` URL from Mapy.com or Google Maps and put it in
-   `params.mapEmbed`. An embedded map loads code from someone else, so say so on the
-   privacy page.
-5. Contact details in `hugo.toml` are shown in the header button, the hero buttons, the
-   address card and the footer. Edit them once, they are right everywhere. The phone is
-   deliberately shown once per section, not twice.
+1. Photos - replace `static/img/hero.svg` with a real photo (`hero.jpg`, about 900x640 px),
+   `image = "img/hero.jpg"` is set in both `_index` files.
+2. Real data - address, phone and e-mail in `[params]`, once, for both languages. The price
+   numbers are placeholders from the Polish version and are far too low for Prague.
+3. `params.legal` is not on the page: a registered business normally states its name and
+   ID number somewhere, and a Czech site usually has an information obligation about
+   personal data. Both were removed on request, so add them back if the friend is a
+   registered provider.
+4. Map - the "Get directions" link points at Mapy.com (`params.mapsUrl`) and loads nothing
+   until a visitor clicks it. Putting an embed `src` into `params.mapEmbed` does load code
+   from Mapy.com or Google for every visitor.
+5. Contact details in `hugo.toml` are used by the header button, the hero buttons, the
+   address card and the footer. Edit once, right everywhere.
+6. Read the Czech aloud. It was written by a machine; a native speaker will change endings
+   and word order, especially the gendered forms ("řekněte", "zeptejte se" are neutral on
+   purpose).
+
+## Deploy
+
+Push to `master`. The workflow installs Hugo 0.168.0 extended, runs `hugo --gc --minify
+--baseURL <pages url>/` and uploads `public` to Pages. Pages keeps its own domain setting,
+so the address in `hugo.toml` is only used for local builds.
 
 ## Design
 
-`static/css/brand.css` holds every choice: colors, fonts, button, section spacing, and the
-`.prose` rules that give markdown its rhythm. It only sets Bootstrap variables, so
-Bootstrap classes still work everywhere.
+`static/css/brand.css` holds every choice: colors, fonts, button, section spacing, the
+markdown rhythm, the hours rows and the accordion colors. It only sets Bootstrap variables,
+so Bootstrap classes still work everywhere.
 
 ## Links to a phone number
 
