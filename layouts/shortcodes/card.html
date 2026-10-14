@@ -1,0 +1,12 @@
+<div class="col">
+  <div class="card h-100">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-baseline gap-3">
+        <h3 class="h5 card-title mb-1">{{ .Get "title" }}</h3>
+        <span class="text-nowrap fw-semibold">{{ .Get "price" }}</span>
+      </div>
+      <p class="small text-secondary mb-2">{{ .Get "time" }}{{ with .Get "sub" }} - {{ . }}{{ end }}</p>
+      <div class="card-text">{{ .Inner }}</div>
+    </div>
+  </div>
+</div>

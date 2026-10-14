@@ -19,49 +19,66 @@ standard). Built by CI with Hugo 0.168.0 extended.
 
 | What you see on the site | File |
 |---|---|
-| Headline and lead at the top, "The studio" text and its bullet list | `content/_index.md` |
-| "Services and prices", one `##` block per treatment | `content/services.md` |
+| Headline and lead at the top, "The studio" text | `content/_index.md` |
+| Three short reasons under the hero | `content/strip.md` |
+| "Services and prices", one block per treatment | `content/services.md` |
 | Opening hours, parking, payment, next to the address | `content/contact.md` |
 | FAQ page | `content/faq.md` |
 | Privacy page | `content/privacy.md` |
-| Phone, e-mail, address, map link, social links, menu | `hugo.toml` |
+| Phone, e-mail, address, map links, social links, menu | `hugo.toml` |
 
-`content/services.md` and `content/contact.md` have `headless = true` in their front
-matter. They are parts of the top page and get no URL of their own.
+`content/strip.md`, `content/services.md` and `content/contact.md` have `headless = true`
+in their front matter. They are parts of the top page and get no URL of their own.
 
 ## How to write the content
 
-Plain markdown. Front matter, between two lines of `+++`, holds only the few values the
-design needs:
+Plain markdown, TOML front matter between two lines of `+++`. Most of it is ordinary
+prose: paragraphs and bullet lists. Two things need a little structure because they are
+laid out as boxes, not as text: a service and a FAQ question. They use shortcodes, written
+inside the same markdown file, so nothing has to be kept in sync in a second place.
 
 ```markdown
-+++
-title = "Services and prices"
-headless = true
-+++
+{{< cards >}}
 
-## Deep tissue
-
-**60 min - 250 zl**
+{{< card title="Deep tissue" time="60 min" price="250 zl" sub="Strong pressure for chronic tension." >}}
 
 Slow, firm work on deep muscle layers and fascia.
+This paragraph is the body of the card.
+
+{{< /card >}}
+
+{{< /cards >}}
 ```
 
-- `title` is the heading the section shows.
-- One service is one `##` heading, then a bold `duration - price` line, then the
-  description. The thin rule between services comes from CSS, not from the text.
-- `content/faq.md` is a real page at `/faq/`. Its menu entry comes from the `[menu.main]`
-  block in its own front matter, so deleting the file deletes the link.
-- Extra markdown pages you add on your own are published by `layouts/_default/single.html`
-  with no template work.
+```markdown
+{{< folds >}}
+
+{{< fold q="Can I cancel?" >}}
+
+Free of charge up to 12 hours before.
+{{< /fold >}}
+
+{{< /folds >}}
+```
+
+Rules worth knowing:
+
+- Keep one empty line between a shortcode line and its text, otherwise markdown swallows
+  the paragraph.
+- `title`, `time`, `price` and `sub` are the four card labels. `sub` is optional.
+- The strip under the hero is a normal bullet list, one bullet per box, and the bold words
+  at the start of a bullet become its title. `layouts/shortcodes/` holds all four shortcode
+  files, each of them between 3 and 12 lines.
+- The thin rules, the card look of the hours table and the accordion colors come from
+  `static/css/brand.css`, not from the text.
 
 ## Add a section to the top page
 
 Three steps, no YAML:
 
 1. New `content/mine.md` with `title` and `headless = true` in the front matter, then the text.
-2. In `layouts/index.html`, copy one block such as the `{{ with site.GetPage "/services" }}`
-   section, change `/services` to `/mine` and `id="services"` to `id="mine"`.
+2. In `layouts/index.html`, copy one block such as the `{{ with site.GetPage "/contact" }}`
+   section, change `/contact` to `/mine` and `id="contact"` to `id="mine"`.
 3. In `hugo.toml`, add a `[menu.main]` entry with `url = "#mine"` and a `weight` that sets
    its place in the header. `weight` only orders the menu; the order on the page is the
    order of the blocks in `layouts/index.html`.

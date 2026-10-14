@@ -20,18 +20,20 @@
     </div>
   </section>
 
-  <section id="about" class="py-5 bg-body-tertiary border-top border-bottom">
-    <div class="container">
-      <h2 class="text-brand-emphasis">The studio</h2>
-      <div class="prose">{{ .Content }}</div>
+  {{ with site.GetPage "/strip" }}
+  <section class="py-5 bg-body-tertiary border-top border-bottom">
+    <div class="container strip-cards">
+      {{ .Content }}
     </div>
   </section>
+  {{ end }}
 
   {{ with site.GetPage "/services" }}
   <section id="services" class="py-5">
     <div class="container">
       <h2 class="text-brand-emphasis">{{ .Title }}</h2>
-      <div class="prose prose-cols">{{ .Content }}</div>
+      {{ with .Params.intro }}<p class="text-secondary">{{ . }}</p>{{ end }}
+      {{ .Content }}
       {{ with site.Params.phoneHref }}
       <p class="mt-4 mb-0"><a class="btn btn-brand" href="{{ . | safeURL }}">Call {{ site.Params.phone }}</a>
         <span class="text-secondary small ms-2">to book a time</span></p>
@@ -39,6 +41,13 @@
     </div>
   </section>
   {{ end }}
+
+  <section id="about" class="py-5 bg-body-tertiary border-top border-bottom">
+    <div class="container">
+      <h2 class="text-brand-emphasis">The studio</h2>
+      <div class="prose">{{ .Content }}</div>
+    </div>
+  </section>
 
   {{ with site.GetPage "/contact" }}
   <section id="contact" class="py-5 bg-body-tertiary border-top">

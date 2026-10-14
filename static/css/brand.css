@@ -45,7 +45,7 @@ section[id] { scroll-margin-top: 4.5rem; }
 
 /* Markdown sections: the .md file owns the words, this owns the rhythm. */
 .prose { max-width: 46rem; }
-.prose h2 {
+.prose > h2 {
   font-size: 1.05rem;
   font-family: var(--bs-body-font-family);
   font-weight: 600;
@@ -54,7 +54,7 @@ section[id] { scroll-margin-top: 4.5rem; }
   padding-top: 1.2rem;
   border-top: 1px solid var(--bs-border-color);
 }
-.prose h2:first-child, .prose h3:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.prose > h2:first-child, .prose > h3:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
 .prose h2 + p strong { color: var(--brand-emphasis); }
 .prose p, .prose ul { margin-bottom: 0.9rem; }
 .prose ul { padding-left: 1.15rem; }
@@ -63,9 +63,42 @@ section[id] { scroll-margin-top: 4.5rem; }
 .prose th, .prose td { border-bottom: 1px solid var(--bs-border-color); padding: 0.35rem 0.5rem 0.35rem 0; text-align: left; }
 .prose th { font-weight: 600; color: var(--brand-emphasis); }
 
-/* Price list in two columns on a wide screen, so the page does not trail off. */
-@media (min-width: 992px) {
-  .prose-cols { columns: 2; column-gap: 3rem; max-width: none; }
+/* Bootstrap scopes accordion variables to .accordion, so they do not work on :root. */
+.accordion {
+  --bs-accordion-active-bg: #f1e9db;
+  --bs-accordion-active-color: #23413a;
+  --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2323413a' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  --bs-accordion-btn-focus-box-shadow: none;
 }
-.prose h2 { break-after: avoid; }
-.prose h2 + p, .prose p, .prose li, .prose table { break-inside: avoid; }
+.accordion-button:not(.collapsed) { box-shadow: none; }
+.accordion-button:focus { box-shadow: none; border-color: var(--brand); }
+
+/* A markdown bullet list becomes the strip of short reasons under the hero. */
+.strip-cards ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+.strip-cards li strong {
+  display: block;
+  color: var(--brand-emphasis);
+  font-family: Georgia, "Times New Roman", serif;
+  margin-bottom: 0.25rem;
+}
+
+/* The opening-hours table reads as a card, like the old hours box. */
+.prose table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  background: var(--bs-body-bg);
+  overflow: hidden;
+}
+.prose th, .prose td { padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--bs-border-color); }
+.prose th { background: #f1e9db; color: var(--brand-emphasis); }
+.prose tr:last-child th, .prose tr:last-child td { border-bottom: 0; }
+.prose td:last-child, .prose th:last-child { text-align: right; }

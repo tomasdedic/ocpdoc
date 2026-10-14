@@ -1,0 +1,10 @@
+{{ $id := printf "fold%d" .Ordinal }}
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#{{ $id }}" aria-expanded="false" aria-controls="{{ $id }}">{{ .Get "q" }}</button>
+  </h2>
+  <div id="{{ $id }}" class="accordion-collapse collapse">
+    <div class="accordion-body">{{ .Inner }}</div>
+  </div>
+</div>

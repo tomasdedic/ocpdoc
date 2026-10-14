@@ -1,42 +1,45 @@
 +++
 title = "Services and prices"
+intro = "Every visit starts with a short talk about what your body needs today. Series of five visits and gift vouchers are available, ask by phone."
 headless = true
 +++
 
-Every visit starts with a short talk about what your body needs today. Series of five visits and gift vouchers are available, ask by phone.
+{{< cards >}}
 
-## Back, neck and shoulders
-
-**30 min - 140 zl**
+{{< card title="Back, neck and shoulders" time="30 min" price="140 zl" sub="Fast relief for desk work tension." >}}
 
 Focused work on the most loaded part of the body. Good first visit if you are unsure what to choose.
 
-## Whole body massage
+{{< /card >}}
 
-**60 min - 220 zl**
+{{< card title="Whole body massage" time="60 min" price="220 zl" sub="Classic Swedish massage, head to feet." >}}
 
 Full body with medium pressure. Arms, legs, back, shoulders, neck and décolleté. The most booked treatment.
 
-## Deep tissue
+{{< /card >}}
 
-**60 min - 250 zl**
+{{< card title="Deep tissue" time="60 min" price="250 zl" sub="Strong pressure for chronic tension." >}}
 
 Slow, firm work on deep muscle layers and fascia. Expect some soreness the next day, then a lot of relief.
 
-## Hot stone
+{{< /card >}}
 
-**75 min - 280 zl**
+{{< card title="Hot stone" time="75 min" price="280 zl" sub="Warm basalt stones plus manual work." >}}
 
 Heated stones are placed on the back and used to massage the muscles. Deep warmth, very calm session.
 
-## Lymphatic drainage
+{{< /card >}}
 
-**60 min - 240 zl**
+{{< card title="Lymphatic drainage" time="60 min" price="240 zl" sub="Manual drainage for swelling and heavy legs." >}}
 
 Light rhythmic strokes that move lymph. Often chosen after long travel, in summer, or during reduction diets.
 
-## Sport massage
+{{< /card >}}
 
-**60 min - 260 zl**
+{{< card title="Sport massage" time="60 min" price="260 zl" sub="Preparation and recovery for training." >}}
 
 Brisk work before effort, loosening work after. Helps with muscle tightness and range of motion.
+
+{{< /card >}}
+
+{{< /cards >}}
