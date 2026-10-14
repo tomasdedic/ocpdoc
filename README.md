@@ -124,8 +124,9 @@ Rules worth knowing:
 4. Map - the "Get directions" link points at Mapy.com (`params.mapsUrl`) and loads nothing
    until a visitor clicks it. Putting an embed `src` into `params.mapEmbed` does load code
    from Mapy.com or Google for every visitor.
-5. Contact details in `hugo.toml` are used by the header button, the hero buttons, the
-   address card and the footer. Edit once, right everywhere.
+5. Contact details in `hugo.toml` are used by the header button, the hero buttons and the
+   address card. Edit once, right everywhere. The footer holds only the Facebook and
+   Instagram links, and disappears by itself when both of those params are empty.
 6. Read the Czech aloud. It was written by a machine; a native speaker will change endings
    and word order, especially the gendered forms ("řekněte", "zeptejte se" are neutral on
    purpose).

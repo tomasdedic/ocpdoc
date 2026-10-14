@@ -1,21 +1,10 @@
-<footer class="border-top py-5 py-lg-4">
+{{ if or site.Params.facebook site.Params.instagram }}
+<footer class="border-top py-4">
   <div class="container">
-    <div class="row g-4">
-      <div class="col-lg-4">
-        <p class="fw-semibold mb-1">{{ site.Params.brand | default site.Title }}</p>
-        <p class="small text-secondary mb-0">{{ site.Params.description }}</p>
-      </div>
-      <div class="col-lg-4">
-        <ul class="list-unstyled small mb-0">
-          {{ range site.Menus.main }}<li class="mb-1"><a href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>{{ end }}
-        </ul>
-      </div>
-      <div class="col-lg-4">
-        <ul class="list-unstyled small mb-0">
-          {{ with site.Params.facebook }}<li class="mb-1"><a href="{{ . }}">Facebook</a></li>{{ end }}
-          {{ with site.Params.instagram }}<li class="mb-1"><a href="{{ . }}">Instagram</a></li>{{ end }}
-        </ul>
-      </div>
-    </div>
+    <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+      {{ with site.Params.facebook }}<li><a href="{{ . }}">Facebook</a></li>{{ end }}
+      {{ with site.Params.instagram }}<li><a href="{{ . }}">Instagram</a></li>{{ end }}
+    </ul>
   </div>
 </footer>
+{{ end }}
