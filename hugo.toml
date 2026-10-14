@@ -1,0 +1,55 @@
+baseURL = "https://www.sudlice.org/"   # the Pages workflow overrides this with the real site URL
+locale = "en"
+title = "Studio M - Massage Salon"
+timeZone = "Europe/Prague"
+enableRobotsTXT = true
+
+# All the text a salon owner needs to edit lives here and in data/*.yaml
+[params]
+  brand = "Studio M"
+  description = "Massage salon in Prague. Swedish, deep tissue, lymphatic drainage and hot stone massage. Call or write to set a time."
+  address = "Vodickova 415/2, 110 00 Praha 1"
+  phone = "+420 601 123 456"
+  phoneHref = "tel:+420601123456"
+  email = "info@studiom.example"
+  mapsUrl = "https://www.mapy.com/turisticka?q=Prague"
+  # Map embed URL of the salon (Mapy.com or Google Maps, Share -> Embed a map -> src value). Empty = no map.
+  mapEmbed = ""
+  # Form backend URL (Formspree, Basin, Netlify). Empty = no contact form.
+  formAction = ""
+  facebook = "https://www.facebook.com/"
+  instagram = "https://www.instagram.com/"
+
+  [params.hero]
+    heading = "Massage that gives your body a break"
+    lead = "One person, one room, one hour of quiet. Choose a treatment, then call or write and we set a time."
+    image = "img/hero.svg"
+    imageAlt = "Massage room"
+
+  [params.hours]
+    heading = "Opening hours"
+    note = "Last appointment starts 1 hour before closing."
+    days = [
+      { day = "Mon - Fri", time = "09:00 - 20:00" },
+      { day = "Saturday", time = "10:00 - 16:00" },
+      { day = "Sunday", time = "Closed" },
+    ]
+
+[menu]
+  [[menu.main]]
+    name = "Services"
+    url = "#services"
+    weight = 1
+  [[menu.main]]
+    name = "About"
+    url = "#about"
+    weight = 2
+  [[menu.main]]
+    name = "Contact"
+    url = "#contact"
+    weight = 4
+
+[taxonomies]
+
+[minify]
+  disableXML = true

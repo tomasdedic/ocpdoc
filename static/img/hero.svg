@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="640" viewBox="0 0 900 640" role="img" aria-label="Photo placeholder">
+  <rect width="900" height="640" fill="#e7ddca"/>
+  <circle cx="690" cy="150" r="220" fill="#d9cbb2" opacity="0.7"/>
+  <circle cx="200" cy="520" r="170" fill="#cfc0a5" opacity="0.6"/>
+  <text x="50%" y="48%" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#5c5343">Salon photo</text>
+  <text x="50%" y="55%" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#6d6350">900 x 640 px - static/img/hero.svg</text>
+</svg>
