@@ -1,0 +1,19 @@
+{{ define "main" }}
+<article class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <p class="small text-secondary mb-1">{{ .Date.Format (i18n "dateFormat") }}</p>
+        <h1 class="text-brand-emphasis">{{ .Title }}</h1>
+        {{ with .Params.image }}{{ with $.Resources.GetMatch . }}
+        {{ $t := .Fill "1200x630 WebP q80 Center" }}
+        <img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="{{ $.Title }}"
+             class="img-fluid rounded-4 my-4" decoding="async">
+        {{ end }}{{ end }}
+        <div class="prose">{{ .Content }}</div>
+        <p class="mt-5"><a href="{{ "/blog/" | relLangURL }}">{{ i18n "backToNews" }}</a></p>
+      </div>
+    </div>
+  </div>
+</article>
+{{ end }}

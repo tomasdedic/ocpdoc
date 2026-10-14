@@ -36,9 +36,13 @@ enableRobotsTXT = true
       url = "#about"
       weight = 2
     [[languages.en.menu.main]]
+      name = "News"
+      url = "/blog/"
+      weight = 4
+    [[languages.en.menu.main]]
       name = "Contact"
       url = "#contact"
-      weight = 4
+      weight = 5
 
   [languages.cs]
     locale = "cs"
@@ -58,9 +62,15 @@ enableRobotsTXT = true
       url = "#about"
       weight = 2
     [[languages.cs.menu.main]]
+      name = "Novinky"
+      url = "/blog/"
+      weight = 4
+    [[languages.cs.menu.main]]
       name = "Kontakt"
       url = "#contact"
-      weight = 4
+      weight = 5
+
+summaryLength = 24
 
 [taxonomies]
 

@@ -1,0 +1,40 @@
+{{ define "main" }}
+<section class="py-5">
+  <div class="container">
+    <h1 class="text-brand-emphasis">{{ .Title }}</h1>
+    {{ with .Description }}<p class="text-secondary">{{ . }}</p>{{ end }}
+    <div class="row row-cols-1 row-cols-md-2 g-4 mt-1">
+      {{ range .Paginator.Pages }}
+      {{ $post := . }}
+      {{ $thumb := .Resources.GetMatch .Params.image }}
+      {{ if not $thumb }}{{ $imgs := .Resources.ByType "image" }}{{ if $imgs }}{{ $thumb = index $imgs 0 }}{{ end }}{{ end }}
+      <div class="col">
+        <article class="card h-100">
+          {{ with $thumb }}
+          {{ $t := .Fill "640x360 WebP q75 Center" }}
+          <a href="{{ $post.RelPermalink }}" tabindex="-1" aria-hidden="true">
+            <img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt=""
+                 class="card-img-top" loading="lazy" decoding="async">
+          </a>
+          {{ end }}
+          <div class="card-body">
+            <p class="small text-secondary mb-1">{{ $post.Date.Format (i18n "dateFormat") }}</p>
+            <h2 class="h5 card-title"><a href="{{ $post.RelPermalink }}">{{ $post.Title }}</a></h2>
+            {{ with $post.Params.preview }}<div class="card-text small mb-0">{{ . }}</div>
+            {{ else }}<div class="card-text small mb-0">{{ $post.Summary }}</div>{{ end }}
+          </div>
+        </article>
+      </div>
+      {{ end }}
+    </div>
+    {{ if or .Paginator.HasPrev .Paginator.HasNext }}
+    <nav class="mt-5" aria-label="Pages">
+      <ul class="pagination">
+        {{ with .Paginator.Prev }}<li class="page-item"><a class="page-link" href="{{ .URL }}">{{ i18n "newer" }}</a></li>{{ end }}
+        {{ with .Paginator.Next }}<li class="page-item"><a class="page-link" href="{{ .URL }}">{{ i18n "older" }}</a></li>{{ end }}
+      </ul>
+    </nav>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

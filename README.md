@@ -40,6 +40,8 @@ page is linked from the menu.
 | Opening hours, in the card next to the studio text | `content/hours.md` | `content/hours.cs.md` |
 | Parking and payment text, plus the "How to book a visit" card title and note | `content/contact.md` | `content/contact.cs.md` |
 | FAQ page | `content/faq.md` | `content/faq.cs.md` |
+| News list page | `content/blog/_index.md` | `content/blog/_index.cs.md` |
+| One news post | `content/blog/2026-10-horky-kamen/index.md` | same folder, `index.cs.md` |
 | Phone, e-mail, address, map link, social, menu, site name | `hugo.toml` (`[params]` and `[languages]`) | |
 | Call, Write an e-mail, Get directions, back link | `i18n/en.toml` | `i18n/cs.toml` |
 
@@ -99,6 +101,46 @@ Rules worth knowing:
   all.
 - The thin rules, the hours rows, the card look and the accordion colors come from
   `static/css/brand.css`, not from the text.
+
+## Writing a news post
+
+A post is a folder with markdown and its own pictures. Copy an existing folder:
+
+```
+content/blog/2026-10-horky-kamen/
+  index.md        the English post
+  index.cs.md     the Czech post, optional
+  kamen.png       the picture shown on the card and at the top of the post
+  studia.png      a second picture, used inside the text
+```
+
+```markdown
++++
+title = "Hot stone is back on the menu"
+date = 2026-10-05T09:00:00+02:00
+image = "kamen.png"
+preview = "Back on the menu for the winter: 75 minutes of warm basalt stones, 280 CZK."
++++
+
+First paragraph, shown on the card when there is no `preview`.
+
+{{< photo src="studia.png" alt="The room, lamps off, stones warming" >}}
+
+Rest of the post.
+```
+
+- Newest first on the list, ten per page, then the Newer and Older links.
+- `image` is the card picture and the banner at the top of the post. Without it the first
+  picture found in the folder is used, and without any picture the card has no image.
+- `preview` is the sentence on the card. Leave it out and put `<!--more-->` after your first
+  paragraph instead; if you do neither, Hugo puts the whole post on the card.
+- `{{< photo >}}` resizes and converts to WebP by itself: a 5 MB photo from a phone becomes a
+  1200 px wide picture of a few hundred kilobytes. A plain `![alt](file.png)` also works, but
+  sends the original file, so prefer the shortcode.
+- A post in one language only is fine: it appears in that language and not in the other.
+- Date format on the cards and posts comes from `dateFormat` in `i18n/en.toml` and
+  `i18n/cs.toml`.
+- The list is at `/blog/` and `/cs/blog/`, and there is a feed at `/blog/index.xml`.
 
 ## Add a section to the top page
 
