@@ -32,10 +32,6 @@ enableRobotsTXT = true
       url = "#services"
       weight = 1
     [[languages.en.menu.main]]
-      name = "About"
-      url = "#about"
-      weight = 2
-    [[languages.en.menu.main]]
       name = "News"
       url = "/blog/"
       weight = 4
@@ -57,10 +53,6 @@ enableRobotsTXT = true
       name = "Služby"
       url = "#services"
       weight = 1
-    [[languages.cs.menu.main]]
-      name = "O studiu"
-      url = "#about"
-      weight = 2
     [[languages.cs.menu.main]]
       name = "Novinky"
       url = "/blog/"
