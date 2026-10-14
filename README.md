@@ -22,12 +22,14 @@ standard). Built by CI with Hugo 0.168.0 extended.
 | Headline and lead at the top, "The studio" text | `content/_index.md` |
 | Three short reasons under the hero | `content/strip.md` |
 | "Services and prices", one block per treatment | `content/services.md` |
-| Opening hours, parking, payment, next to the address | `content/contact.md` |
+| Opening hours, in the card next to "The studio" | `content/hours.md` |
+| Parking, payment, how calls are answered, next to the address | `content/contact.md` |
 | FAQ page | `content/faq.md` |
 | Privacy page | `content/privacy.md` |
 | Phone, e-mail, address, map links, social links, menu | `hugo.toml` |
 
-`content/strip.md`, `content/services.md` and `content/contact.md` have `headless = true`
+`content/strip.md`, `content/services.md`, `content/hours.md` and `content/contact.md`
+have `headless = true`
 in their front matter. They are parts of the top page and get no URL of their own.
 
 ## How to write the content
@@ -69,6 +71,9 @@ Rules worth knowing:
 - The strip under the hero is a normal bullet list, one bullet per box, and the bold words
   at the start of a bullet become its title. `layouts/shortcodes/` holds all four shortcode
   files, each of them between 3 and 12 lines.
+- `content/faq.md` has `type = "faq"`, which is why it uses `layouts/faq/single.html`
+  (full width accordion) instead of `layouts/_default/single.html` (the narrow reading
+  column the privacy page uses).
 - The thin rules, the card look of the hours table and the accordion colors come from
   `static/css/brand.css`, not from the text.
 

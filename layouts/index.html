@@ -42,10 +42,26 @@
   </section>
   {{ end }}
 
-  <section id="about" class="py-5 bg-body-tertiary border-top border-bottom">
+  <section id="about" class="py-5 bg-body-tertiary border-top">
     <div class="container">
-      <h2 class="text-brand-emphasis">The studio</h2>
-      <div class="prose">{{ .Content }}</div>
+      <div class="row gx-4 gy-4 align-items-start">
+        <div class="col-lg-7">
+          <h2 class="text-brand-emphasis">The studio</h2>
+          <div class="prose">{{ .Content }}</div>
+        </div>
+        {{ with site.GetPage "/hours" }}
+        <div class="col-lg-5">
+          <div class="card">
+            <div class="card-body prose">
+              <h3 class="card-title">{{ .Title }}</h3>
+              {{ .Content }}
+              {{ with site.Params.phoneHref }}<p class="mb-0 mt-3"><a href="{{ . | safeURL }}">Call {{ site.Params.phone }}</a></p>{{ end }}
+              {{ with site.Params.mapsUrl }}<p class="mb-0"><a href="{{ . }}">Get directions</a></p>{{ end }}
+            </div>
+          </div>
+        </div>
+        {{ end }}
+      </div>
     </div>
   </section>
 

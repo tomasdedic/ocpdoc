@@ -1,0 +1,9 @@
+{{ define "main" }}
+<section class="py-5">
+  <div class="container">
+    <h1 class="text-brand-emphasis">{{ .Title }}</h1>
+    {{ .Content }}
+    <p class="mt-5"><a href="{{ "/" | relURL }}">Back to the top page</a></p>
+  </div>
+</section>
+{{ end }}
