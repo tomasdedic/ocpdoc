@@ -40,14 +40,16 @@ title = "Services and prices"
 headless = true
 +++
 
-## Deep tissue - 60 min - 250 zl
+## Deep tissue
+
+**60 min - 250 zl**
 
 Slow, firm work on deep muscle layers and fascia.
 ```
 
 - `title` is the heading the section shows.
-- `## Name - duration - price` is one service. The price is part of the line on purpose,
-  so nothing has to be kept in sync in two places.
+- One service is one `##` heading, then a bold `duration - price` line, then the
+  description. The thin rule between services comes from CSS, not from the text.
 - `content/faq.md` is a real page at `/faq/`. Its menu entry comes from the `[menu.main]`
   block in its own front matter, so deleting the file deletes the link.
 - Extra markdown pages you add on your own are published by `layouts/_default/single.html`
