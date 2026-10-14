@@ -31,7 +31,7 @@
   <section id="services" class="py-5">
     <div class="container">
       <h2 class="text-brand-emphasis">{{ .Title }}</h2>
-      <div class="prose">{{ .Content }}</div>
+      <div class="prose prose-cols">{{ .Content }}</div>
       {{ with site.Params.phoneHref }}
       <p class="mt-4 mb-0"><a class="btn btn-brand" href="{{ . | safeURL }}">Call {{ site.Params.phone }}</a>
         <span class="text-secondary small ms-2">to book a time</span></p>

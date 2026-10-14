@@ -62,3 +62,10 @@ section[id] { scroll-margin-top: 4.5rem; }
 .prose table { margin-bottom: 0.9rem; width: 100%; }
 .prose th, .prose td { border-bottom: 1px solid var(--bs-border-color); padding: 0.35rem 0.5rem 0.35rem 0; text-align: left; }
 .prose th { font-weight: 600; color: var(--brand-emphasis); }
+
+/* Price list in two columns on a wide screen, so the page does not trail off. */
+@media (min-width: 992px) {
+  .prose-cols { columns: 2; column-gap: 3rem; max-width: none; }
+}
+.prose h2 { break-after: avoid; }
+.prose h2 + p, .prose p, .prose li, .prose table { break-inside: avoid; }
