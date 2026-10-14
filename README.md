@@ -22,7 +22,7 @@ standard). Built by CI with Hugo 0.168.0 extended.
 | Headline and lead at the top, "The studio" text | `content/_index.md` |
 | Three short reasons under the hero | `content/strip.md` |
 | "Services and prices", one block per treatment | `content/services.md` |
-| Opening hours, in the card next to "The studio" | `content/hours.md` |
+| Opening hours, one line per day range, in the card next to "The studio" | `content/hours.md` |
 | Parking, payment, how calls are answered, next to the address | `content/contact.md` |
 | FAQ page | `content/faq.md` |
 | Privacy page | `content/privacy.md` |
@@ -69,12 +69,14 @@ Rules worth knowing:
   the paragraph.
 - `title`, `time`, `price` and `sub` are the four card labels. `sub` is optional.
 - The strip under the hero is a normal bullet list, one bullet per box, and the bold words
-  at the start of a bullet become its title. `layouts/shortcodes/` holds all four shortcode
+  at the start of a bullet become its title.
+- Opening hours are a bullet list too, one line per day range, with the hours in bold:
+  `- Mon - Fri **09:00 - 20:00**`. Inside a card, bold becomes the right-aligned value. `layouts/shortcodes/` holds all four shortcode
   files, each of them between 3 and 12 lines.
 - `content/faq.md` has `type = "faq"`, which is why it uses `layouts/faq/single.html`
   (full width accordion) instead of `layouts/_default/single.html` (the narrow reading
   column the privacy page uses).
-- The thin rules, the card look of the hours table and the accordion colors come from
+- The thin rules, the hours rows, the card look and the accordion colors come from
   `static/css/brand.css`, not from the text.
 
 ## Add a section to the top page
