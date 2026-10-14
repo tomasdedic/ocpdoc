@@ -38,7 +38,7 @@ page is linked from the menu.
 | Three short reasons under the hero | `content/strip.md` | `content/strip.cs.md` |
 | Services and prices, one block per treatment | `content/services.md` | `content/services.cs.md` |
 | Opening hours, in the card next to the studio text | `content/hours.md` | `content/hours.cs.md` |
-| Parking, payment, how calls are answered | `content/contact.md` | `content/contact.cs.md` |
+| Parking and payment text, plus the "How to book a visit" card title and note | `content/contact.md` | `content/contact.cs.md` |
 | FAQ page | `content/faq.md` | `content/faq.cs.md` |
 | Phone, e-mail, address, map link, social, menu, site name | `hugo.toml` (`[params]` and `[languages]`) | |
 | Call, Write an e-mail, Get directions, back link | `i18n/en.toml` | `i18n/cs.toml` |
@@ -94,6 +94,9 @@ Rules worth knowing:
 - `content/faq.md` has `type = "faq"`, which is why it uses `layouts/faq/single.html`
   (full width accordion). `layouts/_default/single.html` is the fallback for any new page:
   a narrow reading column, no template work needed.
+- The booking card in the contact section reads its title and note from `bookTitle` and
+  `bookNote` in that file's front matter. Clear both and the card disappears, buttons and
+  all.
 - The thin rules, the hours rows, the card look and the accordion colors come from
   `static/css/brand.css`, not from the text.
 

@@ -86,6 +86,18 @@
               {{ end }}
             </div>
           </div>
+          {{ if or .Params.bookTitle .Params.bookNote }}
+          <div class="card mt-4">
+            <div class="card-body">
+              {{ with .Params.bookTitle }}<h3 class="h6 card-title">{{ . }}</h3>{{ end }}
+              {{ with .Params.bookNote }}<p class="mb-3">{{ . }}</p>{{ end }}
+              <div class="d-flex flex-wrap gap-2">
+                {{ with site.Params.phoneHref }}<a class="btn btn-brand" href="{{ . | safeURL }}">{{ i18n "call" }} {{ site.Params.phone }}</a>{{ end }}
+                {{ with site.Params.email }}<a class="btn btn-outline-secondary" href="mailto:{{ . }}">{{ i18n "writeEmail" }}</a>{{ end }}
+              </div>
+            </div>
+          </div>
+          {{ end }}
         </div>
       </div>
     </div>
