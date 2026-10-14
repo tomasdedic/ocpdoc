@@ -4,7 +4,7 @@ title = "Studio M - Massage Salon"
 timeZone = "Europe/Prague"
 enableRobotsTXT = true
 
-# All the text a salon owner needs to edit lives here and in data/*.yaml
+# Only contact facts live here. Every word visitors read is in content/*.md
 [params]
   brand = "Studio M"
   description = "Massage salon in Prague. Swedish, deep tissue, lymphatic drainage and hot stone massage. Call or write to set a time."
@@ -15,25 +15,8 @@ enableRobotsTXT = true
   mapsUrl = "https://www.mapy.com/turisticka?q=Prague"
   # Map embed URL of the salon (Mapy.com or Google Maps, Share -> Embed a map -> src value). Empty = no map.
   mapEmbed = ""
-  # Form backend URL (Formspree, Basin, Netlify). Empty = no contact form.
-  formAction = ""
   facebook = "https://www.facebook.com/"
   instagram = "https://www.instagram.com/"
-
-  [params.hero]
-    heading = "Massage that gives your body a break"
-    lead = "One person, one room, one hour of quiet. Choose a treatment, then call or write and we set a time."
-    image = "img/hero.svg"
-    imageAlt = "Massage room"
-
-  [params.hours]
-    heading = "Opening hours"
-    note = "Last appointment starts 1 hour before closing."
-    days = [
-      { day = "Mon - Fri", time = "09:00 - 20:00" },
-      { day = "Saturday", time = "10:00 - 16:00" },
-      { day = "Sunday", time = "Closed" },
-    ]
 
 [menu]
   [[menu.main]]

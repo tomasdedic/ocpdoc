@@ -1,7 +1,8 @@
----
-title: "Privacy policy"
-description: "What the studio does with the data you give it."
----
++++
+title = "Privacy policy"
+description = "What the studio does with the data you give it."
++++
+
 
 ## What is collected
 

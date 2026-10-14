@@ -1,96 +1,50 @@
 {{ define "main" }}
 
-  {{ with site.Params.hero }}
   <section class="hero py-5">
     <div class="container py-lg-5">
       <div class="row align-items-center gx-4 gy-lg-5">
         <div class="col-lg-6">
-          <h1 class="display-5 fw-semibold text-brand-emphasis">{{ .heading }}</h1>
-          <p class="lead mt-3">{{ .lead }}</p>
+          <h1 class="display-5 fw-semibold text-brand-emphasis">{{ .Title }}</h1>
+          {{ with .Params.lead }}<p class="lead mt-3">{{ . }}</p>{{ end }}
           <div class="d-flex flex-wrap gap-2 mt-4">
             {{ with site.Params.phoneHref }}<a class="btn btn-brand btn-lg" href="{{ . | safeURL }}">Call {{ site.Params.phone }}</a>{{ end }}
             {{ with site.Params.email }}<a class="btn btn-outline-secondary btn-lg" href="mailto:{{ . }}">Write an e-mail</a>{{ end }}
           </div>
-          {{ with site.Params.hours }}
-            <p class="text-secondary small mt-4 mb-0">{{ .heading }}:
-              {{ range .days }}<span class="d-inline-block me-3">{{ .day }} {{ .time }}</span>{{ end }}</p>
-          {{ end }}
         </div>
+        {{ with .Params.image }}
         <div class="col-lg-6">
-          <img src="{{ .image | relURL }}" class="img-fluid rounded-4 shadow-sm" alt="{{ .imageAlt }}">
-        </div>
-      </div>
-    </div>
-  </section>
-  {{ end }}
-
-  {{ with hugo.Data.why }}
-  <section class="py-5 bg-body-tertiary border-top border-bottom">
-    <div class="container">
-      <div class="row g-4">
-        {{ range . }}
-        <div class="col-12 col-sm-6 col-lg">
-          <h2 class="h6 text-brand-emphasis">{{ .title }}</h2>
-          <p class="mb-0">{{ .text }}</p>
+          <img src="{{ . | relURL }}" class="img-fluid rounded-4 shadow-sm" alt="{{ $.Params.imageAlt }}">
         </div>
         {{ end }}
       </div>
     </div>
   </section>
-  {{ end }}
 
-  {{ with hugo.Data.services }}
+  <section id="about" class="py-5 bg-body-tertiary border-top border-bottom">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="text-brand-emphasis">The studio</h2>
+          <div class="prose">{{ .Content }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{ with site.GetPage "/services" }}
   <section id="services" class="py-5">
     <div class="container">
-      <h2 class="text-brand-emphasis">Services and prices</h2>
-      <p class="text-secondary">Every visit starts with a short talk about what your body needs today.</p>
-      <div class="row row-cols-1 row-cols-md-2 g-4 mt-1">
-        {{ range . }}
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-baseline gap-3">
-                <h3 class="h5 card-title mb-1">{{ .name }}</h3>
-                <span class="text-nowrap fw-semibold">{{ .price }}</span>
-              </div>
-              <p class="small text-secondary mb-2">{{ .duration }} - {{ .short }}</p>
-              <p class="card-text mb-0">{{ .description }}</p>
-            </div>
-          </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="text-brand-emphasis">{{ .Title }}</h2>
+          <div class="prose">{{ .Content }}</div>
         </div>
-        {{ end }}
       </div>
     </div>
   </section>
   {{ end }}
 
-  <section id="about" class="py-5">
-    <div class="container">
-      <div class="row gx-4 gy-lg-5">
-        <div class="col-lg-7">
-          <h2 class="text-brand-emphasis">{{ .Params.aboutHeading | default "About the studio" }}</h2>
-          {{ .Content }}
-        </div>
-        {{ with site.Params.hours }}
-        <div class="col-lg-5">
-          <div class="card">
-            <div class="card-body">
-              <h3 class="h6 card-title">{{ .heading }}</h3>
-              <dl class="row mb-0">
-                {{ range .days }}
-                  <dt class="col-6 small fw-normal text-secondary mb-1">{{ .day }}</dt>
-                  <dd class="col-6 small text-end mb-1">{{ .time }}</dd>
-                {{ end }}
-              </dl>
-              {{ with .note }}<p class="small text-secondary mt-3 mb-0">{{ . }}</p>{{ end }}
-            </div>
-          </div>
-        </div>
-        {{ end }}
-      </div>
-    </div>
-  </section>
-
+  {{ with site.GetPage "/contact" }}
   <section id="contact" class="py-5 bg-body-tertiary border-top">
     <div class="container">
       <div class="row gx-4 gy-lg-5">
@@ -102,45 +56,18 @@
             {{ with site.Params.email }}<p class="mb-1"><a href="mailto:{{ . }}">{{ . }}</a></p>{{ end }}
             {{ with site.Params.mapsUrl }}<p class="mb-0"><a href="{{ . }}">Get directions</a></p>{{ end }}
           </address>
-          {{ with site.Params.hours }}
-            <dl class="row mt-4 mb-0">
-              {{ range .days }}
-                <dt class="col-6 small fw-normal text-secondary mb-1">{{ .day }}</dt>
-                <dd class="col-6 small text-end mb-1">{{ .time }}</dd>
-              {{ end }}
-            </dl>
+          {{ with site.Params.mapEmbed }}
+          <div class="ratio ratio-4x3 mt-4"><iframe src="{{ . }}" title="Map" loading="lazy"
+            style="border:0" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>
           {{ end }}
         </div>
         <div class="col-lg-6">
-          {{ with site.Params.formAction }}
-          <form method="post" action="{{ . }}" class="row g-3">
-            <div class="col-md-6"><label class="form-label" for="f-name">Name</label>
-              <input class="form-control" id="f-name" name="name" required></div>
-            <div class="col-md-6"><label class="form-label" for="f-phone">Phone or e-mail</label>
-              <input class="form-control" id="f-phone" name="contact" required></div>
-            <div class="col-12"><label class="form-label" for="f-msg">What would you like to book?</label>
-              <textarea class="form-control" id="f-msg" name="message" rows="4" required></textarea></div>
-            <div class="col-12"><button class="btn btn-brand" type="submit">Send</button></div>
-          </form>
-          {{ else }}
-          <div class="card">
-            <div class="card-body">
-              <h3 class="h6 card-title">How to book a visit</h3>
-              <p class="mb-3">By phone, or by e-mail if you write during working hours. Text messages are read between visits.</p>
-              <div class="d-flex flex-wrap gap-2">
-                {{ with site.Params.phoneHref }}<a class="btn btn-brand" href="{{ . | safeURL }}">Call {{ site.Params.phone }}</a>{{ end }}
-                {{ with site.Params.email }}<a class="btn btn-outline-secondary" href="mailto:{{ . }}">Write an e-mail</a>{{ end }}
-              </div>
-            </div>
-          </div>
-          {{ end }}
-          {{ with site.Params.mapEmbed }}
-            <div class="ratio ratio-4x3 mt-4"><iframe src="{{ . }}" title="Map" loading="lazy"
-              style="border:0" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>
-          {{ end }}
+          <h3>{{ .Title }}</h3>
+          <div class="prose">{{ .Content }}</div>
         </div>
       </div>
     </div>
   </section>
+  {{ end }}
 
 {{ end }}

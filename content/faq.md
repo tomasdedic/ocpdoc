@@ -1,8 +1,35 @@
----
-title: "FAQ"
-type: faq
-description: "Questions to settle before your visit: booking, pregnancy, contraindications, payment, cancellation."
-menu:
-  main:
-    weight: 3
----
++++
+title = "FAQ"
+description = "Questions to settle before your visit: booking, pregnancy, contraindications, payment, cancellation."
+
+[menu.main]
+  name = "FAQ"
+  url = "/faq/"
+  weight = 3
++++
+
+## How long before should I book?
+
+Two to four days in the week, one to two weeks for Friday evening and Saturday. Urgent pain? Call instead of writing, cancellations happen every day.
+
+## What should I bring?
+
+Nothing but yourself. Sheets, towels, oil and disposable underwear are provided. Leave jewellery at home.
+
+## Can I come while pregnant?
+
+After the first trimester, yes, from week 14, side lying position, no deep tissue and no abdomen work. Say how far along you are when you book.
+
+## When should I not come?
+
+Fever, infection, fresh injury or wound, skin disease in the treated area, untreated blood clot, right after surgery, or chemo. If in doubt, ask your doctor first and tell me about it.
+
+## How do I pay?
+
+Card or cash at the studio. Series and vouchers are paid in advance by transfer.
+
+## Can I cancel?
+
+Free of charge up to 12 hours before. Later than that the visit counts as used, because the slot cannot be given to anybody else.
+
+Prefer to ask directly? [Call or write](/#contact).
